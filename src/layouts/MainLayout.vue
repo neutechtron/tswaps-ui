@@ -14,9 +14,11 @@
       </q-toolbar>
     </q-header>
 
-    <q-page-container>
-      <router-view />
-    </q-page-container>
+    <div class="row justify-center">
+      <q-page-container class="pageContainer">
+        <router-view />
+      </q-page-container>
+    </div>
   </q-layout>
 </template>
 
@@ -31,3 +33,9 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.pageContainer {
+  flex: 0 1 800px;
+}
+</style>

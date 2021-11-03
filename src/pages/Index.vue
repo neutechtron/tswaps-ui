@@ -1,6 +1,6 @@
 <template>
   <q-page class="column justify-center items-center">
-    <h6 class="description">
+    <h6>
       Use this template as a starting point for your app and save the time of
       writing all the boilerplate code. It has an implementation of UAL
       (Universal Authenticator Library) which you can test with the Login
@@ -16,10 +16,4 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped>
-.logo
-  max-width: 400px
-
-.description
-  max-width: 800px
-</style>
+<style lang="scss" scoped></style>
