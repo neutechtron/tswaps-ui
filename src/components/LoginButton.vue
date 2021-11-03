@@ -9,7 +9,7 @@
       />
     </div>
     <div v-if="isAuthenticated" class="q-px-md row">
-      <div @click="goToAccountPage" class="account-name q-px-md">
+      <div class="account-name q-px-md">
         {{ accountName }}
       </div>
       <q-btn
@@ -100,12 +100,6 @@ export default {
     },
     openUrl(url) {
       window.open(url);
-    },
-    goToAccountPage() {
-      const accountPath = `/account/${this.accountName}`;
-      if (this.$router.currentRoute.path !== accountPath) {
-        this.$router.push({ path: accountPath });
-      }
     }
   },
   async mounted() {
