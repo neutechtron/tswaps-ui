@@ -1,7 +1,7 @@
 <template>
   <q-layout view="LHh Lpr lFf">
     <q-header elevated>
-      <q-toolbar>
+      <q-toolbar class="toolbar">
         <q-toolbar-title>
           T-Swaps Bridge
         </q-toolbar-title>
@@ -37,5 +37,17 @@ export default {
 <style lang="scss" scoped>
 .pageContainer {
   flex: 0 1 800px;
+}
+
+body.body--light {
+  .toolbar {
+    background: $purpleSoft;
+    color: $white;
+  }
+}
+
+body.body--dark {
+  background: $dark-0;
+  color: $white;
 }
 </style>

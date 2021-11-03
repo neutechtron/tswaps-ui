@@ -1,3 +1,4 @@
+// Palette
 $purpleBright   : #814cdc;
 $purpleDark     : #23195e;
 $purpleSoft     : #7772ac;
@@ -8,7 +9,10 @@ $red            : #bd2677;
 $green          : #55c3b3;
 $yellow         : #F2C037;
 
+$dark-0         : $purpleDark;
+$dark-1         : $blueDark;
 
+// Presets
 $primary   : $purpleBright;
 $secondary : $white;
 $accent    : $blueLight;
