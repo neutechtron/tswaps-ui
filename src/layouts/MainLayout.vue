@@ -12,11 +12,14 @@
         />
 
         <q-toolbar-title>
-          Telos Vue/Quasar App Template
+          T-Swaps Bridge
         </q-toolbar-title>
 
         <login-button></login-button>
-        <div>Quasar v{{ $q.version }}</div>
+        <q-btn
+          @click="$q.dark.toggle()"
+          :icon="$q.dark.isActive ? 'fas fa-moon' : 'fas fa-sun'"
+        ></q-btn>
       </q-toolbar>
     </q-header>
 
@@ -84,7 +87,8 @@ const linksData = [
     caption: "github.com/telosnetwork/ui-template",
     icon: "fas fa-rocket",
     link: "https://github.com/telosnetwork/ui-template"
-  },{
+  },
+  {
     title: "Telos Github",
     caption: "github.com/telosnetwork",
     icon: "fab fa-github",
