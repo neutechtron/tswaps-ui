@@ -23,13 +23,13 @@ module.exports = function(/* ctx */) {
     boot: ["ual", "hyperion", "api"],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
-    css: ["app.sass"],
+    css: ["app.scss"],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
       // 'ionicons-v4',
       // 'mdi-v5',
-      'fontawesome-v5',
+      "fontawesome-v5",
       // 'eva-icons',
       // 'themify',
       // 'line-awesome',
@@ -122,9 +122,9 @@ module.exports = function(/* ctx */) {
       workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: `Telos Quasar Template`,
-        short_name: `Telos Quasar Template`,
-        description: `A template for using Vue+Quasar to build a Telos webapp`,
+        name: `T-Swaps Bridge`,
+        short_name: `T-Swaps Bridge`,
+        description: `T-Swaps Bridge Interface`,
         display: "standalone",
         orientation: "portrait",
         background_color: "#ffffff",
