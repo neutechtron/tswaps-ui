@@ -30,6 +30,9 @@ export default {
   components: { LoginButton },
   data() {
     return {};
+  },
+  created() {
+    this.$q.dark.set(true);
   }
 };
 </script>
@@ -41,13 +44,15 @@ export default {
 
 body.body--light {
   .toolbar {
-    background: $purpleSoft;
-    color: $white;
+    background: $white;
+    color: $dark-0;
   }
 }
 
 body.body--dark {
-  background: $dark-0;
-  color: $white;
+  .toolbar {
+    background: $purpleSoft;
+    color: $white;
+  }
 }
 </style>
