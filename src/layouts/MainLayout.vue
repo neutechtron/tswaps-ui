@@ -14,7 +14,7 @@
       </q-toolbar>
     </q-header>
 
-    <div class="row justify-center">
+    <div class="row justify-center items-center">
       <q-page-container class="pageContainer">
         <router-view />
       </q-page-container>
@@ -32,7 +32,7 @@ export default {
     return {};
   },
   created() {
-    this.$q.dark.set(true);
+    this.$q.dark.set(true); // TODO Use local storage
   }
 };
 </script>
@@ -40,6 +40,7 @@ export default {
 <style lang="scss" scoped>
 .pageContainer {
   flex: 0 1 800px;
+  padding: 1rem;
 }
 
 body.body--light {

@@ -1,19 +1,32 @@
 <template>
-  <q-page class="column justify-center items-center">
-    <h6>
-      Use this template as a starting point for your app and save the time of
-      writing all the boilerplate code. It has an implementation of UAL
-      (Universal Authenticator Library) which you can test with the Login
-      button. There are other examples and essential quasar links in the side
-      menu.
-    </h6>
+  <q-page class="column justify-center q-gutter-y-md">
+    <from-card></from-card>
+    <div class="text-center">
+      <q-icon class="swapArrow" name="fas fa-arrow-down" size="1.5rem" />
+    </div>
+    <q-card class="inputCard"></q-card>
   </q-page>
 </template>
 
 <script>
+import fromCard from "src/components/FromCard";
+
 export default {
-  name: "Index"
+  name: "Index",
+  components: { fromCard }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+body.body--light {
+  .swapArrow {
+    color: $dark-0;
+  }
+}
+
+body.body--dark {
+  .swapArrow {
+    color: $cyan;
+  }
+}
+</style>

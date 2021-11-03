@@ -1,8 +1,24 @@
 body.body--light {
   background: $grey-0;
+  .inputCard {
+    background: $white;
+    color: $dark-0;
+  }
 }
 
 body.body--dark {
-  background: $dark-0;
+  background: $dark-1;
   color: $white;
+  .inputCard {
+    background: $dark-0;
+    color: $white;
+  }
+}
+
+.inputCard {
+  padding: 20px;
+  border-radius: 20px;
+  @media only screen and (max-width: 800px) {
+    padding: 10px;
+  }
 }

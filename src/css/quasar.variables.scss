@@ -2,31 +2,30 @@
 $purpleBright   : #814cdc;
 $purpleDark     : #23195e;
 $purpleSoft     : #7772ac;
-$blueDark       : #091d5c;
+$blueDark       : #0c1f5c;
 $blueLight      : #2fd7fe;
 $white          : #e3def7;
 $red            : #bd2677;
 $green          : #55c3b3;
 $yellow         : #F2C037;
 
-$dark-0         : $purpleDark;
-$dark-1         : $blueDark;
+$dark-0         : #1c075e;
+$dark-1         : #23195e;
 
 $grey-0         : #d4ceeb;
 
 // Presets
-$primary   : $purpleBright;
-$secondary : $white;
-$accent    : $blueLight;
+$primary   : #814cdc;
+$secondary : #e3def7;
+$accent    : #2fd7fe;
 
-$dark      : $purpleDark;
+$dark      : #23195e;
 
-$positive  : $green;
-$negative  : $red;
-$info      : $white;
-$warning   : $yellow;
+$positive  : #55c3b3;
+$negative  : #bd2677;
+$info      : #e3def7;
+$warning   : #F2C037;
 
 // Corner radius
 $button-border-radius   : 10px !default;
 $generic-border-radius  : 10px !default;
-$card-corner-radius     : 20px;
