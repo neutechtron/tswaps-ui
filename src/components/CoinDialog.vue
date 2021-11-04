@@ -22,28 +22,39 @@
       </q-item>
       <q-separator />
       <q-item
-        v-for="coin in coinOptions"
-        :key="coin"
+        v-for="token in getBridgeTokens"
+        :key="`${token.chain}-${token.contract}-${token.symbol}`"
         clickable
         v-close-popup
-        @click="$emit('updateSelectedCoin', coin)"
+        @click="updateSelectedCoin(token)"
       >
         <q-item-section avatar>
-          <token-avatar :token="coin" :avatarSize="30" />
+          <token-avatar :token="token.symbol" :avatarSize="30" />
         </q-item-section>
         <q-item-section>
-          {{ coin }}
+          <q-item-label> {{ token.symbol }}</q-item-label>
+          <q-item-label caption>{{ token.contract }}</q-item-label>
         </q-item-section>
       </q-item>
+      <q-item v-if="getBridgeTokens.length == 0">No tokens found</q-item>
     </q-card>
   </q-dialog>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import tokenAvatar from "src/components/TokenAvatar";
 export default {
   components: { tokenAvatar },
-  props: ["showCoinDialog", "coinOptions", "selectedCoin"]
+  props: ["showCoinDialog", "isFrom"],
+  methods: {
+    updateSelectedCoin(token) {
+      this.$store.commit("bridge/setToken", token);
+    }
+  },
+  computed: {
+    ...mapGetters("tokens", ["getBridgeTokens"])
+  }
 };
 </script>
 

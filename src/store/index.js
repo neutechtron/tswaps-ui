@@ -5,6 +5,7 @@ import account from "./account";
 import general from "./general";
 import blockchains from "./blockchains";
 import tokens from "./tokens";
+import bridge from "./bridge";
 
 Vue.use(Vuex);
 
@@ -14,7 +15,8 @@ export default function() {
       general,
       account,
       blockchains,
-      tokens
+      tokens,
+      bridge
     },
 
     strict: process.env.DEV

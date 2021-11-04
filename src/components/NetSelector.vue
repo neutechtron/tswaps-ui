@@ -6,7 +6,7 @@
     <div class="imgWrapper row justify-center items-center">
       <token-avatar :token="selectedNetwork" :avatarSize="40" />
     </div>
-    <div class="text-h5 q-mx-sm">{{ selectedNetwork }}</div>
+    <div class="text-h6 q-mx-sm">{{ selectedNetwork }}</div>
     <dropdown-btn />
     <net-dialog
       :showNetDialog.sync="showNetDialog"
