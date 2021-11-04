@@ -9,7 +9,7 @@
         <q-input placeholder="Account " class="col-xs-12 col-sm-9" />
 
         <div class="col-xs-12 col-sm-3 row justify-end q-mt-sm">
-          <net-selector class="" />
+          <net-selector selectedNetwork="EOS" />
         </div>
       </div>
       <q-input placeholder="Memo" />

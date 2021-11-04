@@ -5,9 +5,10 @@
       <div v-if="isAuthenticated">Balance: -</div>
     </div>
     <div class="row flex-wrap">
-      <input-amount class="col-xs-12 col-sm-9 q-mt-sm" />
-      <div class="col-xs-12 col-sm-3 row justify-end q-mt-sm">
-        <coin-selector />
+      <input-amount class="col-sm-12 col-md-6 q-mt-sm" />
+      <div class="col-sm-12 col-md-6 row justify-end q-mt-sm">
+        <coin-selector class="q-mr-sm" />
+        <net-selector selectedNetwork="Telos" />
       </div>
     </div>
   </q-card>
@@ -16,8 +17,9 @@
 import { mapGetters, mapActions } from "vuex";
 import inputAmount from "src/components/InputAmount";
 import coinSelector from "src/components/CoinSelector";
+import netSelector from "src/components/NetSelector";
 export default {
-  components: { inputAmount, coinSelector },
+  components: { inputAmount, coinSelector, netSelector },
   data() {
     return {};
   },
