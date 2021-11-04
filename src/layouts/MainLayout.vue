@@ -8,7 +8,7 @@
 
         <login-button></login-button>
         <q-btn
-          @click="$q.dark.toggle()"
+          @click="toggleDarkMode()"
           :icon="$q.dark.isActive ? 'fas fa-moon' : 'fas fa-sun'"
         ></q-btn>
       </q-toolbar>
@@ -31,8 +31,14 @@ export default {
   data() {
     return {};
   },
+  methods: {
+    toggleDarkMode() {
+      this.$q.dark.toggle();
+      localStorage.setItem("darkModeEnabled", this.$q.dark.isActive);
+    }
+  },
   created() {
-    this.$q.dark.set(true); // TODO Use local storage
+    this.$q.dark.set(localStorage.getItem("darkModeEnabled") === "true");
   }
 };
 </script>
