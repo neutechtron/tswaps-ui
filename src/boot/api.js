@@ -31,9 +31,9 @@ const signTransaction = async function(actions) {
   return transaction;
 };
 
-const getRpc = function () {
+const getRpc = function() {
   return this.$type === "ual" ? this.$ualUser.rpc : this.$defaultApi.rpc;
-}
+};
 
 const getTableRows = async function(options) {
   const rpc = this.$api.getRpc();
@@ -43,14 +43,23 @@ const getTableRows = async function(options) {
   });
 };
 
-const getAccount = async function (accountName) {
+const getAccount = async function(accountName) {
   const rpc = this.$api.getRpc();
   return await rpc.get_account(accountName);
-}
+};
 
-export default ({ store }) => {
+export default async ({ store }) => {
+  if (localStorage.getItem("selectedChain") != null) {
+    await store.dispatch(
+      "blockchains/updateCurrentChain",
+      localStorage.getItem("selectedChain")
+    );
+  } else {
+    await store.dispatch("blockchains/updateCurrentChain", "TELOS");
+  }
+  let getCurrentChain = store.getters["blockchains/getCurrentChain"];
   const rpc = new JsonRpc(
-    `${process.env.NETWORK_PROTOCOL}://${process.env.NETWORK_HOST}:${process.env.NETWORK_PORT}`
+    `${getCurrentChain.NETWORK_PROTOCOL}://${getCurrentChain.NETWORK_HOST}:${getCurrentChain.NETWORK_PORT}`
   );
   store["$defaultApi"] = new Api({
     rpc,

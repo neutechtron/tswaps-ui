@@ -1,5 +1,5 @@
-export const currentChain = ({ currentChain }) => currentChain;
+export const getCurrentChain = ({ getCurrentChain }) => getCurrentChain;
 export const getNetworkByName = ({ blockchainList }) => NETWORK_NAME =>
   blockchainList.filter(el => el.NETWORK_NAME === NETWORK_NAME);
-export const allBlockchains = ({ blockchainList }) => blockchainList;
+export const getAllBlockchains = ({ blockchainList }) => blockchainList;
 

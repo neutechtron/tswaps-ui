@@ -1,5 +1,5 @@
 // set new chain
-export const setNewChain = async function(
+export const updateCurrentChain = async function(
   { commit, getters, dispatch },
   selectedChain
 ) {

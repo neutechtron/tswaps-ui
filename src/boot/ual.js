@@ -7,18 +7,18 @@ import { Anchor } from "ual-anchor";
 
 export default async ({ Vue, store }) => {
   if (localStorage.getItem("selectedChain") != null) {
-    await store.dispatch("blockchains/setNewChain", localStorage.getItem("selectedChain"))
+    await store.dispatch("blockchains/updateCurrentChain", localStorage.getItem("selectedChain"))
   } else {
-    await store.dispatch("blockchains/setNewChain", "TELOS")
+    await store.dispatch("blockchains/updateCurrentChain", "TELOS")
   }
-  let currentChain = store.getters['blockchains/currentChain'];
+  let getCurrentChain = store.getters['blockchains/getCurrentChain'];
   const chain = {
-    chainId: currentChain.NETWORK_CHAIN_ID,
+    chainId: getCurrentChain.NETWORK_CHAIN_ID,
     rpcEndpoints: [
       {
-        protocol: currentChain.NETWORK_PROTOCOL,
-        host: currentChain.NETWORK_HOST,
-        port: currentChain.NETWORK_PORT
+        protocol: getCurrentChain.NETWORK_PROTOCOL,
+        host: getCurrentChain.NETWORK_HOST,
+        port: getCurrentChain.NETWORK_PORT
       }
     ]
   };
@@ -26,12 +26,12 @@ export default async ({ Vue, store }) => {
   let authenticators = []
 
   // if telos network, include 'telos sign' as login option
-  if (currentChain.NETWORK_NAME === 'TELOS') {
+  if (getCurrentChain.NETWORK_NAME === 'TELOS') {
     authenticators = authenticators.concat([new KeycatAuthenticator([chain], { appName: process.env.APP_NAME })])
   }
 
   // if wax network, include 'wax cloud wallet' as login option
-  if (currentChain.NETWORK_NAME === 'WAX') {
+  if (getCurrentChain.NETWORK_NAME === 'WAX') {
     authenticators = authenticators.concat([new Wax([chain], { appName: process.env.APP_NAME })])
   }
 
