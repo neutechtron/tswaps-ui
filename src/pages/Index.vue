@@ -33,7 +33,7 @@ export default {
       transaction: null,
       fromNetwork: "TELOS",
       toNetwork: "EOS",
-      selectedToken: { sym: "4,START", contract: "token.start" }
+      selectedToken: { sym: "4,USDT", contract: "tokens.swaps" }
     };
   },
   computed: {
@@ -87,14 +87,15 @@ export default {
 
       let transaction;
       // TODO if TELOSD token is selected, send across TELOSD bridge
-      if (this.selectedToken === { sym: "4,USDT", contract: "tokens.swaps" }) {
+      if (false) {
+        console.log("Sending across TELOSD bridge");
         const actions = [
           {
             account: this.token_contract,
             name: "transfer",
             data: {
               from: this.accountName.toLowerCase(),
-              to: "bridge.start",
+              to: "telosd.io",
               quantity: `${parseFloat(this.amount).toFixed(
                 this.token_precision
               )} ${this.token_symbol}`,
@@ -103,12 +104,10 @@ export default {
           }
         ];
         transaction = await this.$store.$api.signTransaction(actions);
-      }
-
-      // if same network, do normal transaction
-      else if (
+      }  else if (
         this.toNetwork.toUpperCase() === this.getCurrentChain.NETWORK_NAME
       ) {
+        // if normal transfer to same network
         const actions = [
           {
             account: this.token_contract,
