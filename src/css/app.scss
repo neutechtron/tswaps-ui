@@ -1,6 +1,8 @@
+// Theme
 body.body--light {
   background: $grey-0;
-  .inputCard {
+  .inputCard,
+  .dialogCard {
     background: $white;
     color: $dark-0;
   }
@@ -16,7 +18,8 @@ body.body--light {
 body.body--dark {
   background: $dark-1;
   color: $white;
-  .inputCard {
+  .inputCard,
+  .dialogCard {
     background: $dark-0;
     color: $white;
   }
@@ -30,6 +33,7 @@ body.body--dark {
   }
 }
 
+// Cards & Dialogs
 .inputCard {
   padding: 30px;
   border-radius: 20px;
@@ -38,6 +42,11 @@ body.body--dark {
   }
 }
 
+.q-dialog__inner > div {
+  border-radius: 20px;
+}
+
+// Coin & network selectors
 .selectorContainer {
   border-width: 1px;
   border-style: solid;

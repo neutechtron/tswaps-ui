@@ -9,8 +9,8 @@
       <div class="col-sm-12 col-md-6 row justify-end q-mt-sm">
         <coin-selector
           class="q-mr-sm"
-          selectedCoin="TLOS"
-          :coinOptions="[TLOS, EOS]"
+          :selectedCoin.sync="selectedCoin"
+          :coinOptions="['TLOS', 'EOS']"
         />
         <net-selector selectedNetwork="Telos" />
       </div>
@@ -25,7 +25,9 @@ import netSelector from "src/components/NetSelector";
 export default {
   components: { inputAmount, coinSelector, netSelector },
   data() {
-    return {};
+    return {
+      selectedCoin: "TLOS"
+    };
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"])
