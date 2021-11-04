@@ -38,23 +38,24 @@ export default {
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
-    ...mapGetters("blockchains", [
-      "currentChain",
-      "getNetworkByName"
-    ]),
+    ...mapGetters("blockchains", ["getCurrentChain", "getNetworkByName"]),
     token_contract() {
       return this.selectedToken ? this.selectedToken.contract : null;
     },
     token_precision() {
-      return this.selectedToken ? this.$exSymToPrecision(this.selectedToken) : null;
+      return this.selectedToken
+        ? this.$exSymToPrecision(this.selectedToken)
+        : null;
     },
     token_symbol() {
-      return this.selectedToken ? this.$exSymToSymbol(this.selectedToken) : null;
-    },
+      return this.selectedToken
+        ? this.$exSymToSymbol(this.selectedToken)
+        : null;
+    }
   },
   methods: {
     ...mapActions("account", ["accountExistsOnChain"]),
-    ...mapActions("tokens", ["updateTELOSDioTokens"]),    
+    ...mapActions("tokens", ["updateTELOSDioTokens"]),
 
     async trySend() {
       try {
@@ -71,7 +72,12 @@ export default {
     },
 
     async send() {
-      if (!(await this.accountExistsOnChain({account: this.to, network: this.toNetwork}))) {
+      if (
+        !(await this.accountExistsOnChain({
+          account: this.to,
+          network: this.toNetwork
+        }))
+      ) {
         this.$q.notify({
           type: "negative",
           message: `Account ${this.to} does not exist`
@@ -79,13 +85,29 @@ export default {
         return;
       }
 
-      // if TELOSD token is selected, send TELOSD
-
+      let transaction;
+      // TODO if TELOSD token is selected, send across TELOSD bridge
+      if (this.selectedToken === { sym: "4,USDT", contract: "tokens.swaps" }) {
+        const actions = [
+          {
+            account: this.token_contract,
+            name: "transfer",
+            data: {
+              from: this.accountName.toLowerCase(),
+              to: "bridge.start",
+              quantity: `${parseFloat(this.amount).toFixed(
+                this.token_precision
+              )} ${this.token_symbol}`,
+              memo: `${this.to}@${this.toNetwork.toLowerCase()}|${this.memo}`
+            }
+          }
+        ];
+        transaction = await this.$store.$api.signTransaction(actions);
+      }
 
       // if same network, do normal transaction
-      let transaction;
-      if (
-        this.toNetwork.toUpperCase() === this.currentChain.NETWORK_NAME
+      else if (
+        this.toNetwork.toUpperCase() === this.getCurrentChain.NETWORK_NAME
       ) {
         const actions = [
           {
@@ -114,9 +136,7 @@ export default {
               quantity: `${parseFloat(this.amount).toFixed(
                 this.token_precision
               )} ${this.token_symbol}`,
-              memo: `${this.to}@${this.toNetwork.toLowerCase()}|${
-                this.memo
-              }`
+              memo: `${this.to}@${this.toNetwork.toLowerCase()}|${this.memo}`
             }
           }
         ];

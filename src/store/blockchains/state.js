@@ -1,6 +1,6 @@
 export default function() {
   return {
-    currentChain: {
+    getCurrentChain: {
       NAITIVE_TOKEN: "TLOS",
       NETWORK_NAME: "TELOS",
       NETWORK_DISPLAY_NAME: "Telos",

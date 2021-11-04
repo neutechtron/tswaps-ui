@@ -1,4 +1,4 @@
 export const setCurrentChain = (state, { newChain }) => {
-  state.currentChain = newChain;
+  state.getCurrentChain = newChain;
 };
 

@@ -57,9 +57,9 @@ export default async ({ store }) => {
   } else {
     await store.dispatch("blockchains/updateCurrentChain", "TELOS");
   }
-  let currentChain = store.getters["blockchains/currentChain"];
+  let getCurrentChain = store.getters["blockchains/getCurrentChain"];
   const rpc = new JsonRpc(
-    `${currentChain.NETWORK_PROTOCOL}://${currentChain.NETWORK_HOST}:${currentChain.NETWORK_PORT}`
+    `${getCurrentChain.NETWORK_PROTOCOL}://${getCurrentChain.NETWORK_HOST}:${getCurrentChain.NETWORK_PORT}`
   );
   store["$defaultApi"] = new Api({
     rpc,

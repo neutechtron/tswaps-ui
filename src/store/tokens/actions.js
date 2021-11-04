@@ -5,11 +5,11 @@ export const updateBridgeTokens = async function({
   rootGetters
 }) {
   try {
-    const currentChain = rootGetters[
-      "blockchains/currentChain"
+    const getCurrentChain = rootGetters[
+      "blockchains/getCurrentChain"
     ].NETWORK_NAME.toLowerCase();
     let otherChains = ["telos", "eos", "wax"].filter(
-      (value, _index, _arr) => value !== currentChain
+      (value, _index, _arr) => value !== getCurrentChain
     );
     let tokens = [];
     for (let chain of otherChains) {
