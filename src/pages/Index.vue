@@ -162,8 +162,6 @@ export default {
     this.updateTELOSDioTokens();
     await this.updateBridgeTokens();
 
-    console.log(this.accountName);
-
     if (this.isAuthenticated) {
       this.updateAllTokensBalances(this.accountName);
     }

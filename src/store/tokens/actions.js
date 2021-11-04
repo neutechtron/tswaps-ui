@@ -96,7 +96,6 @@ export const getChainTokenBalance = async function({ commit }, payload) {
 export const updateAllTokensBalances = async function({ commit, dispatch }, accountName) {
   try {
     let tokens = [];
-    console.log(accountName);
     if (accountName !== null) {
       const userCoins = await this.$hyperion.get(
         `/v2/state/get_tokens?account=${accountName}&limit=1000`
