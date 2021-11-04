@@ -18,9 +18,12 @@ body.body--light {
 body.body--dark {
   background: $dark-1;
   color: $white;
-  .inputCard,
+  .inputCard {
+    background: $purpleSoft;
+    color: $white;
+  }
   .dialogCard {
-    background: $dark-0;
+    background: $dark-1;
     color: $white;
   }
   .selectorContainer {

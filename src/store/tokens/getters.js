@@ -1,1 +1,1 @@
-export const getBridgeTokens = ({ bridgeTokens }) => bridgeTokens;
+export const getBridgeTokens = ({ tokens }) => tokens;

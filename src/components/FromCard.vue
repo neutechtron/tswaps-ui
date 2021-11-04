@@ -7,11 +7,7 @@
     <div class="row flex-wrap">
       <input-amount class="col-sm-12 col-md-6 q-mt-sm" />
       <div class="col-sm-12 col-md-6 row justify-end q-mt-sm">
-        <coin-selector
-          class="q-mr-sm"
-          :selectedCoin.sync="selectedCoin"
-          :coinOptions="coinOptions"
-        />
+        <coin-selector class="q-mr-sm" isFrom />
         <net-selector
           :selectedNetwork.sync="selectedNetwork"
           :networkOptions="networkOptions"
@@ -29,8 +25,6 @@ export default {
   components: { inputAmount, coinSelector, netSelector },
   data() {
     return {
-      selectedCoin: "TLOS",
-      coinOptions: ["TLOS", "EOS"],
       selectedNetwork: "Telos",
       networkOptions: ["Telos", "EOS"]
     };

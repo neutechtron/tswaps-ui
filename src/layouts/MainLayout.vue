@@ -9,7 +9,7 @@
         <login-button></login-button>
         <q-btn
           @click="toggleDarkMode()"
-          :icon="$q.dark.isActive ? 'fas fa-moon' : 'fas fa-sun'"
+          :icon="$q.dark.isActive ? 'fas fa-sun' : 'fas fa-moon'"
         ></q-btn>
       </q-toolbar>
     </q-header>
