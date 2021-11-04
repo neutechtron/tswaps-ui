@@ -1,23 +1,26 @@
 <template>
   <q-card class="inputCard">
     <div class="row justify-between">
-      <div>From</div>
+      <div>To</div>
       <div v-if="isAuthenticated">Balance: -</div>
     </div>
-    <div class="row flex-wrap">
-      <input-amount class="col-xs-12 col-sm-9 q-mt-sm" />
-      <div class="col-xs-12 col-sm-3 row justify-end q-mt-sm">
-        <coin-selector />
+    <div class="column ">
+      <div class="row ">
+        <q-input placeholder="Account " class="col-xs-12 col-sm-9" />
+
+        <div class="col-xs-12 col-sm-3 row justify-end q-mt-sm">
+          <net-selector class="" />
+        </div>
       </div>
+      <q-input placeholder="Memo" />
     </div>
   </q-card>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
-import inputAmount from "src/components/InputAmount";
-import coinSelector from "src/components/CoinSelector";
+import netSelector from "src/components/NetSelector";
 export default {
-  components: { inputAmount, coinSelector },
+  components: { netSelector },
   data() {
     return {};
   },
