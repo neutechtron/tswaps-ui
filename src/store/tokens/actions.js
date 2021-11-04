@@ -49,8 +49,8 @@ export const updateTELOSDioTokens = async function({
     });
     tokens.push(...tableResults.rows);
     // return res;
-    console.log("TLOSDio Tokens:", tokens);
-    // commit("setTLOSDioTokens", { tokens });  // TODO: update store
+    console.log("TELOSDio Tokens:", tokens);
+    commit("setTelosdioTokens", { tokens }); 
   } catch (error) {
     console.log("Error getting bridge tokens:", error);
     commit("general/setErrorMsg", error.message || error, { root: true });

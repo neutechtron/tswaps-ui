@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     ...mapActions("account", ["accountExistsOnChain"]),
-    ...mapActions("tokens", ["updateTELOSDioTokens"]),
+    ...mapActions("tokens", ["updateTELOSDioTokens", "updateBridgeTokens"]),
 
     async trySend() {
       try {
@@ -154,7 +154,9 @@ export default {
     }
   },
   async mounted() {
-    await this.updateTELOSDioTokens();
+    this.updateTELOSDioTokens();
+    this.updateBridgeTokens();
+
   }
 };
 </script>
