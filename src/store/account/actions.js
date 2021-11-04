@@ -1,3 +1,5 @@
+import { Api, JsonRpc } from "eosjs";
+
 export const login = async function(
   { commit, dispatch },
   { idx, account, returnUrl }
@@ -116,4 +118,28 @@ export const accountExists = async function ({ commit, dispatch }, accountName) 
   } catch (e) {
     return false;
   }
+}
+
+export const accountExistsOnChain = async function ({commit, dispatch, rootGetters}, payload) {
+  // get current selected chain
+  let blockchains = rootGetters["blockchains/getNetworkByName"](
+    payload.network.toUpperCase()
+  );
+  let newChain = {};
+
+  // check if testnet or not
+  if (process.env.TESTNET == "true") {
+    newChain = blockchains.find(el => el.TEST_NETWORK === true);
+  } else {
+    newChain = blockchains.find(el => el.TEST_NETWORK === false);
+  }
+  // console.log(newChain)
+
+  //set rpc
+  const rpc = new JsonRpc(
+    `${newChain.NETWORK_PROTOCOL}://${newChain.NETWORK_HOST}:${newChain.NETWORK_PORT}`
+  );
+  //check if account exists on chain
+  let exists = await rpc.get_account(payload.account);
+  return exists;
 }

@@ -6,18 +6,131 @@
     </div>
     <to-card />
     <div class="flex justify-center">
-      <q-btn no-caps class="sendBtn self-center" label="Send" />
+      <q-btn
+        no-caps
+        class="sendBtn self-center"
+        label="Send"
+        @click="trySend()"
+      />
     </div>
   </q-page>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import fromCard from "src/components/FromCard";
 import toCard from "src/components/ToCard";
 
 export default {
   name: "Index",
-  components: { fromCard, toCard }
+  components: { fromCard, toCard },
+  data() {
+    return {
+      to: "fuzzytestnet",
+      amount: "1.0000 START",
+      memo: "new bridge",
+      showTransaction: false,
+      transaction: null,
+      fromNetwork: "TELOS",
+      toNetwork: "EOS",
+      selectedToken: { sym: "4,START", contract: "token.start" }
+    };
+  },
+  computed: {
+    ...mapGetters("account", ["isAuthenticated", "accountName"]),
+    ...mapGetters("blockchains", [
+      "currentChain",
+      "getNetworkByName"
+    ]),
+    token_contract() {
+      return this.selectedToken ? this.selectedToken.contract : null;
+    },
+    token_precision() {
+      return this.selectedToken ? this.$exSymToPrecision(this.selectedToken) : null;
+    },
+    token_symbol() {
+      return this.selectedToken ? this.$exSymToSymbol(this.selectedToken) : null;
+    },
+  },
+  methods: {
+    ...mapActions("account", ["accountExistsOnChain"]),
+    
+
+    async trySend() {
+      try {
+        await this.send();
+        this.$q.notify({
+          color: "green-4",
+          textColor: "white",
+          icon: "cloud_done",
+          message: "Sent"
+        });
+      } catch (error) {
+        this.$errorNotification(error);
+      }
+    },
+
+    async send() {
+      if (!(await this.accountExistsOnChain({account: this.to, network: this.toNetwork}))) {
+        this.$q.notify({
+          type: "negative",
+          message: `Account ${this.to} does not exist`
+        });
+        return;
+      }
+
+      // if same network, do normal transaction
+      let transaction;
+      if (
+        this.toNetwork.toUpperCase() === this.currentChain.NETWORK_NAME
+      ) {
+        const actions = [
+          {
+            account: this.token_contract,
+            name: "transfer",
+            data: {
+              from: this.accountName.toLowerCase(),
+              to: this.to,
+              quantity: `${parseFloat(this.amount).toFixed(
+                this.token_precision
+              )} ${this.token_symbol}`,
+              memo: this.memo
+            }
+          }
+        ];
+        transaction = await this.$store.$api.signTransaction(actions);
+      } else {
+        // If different EOS network, send to bridge
+        const actions = [
+          {
+            account: this.token_contract,
+            name: "transfer",
+            data: {
+              from: this.accountName.toLowerCase(),
+              to: "bridge.start",
+              quantity: `${parseFloat(this.amount).toFixed(
+                this.token_precision
+              )} ${this.token_symbol}`,
+              memo: `${this.to}@${this.toNetwork.toLowerCase()}|${
+                this.memo
+              }`
+            }
+          }
+        ];
+        transaction = await this.$store.$api.signTransaction(actions);
+      }
+      if (transaction) {
+        this.showTransaction = true;
+        this.transaction = transaction.transactionId;
+        this.to = null;
+        this.amount = null;
+        this.memo = "";
+        // this.$refs.sendForm.reset();
+        // this.$refs.sendForm.resetValidation();
+        // this.setWalletBalances(this.accountName);
+      }
+    }
+  }
 };
 </script>
 
