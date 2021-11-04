@@ -1,7 +1,7 @@
 <template>
   <div class="selectorContainer row items-center no-wrap">
     <div class="imgWrapper row justify-center items-center">
-      <img src="/coins/eos.svg" />
+      <token-avatar :token="selectedNetwork" :avatarSize="40" />
     </div>
     <div class="text-h5 q-mx-sm">{{ selectedNetwork }}</div>
     <dropdown-btn />
@@ -10,8 +10,9 @@
 
 <script>
 import dropdownBtn from "src/components/DropdownBtn";
+import tokenAvatar from "src/components/TokenAvatar";
 export default {
-  components: { dropdownBtn },
+  components: { dropdownBtn, tokenAvatar },
   props: {
     selectedNetwork: String,
     networkOptions: Array

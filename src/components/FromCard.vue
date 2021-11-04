@@ -7,7 +7,11 @@
     <div class="row flex-wrap">
       <input-amount class="col-sm-12 col-md-6 q-mt-sm" />
       <div class="col-sm-12 col-md-6 row justify-end q-mt-sm">
-        <coin-selector class="q-mr-sm" />
+        <coin-selector
+          class="q-mr-sm"
+          selectedCoin="TLOS"
+          :coinOptions="[TLOS, EOS]"
+        />
         <net-selector selectedNetwork="Telos" />
       </div>
     </div>
