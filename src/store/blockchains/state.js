@@ -30,7 +30,7 @@ export default function() {
         NETWORK_PORT: 443,
         NETWORK_PROTOCOL: "https",
         NETWORK_EXPLORER: "https://telos-test.bloks.io",
-        HYPERION_ENDPOINT: "https://testnet.telos.africa",
+        HYPERION_ENDPOINT: "https://testnet.telos.caleos.io",
         CREATE_ACCOUNT: "https://app.telos.net/testnet/developers",
         BUY_START_URL:
           "https://www.tswaps.com/tlos?base=eosio.token-TLOS&quote=token.start-START"

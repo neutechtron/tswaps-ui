@@ -1,6 +1,7 @@
 <template>
   <q-page class="column justify-center q-gutter-y-md">
     <from-card />
+    {{ accountName }}
     <div class="text-center">
       <q-icon class="swapArrow" name="fas fa-arrow-down" size="1.5rem" />
     </div>
@@ -55,7 +56,11 @@ export default {
   },
   methods: {
     ...mapActions("account", ["accountExistsOnChain"]),
-    ...mapActions("tokens", ["updateTELOSDioTokens", "updateBridgeTokens"]),
+    ...mapActions("tokens", [
+      "updateTELOSDioTokens",
+      "updateBridgeTokens",
+      "updateAllTokensBalances"
+    ]),
 
     async trySend() {
       try {
@@ -104,7 +109,7 @@ export default {
           }
         ];
         transaction = await this.$store.$api.signTransaction(actions);
-      }  else if (
+      } else if (
         this.toNetwork.toUpperCase() === this.getCurrentChain.NETWORK_NAME
       ) {
         // if normal transfer to same network
@@ -155,8 +160,13 @@ export default {
   },
   async mounted() {
     this.updateTELOSDioTokens();
-    this.updateBridgeTokens();
+    await this.updateBridgeTokens();
 
+    console.log(this.accountName);
+
+    if (this.isAuthenticated) {
+      this.updateAllTokensBalances(this.accountName);
+    }
   }
 };
 </script>

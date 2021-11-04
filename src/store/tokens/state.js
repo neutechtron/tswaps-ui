@@ -4,7 +4,7 @@ export default function() {
       {
         contract: "",
         symbol: "",
-        balance: 0,
+        amount: 0,
         precision: 0,
         enabled: false,
         chain: "",
