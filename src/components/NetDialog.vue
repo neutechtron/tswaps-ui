@@ -1,38 +1,33 @@
 <template>
   <q-dialog
-    :value="showCoinDialog"
-    @input="$emit('update:showCoinDialog', $event)"
+    :value="showNetDialog"
+    @input="$emit('update:showNetDialog', $event)"
     confirm
     class="dialogContainer"
   >
     <q-card class="dialogCard">
       <div class="row justify-between items-center">
-        <q-item-label header>Select a token</q-item-label>
+        <q-item-label header>Select a network</q-item-label>
         <div class="q-pr-sm">
           <q-btn size="12px" flat dense round icon="clear" v-close-popup />
         </div>
       </div>
       <q-item>
-        <q-input
-          outlined
-          round
-          placeholder="Search token name or symbol"
-          class="col"
-        />
+        <q-input outlined round placeholder="Search network name" class="col" />
       </q-item>
       <q-separator />
       <q-item
-        v-for="coin in coinOptions"
-        :key="coin"
+        v-for="net in netOptions"
+        :key="net"
         clickable
         v-close-popup
-        @click="$emit('updateSelectedCoin', coin)"
+        @click="$emit('updateSelectedNet', net)"
       >
         <q-item-section avatar>
-          <token-avatar :token="coin" :avatarSize="30" />
+          <token-avatar :token="net" :avatarSize="30" />
         </q-item-section>
         <q-item-section>
-          {{ coin }}
+          {{ net }}
         </q-item-section>
       </q-item>
     </q-card>
@@ -43,7 +38,7 @@
 import tokenAvatar from "src/components/TokenAvatar";
 export default {
   components: { tokenAvatar },
-  props: ["showCoinDialog", "coinOptions", "selectedCoin"]
+  props: ["showNetDialog", "netOptions", "selectedNet"]
 };
 </script>
 

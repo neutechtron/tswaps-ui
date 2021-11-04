@@ -10,9 +10,12 @@
         <coin-selector
           class="q-mr-sm"
           :selectedCoin.sync="selectedCoin"
-          :coinOptions="['TLOS', 'EOS']"
+          :coinOptions="coinOptions"
         />
-        <net-selector selectedNetwork="Telos" />
+        <net-selector
+          :selectedNetwork.sync="selectedNetwork"
+          :networkOptions="networkOptions"
+        />
       </div>
     </div>
   </q-card>
@@ -26,7 +29,10 @@ export default {
   components: { inputAmount, coinSelector, netSelector },
   data() {
     return {
-      selectedCoin: "TLOS"
+      selectedCoin: "TLOS",
+      coinOptions: ["TLOS", "EOS"],
+      selectedNetwork: "Telos",
+      networkOptions: ["Telos", "EOS"]
     };
   },
   computed: {

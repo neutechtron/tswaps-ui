@@ -9,7 +9,10 @@
         <q-input placeholder="Account " class="col-xs-12 col-sm-9" />
 
         <div class="col-xs-12 col-sm-3 row justify-end q-mt-sm">
-          <net-selector selectedNetwork="EOS" />
+          <net-selector
+            :selectedNetwork.sync="selectedNetwork"
+            :networkOptions="networkOptions"
+          />
         </div>
       </div>
       <q-input placeholder="Memo" />
@@ -22,7 +25,10 @@ import netSelector from "src/components/NetSelector";
 export default {
   components: { netSelector },
   data() {
-    return {};
+    return {
+      selectedNetwork: "EOS",
+      networkOptions: ["Telos", "EOS"]
+    };
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"])
