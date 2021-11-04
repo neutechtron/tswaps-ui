@@ -4,6 +4,13 @@ body.body--light {
     background: $white;
     color: $dark-0;
   }
+  .selectorContainer {
+    border-color: rgba($dark, 0.8);
+    color: $dark-1;
+    &:hover {
+      background: rgba($dark, 0.2);
+    }
+  }
 }
 
 body.body--dark {
@@ -13,12 +20,34 @@ body.body--dark {
     background: $dark-0;
     color: $white;
   }
+  .selectorContainer {
+    border-color: rgba($white, 0.2);
+    background: $dark;
+    color: $white;
+    &:hover {
+      background: rgba($dark, 0.5);
+    }
+  }
 }
 
 .inputCard {
-  padding: 20px;
+  padding: 30px;
   border-radius: 20px;
   @media only screen and (max-width: 800px) {
-    padding: 10px;
+    padding: 15px;
+  }
+}
+
+.selectorContainer {
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 15px;
+  padding: 15px;
+  &:hover {
+    cursor: pointer;
+  }
+  img {
+    width: 3rem;
+    height: 3rem;
   }
 }
