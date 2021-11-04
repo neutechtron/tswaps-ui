@@ -20,7 +20,7 @@ module.exports = function(/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
-    boot: ["ual", "hyperion", "api", "assetHandler"],
+    boot: ["ual", "hyperion", "api", "assetHandler", "errorHandler"],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["app.scss"],
@@ -44,6 +44,8 @@ module.exports = function(/* ctx */) {
       vueRouterMode: "history", // available values: 'hash', 'history'
       env: {
         APP_NAME: process.env.APP_NAME,
+        TESTNET: process.env.TESTNET,
+        BRIDGE_ADDRESS: process.env.BRIDGE_ADDRESS,
         NETWORK_CHAIN_ID: process.env.NETWORK_CHAIN_ID,
         NETWORK_HOST: process.env.NETWORK_HOST,
         NETWORK_PORT: parseInt(process.env.NETWORK_PORT),

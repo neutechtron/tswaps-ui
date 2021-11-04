@@ -114,6 +114,5 @@ export default function() {
           "https://wax.alcor.exchange/swap?output=START-token.start&input=WAX-eosio.token"
       }
     ],
-    bridgeTokens: []
   };
 }
