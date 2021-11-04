@@ -8,10 +8,7 @@
       <input-amount class="col-sm-12 col-md-6 q-mt-sm" />
       <div class="col-sm-12 col-md-6 row justify-end q-mt-sm">
         <coin-selector class="q-mr-sm" isFrom />
-        <net-selector
-          :selectedNetwork.sync="selectedNetwork"
-          :networkOptions="networkOptions"
-        />
+        <net-selector isFrom />
       </div>
     </div>
   </q-card>
@@ -24,10 +21,7 @@ import netSelector from "src/components/NetSelector";
 export default {
   components: { inputAmount, coinSelector, netSelector },
   data() {
-    return {
-      selectedNetwork: "Telos",
-      networkOptions: ["Telos", "EOS"]
-    };
+    return {};
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"])
