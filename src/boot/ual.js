@@ -6,24 +6,41 @@ import { Sqrl } from "@smontero/ual-sqrl";
 import { Anchor } from "ual-anchor";
 
 export default async ({ Vue, store }) => {
+  if (localStorage.getItem("selectedChain") != null) {
+    await store.dispatch("blockchains/setNewChain", localStorage.getItem("selectedChain"))
+  } else {
+    await store.dispatch("blockchains/setNewChain", "TELOS")
+  }
+  let currentChain = store.getters['blockchains/currentChain'];
   const chain = {
-    chainId: process.env.NETWORK_CHAIN_ID,
+    chainId: currentChain.NETWORK_CHAIN_ID,
     rpcEndpoints: [
       {
-        protocol: process.env.NETWORK_PROTOCOL,
-        host: process.env.NETWORK_HOST,
-        port: process.env.NETWORK_PORT
+        protocol: currentChain.NETWORK_PROTOCOL,
+        host: currentChain.NETWORK_HOST,
+        port: currentChain.NETWORK_PORT
       }
     ]
   };
 
-  const authenticators = [
-    new KeycatAuthenticator([chain], { appName: process.env.APP_NAME }),
+  let authenticators = []
+
+  // if telos network, include 'telos sign' as login option
+  if (currentChain.NETWORK_NAME === 'TELOS') {
+    authenticators = authenticators.concat([new KeycatAuthenticator([chain], { appName: process.env.APP_NAME })])
+  }
+
+  // if wax network, include 'wax cloud wallet' as login option
+  if (currentChain.NETWORK_NAME === 'WAX') {
+    authenticators = authenticators.concat([new Wax([chain], { appName: process.env.APP_NAME })])
+  }
+
+  authenticators = authenticators.concat([
     new Sqrl([chain], { appName: process.env.APP_NAME }),
     new Anchor([chain], { appName: process.env.APP_NAME }),
     new Wombat([chain], { appName: process.env.APP_NAME }),
     new Scatter([chain], { appName: process.env.APP_NAME })
-  ];
+  ]);
 
   const ual = new UAL([chain], "ual", authenticators);
   store["$ual"] = ual;

@@ -1,7 +1,7 @@
 // Get cross chain tokens from tokens table of bridge.start
-export const setBridgeTokens = async function({ commit, getters }) {
+export const setBridgeTokens = async function({ commit, getters, rootGetters }) {
     try {
-      const currentChain = getters.currentChain.NETWORK_NAME.toLowerCase();
+      const currentChain = rootGetters["blockchains/currentChain"].NETWORK_NAME.toLowerCase();
       let otherChains = ["telos", "eos", "wax"].filter(
         (value, _index, _arr) => value !== currentChain
       );
@@ -21,6 +21,7 @@ export const setBridgeTokens = async function({ commit, getters }) {
       // console.log("Bridge Tokens:", tokens);
       commit("updateBridgeTokens", { tokens });
     } catch (error) {
+      console.log("Error getting bridge tokens:", error);
       commit("general/setErrorMsg", error.message || error, { root: true });
     }
   };
