@@ -28,7 +28,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("blockchains", ["getCurrentChain"]),
+    ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"]),
     ...mapGetters("bridge", ["getFromChain", "getToChain"]),
     selectedNetwork() {
       let chain = this.getToChain;

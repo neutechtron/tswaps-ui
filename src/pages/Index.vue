@@ -39,7 +39,11 @@ export default {
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
-    ...mapGetters("blockchains", ["getCurrentChain", "getNetworkByName"]),
+    ...mapGetters("blockchains", [
+      "getAllPossibleChains",
+      "getCurrentChain",
+      "getNetworkByName"
+    ]),
     token_contract() {
       return this.selectedToken ? this.selectedToken.contract : null;
     },
@@ -165,6 +169,10 @@ export default {
     if (this.isAuthenticated) {
       this.updateAllTokensBalances(this.accountName);
     }
+  },
+  created() {
+    this.$store.commit("bridge/setFromChain", this.getAllPossibleChains[0]);
+    this.$store.commit("bridge/setToChain", this.getAllPossibleChains[1]);
   }
 };
 </script>
