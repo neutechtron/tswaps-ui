@@ -7,9 +7,9 @@ import { Anchor } from "ual-anchor";
 
 export default async ({ Vue, store }) => {
   if (localStorage.getItem("selectedChain") != null) {
-    await store.dispatch("blockchains/setNewChain", localStorage.getItem("selectedChain"))
+    await store.dispatch("blockchains/updateCurrentChain", localStorage.getItem("selectedChain"))
   } else {
-    await store.dispatch("blockchains/setNewChain", "TELOS")
+    await store.dispatch("blockchains/updateCurrentChain", "TELOS")
   }
   let currentChain = store.getters['blockchains/currentChain'];
   const chain = {

@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     ...mapActions("account", ["accountExistsOnChain"]),
-    
+    ...mapActions("tokens", ["updateTELOSDioTokens"]),    
 
     async trySend() {
       try {
@@ -78,6 +78,9 @@ export default {
         });
         return;
       }
+
+      // if TELOSD token is selected, send TELOSD
+
 
       // if same network, do normal transaction
       let transaction;
@@ -130,6 +133,9 @@ export default {
         // this.setWalletBalances(this.accountName);
       }
     }
+  },
+  async mounted() {
+    await this.updateTELOSDioTokens();
   }
 };
 </script>

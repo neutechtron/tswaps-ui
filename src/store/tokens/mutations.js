@@ -1,3 +1,3 @@
-export const updateBridgeTokens = (state, { tokens }) => {
+export const setBridgeTokens = (state, { tokens }) => {
   state.bridgeTokens = tokens;
 };
