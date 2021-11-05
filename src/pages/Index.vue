@@ -98,8 +98,7 @@ export default {
       }
 
       let transaction;
-      // TODO if TELOSD token is selected, send across TELOSD bridge
-      if (false) {
+      if (this.getToken.telosdio === true) {
         console.log("Sending across TELOSD bridge");
         const actions = [
           {
@@ -157,12 +156,10 @@ export default {
       if (transaction) {
         this.showTransaction = true;
         this.transaction = transaction.transactionId;
-        this.getToAccount = null;
-        this.getAmount = null;
-        this.getMemo = "";
-        // this.$refs.sendForm.reset();
-        // this.$refs.sendForm.resetValidation();
-        // this.setWalletBalances(this.accountName);
+        // TODO clear values
+        this.$store.commit("bridge/setAmount", "");
+        this.$store.commit("bridge/setToAccount", "");
+        this.$store.commit("bridge/setMemo", "");
       }
     }
   },

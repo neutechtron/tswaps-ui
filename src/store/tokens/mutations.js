@@ -1,4 +1,5 @@
 export const setTokens = (state, { tokens }) => {
+  // TODO check duplicates
   if (state.tokens.length === 0) {
     state.tokens = tokens;
   } else {
