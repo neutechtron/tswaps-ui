@@ -1,8 +1,9 @@
 // Get cross chain tokens from tokens table of bridge.start
-export const updateBridgeTokens = async function(
-  { commit, getters, rootGetters },
-  accountName
-) {
+export const updateBridgeTokens = async function({
+  commit,
+  getters,
+  rootGetters
+}) {
   try {
     const getCurrentChain = rootGetters[
       "blockchains/getCurrentChain"
@@ -23,56 +24,63 @@ export const updateBridgeTokens = async function(
       });
       temp_tokens.push(...tableResults.rows);
     }
-    console.log("Bridge Tokens:", temp_tokens);
+    console.log("bridge tokens", temp_tokens);
 
     for (const token of temp_tokens) {
       let new_token = {};
-      console.log("token:", token.token_info);
       new_token.symbol = this.$exSymToSymbol(token.token_info);
       new_token.contract = this.$exSymToContract(token.token_info);
       new_token.precision = this.$exSymToPrecision(token.token_info);
+      new_token.min_quantity = this.$assetToAmount(token.min_quantity);
       new_token.chain = getCurrentChain;
       new_token.enabled = token.enabled;
       new_token.bridgestart = true;
       new_token.tportstart = false;
       new_token.telosdio = false;
       new_token.amount = 0;
+      new_token.toChain = [token.channel];
 
-      console.log("new_token:", new_token);
-      tokens.push(new_token);
-    }
-
-    commit("setBridgeTokens", { tokens });
-
-    if (accountName !== null) {
-      // TODO get balances
-      const rpc = this.$api.getRpc();
-      let balance = await rpc.get_currency_balance(
-        new_token.contract,
-        accountName,
-        new_token.symbol
-      )[0];
-      // console.log("balance:")
-      // console.log(balance)
-      if (balance !== undefined) {
-        new_token.amount = this.$assetToAmount(balance);
+      // Check duplicates
+      if (
+        tokens.find(
+          t =>
+            t.symbol === new_token.symbol &&
+            t.chain === new_token.chain &&
+            t.contract === new_token.contract &&
+            !t.toChain.includes(new_token.toChain)
+        )
+      ) {
+        // append toChain
+        let index = tokens.findIndex(
+          t =>
+            t.symbol === new_token.symbol &&
+            t.chain === new_token.chain &&
+            t.contract === new_token.contract
+        );
+        tokens[index].toChain.push(token.channel);
       } else {
-        new_token.amount = 0;
+        tokens.push(new_token);
       }
     }
-    
+
+    commit("setTokens", { tokens });
   } catch (error) {
     console.log("Error getting bridge tokens:", error);
     commit("general/setErrorMsg", error.message || error, { root: true });
   }
 };
 
-export const updateTELOSDioTokens = async function(
-  { commit, getters, rootGetters },
-  accountName
-) {
+export const updateTELOSDioTokens = async function({
+  commit,
+  getters,
+  rootGetters
+}) {
   try {
+    const getCurrentChain = rootGetters[
+      "blockchains/getCurrentChain"
+    ].NETWORK_NAME.toLowerCase();
     let tokens = [];
+    let temp_tokens = [];
     const tableResults = await this.$api.getTableRows({
       code: "telosd.io",
       scope: "telosd.io",
@@ -81,51 +89,64 @@ export const updateTELOSDioTokens = async function(
       reverse: false,
       show_payer: false
     });
-    tokens.push(...tableResults.rows);
-    console.log("TELOSDio Tokens:", tokens);
+    temp_tokens.push(...tableResults.rows);
+    console.log("TELOSDio Tokens:", temp_tokens);
 
-    // TODO get balances
+    for (const token of temp_tokens) {
+      let new_token = {};
+      new_token.symbol = this.$exSymToSymbol(token.token_info);
+      new_token.contract = this.$exSymToContract(token.token_info);
+      new_token.precision = this.$exSymToPrecision(token.token_info);
+      new_token.min_quantity = this.$assetToAmount(token.min_quantity);
+      new_token.chain = getCurrentChain;
+      new_token.enabled = token.enabled;
+      new_token.bridgestart = false;
+      new_token.tportstart = false;
+      new_token.telosdio = true;
+      new_token.amount = 0;
+      new_token.toChain = [token.remote_chain];
 
-    // TODO format tokens
+      tokens.push(new_token);
+    }
 
-    commit("setTelosdioTokens", { tokens });
+    commit("setTokens", { tokens });
   } catch (error) {
     console.log("Error getting telosdio tokens:", error);
     commit("general/setErrorMsg", error.message || error, { root: true });
   }
 };
 
-// Get balance from chain for given address and token
-export const getChainTokenBalance = async function({ commit }, payload) {
+export const updateTokenBalances = async function(
+  { commit, getters },
+  accountName
+) {
   try {
-    const rpc = this.$api.getRpc();
-    console.log(
-      await rpc.get_currency_balance(
-        payload.address,
-        payload.accountName,
-        payload.sym
-      )
-    );
-    if (payload.accountName !== null) {
-      let balance = (
-        await rpc.get_currency_balance(
-          payload.address,
-          payload.accountName,
-          payload.sym
-        )
-      )[0];
-      // console.log("balance:")
-      // console.log(balance)
-      if (balance !== undefined) {
-        return balance;
-      } else {
-        return `0 ${payload.sym}`;
+    if (accountName !== null) {
+      let tokens = getters.getTokens;
+      const rpc = this.$api.getRpc();
+      for (const token of tokens) {
+        let balance = (
+          await rpc.get_currency_balance(
+            token.contract,
+            accountName,
+            token.symbol
+          )
+        )[0];
+        // console.log("balance:")
+        // console.log(balance)
+        if (balance !== undefined) {
+          commit("setTokenAmount", {
+            token: token,
+            amount: this.$assetToAmount(balance)
+          });
+        } else {
+          commit("setTokenAmount", { token: token, amount: 0 });
+        }
       }
     }
   } catch (error) {
     console.log("Error getting chain token balance:", error);
     commit("general/setErrorMsg", error.message || error, { root: true });
-    return `0 ${payload.sym}`;
   }
 };
 

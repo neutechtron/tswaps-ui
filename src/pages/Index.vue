@@ -1,7 +1,6 @@
 <template>
   <q-page class="column justify-center q-gutter-y-md">
     <from-card />
-    {{ accountName }}
     <div class="text-center">
       <q-icon class="swapArrow" name="fas fa-arrow-down" size="1.5rem" />
     </div>
@@ -63,7 +62,7 @@ export default {
     ...mapActions("tokens", [
       "updateTELOSDioTokens",
       "updateBridgeTokens",
-      "updateAllTokensBalances"
+      "updateTokenBalances"
     ]),
 
     async trySend() {
@@ -163,8 +162,9 @@ export default {
     }
   },
   async mounted() {
-    await this.updateTELOSDioTokens(this.accountName);
-    await this.updateBridgeTokens(this.accountName);
+    await this.updateTELOSDioTokens();
+    await this.updateBridgeTokens();
+    await this.updateTokenBalances(this.accountName);
 
     // TODO remove, not a fan of hyperion
     // if (this.isAuthenticated) {
