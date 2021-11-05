@@ -3,8 +3,8 @@
     class="selectorContainer row items-center no-wrap"
     @click="showCoinDialog = !showCoinDialog"
   >
-    <token-avatar :token="getSymbol.toString()" :avatarSize="40" />
-    <div class="text-h6 q-mx-sm">{{ getSymbol }}</div>
+    <token-avatar :token="getToken.symbol.toString()" :avatarSize="40" />
+    <div class="text-h6 q-mx-sm">{{ getToken.symbol }}</div>
     <dropdown-btn />
     <coin-dialog :showCoinDialog.sync="showCoinDialog" :isFrom="isFrom" />
   </div>
@@ -26,7 +26,7 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("bridge", ["getSymbol"])
+    ...mapGetters("bridge", ["getToken"])
   }
 };
 </script>

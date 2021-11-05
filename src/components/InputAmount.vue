@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input
+    <!-- <input
       inputmode="decimal"
       title="Amount"
       autocomplete="off"
@@ -11,9 +11,34 @@
       minlength="1"
       maxlength="79"
       spellcheck="false"
-    />
+    /> -->
+    <q-input v-model="amount" debounce="500"  placeholder= "0.0"> </q-input>
   </div>
 </template>
+
+<script>
+import { mapGetters, mapActions } from "vuex";
+
+export default {
+  props: {
+    isFrom: Boolean
+  },
+  data() {
+    return {
+      showCoinDialog: false,
+      amount: 0
+    };
+  },
+  computed: {
+    ...mapGetters("bridge", ["getToken"])
+  },
+  watch: {
+    amount() {
+      this.$store.commit("bridge/setAmount", this.amount);
+    }
+  }
+};
+</script>
 
 <style lang="scss" scoped>
 body.body--light {

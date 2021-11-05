@@ -9,3 +9,11 @@ export const setFromChain = (state, chain) => {
 export const setToChain = (state, chain) => {
   state.toChain = chain;
 };
+
+export const setMemo = (state, memo) => {
+  state.memo = memo;
+};
+
+export const setAmount = (state, amount) => {
+  state.amount = amount;
+};

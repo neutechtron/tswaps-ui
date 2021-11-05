@@ -43,6 +43,7 @@ export default {
       "getCurrentChain",
       "getNetworkByName"
     ]),
+    ...mapGetters("bridge", [""]),
     token_contract() {
       return this.selectedToken ? this.selectedToken.contract : null;
     },
