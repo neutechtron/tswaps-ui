@@ -4,7 +4,7 @@ export default function() {
       {
         contract: "token.start",
         symbol: "START",
-        balance: 0,
+        amount: 0,
         precision: 4,
         enabled: true,
         chain: "telos",
@@ -15,7 +15,7 @@ export default function() {
       {
         contract: "eosio.token",
         symbol: "TLOS",
-        balance: 0,
+        amount: 0,
         precision: 4,
         enabled: true,
         chain: "telos",

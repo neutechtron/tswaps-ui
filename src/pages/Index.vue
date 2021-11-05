@@ -159,12 +159,13 @@ export default {
     }
   },
   async mounted() {
-    this.updateTELOSDioTokens();
-    await this.updateBridgeTokens();
+    await this.updateTELOSDioTokens(this.accountName);
+    await this.updateBridgeTokens(this.accountName);
 
-    if (this.isAuthenticated) {
-      this.updateAllTokensBalances(this.accountName);
-    }
+    // TODO remove, not a fan of hyperion
+    // if (this.isAuthenticated) {
+    //   this.updateAllTokensBalances(this.accountName);
+    // }
   }
 };
 </script>

@@ -1,11 +1,8 @@
-import hyperion from "src/boot/hyperion";
-
 // Get cross chain tokens from tokens table of bridge.start
-export const updateBridgeTokens = async function({
-  commit,
-  getters,
-  rootGetters
-}) {
+export const updateBridgeTokens = async function(
+  { commit, getters, rootGetters },
+  accountName
+) {
   try {
     const getCurrentChain = rootGetters[
       "blockchains/getCurrentChain"
@@ -13,6 +10,7 @@ export const updateBridgeTokens = async function({
     let otherChains = ["telos", "eos", "wax"].filter(
       (value, _index, _arr) => value !== getCurrentChain
     );
+    let temp_tokens = [];
     let tokens = [];
     for (let chain of otherChains) {
       const tableResults = await this.$api.getTableRows({
@@ -23,22 +21,56 @@ export const updateBridgeTokens = async function({
         reverse: false,
         show_payer: false
       });
-      tokens.push(...tableResults.rows);
+      temp_tokens.push(...tableResults.rows);
     }
-    // return res;
-    console.log("Bridge Tokens:", tokens);
+    console.log("Bridge Tokens:", temp_tokens);
+
+    for (const token of temp_tokens) {
+      let new_token = {};
+      console.log("token:", token.token_info);
+      new_token.symbol = this.$exSymToSymbol(token.token_info);
+      new_token.contract = this.$exSymToContract(token.token_info);
+      new_token.precision = this.$exSymToPrecision(token.token_info);
+      new_token.chain = getCurrentChain;
+      new_token.enabled = token.enabled;
+      new_token.bridgestart = true;
+      new_token.tportstart = false;
+      new_token.telosdio = false;
+      new_token.amount = 0;
+
+      console.log("new_token:", new_token);
+      tokens.push(new_token);
+    }
+
     commit("setBridgeTokens", { tokens });
+
+    if (accountName !== null) {
+      // TODO get balances
+      const rpc = this.$api.getRpc();
+      let balance = await rpc.get_currency_balance(
+        new_token.contract,
+        accountName,
+        new_token.symbol
+      )[0];
+      // console.log("balance:")
+      // console.log(balance)
+      if (balance !== undefined) {
+        new_token.amount = this.$assetToAmount(balance);
+      } else {
+        new_token.amount = 0;
+      }
+    }
+    
   } catch (error) {
     console.log("Error getting bridge tokens:", error);
     commit("general/setErrorMsg", error.message || error, { root: true });
   }
 };
 
-export const updateTELOSDioTokens = async function({
-  commit,
-  getters,
-  rootGetters
-}) {
+export const updateTELOSDioTokens = async function(
+  { commit, getters, rootGetters },
+  accountName
+) {
   try {
     let tokens = [];
     const tableResults = await this.$api.getTableRows({
@@ -51,6 +83,11 @@ export const updateTELOSDioTokens = async function({
     });
     tokens.push(...tableResults.rows);
     console.log("TELOSDio Tokens:", tokens);
+
+    // TODO get balances
+
+    // TODO format tokens
+
     commit("setTelosdioTokens", { tokens });
   } catch (error) {
     console.log("Error getting telosdio tokens:", error);
@@ -93,7 +130,10 @@ export const getChainTokenBalance = async function({ commit }, payload) {
 };
 
 // Update all tokens balances
-export const updateAllTokensBalances = async function({ commit, dispatch }, accountName) {
+export const updateAllTokensBalances = async function(
+  { commit, dispatch },
+  accountName
+) {
   try {
     let tokens = [];
     if (accountName !== null) {
@@ -101,7 +141,7 @@ export const updateAllTokensBalances = async function({ commit, dispatch }, acco
         `/v2/state/get_tokens?account=${accountName}&limit=1000`
       );
       console.log("user token balances:", userCoins.data.tokens);
-      commit("setTokenBalances", { tokens });
+      commit("setTokenBalances", { tokens }); //TODO: set token balances
     }
   } catch (error) {
     console.log("Error getting all tokens balances:", error);

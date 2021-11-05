@@ -22,7 +22,7 @@
       </q-item>
       <q-separator />
       <q-item
-        v-for="token in getBridgeTokens"
+        v-for="token in getTokens"
         :key="`${token.chain}-${token.contract}-${token.symbol}`"
         clickable
         v-close-popup
@@ -36,7 +36,7 @@
           <q-item-label caption>{{ token.contract }}</q-item-label>
         </q-item-section>
       </q-item>
-      <q-item v-if="getBridgeTokens.length == 0">No tokens found</q-item>
+      <q-item v-if="getTokens.length == 0">No tokens found</q-item>
     </q-card>
   </q-dialog>
 </template>
@@ -53,7 +53,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters("tokens", ["getBridgeTokens"])
+    ...mapGetters("tokens", ["getTokens"])
   }
 };
 </script>
