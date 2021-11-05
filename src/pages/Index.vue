@@ -26,14 +26,9 @@ export default {
   components: { fromCard, toCard },
   data() {
     return {
-      to: "fuzzytestnet",
-      amount: "1.0000 START",
-      memo: "new bridge",
       showTransaction: false,
       transaction: null,
       fromNetwork: "TELOS",
-      toNetwork: "EOS",
-      selectedToken: { sym: "4,USDT", contract: "tokens.swaps" }
     };
   },
   computed: {
@@ -43,18 +38,26 @@ export default {
       "getCurrentChain",
       "getNetworkByName"
     ]),
-    ...mapGetters("bridge", [""]),
+    ...mapGetters("bridge", [
+      "getToken",
+      "getFromChain",
+      "getToChain",
+      "getFromAccount",
+      "getToAccount",
+      "getAmount",
+      "getMemo",
+    ]),
     token_contract() {
-      return this.selectedToken ? this.selectedToken.contract : null;
+      return this.getToken ? this.getToken.contract : null;
     },
     token_precision() {
-      return this.selectedToken
-        ? this.$exSymToPrecision(this.selectedToken)
+      return this.getToken
+        ? this.getToken.precision
         : null;
     },
     token_symbol() {
-      return this.selectedToken
-        ? this.$exSymToSymbol(this.selectedToken)
+      return this.getToken
+        ? this.getToken.symbol
         : null;
     }
   },
@@ -83,13 +86,13 @@ export default {
     async send() {
       if (
         !(await this.accountExistsOnChain({
-          account: this.to,
-          network: this.toNetwork
+          account: this.getToAccount,
+          network: this.getToChain.NETWORK_NAME
         }))
       ) {
         this.$q.notify({
           type: "negative",
-          message: `Account ${this.to} does not exist`
+          message: `Account ${this.getToAccount} does not exist`
         });
         return;
       }
@@ -105,16 +108,16 @@ export default {
             data: {
               from: this.accountName.toLowerCase(),
               to: "telosd.io",
-              quantity: `${parseFloat(this.amount).toFixed(
+              quantity: `${parseFloat(this.getAmount).toFixed(
                 this.token_precision
               )} ${this.token_symbol}`,
-              memo: `${this.to}@${this.toNetwork.toLowerCase()}|${this.memo}`
+              memo: `${this.getToAccount}@${this.getToChain.NETWORK_NAME.toLowerCase()}|${this.getMemo}`
             }
           }
         ];
         transaction = await this.$store.$api.signTransaction(actions);
       } else if (
-        this.toNetwork.toUpperCase() === this.getCurrentChain.NETWORK_NAME
+        this.getToChain.NETWORK_NAME.toUpperCase() === this.getCurrentChain.NETWORK_NAME
       ) {
         // if normal transfer to same network
         const actions = [
@@ -123,17 +126,18 @@ export default {
             name: "transfer",
             data: {
               from: this.accountName.toLowerCase(),
-              to: this.to,
-              quantity: `${parseFloat(this.amount).toFixed(
+              to: this.getToAccount,
+              quantity: `${parseFloat(this.getAmount).toFixed(
                 this.token_precision
               )} ${this.token_symbol}`,
-              memo: this.memo
+              memo: this.getMemo
             }
           }
         ];
         transaction = await this.$store.$api.signTransaction(actions);
       } else {
         // If different EOS network, send to bridge
+        console.log(this.getAmount)
         const actions = [
           {
             account: this.token_contract,
@@ -141,10 +145,10 @@ export default {
             data: {
               from: this.accountName.toLowerCase(),
               to: "bridge.start",
-              quantity: `${parseFloat(this.amount).toFixed(
+              quantity: `${parseFloat(this.getAmount).toFixed(
                 this.token_precision
               )} ${this.token_symbol}`,
-              memo: `${this.to}@${this.toNetwork.toLowerCase()}|${this.memo}`
+              memo: `${this.getToAccount}@${this.getToChain.NETWORK_NAME.toLowerCase()}|${this.getMemo}`
             }
           }
         ];
@@ -153,9 +157,9 @@ export default {
       if (transaction) {
         this.showTransaction = true;
         this.transaction = transaction.transactionId;
-        this.to = null;
-        this.amount = null;
-        this.memo = "";
+        this.getToAccount = null;
+        this.getAmount = null;
+        this.getMemo = "";
         // this.$refs.sendForm.reset();
         // this.$refs.sendForm.resetValidation();
         // this.setWalletBalances(this.accountName);

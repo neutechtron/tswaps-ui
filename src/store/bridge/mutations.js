@@ -17,3 +17,7 @@ export const setMemo = (state, memo) => {
 export const setAmount = (state, amount) => {
   state.amount = amount;
 };
+
+export const setToAccount = (state, toAccount) => {
+  state.toAccount = toAccount;
+}

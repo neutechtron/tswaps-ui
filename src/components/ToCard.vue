@@ -6,13 +6,18 @@
     </div>
     <div class="column ">
       <div class="row ">
-        <q-input placeholder="Account " class="col-xs-12 col-sm-9" />
+        <q-input
+          v-model="toAccount"
+          placeholder="Account"
+          debounce="500"
+          class="col-xs-12 col-sm-9"
+        />
 
         <div class="col-xs-12 col-sm-3 row justify-end q-mt-sm">
           <net-selector />
         </div>
       </div>
-      <q-input placeholder="Memo" />
+      <q-input v-model="memo" placeholder="Memo" debounce="500" />
     </div>
   </q-card>
 </template>
@@ -22,10 +27,21 @@ import netSelector from "src/components/NetSelector";
 export default {
   components: { netSelector },
   data() {
-    return {};
+    return {
+      toAccount: "",
+      memo: ""
+    };
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"])
+  },
+  watch: {
+    toAccount() {
+      this.$store.commit("bridge/setToAccount", this.toAccount);
+    },
+    memo() {
+      this.$store.commit("bridge/setMemo", this.memo);
+    }
   }
 };
 </script>
