@@ -35,6 +35,9 @@
           <q-item-label> {{ token.symbol }}</q-item-label>
           <q-item-label caption>{{ token.contract }}</q-item-label>
         </q-item-section>
+        <q-item-section>
+          <q-item-label caption>{{ token.amount }}</q-item-label>
+        </q-item-section>
       </q-item>
       <q-item v-if="getTokens.length == 0">No tokens found</q-item>
     </q-card>
