@@ -3,7 +3,10 @@ export const setTokens = (state, { tokens }) => {
   if (state.tokens.length === 0) {
     state.tokens = tokens;
   } else {
-    state.tokens = state.tokens.concat(tokens);
+    let temp_tokens = state.tokens.concat(tokens);
+    const ids = temp_tokens.map(token => token.id);
+    const filtered = temp_tokens.filter(({id}, index) => !ids.includes(id, index + 1))
+    state.tokens = filtered;
   }
 };
 
@@ -16,5 +19,11 @@ export const setTokenAmount = (state, { token, amount }) => {
       t.contract === token.contract &&
       t.chain === token.chain
   );
-  new_token.amount = amount;
+  if (new_token !== undefined) {
+    new_token.amount = amount;
+  } 
 };
+
+export const clearTokens = (state) => {
+  state.tokens = [];
+} 

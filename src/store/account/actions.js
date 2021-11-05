@@ -26,7 +26,7 @@ export const login = async function(
       localStorage.setItem("autoLogin", authenticator.constructor.name);
       localStorage.setItem("account", accountName);
       localStorage.setItem("returning", true);
-      dispatch("getAccountProfile");
+      // dispatch("getAccountProfile");
     }
   } catch (e) {
     const error =

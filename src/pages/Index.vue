@@ -20,6 +20,7 @@
 import { mapGetters, mapActions } from "vuex";
 import fromCard from "src/components/FromCard";
 import toCard from "src/components/ToCard";
+import { accountName } from "src/store/account/getters";
 
 export default {
   name: "Index",
@@ -165,7 +166,7 @@ export default {
     }
   },
   async mounted() {
-    await this.updateTELOSDioTokens();
+    // await this.updateTELOSDioTokens();
     await this.updateBridgeTokens();
     await this.updateTokenBalances(this.accountName);
 
@@ -173,15 +174,26 @@ export default {
     // if (this.isAuthenticated) {
     //   this.updateAllTokensBalances(this.accountName);
     // }
-    this.pollTokens = setInterval(async () => {
-      await this.updateTELOSDioTokens();
-      await this.updateBridgeTokens();
-      await this.updateTokenBalances(this.accountName);
-    }, 10000);
   },
   created() {
     this.$store.commit("bridge/setFromChain", this.getAllPossibleChains[0]);
     this.$store.commit("bridge/setToChain", this.getAllPossibleChains[1]);
+  },
+  watch: {
+    async getFromChain() {
+      if (
+        this.getCurrentChain.NETWORK_NAME.toLowerCase() ===
+        this.getFromChain.NETWORK_NAME.toLowerCase()
+      ) {
+        // await this.updateTELOSDioTokens();
+        await this.updateBridgeTokens();
+      }
+    },
+    async accountName() {
+      if (this.isAuthenticated) {
+        await this.updateTokenBalances(this.accountName);
+      }
+    }
   }
 };
 </script>

@@ -39,6 +39,7 @@ export const updateBridgeTokens = async function({
       new_token.telosdio = false;
       new_token.amount = 0;
       new_token.toChain = [token.channel];
+      new_token.id = `${new_token.contract}-${new_token.symbol}-${new_token.chain}`;
 
       // Check duplicates
       if (
@@ -79,6 +80,7 @@ export const updateTELOSDioTokens = async function({
     const getCurrentChain = rootGetters[
       "blockchains/getCurrentChain"
     ].NETWORK_NAME.toLowerCase();
+    console.log("getCurrentChain", getCurrentChain);
     let tokens = [];
     let temp_tokens = [];
     const tableResults = await this.$api.getTableRows({
@@ -105,6 +107,7 @@ export const updateTELOSDioTokens = async function({
       new_token.telosdio = true;
       new_token.amount = 0;
       new_token.toChain = [token.remote_chain];
+      new_token.id = `${new_token.contract}-${new_token.symbol}-${new_token.chain}`;
 
       tokens.push(new_token);
     }
@@ -125,21 +128,25 @@ export const updateTokenBalances = async function(
       let tokens = getters.getTokens;
       const rpc = this.$api.getRpc();
       for (const token of tokens) {
-        let balance = (
-          await rpc.get_currency_balance(
-            token.contract,
-            accountName,
-            token.symbol
-          )
-        )[0];
-        // console.log("balance:")
-        // console.log(balance)
-        if (balance !== undefined) {
-          commit("setTokenAmount", {
-            token: token,
-            amount: this.$assetToAmount(balance)
-          });
-        } else {
+        try {
+          let balance = (
+            await rpc.get_currency_balance(
+              token.contract,
+              accountName,
+              token.symbol
+            )
+          )[0];
+          // console.log("balance:")
+          // console.log(balance)
+          if (balance !== undefined) {
+            commit("setTokenAmount", {
+              token: token,
+              amount: this.$assetToAmount(balance)
+            });
+          } else {
+            commit("setTokenAmount", { token: token, amount: 0 });
+          }
+        } catch (error) {
           commit("setTokenAmount", { token: token, amount: 0 });
         }
       }
