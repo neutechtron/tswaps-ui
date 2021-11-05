@@ -7,27 +7,24 @@
   >
     <q-card class="dialogCard">
       <div class="row justify-between items-center">
-        <q-item-label header>Select a network</q-item-label>
+        <q-item-label header class="text-h6">Select a network</q-item-label>
         <div class="q-pr-sm">
           <q-btn size="12px" flat dense round icon="clear" v-close-popup />
         </div>
       </div>
-      <q-item>
-        <q-input outlined round placeholder="Search network name" class="col" />
-      </q-item>
       <q-separator />
       <q-item
-        v-for="net in netOptions"
-        :key="net"
+        v-for="net in chainOptions"
+        :key="net.NETWORK_CHAIN_ID"
         clickable
         v-close-popup
-        @click="$emit('updateSelectedNet', net)"
+        @click="updateSelectedNet(net)"
       >
         <q-item-section avatar>
-          <token-avatar :token="net" :avatarSize="30" />
+          <token-avatar :token="net.NETWORK_NAME" :avatarSize="30" />
         </q-item-section>
         <q-item-section>
-          {{ net }}
+          {{ net.NETWORK_DISPLAY_NAME }}
         </q-item-section>
       </q-item>
     </q-card>
@@ -35,10 +32,42 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import tokenAvatar from "src/components/TokenAvatar";
 export default {
   components: { tokenAvatar },
-  props: ["showNetDialog", "netOptions", "selectedNet"]
+  props: ["showNetDialog", "isFrom"],
+  methods: {
+    async updateSelectedNet(chain) {
+      if (this.isFrom) {
+        await this.$store.commit("bridge/setFromChain", chain); // TODO Switch chain
+      } else {
+        await this.$store.commit("bridge/setToChain", chain);
+      }
+      this.$emit("update:showNetDialog", false);
+    }
+  },
+  computed: {
+    ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"]),
+    ...mapGetters("bridge", ["getFromChain", "getToChain"]),
+    ...mapGetters("account", ["isAuthenticated", "accountName"]),
+    selectedChain() {
+      return this.isFrom ? this.getFromChain : this.getToChain;
+    },
+    chainOptions() {
+      return this.getAllPossibleChains;
+      // if (this.isAuthenticated) {
+      //   return this.getAllPossibleChains.filter(
+      //     el => el.NETWORK_CHAIN_ID !== this.selectedChain.NETWORK_CHAIN_ID
+      //   );
+      // } else {
+      //   return this.getAllPossibleChains;
+      // }
+    }
+  },
+  beforeMount() {
+    this.$store.commit("bridge/setFromChain", this.getCurrentChain);
+  }
 };
 </script>
 

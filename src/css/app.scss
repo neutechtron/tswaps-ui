@@ -13,6 +13,9 @@ body.body--light {
       background: rgba($dark, 0.2);
     }
   }
+  .text-h6 {
+    color: $dark-0;
+  }
 }
 
 body.body--dark {
@@ -33,6 +36,9 @@ body.body--dark {
     &:hover {
       background: rgba($dark, 0.5);
     }
+  }
+  .text-h6 {
+    color: $white;
   }
 }
 

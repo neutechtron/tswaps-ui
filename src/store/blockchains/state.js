@@ -1,6 +1,6 @@
 export default function() {
   return {
-    getCurrentChain: {
+    currentChain: {
       NAITIVE_TOKEN: "TLOS",
       NETWORK_NAME: "TELOS",
       NETWORK_DISPLAY_NAME: "Telos",
@@ -113,6 +113,6 @@ export default function() {
         BUY_START_URL:
           "https://wax.alcor.exchange/swap?output=START-token.start&input=WAX-eosio.token"
       }
-    ],
+    ]
   };
 }

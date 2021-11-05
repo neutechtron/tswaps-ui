@@ -7,7 +7,7 @@
   >
     <q-card class="dialogCard">
       <div class="row justify-between items-center">
-        <q-item-label header>Select a token</q-item-label>
+        <q-item-label header class="text-h6">Select a token</q-item-label>
         <div class="q-pr-sm">
           <q-btn size="12px" flat dense round icon="clear" v-close-popup />
         </div>

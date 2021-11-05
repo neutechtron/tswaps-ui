@@ -14,8 +14,8 @@ export default function() {
     amount: 0,
     memo: "",
     fromAccount: "",
-    fromChain: "telos",
+    fromChain: {},
     toAccount: "",
-    toChain: "eos"
+    toChain: {}
   };
 }
