@@ -4,6 +4,7 @@ import { Scatter } from "ual-scatter";
 import { Wombat } from "ual-wombat";
 import { Sqrl } from "@smontero/ual-sqrl";
 import { Anchor } from "ual-anchor";
+import {Wax} from "@eosdacio/ual-wax";
 
 export default async ({ Vue, store }) => {
   if (localStorage.getItem("selectedChain") != null) {

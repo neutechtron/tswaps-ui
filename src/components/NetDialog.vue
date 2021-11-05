@@ -34,19 +34,12 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import tokenAvatar from "src/components/TokenAvatar";
+import ual from "src/boot/ual_mixin";
+
 export default {
   components: { tokenAvatar },
+  mixins: [ual],
   props: ["showNetDialog", "isFrom"],
-  methods: {
-    async updateSelectedNet(chain) {
-      if (this.isFrom) {
-        await this.$store.commit("bridge/setFromChain", chain); // TODO Switch chain
-      } else {
-        await this.$store.commit("bridge/setToChain", chain);
-      }
-      this.$emit("update:showNetDialog", false);
-    }
-  },
   computed: {
     ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"]),
     ...mapGetters("bridge", ["getFromChain", "getToChain"]),
@@ -65,9 +58,31 @@ export default {
       // }
     }
   },
+  methods: {
+    ...mapActions("account", ["login", "logout", "autoLogin"]),
+    ...mapActions("blockchains", ["updateCurrentChain"]),
+
+    async updateSelectedNet(chain) {
+      if (this.isFrom) {
+        await this.$store.commit("bridge/setFromChain", chain);
+
+        if (this.selectedChain != localStorage.getItem("selectedChain")) {
+          this.updateCurrentChain(chain.NETWORK_NAME.toUpperCase());
+          this.setUAL();
+          this.logout();
+          // TODO clear and load tokens again
+        }
+      } else {
+        await this.$store.commit("bridge/setToChain", chain);
+      }
+      this.$emit("update:showNetDialog", false);
+    }
+  },
+
   beforeMount() {
     this.$store.commit("bridge/setFromChain", this.getCurrentChain);
-  }
+  },
+  watch: {}
 };
 </script>
 

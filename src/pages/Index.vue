@@ -29,6 +29,7 @@ export default {
       showTransaction: false,
       transaction: null,
       fromNetwork: "TELOS",
+      pollTokens: null
     };
   },
   computed: {
@@ -45,20 +46,16 @@ export default {
       "getFromAccount",
       "getToAccount",
       "getAmount",
-      "getMemo",
+      "getMemo"
     ]),
     token_contract() {
       return this.getToken ? this.getToken.contract : null;
     },
     token_precision() {
-      return this.getToken
-        ? this.getToken.precision
-        : null;
+      return this.getToken ? this.getToken.precision : null;
     },
     token_symbol() {
-      return this.getToken
-        ? this.getToken.symbol
-        : null;
+      return this.getToken ? this.getToken.symbol : null;
     }
   },
   methods: {
@@ -110,13 +107,16 @@ export default {
               quantity: `${parseFloat(this.getAmount).toFixed(
                 this.token_precision
               )} ${this.token_symbol}`,
-              memo: `${this.getToAccount}@${this.getToChain.NETWORK_NAME.toLowerCase()}|${this.getMemo}`
+              memo: `${
+                this.getToAccount
+              }@${this.getToChain.NETWORK_NAME.toLowerCase()}|${this.getMemo}`
             }
           }
         ];
         transaction = await this.$store.$api.signTransaction(actions);
       } else if (
-        this.getToChain.NETWORK_NAME.toUpperCase() === this.getCurrentChain.NETWORK_NAME
+        this.getToChain.NETWORK_NAME.toUpperCase() ===
+        this.getCurrentChain.NETWORK_NAME
       ) {
         // if normal transfer to same network
         const actions = [
@@ -136,7 +136,6 @@ export default {
         transaction = await this.$store.$api.signTransaction(actions);
       } else {
         // If different EOS network, send to bridge
-        console.log(this.getAmount)
         const actions = [
           {
             account: this.token_contract,
@@ -147,7 +146,9 @@ export default {
               quantity: `${parseFloat(this.getAmount).toFixed(
                 this.token_precision
               )} ${this.token_symbol}`,
-              memo: `${this.getToAccount}@${this.getToChain.NETWORK_NAME.toLowerCase()}|${this.getMemo}`
+              memo: `${
+                this.getToAccount
+              }@${this.getToChain.NETWORK_NAME.toLowerCase()}|${this.getMemo}`
             }
           }
         ];
@@ -172,6 +173,11 @@ export default {
     // if (this.isAuthenticated) {
     //   this.updateAllTokensBalances(this.accountName);
     // }
+    this.pollTokens = setInterval(async () => {
+      await this.updateTELOSDioTokens();
+      await this.updateBridgeTokens();
+      await this.updateTokenBalances(this.accountName);
+    }, 10000);
   },
   created() {
     this.$store.commit("bridge/setFromChain", this.getAllPossibleChains[0]);
