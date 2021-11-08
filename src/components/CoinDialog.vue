@@ -14,15 +14,17 @@
       </div>
       <q-item>
         <q-input
+          v-model="search"
+          @input="filterTokens()"
           outlined
           round
-          placeholder="Search token name or symbol"
+          placeholder="Search contract name or symbol"
           class="col"
         />
       </q-item>
       <q-separator />
       <q-item
-        v-for="token in getTokens"
+        v-for="token in availableTokens"
         :key="`${token.chain}-${token.contract}-${token.symbol}`"
         clickable
         v-close-popup
@@ -49,10 +51,23 @@ import { mapGetters, mapActions } from "vuex";
 import tokenAvatar from "src/components/TokenAvatar";
 export default {
   components: { tokenAvatar },
+  data() {
+    return {
+      search: "",
+      filteredTokens: []
+    };
+  },
   props: ["showCoinDialog", "isFrom"],
   computed: {
     ...mapGetters("tokens", ["getTokens"]),
-    ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"])
+    ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"]),
+    availableTokens() {
+      if (this.filteredTokens.length > 0) {
+        return this.filteredTokens;        
+      } else {        
+        return this.getTokens
+      }
+    }
   },
   methods: {
     updateSelectedCoin(token) {
@@ -69,6 +84,21 @@ export default {
       }
 
       this.$store.commit("bridge/setToChain", defaultToChain);
+    },
+
+    filterTokens() {
+      if (this.search.length > 0) {
+        console.log("text with filter");
+        this.filterByText(this.getTokens);
+      }
+    },
+    filterByText(tokens) {
+      this.filteredTokens = tokens.filter(token => {
+        return (
+          token.symbol.toLowerCase().includes(this.search.toLowerCase()) ||
+          token.contract.toLowerCase().includes(this.search.toLowerCase())
+        );
+      });
     }
   }
 };
