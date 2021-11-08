@@ -42,20 +42,21 @@ export default {
   props: ["showNetDialog", "isFrom"],
   computed: {
     ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"]),
-    ...mapGetters("bridge", ["getFromChain", "getToChain"]),
+    ...mapGetters("bridge", ["getFromChain", "getToChain", "getToken"]),
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
     selectedChain() {
       return this.isFrom ? this.getFromChain : this.getToChain;
     },
     chainOptions() {
-      return this.getAllPossibleChains;
-      // if (this.isAuthenticated) {
-      //   return this.getAllPossibleChains.filter(
-      //     el => el.NETWORK_CHAIN_ID !== this.selectedChain.NETWORK_CHAIN_ID
-      //   );
-      // } else {
-      //   return this.getAllPossibleChains;
-      // }
+      if (this.getToken !== undefined) {
+        return this.getAllPossibleChains.filter(el =>
+          this.getToken.toChain
+            .map(c => c.toUpperCase())
+            .includes(el.NETWORK_NAME)
+        );
+      } else {
+        return this.getAllPossibleChains;
+      }
     }
   },
   methods: {
@@ -64,17 +65,18 @@ export default {
 
     async updateSelectedNet(chain) {
       if (this.isFrom) {
-
-        if (chain.NETWORK_NAME.toUpperCase() != localStorage.getItem("selectedChain")) {
+        if (
+          chain.NETWORK_NAME.toUpperCase() !=
+          localStorage.getItem("selectedChain")
+        ) {
           await this.logout();
           await this.updateCurrentChain(chain.NETWORK_NAME.toUpperCase());
           // await this.setAPI();
           // console.log(this.$store.$api)
           await this.$store.$api.setAPI(this.$store);
           await this.setUAL();
-          this.$store.commit("tokens/clearTokens")
+          this.$store.commit("tokens/clearTokens");
           this.$store.commit("bridge/setFromChain", chain);
-
         }
       } else {
         this.$store.commit("bridge/setToChain", chain);
