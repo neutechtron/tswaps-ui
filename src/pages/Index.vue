@@ -21,6 +21,7 @@ import { mapGetters, mapActions } from "vuex";
 import fromCard from "src/components/FromCard";
 import toCard from "src/components/ToCard";
 import { accountName } from "src/store/account/getters";
+import { getFromChain } from 'src/store/bridge/getters';
 
 export default {
   name: "Index",
@@ -181,16 +182,13 @@ export default {
   },
   watch: {
     async getFromChain() {
-      if (
-        this.getCurrentChain.NETWORK_NAME.toLowerCase() ===
-        this.getFromChain.NETWORK_NAME.toLowerCase()
-      ) {
-        // await this.updateTELOSDioTokens();
-        await this.updateBridgeTokens();
-      }
+      await this.updateBridgeTokens();
+      await this.updateTELOSDioTokens();
     },
     async accountName() {
       if (this.isAuthenticated) {
+        // await this.updateBridgeTokens();
+        // await this.updateTELOSDioTokens();
         await this.updateTokenBalances(this.accountName);
       }
     }

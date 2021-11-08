@@ -61,7 +61,7 @@ export default {
         await this.$store.dispatch("blockchains/updateCurrentChain", "TELOS");
       }
       let getCurrentChain = this.$store.getters["blockchains/getCurrentChain"];
-      console.log("current cahin", getCurrentChain)
+      
       const rpc = new JsonRpc(
         `${getCurrentChain.NETWORK_PROTOCOL}://${getCurrentChain.NETWORK_HOST}:${getCurrentChain.NETWORK_PORT}`
       );

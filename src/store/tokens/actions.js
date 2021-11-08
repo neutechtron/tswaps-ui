@@ -80,7 +80,6 @@ export const updateTELOSDioTokens = async function({
     const getCurrentChain = rootGetters[
       "blockchains/getCurrentChain"
     ].NETWORK_NAME.toLowerCase();
-    console.log("getCurrentChain", getCurrentChain);
     let tokens = [];
     let temp_tokens = [];
     const tableResults = await this.$api.getTableRows({

@@ -65,18 +65,15 @@ export default {
 
     async updateSelectedNet(chain) {
       if (this.isFrom) {
-        console.log(localStorage.getItem("selectedChain"))
 
         if (chain.NETWORK_NAME.toUpperCase() != localStorage.getItem("selectedChain")) {
+          await this.logout();
           await this.updateCurrentChain(chain.NETWORK_NAME.toUpperCase());
           await this.setAPI();
           await this.setUAL();
-          await this.logout();
           this.$store.commit("tokens/clearTokens")
           this.$store.commit("bridge/setFromChain", chain);
-          console.log(chain.NETWORK_NAME)
 
-          // TODO clear and load tokens again
         }
       } else {
         this.$store.commit("bridge/setToChain", chain);
