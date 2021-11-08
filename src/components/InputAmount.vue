@@ -26,7 +26,7 @@ export default {
   data() {
     return {
       showCoinDialog: false,
-      amount: 0
+      amount: ""
     };
   },
   computed: {

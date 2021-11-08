@@ -48,11 +48,11 @@ export default {
       return this.isFrom ? this.getFromChain : this.getToChain;
     },
     chainOptions() {
-      if (this.getToken.toChain !== undefined) {
+      if (this.getToken.toChain !== undefined && !this.isFrom) {
         return this.getAllPossibleChains.filter(el =>
           this.getToken.toChain
             .map(c => c.toUpperCase())
-            .includes(el.NETWORK_NAME)
+            .includes(el.NETWORK_NAME) || el.NETWORK_NAME === this.getCurrentChain.NETWORK_NAME
         );
       } else {
         return this.getAllPossibleChains;
