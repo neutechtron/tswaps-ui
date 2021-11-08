@@ -50,13 +50,26 @@ import tokenAvatar from "src/components/TokenAvatar";
 export default {
   components: { tokenAvatar },
   props: ["showCoinDialog", "isFrom"],
+  computed: {
+    ...mapGetters("tokens", ["getTokens"]),
+    ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"])
+  },
   methods: {
     updateSelectedCoin(token) {
       this.$store.commit("bridge/setToken", token);
+      let defaultToChain = {};
+      if (token.toChain !== undefined) {
+        console.log("token.toChain");
+        defaultToChain = this.getAllPossibleChains.filter(el =>
+          token.toChain.map(c => c.toUpperCase()).includes(el.NETWORK_NAME)
+        )[0];
+      } else {
+        console.log("token.toChainelse");
+        defaultToChain = this.getCurrentChain;
+      }
+
+      this.$store.commit("bridge/setToChain", defaultToChain);
     }
-  },
-  computed: {
-    ...mapGetters("tokens", ["getTokens"])
   }
 };
 </script>

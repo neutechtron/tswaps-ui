@@ -48,7 +48,7 @@ export default {
       return this.isFrom ? this.getFromChain : this.getToChain;
     },
     chainOptions() {
-      if (this.getToken !== undefined) {
+      if (this.getToken.toChain !== undefined) {
         return this.getAllPossibleChains.filter(el =>
           this.getToken.toChain
             .map(c => c.toUpperCase())
