@@ -48,7 +48,9 @@ const getAccount = async function(accountName) {
   return await rpc.get_account(accountName);
 };
 
-export default async ({ store }) => {
+const setAPI = async function(store) {
+  // TODO really slower than mixin, but so much cleaner
+  console.log("setAPI");
   if (localStorage.getItem("selectedChain") != null) {
     await store.dispatch(
       "blockchains/updateCurrentChain",
@@ -71,6 +73,11 @@ export default async ({ store }) => {
     signTransaction: signTransaction.bind(store),
     getTableRows: getTableRows.bind(store),
     getAccount: getAccount.bind(store),
-    getRpc: getRpc.bind(store)
+    getRpc: getRpc.bind(store),
+    setAPI: setAPI.bind(store)
   };
+};
+
+export default async ({ store }) => {
+  setAPI(store);
 };

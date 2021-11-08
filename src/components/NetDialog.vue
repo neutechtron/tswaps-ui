@@ -35,11 +35,10 @@
 import { mapGetters, mapActions } from "vuex";
 import tokenAvatar from "src/components/TokenAvatar";
 import ual from "src/boot/ual_mixin";
-import api from "src/boot/api_mixin"
 
 export default {
   components: { tokenAvatar },
-  mixins: [ual, api],
+  mixins: [ual],
   props: ["showNetDialog", "isFrom"],
   computed: {
     ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"]),
@@ -69,7 +68,9 @@ export default {
         if (chain.NETWORK_NAME.toUpperCase() != localStorage.getItem("selectedChain")) {
           await this.logout();
           await this.updateCurrentChain(chain.NETWORK_NAME.toUpperCase());
-          await this.setAPI();
+          // await this.setAPI();
+          // console.log(this.$store.$api)
+          await this.$store.$api.setAPI(this.$store);
           await this.setUAL();
           this.$store.commit("tokens/clearTokens")
           this.$store.commit("bridge/setFromChain", chain);

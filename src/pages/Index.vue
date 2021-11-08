@@ -167,8 +167,8 @@ export default {
     }
   },
   async mounted() {
-    // await this.updateTELOSDioTokens();
     await this.updateBridgeTokens();
+    await this.updateTELOSDioTokens();
     await this.updateTokenBalances(this.accountName);
 
     // TODO remove, not a fan of hyperion

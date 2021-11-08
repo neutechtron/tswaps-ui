@@ -14,6 +14,7 @@ export const updateBridgeTokens = async function({
     let temp_tokens = [];
     let tokens = [];
     for (let chain of otherChains) {
+      // console.log("rpc", this.$api.getRpc())
       const tableResults = await this.$api.getTableRows({
         code: process.env.BRIDGE_ADDRESS,
         scope: chain,
@@ -22,6 +23,7 @@ export const updateBridgeTokens = async function({
         reverse: false,
         show_payer: false
       });
+      // console.log("tableResults", tableResults);
       temp_tokens.push(...tableResults.rows);
     }
     console.log("bridge tokens", temp_tokens);
