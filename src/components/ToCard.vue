@@ -1,8 +1,8 @@
 <template>
   <q-card flat class="inputCard">
     <div class="row justify-between">
-      <div>To</div>
-      <div v-if="isAuthenticated">Balance: -</div>
+      <div class="text-subtitle1 text-weight-bold">TO</div>
+      <div class="text-subtitle1" v-if="isAuthenticated">Balance: -</div>
     </div>
     <div class="column ">
       <div class="row ">

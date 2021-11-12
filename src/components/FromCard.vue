@@ -1,8 +1,10 @@
 <template>
   <q-card flat class="inputCard">
     <div class="row justify-between">
-      <div>From</div>
-      <div v-if="isAuthenticated">Balance: {{ balance }}</div>
+      <div class="text-subtitle1 text-weight-bold">FROM</div>
+      <div class="text-subtitle1" v-if="isAuthenticated">
+        Balance: {{ balance }}
+      </div>
     </div>
     <div class="row flex-wrap">
       <input-amount class="col-sm-12 col-md-6 q-mt-sm" />
