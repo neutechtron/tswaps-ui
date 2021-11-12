@@ -20,13 +20,20 @@ body {
 body.body--light {
   // background: ;
   // background: $grey-0;
+  background-image: linear-gradient(
+    to right bottom,
+    $purpleGrey 10%,
+    $white 90%
+  );
   .inputCard,
   .dialogCard {
     background: $white;
     color: $dark-0;
   }
   .selectorContainer {
-    border-color: rgba($dark, 0.8);
+    // border-color: rgba($dark, 0.8);
+    border-color: transparent;
+    background: $purpleGrey;
     color: $dark-1;
     &:hover {
       background: rgba($dark, 0.2);

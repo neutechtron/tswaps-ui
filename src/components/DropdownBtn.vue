@@ -7,7 +7,7 @@
 <style lang="scss" scoped>
 body.body--light {
   .arrowButton {
-    background: rgba($white, 0.1);
+    background: rgba($white, 0.4);
   }
 }
 
