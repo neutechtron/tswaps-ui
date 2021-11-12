@@ -12,7 +12,6 @@ body {
 .dialogCard {
   .text-h6 {
     font-size: 1.2rem;
-    color: $white;
   }
 }
 
@@ -25,10 +24,16 @@ body.body--light {
     $purpleGrey 10%,
     $white 90%
   );
-  .inputCard,
-  .dialogCard {
+  .inputCard {
     background: $white;
     color: $dark-0;
+  }
+  .dialogCard {
+    background: #f5f1ff;
+    color: $dark-0;
+    .dialogHeader {
+      color: $grey;
+    }
   }
   .selectorContainer {
     // border-color: rgba($dark, 0.8);

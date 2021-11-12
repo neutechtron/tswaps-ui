@@ -13,7 +13,7 @@
             <q-btn size="12px" flat dense round icon="clear" v-close-popup />
           </div>
         </div>
-        <q-item>
+        <q-item class="q-mb-sm">
           <q-input
             v-model="search"
             @input="filterTokens()"
