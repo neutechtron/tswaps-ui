@@ -5,7 +5,9 @@
   >
     <token-avatar :token="getToken.symbol.toString()" :avatarSize="40" />
     <div class="text-h6 q-mx-sm">{{ getToken.symbol }}</div>
-    <dropdown-btn />
+    <div class="col row justify-end">
+      <dropdown-btn />
+    </div>
     <coin-dialog :showCoinDialog.sync="showCoinDialog" :isFrom="isFrom" />
   </div>
 </template>

@@ -6,11 +6,11 @@
         Balance: {{ balance }}
       </div>
     </div>
-    <div class="row flex-wrap">
-      <input-amount class="col-sm-12 col-md-6 q-mt-sm" />
-      <div class="col-sm-12 col-md-6 row justify-end q-mt-sm">
-        <coin-selector class="q-mr-sm" isFrom />
-        <net-selector isFrom />
+    <div class="row flex-wrap items-end">
+      <input-amount class="col-12 col-md-6 q-mt-sm" />
+      <div class="col-12 col-md-6 row justify-stretch q-mt-sm">
+        <coin-selector class="col q-mr-sm" isFrom />
+        <net-selector class="col q-mr-sm" isFrom />
       </div>
     </div>
   </q-card>

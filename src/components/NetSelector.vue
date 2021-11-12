@@ -7,7 +7,9 @@
       <token-avatar :token="selectedNetwork" :avatarSize="40" />
     </div>
     <div class="text-h6 q-mx-xs">{{ selectedNetwork }}</div>
-    <dropdown-btn />
+    <div class="col row justify-end">
+      <dropdown-btn />
+    </div>
     <net-dialog :showNetDialog.sync="showNetDialog" :isFrom="isFrom" />
   </div>
 </template>

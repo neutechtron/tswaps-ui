@@ -113,5 +113,6 @@ export default {
 <style lang="scss" scoped>
 .dialogCard {
   flex: 0 1 350px;
+  height: 80vh;
 }
 </style>

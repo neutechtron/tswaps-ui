@@ -5,16 +5,16 @@
       <div class="text-subtitle1" v-if="isAuthenticated">Balance: -</div>
     </div>
     <div class="column ">
-      <div class="row ">
+      <div class="row items-end">
         <q-input
           v-model="toAccount"
           placeholder="Account"
           debounce="500"
-          class="col-xs-12 col-sm-9"
+          class="col-12 col-md-9"
         />
 
-        <div class="col-xs-12 col-sm-3 row justify-end q-mt-sm">
-          <net-selector />
+        <div class="col-12 col-md-3 row justify-stretch q-mt-sm">
+          <net-selector class="col" />
         </div>
       </div>
       <q-input v-model="memo" placeholder="Memo" debounce="500" />
