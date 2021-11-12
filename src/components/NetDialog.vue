@@ -6,27 +6,31 @@
     class="dialogContainer"
   >
     <q-card class="dialogCard">
-      <div class="row justify-between items-center">
-        <q-item-label header class="text-h6">Select a network</q-item-label>
-        <div class="q-pr-sm">
-          <q-btn size="12px" flat dense round icon="clear" v-close-popup />
+      <div class="dialogHeader ">
+        <div class="row justify-between items-center">
+          <q-item-label header class="text-h6">Select a network</q-item-label>
+          <div class="q-pr-sm">
+            <q-btn size="12px" flat dense round icon="clear" v-close-popup />
+          </div>
         </div>
+        <q-separator />
       </div>
-      <q-separator />
-      <q-item
-        v-for="net in chainOptions"
-        :key="net.NETWORK_CHAIN_ID"
-        clickable
-        v-close-popup
-        @click="updateSelectedNet(net)"
-      >
-        <q-item-section avatar>
-          <token-avatar :token="net.NETWORK_NAME" :avatarSize="30" />
-        </q-item-section>
-        <q-item-section>
-          {{ net.NETWORK_DISPLAY_NAME }}
-        </q-item-section>
-      </q-item>
+      <q-list class="dialogList">
+        <q-item
+          v-for="net in chainOptions"
+          :key="net.NETWORK_CHAIN_ID"
+          clickable
+          v-close-popup
+          @click="updateSelectedNet(net)"
+        >
+          <q-item-section avatar>
+            <token-avatar :token="net.NETWORK_NAME" :avatarSize="30" />
+          </q-item-section>
+          <q-item-section>
+            {{ net.NETWORK_DISPLAY_NAME }}
+          </q-item-section>
+        </q-item>
+      </q-list>
     </q-card>
   </q-dialog>
 </template>
@@ -49,10 +53,12 @@ export default {
     },
     chainOptions() {
       if (this.getToken.toChain !== undefined && !this.isFrom) {
-        return this.getAllPossibleChains.filter(el =>
-          this.getToken.toChain
-            .map(c => c.toUpperCase())
-            .includes(el.NETWORK_NAME) || el.NETWORK_NAME === this.getCurrentChain.NETWORK_NAME
+        return this.getAllPossibleChains.filter(
+          el =>
+            this.getToken.toChain
+              .map(c => c.toUpperCase())
+              .includes(el.NETWORK_NAME) ||
+            el.NETWORK_NAME === this.getCurrentChain.NETWORK_NAME
         );
       } else {
         return this.getAllPossibleChains;

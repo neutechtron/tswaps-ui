@@ -6,42 +6,46 @@
     class="dialogContainer"
   >
     <q-card class="dialogCard">
-      <div class="row justify-between items-center">
-        <q-item-label header class="text-h6">Select a token</q-item-label>
-        <div class="q-pr-sm">
-          <q-btn size="12px" flat dense round icon="clear" v-close-popup />
+      <div class="dialogHeader ">
+        <div class="row justify-between items-center q-pt-sm">
+          <div class="text-h6 q-pl-md">Select a token</div>
+          <div class="q-pr-sm">
+            <q-btn size="12px" flat dense round icon="clear" v-close-popup />
+          </div>
         </div>
+        <q-item>
+          <q-input
+            v-model="search"
+            @input="filterTokens()"
+            outlined
+            round
+            placeholder="Search contract name or symbol"
+            class="col"
+          />
+        </q-item>
+        <q-separator />
       </div>
-      <q-item>
-        <q-input
-          v-model="search"
-          @input="filterTokens()"
-          outlined
-          round
-          placeholder="Search contract name or symbol"
-          class="col"
-        />
-      </q-item>
-      <q-separator />
-      <q-item
-        v-for="token in availableTokens"
-        :key="`${token.chain}-${token.contract}-${token.symbol}`"
-        clickable
-        v-close-popup
-        @click="updateSelectedCoin(token)"
-      >
-        <q-item-section avatar>
-          <token-avatar :token="token.symbol" :avatarSize="30" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label> {{ token.symbol }}</q-item-label>
-          <q-item-label caption>{{ token.contract }}</q-item-label>
-        </q-item-section>
-        <q-item-section>
-          <q-item-label caption>{{ token.amount }}</q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item v-if="getTokens.length == 0">No tokens found</q-item>
+      <q-list class="dialogList">
+        <q-item
+          v-for="token in availableTokens"
+          :key="`${token.chain}-${token.contract}-${token.symbol}`"
+          clickable
+          v-close-popup
+          @click="updateSelectedCoin(token)"
+        >
+          <q-item-section avatar>
+            <token-avatar :token="token.symbol" :avatarSize="30" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label> {{ token.symbol }}</q-item-label>
+            <q-item-label caption>{{ token.contract }}</q-item-label>
+          </q-item-section>
+          <q-item-section>
+            <q-item-label caption>{{ token.amount }}</q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item v-if="getTokens.length == 0">No tokens found</q-item>
+      </q-list>
     </q-card>
   </q-dialog>
 </template>
@@ -63,9 +67,9 @@ export default {
     ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"]),
     availableTokens() {
       if (this.filteredTokens.length > 0) {
-        return this.filteredTokens;        
-      } else {        
-        return this.getTokens
+        return this.filteredTokens;
+      } else {
+        return this.getTokens;
       }
     }
   },
@@ -87,10 +91,12 @@ export default {
     },
 
     filterTokens() {
+      // TODO Show all when no input
+      console.log("Len: ", this.search.length);
       if (this.search.length > 0) {
         console.log("text with filter");
         this.filterByText(this.getTokens);
-      }
+      } else this.filteredTokens = this.getTokens;
     },
     filterByText(tokens) {
       this.filteredTokens = tokens.filter(token => {
