@@ -21,7 +21,7 @@ import { mapGetters, mapActions } from "vuex";
 import fromCard from "src/components/FromCard";
 import toCard from "src/components/ToCard";
 import { accountName } from "src/store/account/getters";
-import { getFromChain } from 'src/store/bridge/getters';
+import { getFromChain } from "src/store/bridge/getters";
 
 export default {
   name: "Index",
@@ -207,13 +207,26 @@ body.body--dark {
   .swapArrow {
     color: $cyan;
   }
-  .sendBtn {
-    background: $cyan;
-  }
+  // .sendBtn {
+  //   background: $cyan;
+  // }
 }
 
 .sendBtn {
-  color: $dark-0;
+  background-image: linear-gradient(
+    to right,
+    $purpleBright 20%,
+    $blueLight 80%
+  );
+  &:hover {
+    background-image: linear-gradient(
+      to left,
+      $purpleBright 20%,
+      $blueLight 80%
+    );
+  }
+  color: #ffffff;
+  font-size: 1.2rem;
   flex-basis: 400px;
   height: 3rem;
 }

@@ -1,8 +1,8 @@
 <template>
-  <q-card class="inputCard">
+  <q-card flat class="inputCard">
     <div class="row justify-between">
       <div>From</div>
-      <div v-if="isAuthenticated">Balance: {{balance}}</div>
+      <div v-if="isAuthenticated">Balance: {{ balance }}</div>
     </div>
     <div class="row flex-wrap">
       <input-amount class="col-sm-12 col-md-6 q-mt-sm" />
@@ -21,8 +21,7 @@ import netSelector from "src/components/NetSelector";
 export default {
   components: { inputAmount, coinSelector, netSelector },
   data() {
-    return {
-    };
+    return {};
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
@@ -31,12 +30,11 @@ export default {
 
     balance() {
       if (this.getTokens.find(token => token.id === this.getToken.id)) {
-        return this.getToken.amount
+        return this.getToken.amount;
       } else {
         return 0;
       }
     }
-  
   }
 };
 </script>

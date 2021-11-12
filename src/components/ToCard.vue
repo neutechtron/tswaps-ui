@@ -1,5 +1,5 @@
 <template>
-  <q-card class="inputCard">
+  <q-card flat class="inputCard">
     <div class="row justify-between">
       <div>To</div>
       <div v-if="isAuthenticated">Balance: -</div>

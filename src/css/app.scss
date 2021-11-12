@@ -3,9 +3,14 @@ body {
   font-family: "silkaregular";
 }
 
+.text-h6 {
+  font-weight: 600;
+}
+
 // Light/Dark Theme
 body.body--light {
-  background: $grey-0;
+  // background: ;
+  // background: $grey-0;
   .inputCard,
   .dialogCard {
     background: $white;
@@ -24,10 +29,14 @@ body.body--light {
 }
 
 body.body--dark {
-  background: $dark-1;
+  background-image: linear-gradient(
+    to right bottom,
+    $blueDark 20%,
+    $purpleBright 80%
+  );
   color: $white;
   .inputCard {
-    background: $purpleSoft;
+    background: rgba($purpleDark, 0.5);
     color: $white;
   }
   .dialogCard {
@@ -35,15 +44,17 @@ body.body--dark {
     color: $white;
   }
   .selectorContainer {
-    border-color: rgba($white, 0.2);
-    background: $dark;
-    color: $white;
+    // border-color: rgba($blueDark, 0.5);
+    background: $grey-0;
+    color: $dark;
     &:hover {
-      background: rgba($dark, 0.5);
+      background: rgba($grey-0, 0.85);
+      border-color: $white;
     }
   }
   .text-h6 {
-    color: $white;
+    color: $dark;
+    // font-family: "silkamedium";
   }
 }
 
