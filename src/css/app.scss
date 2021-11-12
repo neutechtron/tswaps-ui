@@ -1,4 +1,9 @@
-// Theme
+// Fonts
+body {
+  font-family: "silkaregular";
+}
+
+// Light/Dark Theme
 body.body--light {
   background: $grey-0;
   .inputCard,
