@@ -16,8 +16,7 @@ body {
 
 // Light/Dark Theme
 body.body--light {
-  // background: ;
-  // background: $grey-0;
+  background: $purpleGrey;
   background-image: linear-gradient(
     to right bottom,
     $purpleGrey 10%,
@@ -52,6 +51,7 @@ body.body--light {
 }
 
 body.body--dark {
+  background: $blueDark;
   background-image: linear-gradient(
     to right bottom,
     $blueDark 20%,
@@ -113,9 +113,12 @@ body.body--dark {
   }
 
   .q-input {
-    width: 100%;
     font-size: 1.8rem;
   }
+}
+
+.q-input {
+  width: 100%;
 }
 
 .q-dialog__inner > div {
