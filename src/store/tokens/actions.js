@@ -16,7 +16,7 @@ export const updateBridgeTokens = async function({
     for (let chain of otherChains) {
       // console.log("rpc", this.$api.getRpc())
       const tableResults = await this.$api.getTableRows({
-        code: process.env.BRIDGE_ADDRESS,
+        code: "bridge.start",
         scope: chain,
         table: "tokens",
         limit: 10000,
