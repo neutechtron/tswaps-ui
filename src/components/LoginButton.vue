@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="!isAuthenticated" class="q-px-md">
+    <div v-if="!isAuthenticated" class="q-px-sm">
       <q-btn
         @click="showLogin = true"
         color="secondary"
@@ -8,8 +8,8 @@
         label="Login"
       />
     </div>
-    <div v-if="isAuthenticated" class="q-px-md row">
-      <div class="account-name q-px-md">
+    <div v-if="isAuthenticated" class="q-px-sm row items-center">
+      <div class="account-name q-px-sm">
         {{ accountName }}
       </div>
       <q-btn
@@ -108,8 +108,14 @@ export default {
 };
 </script>
 
-<style lang="sass" scoped>
-.account-name
-    color: white
-    font-size: 20px
+<style lang="scss" scoped>
+.account-name {
+  color: white;
+  font-size: 1.2rem;
+}
+@media only screen and (max-width: 350px) {
+  .account-name {
+    font-size: 1rem;
+  }
+}
 </style>

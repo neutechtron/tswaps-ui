@@ -1,10 +1,12 @@
 <template>
-  <q-layout view="LHh Lpr lFf">
+  <q-layout view="Lhh Lpr lFf">
     <q-header class="transparent">
       <q-toolbar class="toolbar">
-        <q-toolbar-title>
-          T-Swaps Bridge
-        </q-toolbar-title>
+        <div class="col">
+          <q-toolbar-title class="gt-xs">
+            T-Swaps Bridge
+          </q-toolbar-title>
+        </div>
 
         <login-button />
         <q-btn

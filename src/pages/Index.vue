@@ -1,5 +1,8 @@
 <template>
-  <q-page class="column justify-center q-gutter-y-md">
+  <q-page class="column justify-center q-gutter-y-md ">
+    <div class="lt-sm text-center text-h4 q-py-sm">
+      T-Swaps Bridge
+    </div>
     <from-card />
     <div class="text-center">
       <q-icon class="swapArrow" name="fas fa-arrow-down" size="1.5rem" />
