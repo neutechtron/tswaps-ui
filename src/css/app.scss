@@ -46,6 +46,9 @@ body.body--light {
       color: $dark-0;
     }
   }
+  .account-name {
+    color: $dark-0;
+  }
 }
 
 body.body--dark {
@@ -74,6 +77,9 @@ body.body--dark {
     .text-h6 {
       color: $dark;
     }
+  }
+  .account-name {
+    color: $white;
   }
 }
 

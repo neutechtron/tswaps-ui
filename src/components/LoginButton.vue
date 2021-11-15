@@ -110,7 +110,6 @@ export default {
 
 <style lang="scss" scoped>
 .account-name {
-  color: white;
   font-size: 1.2rem;
 }
 @media only screen and (max-width: 350px) {
