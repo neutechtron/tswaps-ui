@@ -6,11 +6,11 @@
           T-Swaps Bridge
         </q-toolbar-title>
 
-        <login-button></login-button>
+        <login-button />
         <q-btn
           @click="toggleDarkMode()"
           :icon="$q.dark.isActive ? 'fas fa-sun' : 'fas fa-moon'"
-        ></q-btn>
+        />
       </q-toolbar>
     </q-header>
 
@@ -58,5 +58,9 @@ body.body--dark {
   .toolbar {
     color: $white;
   }
+}
+.q-btn {
+  background: $white;
+  color: $dark-0;
 }
 </style>
