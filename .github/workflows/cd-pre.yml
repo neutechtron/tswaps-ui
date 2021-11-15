@@ -1,0 +1,47 @@
+name: Deploy Stage
+
+on:
+  push:
+    branches: [stage]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: "14"
+
+      - name: Setup Yarn
+        run: |
+          npm install --global yarn
+          echo "$(yarn global bin)" >> $GITHUB_PATH
+      - name: Setup Quasar
+        run: yarn global add @quasar/cli
+
+      - name: Setup Environment
+        run: cp .env.prod .env
+
+      - name: Install Node Modules
+        run: yarn
+
+      - name: Build
+        run: quasar build
+
+      - name: Deploy
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: tswaps.com
+          username: dev@tswaps.com
+          password: ${{ secrets.TSWAPS_BRIDGE_FTP_PASS }}
+          port: 21
+          protocol: ftp
+          local-dir: ./dist/spa/
+          server-dir: /beta-bridge.tswaps.com/
