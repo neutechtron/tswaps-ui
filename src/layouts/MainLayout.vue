@@ -40,7 +40,7 @@ export default {
     }
   },
   created() {
-    this.$q.dark.set(localStorage.getItem("darkModeEnabled") === "true");
+    this.$q.dark.set(localStorage.getItem("darkModeEnabled") !== "false");
   }
 };
 </script>
