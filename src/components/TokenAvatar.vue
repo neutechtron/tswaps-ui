@@ -66,7 +66,12 @@ export default {
             case "PBTC"  : return "/tokens/pbtc.png";
             case "PUSDT" : return "https://raw.githubusercontent.com/T-Starter/T-Starter-images/master/icons/pUSDT.png";
             case "PUSDC" : return "https://raw.githubusercontent.com/T-Starter/T-Starter-images/master/icons/pUSDC.png";
+            case "USDT"  : return "/tokens/usdt.png";
             case "START" : return "/tokens/start.png";
+            case "ZPTC" : return "/tokens/zptc.png";
+            case "SWAP" : return "/tokens/swap.png";
+            case "EOSDT"  : return "/tokens/eosdt.png";
+            case "VIGOR"  : return "/tokens/vigor.png";
             case "TLOS"  : return "/tokens/tlos.png";
             case "TELOS" : return "/tokens/tlos.png";
             case "EOS"   : return "/tokens/eos.png";
