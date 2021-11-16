@@ -10,7 +10,7 @@
       <input-amount class="col-12 col-md-6 q-mt-sm" />
       <div class="col-12 col-md-6 row justify-stretch q-mt-sm">
         <coin-selector class="col q-mr-sm" isFrom />
-        <net-selector class="col q-mr-sm" isFrom />
+        <net-selector class="col" isFrom />
       </div>
     </div>
   </q-card>
