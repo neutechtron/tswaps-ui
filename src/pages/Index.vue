@@ -15,6 +15,7 @@
     <to-card />
     <div class="flex justify-center">
       <q-btn
+        :disable="!isAuthenticated"
         no-caps
         class="sendBtn self-center"
         label="Send"
