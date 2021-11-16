@@ -171,6 +171,7 @@ export default {
         this.$store.commit("bridge/setToAccount", "");
         this.$store.commit("bridge/setMemo", "");
       }
+      await this.updateTokenBalances(this.accountName);
     }
   },
   async mounted() {
