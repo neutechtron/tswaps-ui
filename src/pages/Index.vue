@@ -179,6 +179,14 @@ export default {
 
     async switchChains() {
       if (this.getToChain.NETWORK_NAME !== this.getFromChain.NETWORK_NAME) {
+        if (this.isAuthenticated) {
+          this.$q.notify({
+            color: "info",
+            textColor: "dark",
+            icon: "info",
+            message: "Log in to send"
+          });
+        }
         const toChain = this.getToChain;
         await this.logout();
         await this.updateCurrentChain(toChain.NETWORK_NAME.toUpperCase());

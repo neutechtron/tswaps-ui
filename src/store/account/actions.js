@@ -107,22 +107,22 @@ export const getAccountProfile = async function({ commit, dispatch }) {
     return;
   }
 
-  dispatch(
-    "getUserProfile",
-    this.state.account.accountName
-  );
+  dispatch("getUserProfile", this.state.account.accountName);
 };
 
-export const accountExists = async function ({ commit, dispatch }, accountName) {
+export const accountExists = async function({ commit, dispatch }, accountName) {
   try {
     const account = await this.$api.getAccount(accountName);
     return !!account;
   } catch (e) {
     return false;
   }
-}
+};
 
-export const accountExistsOnChain = async function ({commit, dispatch, rootGetters}, payload) {
+export const accountExistsOnChain = async function(
+  { commit, dispatch, rootGetters },
+  payload
+) {
   // get current selected chain
   let blockchains = rootGetters["blockchains/getNetworkByName"](
     payload.network.toUpperCase()
@@ -144,4 +144,4 @@ export const accountExistsOnChain = async function ({commit, dispatch, rootGette
   //check if account exists on chain
   let exists = await rpc.get_account(payload.account);
   return exists;
-}
+};

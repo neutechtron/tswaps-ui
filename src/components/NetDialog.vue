@@ -75,6 +75,14 @@ export default {
           chain.NETWORK_NAME.toUpperCase() !=
           localStorage.getItem("selectedChain")
         ) {
+          if (this.isAuthenticated) {
+            this.$q.notify({
+              color: "info",
+              textColor: "dark",
+              icon: "info",
+              message: "Log in to send"
+            });
+          }
           await this.logout();
           await this.updateCurrentChain(chain.NETWORK_NAME.toUpperCase());
           // await this.setAPI();
