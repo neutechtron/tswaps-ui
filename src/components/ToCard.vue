@@ -2,7 +2,9 @@
   <q-card flat class="inputCard">
     <div class="row justify-between">
       <div class="text-subtitle1 text-weight-bold">TO</div>
-      <div class="text-subtitle1" v-if="isAuthenticated">Balance: {{toBalance !== undefined ? toBalance : "-"}}</div>
+      <div class="text-subtitle1" v-if="isAuthenticated">
+        Balance: {{ toBalance !== undefined ? toBalance : "-" }}
+      </div>
     </div>
     <div class="column ">
       <div class="row items-end">
@@ -42,7 +44,7 @@ export default {
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
-    ...mapGetters("bridge", ["getToChain", "getToken", "getToChain"])
+    ...mapGetters("bridge", ["getToChain", "getToken", "getToChain", "getFromChain"])
   },
   watch: {
     async toAccount() {
@@ -51,6 +53,10 @@ export default {
     },
     memo() {
       this.$store.commit("bridge/setMemo", this.memo);
+    },
+    async getToChain() {
+      await this.accountExistsOnChain(this.toAccount);
+      await this.toCurrencyBalance();
     }
   },
   methods: {
@@ -63,22 +69,34 @@ export default {
       let exists = await rpc.get_account(account);
       return exists;
     },
-    
+
     async toCurrencyBalance() {
       //set rpc
       const rpc = new JsonRpc(
         `${this.getToChain.NETWORK_PROTOCOL}://${this.getToChain.NETWORK_HOST}:${this.getToChain.NETWORK_PORT}`
       );
       //get balance
-      let toToken = this.getToken.toTokens.find(c => c.chain === this.getToChain.NETWORK_NAME.toLowerCase())
-      let balance = (
-        await rpc.get_currency_balance(
-          toToken.contract,
-          this.toAccount,
-          toToken.symbol
-        )
-      )[0];
-      console.log(balance);
+      let balance = 0;
+      // if not the same chain, get balance from other chain
+      if (
+        this.getFromChain.NETWORK_NAME.toLowerCase() ===
+        this.getToChain.NETWORK_NAME.toLowerCase()
+      ) {
+        balance = this.getToken.amount
+      } else {
+        let toToken = this.getToken.toTokens.find(
+          c => c.chain === this.getToChain.NETWORK_NAME.toLowerCase()
+        );
+        balance = (
+          await rpc.get_currency_balance(
+            toToken.contract,
+            this.toAccount,
+            toToken.symbol
+          )
+        )[0];
+      }
+
+      // console.log(balance);
       //return balance
       this.toBalance = this.$assetToAmount(balance);
     }
