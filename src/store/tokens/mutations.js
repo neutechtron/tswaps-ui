@@ -21,6 +21,7 @@ export const setTokenAmount = (state, { token, amount }) => {
   if (new_token !== undefined) {
     new_token.amount = amount;
   } 
+  state.tokens = state.tokens.sort((a, b) => (b.amount - a.amount))
 };
 
 export const clearTokens = (state) => {
