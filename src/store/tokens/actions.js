@@ -41,6 +41,14 @@ export const updateBridgeTokens = async function({
       new_token.telosdio = false;
       new_token.amount = 0;
       new_token.toChain = [token.channel];
+      new_token.toTokens = [
+        {
+          chain: token.channel,
+          contract: this.$exSymToContract(token.remote_token),
+          symbol: this.$exSymToSymbol(token.remote_token),
+          precision: this.$exSymToPrecision(token.remote_token)
+        }
+      ];
       new_token.id = `${new_token.contract}-${new_token.symbol}-${new_token.chain}`;
 
       // Check duplicates
@@ -61,6 +69,12 @@ export const updateBridgeTokens = async function({
             t.contract === new_token.contract
         );
         tokens[index].toChain.push(token.channel);
+        tokens[index].toTokens.push({
+          chain: token.channel,
+          contract: this.$exSymToContract(token.remote_token),
+          symbol: this.$exSymToSymbol(token.remote_token),
+          precision: this.$exSymToPrecision(token.remote_token)
+        });
       } else {
         tokens.push(new_token);
       }
