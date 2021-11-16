@@ -182,6 +182,11 @@ export default {
     // Set default tokens
     this.$store.commit("bridge/setToken", this.getTokens[0]);
 
+    // Poll for token balances
+    this.pollTokens = setInterval(async () => {
+      await this.updateTokenBalances(this.accountName);
+    }, 20000);
+
     // TODO remove, not a fan of hyperion
     // if (this.isAuthenticated) {
     //   this.updateAllTokensBalances(this.accountName);
@@ -201,6 +206,7 @@ export default {
         // await this.updateBridgeTokens();
         // await this.updateTELOSDioTokens();
         await this.updateTokenBalances(this.accountName);
+        this.$store.commit("bridge/setToken", this.getTokens[0]);
       }
     }
   }
