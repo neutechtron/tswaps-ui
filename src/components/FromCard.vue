@@ -3,7 +3,10 @@
     <div class="row justify-between">
       <div class="text-subtitle1 text-weight-bold">FROM</div>
       <div class="text-subtitle1" v-if="isAuthenticated">
-        Balance: {{ balance }}
+        Balance:
+        <span class="balanceAmount" @click="setToMaxAmount()">
+          {{ balance }}
+        </span>
       </div>
     </div>
     <div class="row flex-wrap items-end">
@@ -37,8 +40,20 @@ export default {
         return 0;
       }
     }
+  },
+  methods: {
+    setToMaxAmount() {
+      this.$store.commit("bridge/setAmount", this.balance);
+    }
   }
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.balanceAmount {
+  cursor: pointer;
+  &:hover {
+    color: $accent;
+  }
+}
+</style>

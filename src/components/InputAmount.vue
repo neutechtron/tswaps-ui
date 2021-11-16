@@ -1,7 +1,8 @@
 <template>
   <div>
     <q-input
-      v-model="amount"
+      :value="getAmount"
+      @input="updateAmount($event)"
       debounce="500"
       placeholder="0.0"
       pattern="^[0-9]*[.,]?[0-9]*$"
@@ -31,11 +32,11 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("bridge", ["getToken"])
+    ...mapGetters("bridge", ["getToken", "getAmount"])
   },
-  watch: {
-    amount() {
-      this.$store.commit("bridge/setAmount", this.amount);
+  methods: {
+    updateAmount(amount) {
+      this.$store.commit("bridge/setAmount", amount);
     }
   }
 };
