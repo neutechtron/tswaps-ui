@@ -5,7 +5,12 @@
     </div>
     <from-card />
     <div class="text-center">
-      <q-icon class="swapArrow" name="fas fa-arrow-down" size="1.5rem" />
+      <q-icon
+        class="swapArrow"
+        name="fas fa-arrow-down"
+        size="1.5rem"
+        @click="switchChains()"
+      />
     </div>
     <to-card />
     <div class="flex justify-center">
@@ -25,10 +30,12 @@ import fromCard from "src/components/FromCard";
 import toCard from "src/components/ToCard";
 import { accountName } from "src/store/account/getters";
 import { getFromChain } from "src/store/bridge/getters";
+import ual from "src/boot/ual_mixin";
 
 export default {
   name: "Index",
   components: { fromCard, toCard },
+  mixins: [ual],
   data() {
     return {
       showTransaction: false,
@@ -64,12 +71,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions("account", ["accountExistsOnChain"]),
+    ...mapActions("account", ["accountExistsOnChain", "logout"]),
     ...mapActions("tokens", [
       "updateTELOSDioTokens",
       "updateBridgeTokens",
       "updateTokenBalances"
     ]),
+    ...mapActions("blockchains", ["updateCurrentChain"]),
 
     async trySend() {
       try {
@@ -167,6 +175,19 @@ export default {
         this.$store.commit("bridge/setToAccount", "");
         this.$store.commit("bridge/setMemo", "");
       }
+    },
+
+    async switchChains() {
+      if (this.getToChain.NETWORK_NAME !== this.getFromChain.NETWORK_NAME) {
+        const toChain = this.getToChain;
+        await this.logout();
+        await this.updateCurrentChain(toChain.NETWORK_NAME.toUpperCase());
+        await this.$store.$api.setAPI(this.$store);
+        await this.setUAL();
+        this.$store.commit("tokens/clearTokens");
+        this.$store.commit("bridge/setToChain", this.getFromChain);
+        this.$store.commit("bridge/setFromChain", toChain);
+      }
     }
   },
   async mounted() {
@@ -203,12 +224,18 @@ export default {
 body.body--light {
   .swapArrow {
     color: $dark-0;
+    &:hover {
+      color: rgba($dark-0, 0.5);
+    }
   }
 }
 
 body.body--dark {
   .swapArrow {
     color: $cyan;
+    &:hover {
+      color: rgba($cyan, 0.7);
+    }
   }
   // .sendBtn {
   //   background: $cyan;
