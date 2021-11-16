@@ -9,8 +9,13 @@
         <q-input
           v-model="toAccount"
           placeholder="Account"
-          debounce="500"
           class="col-12 col-md-9"
+          counter
+          maxlength="12"
+          :rules="[accountExistsOnChain]"
+          error-message="Account does not exist"
+          lazy-rules
+          debounce="1000"
         />
 
         <div class="col-12 col-md-3 row justify-stretch q-mt-sm">
@@ -24,6 +29,8 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import netSelector from "src/components/NetSelector";
+import { Api, JsonRpc, Serialize } from "eosjs";
+
 export default {
   components: { netSelector },
   data() {
@@ -33,7 +40,8 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("account", ["isAuthenticated", "accountName"])
+    ...mapGetters("account", ["isAuthenticated", "accountName"]),
+    ...mapGetters("bridge", ["getToChain"])
   },
   watch: {
     toAccount() {
@@ -41,6 +49,35 @@ export default {
     },
     memo() {
       this.$store.commit("bridge/setMemo", this.memo);
+    }
+  },
+  methods: {
+    async accountExistsOnChain(account) {
+      //set rpc
+      const rpc = new JsonRpc(
+        `${this.getToChain.NETWORK_PROTOCOL}://${this.getToChain.NETWORK_HOST}:${this.getToChain.NETWORK_PORT}`
+      );
+      //check if account exists on chain
+      let exists = await rpc.get_account(account);
+      return exists;
+    },
+    
+    async toCurrencyBalance() {
+      //set rpc
+      const rpc = new JsonRpc(
+        `${this.getToChain.NETWORK_PROTOCOL}://${this.getToChain.NETWORK_HOST}:${this.getToChain.NETWORK_PORT}`
+      );
+      //get balance
+      let balance = (
+        await rpc.get_currency_balance(
+          token.contract,
+          accountName,
+          token.symbol
+        )
+      )[0];
+      console.log(balance);
+      //return balance
+      return balance;
     }
   }
 };
