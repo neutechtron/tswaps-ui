@@ -53,6 +53,7 @@ export default {
       "getAmount",
       "getMemo"
     ]),
+    ...mapGetters("tokens", ["getTokens"]),
     token_contract() {
       return this.getToken ? this.getToken.contract : null;
     },
@@ -176,6 +177,9 @@ export default {
     await this.updateBridgeTokens();
     await this.updateTELOSDioTokens();
     await this.updateTokenBalances(this.accountName);
+
+    // Set default tokens
+    this.$store.commit("bridge/setToken", this.getTokens[0]);
 
     // TODO remove, not a fan of hyperion
     // if (this.isAuthenticated) {
