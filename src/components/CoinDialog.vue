@@ -78,12 +78,10 @@ export default {
       this.$store.commit("bridge/setToken", token);
       let defaultToChain = {};
       if (token.toChain !== undefined) {
-        console.log("token.toChain");
         defaultToChain = this.getAllPossibleChains.filter(el =>
           token.toChain.map(c => c.toUpperCase()).includes(el.NETWORK_NAME)
         )[0];
       } else {
-        console.log("token.toChainelse");
         defaultToChain = this.getCurrentChain;
       }
 

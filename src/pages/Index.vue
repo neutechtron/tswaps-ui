@@ -60,6 +60,7 @@ export default {
       "getAmount",
       "getMemo"
     ]),
+    ...mapGetters("tokens", ["getTokens"]),
     token_contract() {
       return this.getToken ? this.getToken.contract : null;
     },
@@ -108,7 +109,11 @@ export default {
       }
 
       let transaction;
-      if (this.getToken.telosdio === true) {
+      if (
+        this.getToken.telosdio === true &&
+        this.getToChain.NETWORK_NAME.toUpperCase() !==
+          this.getCurrentChain.NETWORK_NAME
+      ) {
         console.log("Sending across TELOSD bridge");
         const actions = [
           {
@@ -128,26 +133,10 @@ export default {
         ];
         transaction = await this.$store.$api.signTransaction(actions);
       } else if (
-        this.getToChain.NETWORK_NAME.toUpperCase() ===
-        this.getCurrentChain.NETWORK_NAME
+        this.getToken.bridgestart === true &&
+        this.getToChain.NETWORK_NAME.toUpperCase() !==
+          this.getCurrentChain.NETWORK_NAME
       ) {
-        // if normal transfer to same network
-        const actions = [
-          {
-            account: this.token_contract,
-            name: "transfer",
-            data: {
-              from: this.accountName.toLowerCase(),
-              to: this.getToAccount,
-              quantity: `${parseFloat(this.getAmount).toFixed(
-                this.token_precision
-              )} ${this.token_symbol}`,
-              memo: this.getMemo
-            }
-          }
-        ];
-        transaction = await this.$store.$api.signTransaction(actions);
-      } else {
         // If different EOS network, send to bridge
         const actions = [
           {
@@ -166,6 +155,23 @@ export default {
           }
         ];
         transaction = await this.$store.$api.signTransaction(actions);
+      } else {
+        // if normal transfer to same network
+        const actions = [
+          {
+            account: this.token_contract,
+            name: "transfer",
+            data: {
+              from: this.accountName.toLowerCase(),
+              to: this.getToAccount,
+              quantity: `${parseFloat(this.getAmount).toFixed(
+                this.token_precision
+              )} ${this.token_symbol}`,
+              memo: this.getMemo
+            }
+          }
+        ];
+        transaction = await this.$store.$api.signTransaction(actions);
       }
       if (transaction) {
         this.showTransaction = true;
@@ -175,6 +181,7 @@ export default {
         this.$store.commit("bridge/setToAccount", "");
         this.$store.commit("bridge/setMemo", "");
       }
+      await this.updateTokenBalances(this.accountName);
     },
 
     async switchChains() {
@@ -203,6 +210,14 @@ export default {
     await this.updateTELOSDioTokens();
     await this.updateTokenBalances(this.accountName);
 
+    // Set default tokens
+    this.$store.commit("bridge/setToken", this.getTokens[0]);
+
+    // Poll for token balances
+    this.pollTokens = setInterval(async () => {
+      await this.updateTokenBalances(this.accountName);
+    }, 20000);
+
     // TODO remove, not a fan of hyperion
     // if (this.isAuthenticated) {
     //   this.updateAllTokensBalances(this.accountName);
@@ -222,6 +237,7 @@ export default {
         // await this.updateBridgeTokens();
         // await this.updateTELOSDioTokens();
         await this.updateTokenBalances(this.accountName);
+        this.$store.commit("bridge/setToken", this.getTokens[0]);
       }
     }
   }

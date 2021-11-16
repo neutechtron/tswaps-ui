@@ -123,6 +123,14 @@ export const updateTELOSDioTokens = async function({
       new_token.amount = 0;
       new_token.toChain = [token.remote_chain];
       new_token.id = `${new_token.contract}-${new_token.symbol}-${new_token.chain}`;
+      new_token.toTokens = [
+        {
+          chain: token.remote_chain,
+          contract: this.$exSymToContract(token.remote_token),
+          symbol: this.$exSymToSymbol(token.remote_token),
+          precision: this.$exSymToPrecision(token.remote_token)
+        }
+      ];
 
       tokens.push(new_token);
     }
