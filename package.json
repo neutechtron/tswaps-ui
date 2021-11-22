@@ -1,6 +1,6 @@
 {
   "name": "tswaps-bridge",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "T-Swaps Bridge Interface",
   "productName": "T-Swaps Bridge",
   "author": "Jacques Beukes <jacques@y-knot.io>, Dewald Krynauw <dewald@y-knot.io>",
