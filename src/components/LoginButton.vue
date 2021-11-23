@@ -1,10 +1,8 @@
 <template>
   <div>
     <div v-if="!isAuthenticated" class="q-px-sm">
-      <q-btn
+      <q-btn v-if="!isAuthenticated"
         @click="showLogin = true"
-        color="secondary"
-        text-color="black"
         label="Login"
       />
     </div>
@@ -14,8 +12,6 @@
       </div>
       <q-btn
         @click="logout"
-        color="secondary"
-        text-color="black"
         label="Logout"
       />
     </div>

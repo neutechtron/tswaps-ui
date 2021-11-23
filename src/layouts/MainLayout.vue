@@ -1,18 +1,33 @@
 <template>
-  <q-layout view="Lhh Lpr lFf">
+  <q-layout view="LHh Lpr lFf">
     <q-header class="transparent">
       <q-toolbar class="toolbar">
-        <div class="col">
-          <q-toolbar-title class="gt-xs">
-            T-Swaps Bridge
-          </q-toolbar-title>
-        </div>
+        <q-toolbar-title>
+         <q-btn
+            flat 
+            to="/">
+            T-Swaps
+          </q-btn>
 
-        <login-button />
+          <q-btn 
+            flat 
+            to="/liquidity">
+            Liquidity
+          </q-btn>
+
+          <q-btn  
+            flat
+            to="/pools">
+            Pools
+          </q-btn>
+
+        </q-toolbar-title>
+
+        <login-button></login-button>
         <q-btn
           @click="toggleDarkMode()"
           :icon="$q.dark.isActive ? 'fas fa-sun' : 'fas fa-moon'"
-        />
+        ></q-btn>
       </q-toolbar>
     </q-header>
 
@@ -47,22 +62,7 @@ export default {
 
 <style lang="scss" scoped>
 .pageContainer {
+  flex: 0 1 1200px;
   padding: 1rem;
-}
-
-body.body--light {
-  .toolbar {
-    color: $dark-0;
-  }
-}
-
-body.body--dark {
-  .toolbar {
-    color: $white;
-  }
-}
-.q-btn {
-  background: $white;
-  color: $dark-0;
 }
 </style>

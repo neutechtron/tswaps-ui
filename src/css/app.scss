@@ -1,6 +1,24 @@
 // Fonts
 body {
   font-family: "silkaregular";
+  .sendBtn {
+    background-image: linear-gradient(
+      to right,
+      $purpleBright 20%,
+      $blueLight 80%
+    );
+    &:hover {
+      background-image: linear-gradient(
+        to left,
+        $purpleBright 20%,
+        $blueLight 80%
+      );
+    }
+    color: #ffffff;
+    font-size: 1.2rem;
+    flex-basis: 400px;
+    height: 3rem;
+  }
 }
 
 .selectorContainer .text-h6 {
@@ -16,72 +34,145 @@ body {
 
 // Light/Dark Theme
 body.body--light {
-  background: $purpleGrey;
+  .toolbar {
+    background: "transparent";
+    color: $dark-0;
+  };
+
   background-image: linear-gradient(
     to right bottom,
     $purpleGrey 10%,
     $white 90%
   );
+
   .inputCard {
-    background: $white;
+    background: rgb(238, 234, 244);
     color: $dark-0;
+  };
+
+  .swapCard{
+    padding: 1px;
+    background: linear-gradient(245.22deg,#da2eef 7.97%,#2b6aff 49.17%,#39d0d8 92.1%);
+    border-radius: 30px;
+
+    .swapCardSection{
+      padding: 15px;
+      background: $white;
+      opacity: .9;
+      border-radius: 30px;
+      
+    }
+
+    .swapArrow {
+      color: $dark-0;
+    };
+
+    .swapSquare {
+      color: rgb(238, 234, 244);
+    };
+
   }
+
+  .chart-card {
+    background: rgba(113, 99, 204, 0.5) ;
+    color: $dark-0;
+  };
+
   .dialogCard {
-    background: $white;
+    background: #f5f1ff;
     color: $dark-0;
     .dialogHeader {
       color: $grey;
-    }
-  }
+    };
+  };
+
   .selectorContainer {
     // border-color: rgba($dark, 0.8);
     border-color: transparent;
-    background: $purpleGrey;
+    background: transparent;
     color: $dark-1;
     &:hover {
-      background: rgba($dark, 0.2);
+      background: rgba($dark, 0.15);
     }
     .text-h6 {
       color: $dark-0;
     }
-  }
-  .account-name {
-    color: $dark-0;
+    .arrowButton{
+      color: $dark-1;
+    }
   }
 }
 
 body.body--dark {
-  background: $blueDark;
+  .toolbar {
+    background: "transparent";
+    color: $white;
+  };
+
   background-image: linear-gradient(
     to right bottom,
-    $blueDark 20%,
-    $purpleBright 80%
+    $blueDarkMode 30%,
+    $purpleDarkMode 90%
   );
+
   color: $white;
   .inputCard {
-    background: rgba($purpleDark, 0.5);
+    background: rgba($blueDarkMode, 0.9);
     color: $white;
-  }
+  };
+
+
+  .swapCard{
+    padding: 1px;
+    background: linear-gradient(245.22deg,#da2eef 7.97%,#2b6aff 49.17%,#39d0d8 92.1%);
+    border-radius: 30px;
+
+    .swapCardSection{
+      padding: 15px;
+      background: #162252;
+      opacity: .9;
+      border-radius: 30px;
+    };
+
+    .swapArrow {
+      color: $white;
+    };
+
+    .swapSquare {
+      color: rgba($blueDarkMode, 0.9);
+    };
+
+  };
+
+  .chart-card {
+    background: rgba(18, 9, 66, 0.562);
+    color: $white;
+  };
+
   .dialogCard {
-    background: $dark-1;
+    background: $purpleDark;
     color: $white;
-  }
+  };
+
   .selectorContainer {
-    // border-color: rgba($blueDark, 0.5);
-    background: $grey-0;
+    border-color: transparent;
+    background: transparent;
     color: $dark;
     &:hover {
-      background: rgba($grey-0, 0.85);
+      background: rgba($grey-0, 0.3);
       border-color: $white;
-    }
+    };
+
     .text-h6 {
-      color: $dark;
-    }
-  }
-  .account-name {
-    color: $white;
-  }
-}
+      color: $white;
+    };
+
+    .arrowButton{
+      color: $white;
+    };
+
+  };
+};
 
 // Defines
 .slim-scrollbar {
@@ -106,19 +197,11 @@ body.body--dark {
 
 // Cards & Dialogs
 .inputCard {
-  padding: 30px;
+  padding: 15px;
   border-radius: 20px;
   @media only screen and (max-width: 800px) {
     padding: 15px;
   }
-
-  .q-input {
-    font-size: 1.8rem;
-  }
-}
-
-.q-input {
-  width: 100%;
 }
 
 .q-dialog__inner > div {
@@ -162,6 +245,11 @@ body.body--dark {
   }
 }
 
+.q-input {
+  width: 100%;
+  font-size: 1.8rem;
+}
+
 @media only screen and (max-width: 550px) {
   .selectorContainer .text-h6 {
     font-size: 0.8rem;
@@ -170,3 +258,9 @@ body.body--dark {
     font-size: 1.2rem;
   }
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+
