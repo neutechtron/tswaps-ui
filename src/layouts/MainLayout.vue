@@ -2,11 +2,18 @@
   <q-layout view="LHh Lpr lFf">
     <q-header class="transparent">
       <q-toolbar class="toolbar">
-        <q-toolbar-title>
+        <router-link to="/">
+        <div class="text-subtitle1 q-pb-xs">
+          <q-toolbar-title
+          to="/">
+            T-swaps
+          </q-toolbar-title>
+        </div>
+        </router-link>
          <q-btn
             flat 
             to="/">
-            T-Swaps
+            Swap
           </q-btn>
 
           <q-btn 
@@ -21,7 +28,12 @@
             Pools
           </q-btn>
 
-        </q-toolbar-title>
+          <q-btn  
+            flat
+            to="/bridge">
+            Bridge
+          </q-btn>
+          <q-space/>
 
         <login-button></login-button>
         <q-btn

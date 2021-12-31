@@ -14,6 +14,11 @@ const routes = [
     component: () => import("layouts/MainLayout.vue"),
     children: [{ path: "", name:"pools", component: () => import("pages/pools.vue") }]
   },
+  {
+    path: "/bridge",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [{ path: "", name:"bridge", component: () => import("pages/Bridge.vue") }]
+  },
 
   // Always leave this as last one,
   // but you can also remove it

@@ -41,8 +41,8 @@ body.body--light {
 
   background-image: linear-gradient(
     to right bottom,
-    $purpleGrey 10%,
-    $white 90%
+    $purpleGrey 2%,
+    $white 100%
   );
 
   .inputCard {
@@ -56,7 +56,6 @@ body.body--light {
     border-radius: 30px;
 
     .swapCardSection{
-      padding: 15px;
       background: $white;
       opacity: .9;
       border-radius: 30px;
@@ -128,7 +127,6 @@ body.body--dark {
     border-radius: 30px;
 
     .swapCardSection{
-      padding: 15px;
       background: #162252;
       opacity: .9;
       border-radius: 30px;
@@ -261,6 +259,12 @@ body.body--dark {
 
 ::-webkit-scrollbar {
   display: none;
+}
+
+a:-webkit-any-link {
+  color:inherit;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 

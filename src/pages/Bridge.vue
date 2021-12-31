@@ -3,25 +3,37 @@
     <div class="lt-sm text-center text-h4 q-py-sm">
       T-Swaps Bridge
     </div>
-    <from-card />
-    <div class="text-center">
-      <q-icon
-        class="swapArrow"
-        name="fas fa-arrow-down"
-        size="1.5rem"
-        @click="switchChains()"
-      />
-    </div>
-    <to-card />
-    <div class="flex justify-center">
-      <q-btn
-        :disable="!isAuthenticated"
-        no-caps
-        class="sendBtn self-center"
-        label="Send"
-        @click="trySend()"
-      />
-    </div>
+
+    <div class="row justify-center q-mt-xs">
+        <div class="col-xs-12 col-sm-9 col-md-6">
+
+          <q-card flat class="swapCard">
+            <q-card-section class="swapCardSection">
+              <from-card />
+              <div class="text-center">
+                <q-icon
+                  class="swapArrow"
+                  name="fas fa-arrow-down"
+                  size="1.5rem"
+                  @click="switchChains()"
+                />
+              </div>
+              <to-card />
+              <div class="flex justify-center">
+                <q-btn
+                  :disable="!isAuthenticated"
+                  no-caps
+                  class="sendBtn self-center"
+                  label="Send"
+                  @click="trySend()"
+                />
+              </div>
+              </q-card-section>
+          </q-card>
+
+        </div>
+      </div>
+      
   </q-page>
 </template>
 
