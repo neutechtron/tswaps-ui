@@ -1,53 +1,78 @@
 <template>
-  <q-page class="column justify-center q-gutter-y-md q-pt-sm">
-    <div class="lt-sm text-center text-h4 q-py-sm">
-      T-Swaps Bridge
-    </div>
+  <q-page >
+    <div class="q-pa-sm">
 
-    <div class="row justify-center q-mt-xs">
-        <div class="col-xs-12 col-sm-9 col-md-6">
+      <div class="row justify-center q-my-md">
+        <div class="col-12">
+          <head-buttons />
+        </div>
+      </div>
+    
+      <div class="row justify-center q-mt-xs">
+        <div class="col-12">
 
           <q-card flat class="swapCard">
             <q-card-section class="swapCardSection">
-              <from-card />
-              <div class="text-center">
-                <q-icon
-                  class="swapArrow"
-                  name="fas fa-arrow-down"
-                  size="1.5rem"
-                  @click="switchChains()"
-                />
+        
+              <div class="row">
+                <div class="col-sm-12 ">
+                  <from-card />
+                </div>
               </div>
-              <to-card />
-              <div class="flex justify-center">
-                <q-btn
-                  :disable="!isAuthenticated"
-                  no-caps
-                  class="sendBtn self-center"
-                  label="Send"
-                  @click="trySend()"
-                />
+
+              <div class="row justify-center q-mt-xs q-mb-xs">
+                <span class="ml-2 fa-stack fa-1x">
+                  <i class="fas fa-square fa-stack-2x swapSquare"></i>
+                  <i class="fas fa-arrow-down  fa-stack-1x fa-inverse swapArrow" ></i>
+                </span>
               </div>
-              </q-card-section>
+
+              <div class="row ">
+                <div class="col-sm-12 ">
+                  <to-card />
+                </div>
+              </div>
+
+              <div class="row  q-mt-md">
+                <div class="col-12 ">
+                  <liquidity-button/>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-12 ">
+                  <div class="flex justify-center q-pt-md">
+                    <q-btn
+                      :disable="!isAuthenticated"
+                      no-caps
+                      class="sendBtn self-center"
+                      label="Send"
+                      @click="trySend()"
+                    />
+                  </div>
+                </div>
+              </div> 
+
+            </q-card-section>
           </q-card>
 
         </div>
       </div>
-      
+
+    </div>
   </q-page>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import fromCard from "src/components/FromCard";
-import toCard from "src/components/ToCard";
-import { accountName } from "src/store/account/getters";
-import { getFromChain } from "src/store/bridge/getters";
+import fromCard from "src/components/bridge/FromCard";
+import toCard from "src/components/bridge/ToCard";
+import headButtons from "src/components/bridge/Head.vue"
 import ual from "src/boot/ual_mixin";
 
 export default {
   name: "Index",
-  components: { fromCard, toCard },
+  components: { fromCard, toCard, headButtons },
   mixins: [ual],
   data() {
     return {
@@ -258,43 +283,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-body.body--light {
-  .swapArrow {
-    color: $dark-0;
-    &:hover {
-      color: rgba($dark-0, 0.5);
-    }
-  }
-}
 
-body.body--dark {
-  .swapArrow {
-    color: $cyan;
-    &:hover {
-      color: rgba($cyan, 0.7);
-    }
-  }
-  // .sendBtn {
-  //   background: $cyan;
-  // }
-}
-
-.sendBtn {
-  background-image: linear-gradient(
-    to right,
-    $purpleBright 20%,
-    $blueLight 80%
-  );
-  &:hover {
-    background-image: linear-gradient(
-      to left,
-      $purpleBright 20%,
-      $blueLight 80%
-    );
-  }
-  color: #ffffff;
-  font-size: 1.2rem;
-  flex-basis: 400px;
-  height: 3rem;
-}
 </style>

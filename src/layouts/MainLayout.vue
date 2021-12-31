@@ -43,11 +43,10 @@
       </q-toolbar>
     </q-header>
 
-    <div class="row justify-center items-center">
-      <q-page-container class="pageContainer">
+      <q-page-container class="flex flex-center ">
         <router-view />
       </q-page-container>
-    </div>
+
   </q-layout>
 </template>
 

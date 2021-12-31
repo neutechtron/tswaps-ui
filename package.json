@@ -10,12 +10,13 @@
     "test": "echo \"No test specified\" && exit 0"
   },
   "dependencies": {
+    "@eosdacio/ual-wax": "^1.4.4",
     "@eosrio/hyperion-stream-client": "^0.4.0-beta.5",
-    "@quasar/extras": "^1.0.0",
+    "@quasar/extras": "^1.12.2",
     "@smontero/ual-sqrl": "^0.1.22",
     "@telosnetwork/telosevm-js": "^0.0.6",
     "@telosnetwork/ual-telos-keycat": "1.10.3",
-    "@eosdacio/ual-wax": "^1.4.4",
+    "@vue/composition-api": "^1.4.3",
     "apexcharts": "3.23.0",
     "axios": "^0.20.0",
     "babel-loader": "^8.1.0",
@@ -25,7 +26,7 @@
     "eosjs-ecc": "^4.0.7",
     "jdenticon": "^3.1.1",
     "moment": "^2.27.0",
-    "quasar": "^1.0.0",
+    "quasar": "^1.16.3",
     "ual-anchor": "^1.0.0",
     "ual-ledger": "^0.3.0",
     "ual-scatter": "^0.3.0",
@@ -34,7 +35,7 @@
     "vue-apexcharts": "^1.6.2"
   },
   "devDependencies": {
-    "@quasar/app": "^2.0.0",
+    "@quasar/app": "^2.2.11",
     "babel-eslint": "^10.0.1",
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.9.0",

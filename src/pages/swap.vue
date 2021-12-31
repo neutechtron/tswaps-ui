@@ -1,15 +1,15 @@
 <template>
   <q-page >
-    <div class="q-pa-md">
+    <div class="q-pa-sm">
 
       <div class="row justify-center q-mt-md">
-        <div class="col-xs-12 col-sm-9 col-md-6">
+        <div class="col-12 ">
           <head-buttons />
         </div>
       </div>
     
       <div class="row justify-center q-mt-xs">
-        <div class="col-xs-12 col-sm-9 col-md-6">
+        <div class="col-12">
 
           <q-card flat class="swapCard">
             <q-card-section class="swapCardSection">
@@ -33,7 +33,7 @@
                 </div>
               </div>
 
-              <div class="row  q-mt-md">
+              <div class="row q-mt-md">
                 <div class="col-12 ">
                   <swap-button/>
                 </div>
@@ -51,10 +51,10 @@
 </template>
 
 <script>
-import fromCard from "src/components/swaps/FromCard.vue";
-import toCard from "src/components/swaps/ToCard.vue";
-import headButtons from "src/components/swaps/Head.vue"
-import swapButton from "src/components/swaps/swapButton.vue"
+import fromCard from "src/components/swap/FromCard.vue";
+import toCard from "src/components/swap/ToCard.vue";
+import headButtons from "src/components/swap/Head.vue"
+import swapButton from "src/components/swap/swapButton.vue"
 
 export default {
   name: "swap",

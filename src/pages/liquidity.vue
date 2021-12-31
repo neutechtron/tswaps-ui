@@ -1,15 +1,15 @@
 <template>
   <q-page >
-    <div class="q-pa-md">
+    <div class="q-pa-sm">
 
       <div class="row justify-center q-my-md">
-        <div class="col-xs-12 col-sm-9 col-md-6">
+        <div class="col-12">
           <head-buttons />
         </div>
       </div>
     
       <div class="row justify-center q-mt-xs">
-        <div class="col-xs-12 col-sm-9 col-md-6">
+        <div class="col-12">
 
           <q-card flat class="swapCard">
             <q-card-section class="swapCardSection">
