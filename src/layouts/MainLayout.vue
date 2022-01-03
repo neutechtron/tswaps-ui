@@ -2,35 +2,42 @@
   <q-layout view="LHh Lpr lFf">
     <q-header class="transparent">
       <q-toolbar class="toolbar">
-        <router-link to="/">
-        <div class="text-subtitle1 q-pb-xs">
-          <q-toolbar-title
-          to="/">
-            T-swaps
-          </q-toolbar-title>
+        <div class="q-py-sm">
+          <router-link to="/" class="row items-center q-gutter-x-xs">
+            <img alt="Telos EVM logo" src="~assets/images/SWAP.png" width="35" />
+            <div class="text-h5 desktop-only">T-swaps</div>
+          </router-link>
         </div>
-        </router-link>
+
          <q-btn
             flat 
-            to="/">
+            to="/"
+            no-caps
+          >
             Swap
           </q-btn>
 
           <q-btn 
             flat 
-            to="/liquidity">
+            to="/liquidity"
+            no-caps
+          >
             Liquidity
           </q-btn>
 
           <q-btn  
             flat
-            to="/pools">
+            to="/pools"
+            no-caps
+          >
             Pools
           </q-btn>
 
           <q-btn  
             flat
-            to="/bridge">
+            to="/bridge"
+            no-caps
+          >
             Bridge
           </q-btn>
           <q-space/>

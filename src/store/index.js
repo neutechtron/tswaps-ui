@@ -6,6 +6,7 @@ import general from "./general";
 import blockchains from "./blockchains";
 import tokens from "./tokens";
 import bridge from "./bridge";
+import pools from "./pools";
 
 Vue.use(Vuex);
 
@@ -16,7 +17,8 @@ export default function() {
       account,
       blockchains,
       tokens,
-      bridge
+      bridge,
+      pools
     },
 
     strict: process.env.DEV

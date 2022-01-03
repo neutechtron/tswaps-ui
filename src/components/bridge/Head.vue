@@ -15,7 +15,7 @@
         <q-btn flat class="float-right"
           :icon="'fas fa-info-circle'">
           <q-tooltip anchor="bottom middle" self="bottom middle" :offset="[10, 40]">
-          <strong>Send assets accross chains</strong> 
+          <strong>Send assets across chains</strong> 
         </q-tooltip>
         </q-btn>
       </div>
