@@ -4,45 +4,29 @@
       <q-toolbar class="toolbar">
         <div class="q-py-sm">
           <router-link to="/" class="row items-center q-gutter-x-xs">
-            <img alt="Telos EVM logo" src="~assets/images/SWAP.png" width="35" />
+            <img
+              alt="Telos EVM logo"
+              src="~assets/images/SWAP.png"
+              width="35"
+            />
             <div class="text-h5 desktop-only">T-swaps</div>
           </router-link>
         </div>
 
-         <q-btn
-            flat 
-            to="/"
-            no-caps
-          >
-            Swap
-          </q-btn>
+        <q-btn flat to="/" no-caps> Swap </q-btn>
 
-          <q-btn 
-            flat 
-            to="/liquidity"
-            no-caps
-          >
-            Liquidity
-          </q-btn>
+        <q-btn flat to="/liquidity" no-caps> Liquidity </q-btn>
 
-          <q-btn  
-            flat
-            to="/pools"
-            no-caps
-          >
-            Pools
-          </q-btn>
+        <q-btn flat to="/pools" no-caps> Pools </q-btn>
 
-          <q-btn  
-            flat
-            to="/bridge"
-            no-caps
-          >
-            Bridge
-          </q-btn>
-          <q-space/>
+        <q-btn flat @click="navigateExternalNewWindow()" no-caps>
+          Bridge
+        </q-btn>
+
+        <q-space />
 
         <login-button></login-button>
+        
         <q-btn
           @click="toggleDarkMode()"
           :icon="$q.dark.isActive ? 'fas fa-sun' : 'fas fa-moon'"
@@ -50,10 +34,9 @@
       </q-toolbar>
     </q-header>
 
-      <q-page-container class="flex flex-center ">
-        <router-view />
-      </q-page-container>
-
+    <q-page-container class="flex flex-center">
+      <router-view />
+    </q-page-container>
   </q-layout>
 </template>
 
@@ -70,11 +53,14 @@ export default {
     toggleDarkMode() {
       this.$q.dark.toggle();
       localStorage.setItem("darkModeEnabled", this.$q.dark.isActive);
-    }
+    },
+    navigateExternalNewWindow: function () {
+      window.open("https://beta-bridge.tswaps.com/", "_blank");
+    },
   },
   created() {
     this.$q.dark.set(localStorage.getItem("darkModeEnabled") !== "false");
-  }
+  },
 };
 </script>
 
