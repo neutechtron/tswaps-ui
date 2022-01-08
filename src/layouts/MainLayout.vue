@@ -13,26 +13,97 @@
           </router-link>
         </div>
 
+        <div v-if="$q.platform.is.desktop">
         <q-btn flat to="/" no-caps> Swap </q-btn>
 
         <q-btn flat to="/liquidity" no-caps> Liquidity </q-btn>
 
         <q-btn flat to="/pools" no-caps> Pools </q-btn>
 
-        <q-btn flat @click="navigateExternalNewWindow()" no-caps>
+        <q-btn
+          flat
+          @click="navigateExternalNewWindow('https://beta-bridge.tswaps.com/')"
+          no-caps
+        >
           Bridge
         </q-btn>
+        </div>
 
         <q-space />
 
         <login-button></login-button>
-        
-        <q-btn
+
+        <!-- About, Help Center, Dark Theme, Docs, Legal & Privacy -->
+        <q-btn icon="reorder">
+          <q-menu :offset="[0, 10]">
+            <q-list style="min-width: 180px">
+              <q-item clickable>
+                <q-item-section> About </q-item-section>
+              </q-item>
+              <q-item clickable>
+                <q-item-section> Help Center </q-item-section>
+              </q-item>
+              <q-item clickable @click="toggleDarkMode()">
+                <q-item-section>{{ darkMode.text }} </q-item-section>
+                <q-item-section avatar>
+                  <q-icon
+                    color="primary"
+                    :name="darkMode.icon"
+                    style="font-size: 1.4rem"
+                  />
+                </q-item-section>
+              </q-item>
+              <q-item
+                clickable
+                @click="navigateExternalNewWindow('https://docs.uniswap.org/')"
+              >
+                <q-item-section> Docs </q-item-section>
+                <q-icon
+                  color="primary"
+                  name="article"
+                  style="font-size: 1.6rem"
+                />
+              </q-item>
+              <q-item clickable>
+                <q-item-section> Legal &amp; Privacy </q-item-section>
+              </q-item>
+            </q-list>
+          </q-menu>
+        </q-btn>
+
+        <!-- Old Dark Mode button for ref -->
+        <!-- <q-btn
           @click="toggleDarkMode()"
           :icon="$q.dark.isActive ? 'fas fa-sun' : 'fas fa-moon'"
-        ></q-btn>
+        ></q-btn> -->
       </q-toolbar>
     </q-header>
+
+    <q-footer class="transparent"  v-if="$q.platform.is.mobile"  >
+       <q-toolbar class="toolbar">
+         <!-- <q-tabs no-caps active-color="primary" indicator-color="transparent"  v-model="tab" dense>
+          <q-route-tab name="swap" label="Swap" to="/"/>
+          <q-route-tab name="liquidity" label="Liquidity" to="/liquidity"/>
+          <q-route-tab name="pools" label="Pools" to="/pools"/>
+          <q-route-tab name="bridge" label="Bridge"  @click="navigateExternalNewWindow('https://beta-bridge.tswaps.com/')"/>
+        </q-tabs> -->
+
+       <q-btn flat to="/" no-caps> Swap </q-btn>
+
+        <q-btn flat to="/liquidity" no-caps> Liquidity </q-btn>
+
+        <q-btn flat to="/pools" no-caps> Pools </q-btn>
+
+        <q-btn
+          flat
+          @click="navigateExternalNewWindow('https://beta-bridge.tswaps.com/')"
+          no-caps
+        >
+          Bridge
+        </q-btn>
+       </q-toolbar>
+     
+    </q-footer>
 
     <q-page-container class="flex flex-center">
       <router-view />
@@ -47,15 +118,24 @@ export default {
   name: "MainLayout",
   components: { LoginButton },
   data() {
-    return {};
+    return {
+      darkMode: {
+        text: "Dark Mode",
+        icon: "fas fa-moon",
+      },
+      // isDekstop :  this.$q.platform.is.desktop ? true:false
+    };
   },
   methods: {
     toggleDarkMode() {
       this.$q.dark.toggle();
       localStorage.setItem("darkModeEnabled", this.$q.dark.isActive);
+      this.darkMode.text = this.$q.dark.isActive ? "Light Mode" : "Dark Mode";
+      this.darkMode.icon = this.$q.dark.isActive ? "fas fa-sun" : "fas fa-moon";
     },
-    navigateExternalNewWindow: function () {
-      window.open("https://beta-bridge.tswaps.com/", "_blank");
+    // TODO : Better way of storing and navigating external links
+    navigateExternalNewWindow: function (link) {
+      window.open(link, "_blank");
     },
   },
   created() {
