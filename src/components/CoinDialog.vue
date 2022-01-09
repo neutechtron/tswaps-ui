@@ -74,8 +74,16 @@ export default {
     }
   },
   methods: {
+    ...mapActions("swap", ["updateSwapPool", "updateEstimate"]),
     updateSelectedCoin(token) {
-      this.$store.commit("bridge/setToken", token);
+      if(this.isFrom){
+        this.$store.commit("swap/setFromToken", token);
+      } else{
+        this.$store.commit("swap/setToToken", token);
+      }
+      this.updateSwapPool();
+      this.updateEstimate();
+
       let defaultToChain = {};
       if (token.toChain !== undefined) {
         defaultToChain = this.getAllPossibleChains.filter(el =>

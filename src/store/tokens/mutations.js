@@ -1,12 +1,5 @@
 export const setTokens = (state, { tokens }) => {
-  if (state.tokens.length === 0) {
     state.tokens = tokens;
-  } else {
-    let temp_tokens = state.tokens.concat(tokens);
-    const ids = temp_tokens.map(token => token.id);
-    const filtered = temp_tokens.filter(({id}, index) => !ids.includes(id, index + 1))
-    state.tokens = filtered;
-  }
 };
 
 

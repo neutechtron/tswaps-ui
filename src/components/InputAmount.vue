@@ -1,8 +1,8 @@
 <template>
   <div>
     <q-input
-      :value="getAmount"
-      @input="updateAmount($event)"
+      :value="isFrom ? getAmount : getToEstimate"
+      @input="isFrom ? updateAmount($event) : null"
       debounce="500"
       placeholder="0.0"
       pattern="^[0-9]*[.,]?[0-9]*$"
@@ -14,6 +14,8 @@
       minlength="1"
       maxlength="79"
       spellcheck="false"
+      v-bind:class="{ disabled: !isFrom }"
+      
     />
   </div>
 </template>
@@ -32,12 +34,10 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("bridge", ["getToken", "getAmount"])
+    ...mapGetters("swap", ["getAmount", "getToEstimate"])
   },
   methods: {
-    updateAmount(amount) {
-      this.$store.commit("bridge/setAmount", amount);
-    }
+    ...mapActions("swap", ["updateAmount"])
   }
 };
 </script>

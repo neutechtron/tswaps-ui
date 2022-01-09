@@ -1,143 +1,116 @@
-// Get cross chain tokens from tokens table of bridge.start
-export const updateBridgeTokens = async function({
+// Get tokens from tokens table 
+export const updateTokens = async function({
   commit,
-  getters,
   rootGetters
 }) {
   try {
     const getCurrentChain = rootGetters[
       "blockchains/getCurrentChain"
     ].NETWORK_NAME.toLowerCase();
-    let otherChains = ["telos", "eos", "wax"].filter(
-      (value, _index, _arr) => value !== getCurrentChain
-    );
-    let temp_tokens = [];
+    let pools = [];
     let tokens = [];
-    for (let chain of otherChains) {
-      // console.log("rpc", this.$api.getRpc())
-      const tableResults = await this.$api.getTableRows({
-        code: "bridge.start",
-        scope: chain,
-        table: "tokens",
-        limit: 10000,
-        reverse: false,
-        show_payer: false
-      });
-      // console.log("tableResults", tableResults);
-      temp_tokens.push(...tableResults.rows);
-    }
-    console.log("bridge tokens", temp_tokens);
 
-    for (const token of temp_tokens) {
-      let new_token = {};
-      new_token.symbol = this.$exSymToSymbol(token.token_info);
-      new_token.contract = this.$exSymToContract(token.token_info);
-      new_token.precision = this.$exSymToPrecision(token.token_info);
-      new_token.min_quantity = this.$assetToAmount(token.min_quantity);
-      new_token.chain = getCurrentChain;
-      new_token.enabled = token.enabled;
-      new_token.bridgestart = true;
-      new_token.tportstart = false;
-      new_token.telosdio = false;
-      new_token.amount = 0;
-      new_token.toChain = [token.channel];
-      new_token.toTokens = [
-        {
-          chain: token.channel,
-          contract: this.$exSymToContract(token.remote_token),
-          symbol: this.$exSymToSymbol(token.remote_token),
-          precision: this.$exSymToPrecision(token.remote_token)
-        }
-      ];
-      new_token.id = `${new_token.contract}-${new_token.symbol}-${new_token.chain}`;
-
-      // Check duplicates
-      if (
-        tokens.find(
-          t =>
-            t.symbol === new_token.symbol &&
-            t.chain === new_token.chain &&
-            t.contract === new_token.contract &&
-            !t.toChain.includes(new_token.toChain)
-        )
-      ) {
-        // append toChain
-        let index = tokens.findIndex(
-          t =>
-            t.symbol === new_token.symbol &&
-            t.chain === new_token.chain &&
-            t.contract === new_token.contract
-        );
-        tokens[index].toChain.push(token.channel);
-        tokens[index].toTokens.push({
-          chain: token.channel,
-          contract: this.$exSymToContract(token.remote_token),
-          symbol: this.$exSymToSymbol(token.remote_token),
-          precision: this.$exSymToPrecision(token.remote_token)
-        });
-      } else {
-        tokens.push(new_token);
-      }
-    }
-
-    commit("setTokens", { tokens });
-  } catch (error) {
-    console.log("Error getting bridge tokens:", error);
-    commit("general/setErrorMsg", error.message || error, { root: true });
-  }
-};
-
-export const updateTELOSDioTokens = async function({
-  commit,
-  getters,
-  rootGetters
-}) {
-  try {
-    const getCurrentChain = rootGetters[
-      "blockchains/getCurrentChain"
-    ].NETWORK_NAME.toLowerCase();
-    let tokens = [];
-    let temp_tokens = [];
     const tableResults = await this.$api.getTableRows({
-      code: "telosd.io",
-      scope: "telosd.io",
-      table: "tokens",
+      code: "nottswapsioa",
+      scope: "nottswapsioa",
+      table: "pairs",
       limit: 10000,
       reverse: false,
       show_payer: false
     });
-    temp_tokens.push(...tableResults.rows);
-    console.log("TELOSDio Tokens:", temp_tokens);
+    // console.log("tableResults", tableResults);
+    pools.push(...tableResults.rows);
 
-    for (const token of temp_tokens) {
-      let new_token = {};
-      new_token.symbol = this.$exSymToSymbol(token.token_info);
-      new_token.contract = this.$exSymToContract(token.token_info);
-      new_token.precision = this.$exSymToPrecision(token.token_info);
-      new_token.min_quantity = this.$assetToAmount(token.min_quantity);
-      new_token.chain = getCurrentChain;
-      new_token.enabled = token.enabled;
-      new_token.bridgestart = false;
-      new_token.tportstart = false;
-      new_token.telosdio = true;
-      new_token.amount = 0;
-      new_token.toChain = [token.remote_chain];
-      new_token.id = `${new_token.contract}-${new_token.symbol}-${new_token.chain}`;
-      new_token.toTokens = [
-        {
-          chain: token.remote_chain,
-          contract: this.$exSymToContract(token.remote_token),
-          symbol: this.$exSymToSymbol(token.remote_token),
-          precision: this.$exSymToPrecision(token.remote_token)
-        }
-      ];
+    for (const pool of pools) {
 
-      tokens.push(new_token);
+      let res0 = pool.reserve0
+      let res1 = pool.reserve1
+
+      let token0 = {
+        symbol: this.$exSymToSymbol(res0),
+        contract: res0.contract,
+        presision: this.$exSymToPrecision(res0),
+        chain: getCurrentChain,
+        toTokens: []
+      }
+
+      let token1 = {
+        symbol: this.$exSymToSymbol(res1),
+        contract: res1.contract,
+        presision: this.$exSymToPrecision(res1),
+        chain: getCurrentChain,
+        toTokens: []
+      }
+
+     // Check duplicates for token0
+      if (
+        tokens.find(
+          t =>
+            t.symbol === token0.symbol &&
+            t.chain === token0.chain &&
+            t.contract === token0.contract 
+        )
+      ) {
+        // append toToken
+        let index = tokens.findIndex(
+          t =>
+            t.symbol === token0.symbol &&
+            t.chain === token0.chain &&
+            t.contract === token0.contract 
+        );
+        tokens[index].toTokens.push({
+          contract: token1.contract,
+          symbol: token1.symbol,
+          precision: token1.presision,
+          pool: pool.id
+        });
+      } else {
+        token0.toTokens.push({
+          contract: token1.contract,
+          symbol: token1.symbol,
+          precision: token1.presision,
+          pool: pool.id
+        });
+        tokens.push(token0);
+      }
+
+      // Check duplicates for token1
+      if (
+        tokens.find(
+          t =>
+            t.symbol === token1.symbol &&
+            t.chain === token1.chain &&
+            t.contract === token1.contract 
+        )
+      ) {
+        // append toToken
+        let index = tokens.findIndex(
+          t =>
+            t.symbol === token1.symbol &&
+            t.chain === token1.chain &&
+            t.contract === token1.contract 
+        );
+        tokens[index].toTokens.push({
+          contract: token0.contract,
+          symbol: token0.symbol,
+          precision: token0.presision,
+          pool: pool.id
+        });
+      } else {
+        token1.toTokens.push({
+          contract: token0.contract,
+          symbol: token0.symbol,
+          precision: token0.presision,
+          pool: pool.id
+        });
+        tokens.push(token1);
+      }
     }
 
     commit("setTokens", { tokens });
+
   } catch (error) {
-    console.log("Error getting telosdio tokens:", error);
+    console.log("Error getting tokens:", error);
     commit("general/setErrorMsg", error.message || error, { root: true });
   }
 };

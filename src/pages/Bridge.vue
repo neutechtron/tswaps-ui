@@ -112,31 +112,30 @@ export default {
   methods: {
     ...mapActions("account", ["accountExistsOnChain", "logout"]),
     ...mapActions("tokens", [
-      "updateTELOSDioTokens",
       "updateBridgeTokens",
       "updateTokenBalances"
     ]),
     ...mapActions("blockchains", ["updateCurrentChain"]),
 
-    async trySend() {
+    async trySwap() {
       try {
-        await this.send();
+        await this.swap();
         this.$q.notify({
           color: "green-4",
           textColor: "white",
           icon: "cloud_done",
-          message: "Sent"
+          message: "Swap complete"
         });
       } catch (error) {
         this.$errorNotification(error);
       }
     },
 
-    async send() {
+    async swap() {
       if (
         !(await this.accountExistsOnChain({
-          account: this.getToAccount,
-          network: this.getToChain.NETWORK_NAME
+          account: this.getAccount,
+          network: this.getCurrentChain
         }))
       ) {
         this.$q.notify({
@@ -152,56 +151,14 @@ export default {
         this.getToChain.NETWORK_NAME.toUpperCase() !==
           this.getCurrentChain.NETWORK_NAME
       ) {
-        console.log("Sending across TELOSD bridge");
+        console.log("Trying to do a swap");
         const actions = [
           {
-            account: this.token_contract,
+            account: this.token_contract,// token contract
             name: "transfer",
             data: {
               from: this.accountName.toLowerCase(),
-              to: "telosd.io",
-              quantity: `${parseFloat(this.getAmount).toFixed(
-                this.token_precision
-              )} ${this.token_symbol}`,
-              memo: `${
-                this.getToAccount
-              }@${this.getToChain.NETWORK_NAME.toLowerCase()}|${this.getMemo}`
-            }
-          }
-        ];
-        transaction = await this.$store.$api.signTransaction(actions);
-      } else if (
-        this.getToken.bridgestart === true &&
-        this.getToChain.NETWORK_NAME.toUpperCase() !==
-          this.getCurrentChain.NETWORK_NAME
-      ) {
-        // If different EOS network, send to bridge
-        const actions = [
-          {
-            account: this.token_contract,
-            name: "transfer",
-            data: {
-              from: this.accountName.toLowerCase(),
-              to: "bridge.start",
-              quantity: `${parseFloat(this.getAmount).toFixed(
-                this.token_precision
-              )} ${this.token_symbol}`,
-              memo: `${
-                this.getToAccount
-              }@${this.getToChain.NETWORK_NAME.toLowerCase()}|${this.getMemo}`
-            }
-          }
-        ];
-        transaction = await this.$store.$api.signTransaction(actions);
-      } else {
-        // if normal transfer to same network
-        const actions = [
-          {
-            account: this.token_contract,
-            name: "transfer",
-            data: {
-              from: this.accountName.toLowerCase(),
-              to: this.getToAccount,
+              to: this.getToAccount, // pool contract
               quantity: `${parseFloat(this.getAmount).toFixed(
                 this.token_precision
               )} ${this.token_symbol}`,
@@ -210,7 +167,8 @@ export default {
           }
         ];
         transaction = await this.$store.$api.signTransaction(actions);
-      }
+      } 
+      
       if (transaction) {
         this.showTransaction = true;
         this.transaction = transaction.transactionId;
@@ -245,7 +203,6 @@ export default {
   },
   async mounted() {
     await this.updateBridgeTokens();
-    await this.updateTELOSDioTokens();
     await this.updateTokenBalances(this.accountName);
 
     // Set default tokens
@@ -272,8 +229,6 @@ export default {
     },
     async accountName() {
       if (this.isAuthenticated) {
-        // await this.updateBridgeTokens();
-        // await this.updateTELOSDioTokens();
         await this.updateTokenBalances(this.accountName);
         this.$store.commit("bridge/setToken", this.getTokens[0]);
       }

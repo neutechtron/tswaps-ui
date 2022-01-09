@@ -117,7 +117,6 @@ export default {
   methods: {
     ...mapActions("account", ["accountExistsOnChain","login"]),
     ...mapActions("tokens", [
-      "updateTELOSDioTokens",
       "updateBridgeTokens",
       "updateTokenBalances"
     ]),
@@ -235,7 +234,6 @@ export default {
   },
   async mounted() {
     await this.updateBridgeTokens();
-    await this.updateTELOSDioTokens();
     await this.updateTokenBalances(this.accountName);
 
     // TODO remove, not a fan of hyperion
@@ -250,12 +248,9 @@ export default {
   watch: {
     async getFromChain() {
       await this.updateBridgeTokens();
-      await this.updateTELOSDioTokens();
     },
     async accountName() {
       if (this.isAuthenticated) {
-        // await this.updateBridgeTokens();
-        // await this.updateTELOSDioTokens();
         await this.updateTokenBalances(this.accountName);
       }
     }

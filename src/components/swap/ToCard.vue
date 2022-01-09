@@ -25,12 +25,12 @@ export default {
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
-    ...mapGetters("bridge", ["getToken"]),
+    ...mapGetters("swap", ["getToToken"]),
     ...mapGetters("tokens", ["getTokens"]),
 
     balance() {
-      if (this.getTokens.find(token => token.id === this.getToken.id)) {
-        return this.getToken.amount;
+      if (this.getTokens.find(token => token.id === this.getToToken.id)) {
+        return this.getToToken.amount;
       } else {
         return 0;
       }
