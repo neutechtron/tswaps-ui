@@ -3,7 +3,7 @@
     <q-btn v-if="isAuthenticated"
       no-caps
       class="sendBtn full-width"
-      label="Send"
+      label="Add liquidity"
       @click="trySend()"
     />
     <q-btn v-else
@@ -116,6 +116,7 @@ export default {
   },
   methods: {
     ...mapActions("account", ["accountExistsOnChain","login"]),
+    ...mapActions("pools", ["updatePools"]),
     ...mapActions("tokens", [
       "updateTokens",
       "updateTokenBalances"
@@ -233,7 +234,8 @@ export default {
     }
   },
   async mounted() {
-    await this.updateBridgeTokens();
+    await this.updatePools();
+    await this.updateTokens();
     await this.updateTokenBalances(this.accountName);
 
     // TODO remove, not a fan of hyperion

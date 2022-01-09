@@ -61,7 +61,7 @@ export default {
       filteredTokens: []
     };
   },
-  props: ["showCoinDialog", "isFrom"],
+  props: ["showCoinDialog", "isFrom", "isSwap"],
   computed: {
     ...mapGetters("tokens", ["getTokens"]),
     ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"]),
@@ -75,14 +75,24 @@ export default {
   },
   methods: {
     ...mapActions("swap", ["updateSwapPool", "updateEstimate"]),
+    ...mapActions("liquidity", ["updateActivePool"]),
     updateSelectedCoin(token) {
-      if(this.isFrom){
+      if(this.isSwap){
+        if(this.isFrom){
         this.$store.commit("swap/setFromToken", token);
-      } else{
-        this.$store.commit("swap/setToToken", token);
+        } else{
+          this.$store.commit("swap/setToToken", token);
+        }
+        this.updateSwapPool();
+        this.updateEstimate();
+      } else {
+        if(this.isFrom){
+          this.$store.commit("liquidity/setToken1", token);
+        } else{
+          this.$store.commit("liquidity/setToken2", token);
+        }
+        this.updateActivePool();
       }
-      this.updateSwapPool();
-      this.updateEstimate();
 
       let defaultToChain = {};
       if (token.toChain !== undefined) {

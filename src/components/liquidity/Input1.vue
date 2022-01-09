@@ -7,9 +7,9 @@
       </div>
     </div>
     <div class="row flex-wrap items-end">
-      <input-amount class="col-xs-12 col-sm-6 col-md-6 q-mt-xs" />
+      <input-amount class="col-xs-12 col-sm-6 col-md-6 q-mt-xs" :is-from="true"/>
       <div class="col-xs-12 col-sm-6 col-md-6 row justify-stretch q-mt-xs">
-        <coin-selector class="col q-mr-sm" isFrom />
+        <coin-selector class="col q-mr-sm" :is-from="true" />
       </div>
     </div>
   </q-card>
@@ -25,12 +25,12 @@ export default {
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
-    ...mapGetters("bridge", ["getToken"]),
+    ...mapGetters("liquidity", ["getToken1"]),
     ...mapGetters("tokens", ["getTokens"]),
 
     balance() {
-      if (this.getTokens.find(token => token.id === this.getToken.id)) {
-        return this.getToken.amount;
+      if (this.getTokens.find(token => token.id === this.getToken1.id)) {
+        return this.getToken1.amount;
       } else {
         return 0;
       }

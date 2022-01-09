@@ -117,7 +117,7 @@ export default {
   methods: {
     ...mapActions("account", ["accountExistsOnChain","login"]),
     ...mapActions("tokens", [
-      "updateBridgeTokens",
+      "updateTokens",
       "updateTokenBalances"
     ]),
 
@@ -235,11 +235,6 @@ export default {
   async mounted() {
     await this.updateBridgeTokens();
     await this.updateTokenBalances(this.accountName);
-
-    // TODO remove, not a fan of hyperion
-    // if (this.isAuthenticated) {
-    //   this.updateAllTokensBalances(this.accountName);
-    // }
   },
   created() {
     this.$store.commit("bridge/setFromChain", this.getAllPossibleChains[0]);
@@ -247,7 +242,7 @@ export default {
   },
   watch: {
     async getFromChain() {
-      await this.updateBridgeTokens();
+      await this.updateTokens();
     },
     async accountName() {
       if (this.isAuthenticated) {

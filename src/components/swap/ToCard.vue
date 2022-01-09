@@ -7,9 +7,9 @@
       </div>
     </div>
     <div class="row flex-wrap items-end">
-      <input-amount class="col-xs-12 col-sm-6 col-md-6 q-mt-sm" />
+      <input-amount class="col-xs-12 col-sm-6 col-md-6 q-mt-sm" :is-swap="true"/>
       <div class="col-xs-12 col-sm-6 col-md-6 row justify-stretch q-mt-sm">
-        <coin-selector class="col q-mr-sm" isFrom />
+        <coin-selector class="col q-mr-sm" :is-swap="true" />
       </div>
     </div>
   </q-card>

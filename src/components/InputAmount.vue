@@ -1,8 +1,9 @@
 <template>
   <div>
     <q-input
+      v-if="isSwap"
       :value="isFrom ? getAmount : getToEstimate"
-      @input="isFrom ? updateAmount($event) : null"
+      @input="isFrom ? updateValue($event) : null"
       debounce="500"
       placeholder="0.0"
       pattern="^[0-9]*[.,]?[0-9]*$"
@@ -14,7 +15,24 @@
       minlength="1"
       maxlength="79"
       spellcheck="false"
-      v-bind:class="{ disabled: !isFrom }"
+      v-bind:class="{ disabled: !isFrom}"
+      
+    />
+    <q-input
+      v-else
+      :value="isFrom ? getValue1 : getValue2"
+      @input="updateValue($event)"
+      debounce="500"
+      placeholder="0.0"
+      pattern="^[0-9]*[.,]?[0-9]*$"
+      inputmode="decimal"
+      autocomplete="off"
+      autocorrect="off"
+      title="Amount"
+      type="text"
+      minlength="1"
+      maxlength="79"
+      spellcheck="false"
       
     />
   </div>
@@ -24,9 +42,7 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  props: {
-    isFrom: Boolean
-  },
+  props: ["isSwap", "isFrom"],
   data() {
     return {
       showCoinDialog: false,
@@ -34,10 +50,24 @@ export default {
     };
   },
   computed: {
-    ...mapGetters("swap", ["getAmount", "getToEstimate"])
+    ...mapGetters("swap", ["getAmount", "getToEstimate"]),
+    ...mapGetters("liquidity", ["getValue1", "getValue2"]),
   },
   methods: {
-    ...mapActions("swap", ["updateAmount"])
+    ...mapActions("swap", ["updateAmount"]),
+    ...mapActions("liquidity", ["updateValue1", "updateValue2"]),
+    async updateValue(value){
+      if(this.isSwap){
+        this.updateAmount(value)
+      } else {
+        if(this.isFrom) {
+          this.updateValue1(value)
+        } else {
+          this.updateValue2(value) 
+        }
+      }
+    }
+
   }
 };
 </script>

@@ -8,6 +8,7 @@ import tokens from "./tokens";
 import bridge from "./bridge";
 import pools from "./pools";
 import swap from "./swap";
+import liquidity from "./liquidity";
 
 Vue.use(Vuex);
 
@@ -20,7 +21,8 @@ export default function() {
       tokens,
       bridge,
       pools,
-      swap
+      swap,
+      liquidity
     },
 
     strict: process.env.DEV
