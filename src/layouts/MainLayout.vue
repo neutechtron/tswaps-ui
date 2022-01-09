@@ -14,19 +14,21 @@
         </div>
 
         <div v-if="$q.platform.is.desktop">
-        <q-btn flat to="/" no-caps> Swap </q-btn>
+          <q-btn flat to="/" no-caps> Swap </q-btn>
 
-        <q-btn flat to="/liquidity" no-caps> Liquidity </q-btn>
+          <q-btn flat to="/liquidity" no-caps> Liquidity </q-btn>
 
-        <q-btn flat to="/pools" no-caps> Pools </q-btn>
+          <q-btn flat to="/pools" no-caps> Pools </q-btn>
 
-        <q-btn
-          flat
-          @click="navigateExternalNewWindow('https://beta-bridge.tswaps.com/')"
-          no-caps
-        >
-          Bridge
-        </q-btn>
+          <q-btn
+            flat
+            @click="
+              navigateExternalNewWindow('https://beta-bridge.tswaps.com/')
+            "
+            no-caps
+          >
+            Bridge
+          </q-btn>
         </div>
 
         <q-space />
@@ -79,30 +81,38 @@
       </q-toolbar>
     </q-header>
 
-    <q-footer class="transparent"  v-if="$q.platform.is.mobile"  >
-       <q-toolbar class="toolbar">
-         <!-- <q-tabs no-caps active-color="primary" indicator-color="transparent"  v-model="tab" dense>
-          <q-route-tab name="swap" label="Swap" to="/"/>
-          <q-route-tab name="liquidity" label="Liquidity" to="/liquidity"/>
-          <q-route-tab name="pools" label="Pools" to="/pools"/>
-          <q-route-tab name="bridge" label="Bridge"  @click="navigateExternalNewWindow('https://beta-bridge.tswaps.com/')"/>
-        </q-tabs> -->
+    <q-footer bordered class="transparent" v-if="$q.platform.is.mobile" reveal elevated>
+      <q-tabs
+        v-model="tab"
+        align="justify"
+        no-caps
+        active-color="primary"
+        indicator-color="transparent"
+        :breakpoint="0"
+      >
+        <q-route-tab  class="text-purple"  name="swap" label="Swap" to="/" />
+        <q-route-tab
+          class="text-purple"
 
-       <q-btn flat to="/" no-caps> Swap </q-btn>
-
-        <q-btn flat to="/liquidity" no-caps> Liquidity </q-btn>
-
-        <q-btn flat to="/pools" no-caps> Pools </q-btn>
-
-        <q-btn
-          flat
-          @click="navigateExternalNewWindow('https://beta-bridge.tswaps.com/')"
-          no-caps
-        >
-          Bridge
-        </q-btn>
-       </q-toolbar>
-     
+          name="liquidity"
+          label="Liquidity"
+          to="/liquidity"
+        />
+        <q-route-tab
+         class="text-purple"
+          name="pools"
+          label="Pools"
+          to="/pools"
+        />
+        <!-- TODO: Need to deleselect bridge tab to previous selected tab when clicked -->
+        <q-route-tab 
+         class="text-purple"        
+          name="bridge"
+          label="Bridge"
+          to=""
+          @click="navigateExternalNewWindow('https://docs.uniswap.org/')"
+        />
+      </q-tabs>
     </q-footer>
 
     <q-page-container class="flex flex-center">
