@@ -123,9 +123,9 @@ module.exports = function(/* ctx */) {
       workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: `T-Swaps Bridge`,
-        short_name: `T-Swaps Bridge`,
-        description: `T-Swaps Bridge Interface`,
+        name: `T-Swaps`,
+        short_name: `T-Swaps`,
+        description: `T-Swaps Interface`,
         display: "standalone",
         orientation: "portrait",
         background_color: "#ffffff",
@@ -189,7 +189,7 @@ module.exports = function(/* ctx */) {
         // https://www.electron.build/configuration/configuration
 
         appId: "T-swaps",
-        devtool: 'source-map'
+        devtool: "source-map"
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

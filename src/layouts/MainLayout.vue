@@ -9,7 +9,7 @@
               src="~assets/images/SWAP.png"
               width="35"
             />
-            <div class="text-h5 desktop-only">T-swaps</div>
+            <div class="text-h5 desktop-only">T-Swaps</div>
           </router-link>
         </div>
 
@@ -81,7 +81,13 @@
       </q-toolbar>
     </q-header>
 
-    <q-footer bordered class="transparent" v-if="$q.platform.is.mobile" reveal elevated>
+    <q-footer
+      bordered
+      class="transparent"
+      v-if="$q.platform.is.mobile"
+      reveal
+      elevated
+    >
       <q-tabs
         v-model="tab"
         align="justify"
@@ -90,23 +96,22 @@
         indicator-color="transparent"
         :breakpoint="0"
       >
-        <q-route-tab  class="text-purple"  name="swap" label="Swap" to="/" />
+        <q-route-tab class="text-purple" name="swap" label="Swap" to="/" />
         <q-route-tab
           class="text-purple"
-
           name="liquidity"
           label="Liquidity"
           to="/liquidity"
         />
         <q-route-tab
-         class="text-purple"
+          class="text-purple"
           name="pools"
           label="Pools"
           to="/pools"
         />
         <!-- TODO: Need to deleselect bridge tab to previous selected tab when clicked -->
-        <q-route-tab 
-         class="text-purple"        
+        <q-route-tab
+          class="text-purple"
           name="bridge"
           label="Bridge"
           to=""
@@ -131,8 +136,8 @@ export default {
     return {
       darkMode: {
         text: "Dark Mode",
-        icon: "fas fa-moon",
-      },
+        icon: "fas fa-moon"
+      }
       // isDekstop :  this.$q.platform.is.desktop ? true:false
     };
   },
@@ -144,13 +149,13 @@ export default {
       this.darkMode.icon = this.$q.dark.isActive ? "fas fa-sun" : "fas fa-moon";
     },
     // TODO : Better way of storing and navigating external links
-    navigateExternalNewWindow: function (link) {
+    navigateExternalNewWindow: function(link) {
       window.open(link, "_blank");
-    },
+    }
   },
   created() {
     this.$q.dark.set(localStorage.getItem("darkModeEnabled") !== "false");
-  },
+  }
 };
 </script>
 
