@@ -6,7 +6,7 @@
           <router-link to="/" class="row items-center q-gutter-x-xs">
             <img
               alt="Telos EVM logo"
-              src="~assets/images/SWAP.png"
+              src="~assets/images/swap.png"
               width="35"
             />
             <div class="text-h5 desktop-only">T-Swaps</div>
