@@ -29,7 +29,7 @@ export const updateTokens = async function({
       let token0 = {
         symbol: this.$exSymToSymbol(res0),
         contract: res0.contract,
-        presision: this.$exSymToPrecision(res0),
+        precision: this.$exSymToPrecision(res0),
         chain: getCurrentChain,
         toTokens: []
       }
@@ -37,7 +37,7 @@ export const updateTokens = async function({
       let token1 = {
         symbol: this.$exSymToSymbol(res1),
         contract: res1.contract,
-        presision: this.$exSymToPrecision(res1),
+        precision: this.$exSymToPrecision(res1),
         chain: getCurrentChain,
         toTokens: []
       }
@@ -61,14 +61,14 @@ export const updateTokens = async function({
         tokens[index].toTokens.push({
           contract: token1.contract,
           symbol: token1.symbol,
-          precision: token1.presision,
+          precision: token1.precision,
           pool: pool.id
         });
       } else {
         token0.toTokens.push({
           contract: token1.contract,
           symbol: token1.symbol,
-          precision: token1.presision,
+          precision: token1.precision,
           pool: pool.id
         });
         tokens.push(token0);
@@ -93,14 +93,14 @@ export const updateTokens = async function({
         tokens[index].toTokens.push({
           contract: token0.contract,
           symbol: token0.symbol,
-          precision: token0.presision,
+          precision: token0.precision,
           pool: pool.id
         });
       } else {
         token1.toTokens.push({
           contract: token0.contract,
           symbol: token0.symbol,
-          precision: token0.presision,
+          precision: token0.precision,
           pool: pool.id
         });
         tokens.push(token1);

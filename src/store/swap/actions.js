@@ -82,7 +82,8 @@ export const createMemo = async function({
     try {
         const estimate = getters.getToEstimate;
         const slippage= getters.getSlippage
-        const minReturn = Number(estimate) - Number(estimate)*Number(slippage)
+        let minReturn = Number(estimate) - Number(estimate)*Number(slippage)
+        minReturn = parseFloat(minReturn).toFixed(getters.getToToken.precision)
         const memo = `swap,${minReturn},${getters.getPool.id}`
         commit("setMemo", memo);
     } catch (error) {

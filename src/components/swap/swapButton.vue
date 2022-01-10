@@ -143,8 +143,6 @@ export default {
       if (!this.accountName) {
         throw new Error(`Account ${this.getToAccount} does not exist`);
       }
-      console.log(Number(this.token_balance))
-       console.log(Number(this.getAmount))
       if (Number(this.token_balance) <= Number(this.getAmount)) {
         throw new Error(`Account ${this.accountName} does not have the required funds to preform swap`);
       }
