@@ -11,8 +11,8 @@ export const updateTokens = async function({
     let tokens = [];
 
     const tableResults = await this.$api.getTableRows({
-      code: "nottswapsioa",
-      scope: "nottswapsioa",
+      code: process.env.SWAP_CONTRACT,
+      scope: process.env.SWAP_CONTRACT,
       table: "pairs",
       limit: 10000,
       reverse: false,

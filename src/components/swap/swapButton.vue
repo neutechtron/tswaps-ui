@@ -158,7 +158,7 @@ export default {
             name: "transfer",
             data: {
               from: this.accountName.toLowerCase(),
-              to: "nottswapsioa", // pool contract
+              to: process.env.SWAP_CONTRACT, // pool contract
               quantity: `${parseFloat(this.getAmount).toFixed(
                 this.token_precision
               )} ${this.token_symbol}`,

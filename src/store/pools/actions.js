@@ -10,8 +10,8 @@ export const updatePools = async function({
           let temp_pools = [];
 
           const tableResults = await this.$api.getTableRows({
-            code: "nottswapsioa",
-            scope: "nottswapsioa",
+            code: process.env.SWAP_CONTRACT,
+            scope: process.env.SWAP_CONTRACT,
             table: "pairs",
             limit: 10000,
             reverse: false,
