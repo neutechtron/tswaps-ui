@@ -23,7 +23,7 @@
           <q-btn
             flat
             @click="
-              navigateExternalNewWindow('https://beta-bridge.tswaps.com/')
+              navigateExternalNewWindow()
             "
             no-caps
           >
@@ -57,7 +57,7 @@
               </q-item>
               <q-item
                 clickable
-                @click="navigateExternalNewWindow('https://docs.uniswap.org/')"
+                @click="navigateExternalNewWindow(url_doc)"
               >
                 <q-item-section> Docs </q-item-section>
                 <q-icon
@@ -128,6 +128,7 @@
 
 <script>
 import LoginButton from "components/LoginButton.vue";
+import process from "process";
 
 export default {
   name: "MainLayout",
@@ -137,8 +138,8 @@ export default {
       darkMode: {
         text: "Dark Mode",
         icon: "fas fa-moon"
-      }
-      // isDekstop :  this.$q.platform.is.desktop ? true:false
+      },
+      url_doc :process.env.VUE_APP_TSWAPS_DOCS
     };
   },
   methods: {
@@ -151,6 +152,7 @@ export default {
     // TODO : Better way of storing and navigating external links
     navigateExternalNewWindow: function(link) {
       window.open(link, "_blank");
+      console.log("Log Link",link)
     }
   },
   created() {
