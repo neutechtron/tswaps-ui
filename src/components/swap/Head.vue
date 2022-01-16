@@ -11,19 +11,40 @@
       >
       </q-btn>
       <q-dialog v-model="tolerance">
-        <q-card style="min-width:350px; max-width:400px">
-          <q-card-section class="text-grey-9" >
-            <div class="text-h6" >Transaction Settings</div>
+        <q-card style="min-width: 350px; max-width: 400px">
+          <q-card-section class="text-grey-9">
+            <div class="text-h6">Transaction Settings</div>
           </q-card-section>
 
           <q-separator />
 
           <q-card-section>
             <div class="text-subtitle1 text-grey-7">Slippage tolerance</div>
+            <q-card-actions align="around">
+              <q-btn outline rounded >
+                <div class="font-size: 1.5em ">
+                  0.1%
+                </div>
+              </q-btn>
+              <q-btn outline rounded>0.5%</q-btn>
+              <q-btn outline rounded>1.0%</q-btn>
+              <q-input
+                class="col-3"
+                input-style="font-size: 0.6em "
+                dense
+                rounded
+                outlined
+                v-model="price"
+                mask="#.##%"
+                fill-mask="0"
+                reverse-fill-mask
+                input-class="text-right"
+              />
+            </q-card-actions>
           </q-card-section>
 
           <q-card-section class="q-pt-none">
-            <div class="row justify-evenly">
+            <!-- <div class="row justify-evenly">
               <div class="col-2">
                 <q-btn flat class="float-right">0.1% </q-btn>
               </div>
@@ -46,13 +67,13 @@
                   @keyup.enter="prompt = false"
                 />
               </div>
-            </div>
+            </div> -->
           </q-card-section>
 
-          <q-card-actions align="right" class="text-primary">
+          <!-- <q-card-actions align="right" class="text-primary">
             <q-btn flat label="Cancel" v-close-popup />
             <q-btn flat label="Accept" v-close-popup />
-          </q-card-actions>
+          </q-card-actions> -->
         </q-card>
       </q-dialog>
     </q-toolbar>
