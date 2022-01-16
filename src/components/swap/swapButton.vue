@@ -178,6 +178,19 @@ export default {
       }
       await this.updateTokenBalances(this.accountName);
     },
+
+    async onLogin(idx) {
+      this.error = null;
+      const error = await this.login({ idx });
+      if (!error) {
+        this.showLogin = false;
+      } else {
+        this.error = error;
+      }
+    },
+    openUrl(url) {
+      window.open(url);
+    }
   },
   async mounted() {
     await this.updatePools();

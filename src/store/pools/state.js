@@ -1,5 +1,5 @@
 export default () => ({
-  allPools: [
+  pools: [
     {
       name: 'TLOS-SWAP',
       liquidity: 159,

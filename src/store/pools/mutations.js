@@ -1,5 +1,5 @@
-export const setPools = (state, allPools) => {
-  state.allPools = allPools;
+export const setPools = (state, pools) => {
+  state.pools = pools;
 };
 
 export const setUserLiquidityPools = (state, userPools) => {
