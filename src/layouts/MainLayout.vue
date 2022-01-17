@@ -20,14 +20,13 @@
 
           <q-btn flat to="/pools" no-caps> Pools </q-btn>
 
-          <q-btn
-            flat
-            @click="
-              navigateExternalNewWindow()
-            "
-            no-caps
-          >
+          <q-btn flat type="a" :href="TSWAPS_BRIDGE" target="_blank" no-caps>
             Bridge
+            <q-icon
+              name="fas fa-external-link-alt"
+              size="0.8rem"
+              class="q-pl-xs"
+            />
           </q-btn>
         </div>
 
@@ -55,10 +54,7 @@
                   />
                 </q-item-section>
               </q-item>
-              <q-item
-                clickable
-                @click="navigateExternalNewWindow(url_doc)"
-              >
+              <q-item clickable @click="openUrl(TSWAPS_DOCS)">
                 <q-item-section> Docs </q-item-section>
                 <q-icon
                   color="primary"
@@ -113,10 +109,18 @@
         <q-route-tab
           class="text-purple"
           name="bridge"
-          label="Bridge"
           to=""
-          @click="navigateExternalNewWindow('https://docs.uniswap.org/')"
-        />
+          @click="openUrl(TSWAPS_BRIDGE)"
+        >
+          <div class="row items-center">
+            Bridge
+            <q-icon
+              name="fas fa-external-link-alt"
+              size="0.8rem"
+              class="q-pl-xs"
+            />
+          </div>
+        </q-route-tab>
       </q-tabs>
     </q-footer>
 
@@ -128,7 +132,6 @@
 
 <script>
 import LoginButton from "components/LoginButton.vue";
-import process from "process";
 
 export default {
   name: "MainLayout",
@@ -139,7 +142,8 @@ export default {
         text: "Dark Mode",
         icon: "fas fa-moon"
       },
-      url_doc :process.env.VUE_APP_TSWAPS_DOCS
+      TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
+      TSWAPS_DOCS: process.env.TSWAPS_DOCS
     };
   },
   methods: {
@@ -149,10 +153,8 @@ export default {
       this.darkMode.text = this.$q.dark.isActive ? "Light Mode" : "Dark Mode";
       this.darkMode.icon = this.$q.dark.isActive ? "fas fa-sun" : "fas fa-moon";
     },
-    // TODO : Better way of storing and navigating external links
-    navigateExternalNewWindow: function(link) {
-      window.open(link, "_blank");
-      console.log("Log Link",link)
+    openUrl(url) {
+      window.open(url, "_blank");
     }
   },
   created() {

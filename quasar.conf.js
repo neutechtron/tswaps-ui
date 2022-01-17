@@ -54,6 +54,8 @@ module.exports = function(/* ctx */) {
         SWAP_CONTRACT: process.env.SWAP_CONTRACT,
         LIQUIDITY_CONTRACT: process.env.LIQUIDITY_CONTRACT,
         LPTOKEN_CONTRACT: process.env.LPTOKEN_CONTRACT,
+        TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
+        TSWAPS_DOCS: process.env.TSWAPS_DOCS
       },
 
       // transpile: false,
