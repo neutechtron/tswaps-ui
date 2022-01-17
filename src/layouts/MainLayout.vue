@@ -47,20 +47,12 @@
               <q-item clickable @click="toggleDarkMode()">
                 <q-item-section>{{ darkMode.text }} </q-item-section>
                 <q-item-section avatar>
-                  <q-icon
-                    color="primary"
-                    :name="darkMode.icon"
-                    style="font-size: 1.4rem"
-                  />
+                  <q-icon :name="darkMode.icon" style="font-size: 1.4rem" />
                 </q-item-section>
               </q-item>
               <q-item clickable @click="openUrl(TSWAPS_DOCS)">
                 <q-item-section> Docs </q-item-section>
-                <q-icon
-                  color="primary"
-                  name="article"
-                  style="font-size: 1.6rem"
-                />
+                <q-icon name="article" style="font-size: 1.6rem" />
               </q-item>
               <q-item clickable>
                 <q-item-section> Legal &amp; Privacy </q-item-section>

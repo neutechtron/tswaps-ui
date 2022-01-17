@@ -1,19 +1,18 @@
 <template>
   <div>
     <div v-if="!isAuthenticated" class="q-px-sm">
-      <q-btn v-if="!isAuthenticated"
+      <q-btn
+        v-if="!isAuthenticated"
         @click="showLogin = true"
         label="Login"
+        no-caps
       />
     </div>
     <div v-if="isAuthenticated" class="q-px-sm row items-center">
       <div class="account-name q-px-sm">
         {{ accountName }}
       </div>
-      <q-btn
-        @click="logout"
-        label="Logout"
-      />
+      <q-btn @click="logout" label="Logout" no-caps />
     </div>
     <q-dialog v-model="showLogin">
       <q-list>
@@ -105,12 +104,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.account-name {
-  font-size: 1.2rem;
-}
-@media only screen and (max-width: 350px) {
-  .account-name {
-    font-size: 1rem;
-  }
-}
+// .account-name {
+//   font-size: 1.2rem;
+// }
+// @media only screen and (max-width: 350px) {
+//   .account-name {
+//     font-size: 1rem;
+//   }
+// }
 </style>
