@@ -1,7 +1,7 @@
 <template>
     <q-table
       :dense="$q.screen.lt.md"
-      :data="allPools"
+      :data="getPools"
       :columns="columns"
       row-key="name"
       flat
@@ -40,7 +40,7 @@
               v-if="props.row.userLiquidity"
               class="text-left"
             >
-              This is expand slot for row above: {{ props.row.name }}.
+              This is expand slot for row above: {{ props.row.id }}.
             </div>
           </q-td>
         </q-tr>
@@ -58,14 +58,14 @@ const columns = [
     required: true,
     label: 'Name',
     align: 'left',
-    field: row => row.name,
+    field: row => row.id,
     format: val => `${val}`,
     sortable: true
   },
-  { name: 'liquidity', align: 'center', label: 'Liquidity', field: 'liquidity', sortable: true },
-  { name: 'volume24', label: 'Volume (24hrs)', field: 'volume24', sortable: true },
-  { name: 'volume7d', label: 'Volume (7d)', field: 'volume7d', sortable: true },
-  { name: 'fees', label: 'Fees (24hrs)', field: 'fees' },
+  { name: 'liquidity', align: 'center', label: 'Liquidity', field: row => row.liquidity.quantity, sortable: true },
+  { name: 'volume24', label: 'Volume 1', field: row => row.volume0, sortable: true },
+  { name: 'volume7d', label: 'Volume 2', field: row => row.volume1, sortable: true },
+  { name: 'price', label: 'Price', field: row => row.virtual_price },
   { name: 'apy1week', label: 'APY (1 week)', field: 'apy1week' },
   { name: 'actions', label: 'Actions', field: 'actions' }
 ]
@@ -75,7 +75,7 @@ export default {
   methods: {
     ...mapActions("pools", ['updatePools', 'updateUserLiquidityPools'])
   },
-  computed: mapGetters("pools", ['allPools', 'userPools']),
+  computed: mapGetters("pools", ['getPools', 'userPools']),
   data () {
     return {
       columns,

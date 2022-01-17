@@ -4,7 +4,7 @@
       no-caps
       class="sendBtn full-width"
       label="Add liquidity"
-      @click="trySend()"
+      @click="tryAddLiquidity()"
     />
     <q-btn v-else
       no-caps
@@ -95,24 +95,13 @@ export default {
       "getCurrentChain",
       "getNetworkByName"
     ]),
-    ...mapGetters("bridge", [
-      "getToken",
-      "getFromChain",
-      "getToChain",
-      "getFromAccount",
-      "getToAccount",
-      "getAmount",
-      "getMemo"
+    ...mapGetters("liquidity", [
+      "getToken1",
+      "getToken2",
+      "getValue1",
+      "getValue2",
+      "getPool"
     ]),
-    token_contract() {
-      return this.getToken ? this.getToken.contract : null;
-    },
-    token_precision() {
-      return this.getToken ? this.getToken.precision : null;
-    },
-    token_symbol() {
-      return this.getToken ? this.getToken.symbol : null;
-    }
   },
   methods: {
     ...mapActions("account", ["accountExistsOnChain","login"]),
@@ -122,66 +111,65 @@ export default {
       "updateTokenBalances"
     ]),
 
-    async trySend() {
+    async tryAddLiquidity() {
       try {
-        await this.send();
+        await this.createMemo();
+        await this.swap();
         this.$q.notify({
           color: "green-4",
           textColor: "white",
           icon: "cloud_done",
-          message: "Sent"
+          message: "Swap complete"
         });
       } catch (error) {
         this.$errorNotification(error);
       }
     },
 
-    async send() {
-      if (
-        !(await this.accountExistsOnChain({
-          account: this.getToAccount,
-          network: this.getToChain.NETWORK_NAME
-        }))
-      ) {
-        this.$q.notify({
-          type: "negative",
-          message: `Account ${this.getToAccount} does not exist`
-        });
-        return;
+    async add() {
+      if (!this.accountName) {
+        throw new Error(`Account ${this.getToAccount} does not exist`);
+      }
+      if (Number(this.token_balance) <= Number(this.getAmount)) {
+        throw new Error(`Account ${this.accountName} does not have the required funds to preform swap`);
       }
 
       let transaction;
-      if (this.getToken.telosdio === true) {
-        console.log("Sending across TELOSD bridge");
-        const actions = [
-          {
-            account: this.token_contract,
-            name: "transfer",
-            data: {
-              from: this.accountName.toLowerCase(),
-              to: "telosd.io",
-              quantity: `${parseFloat(this.getAmount).toFixed(
-                this.token_precision
-              )} ${this.token_symbol}`,
-              memo: `${
-                this.getToAccount
-              }@${this.getToChain.NETWORK_NAME.toLowerCase()}|${this.getMemo}`
-            }
-          }
-        ];
-        transaction = await this.$store.$api.signTransaction(actions);
-      } else if (
-        this.getToChain.NETWORK_NAME.toUpperCase() ===
-        this.getCurrentChain.NETWORK_NAME
+      if (
+         true 
       ) {
-        // if normal transfer to same network
+        console.log("Trying to do add liquidity");
         const actions = [
           {
-            account: this.token_contract,
+            account: this.getToken1?.contract,// token contract
             name: "transfer",
             data: {
               from: this.accountName.toLowerCase(),
-              to: this.getToAccount,
+              to: "nottswapsioa", // pool contract
+              quantity: `${parseFloat(this.getValue1).toFixed(
+                this.getToken1?.precision
+              )} ${this.getToken1?.symbol}`,
+              memo: ``
+            }
+          },
+          {
+            account: this.getToken1?.contract,// token contract
+            name: "transfer",
+            data: {
+              from: this.accountName.toLowerCase(),
+              to: "nottswapsioa", // pool contract
+              quantity: `${parseFloat(this.getValue2).toFixed(
+                this.getToken2?.precision
+              )} ${this.getToken2?.symbol}`,
+              memo: ``
+            }
+          },
+          {
+            account: this.getPool?.id,// token contract
+            name: "push",
+            data: {
+              from: this.accountName.toLowerCase(),
+              to: "nottswapsioa", // pool contract
               quantity: `${parseFloat(this.getAmount).toFixed(
                 this.token_precision
               )} ${this.token_symbol}`,
@@ -190,34 +178,16 @@ export default {
           }
         ];
         transaction = await this.$store.$api.signTransaction(actions);
-      } else {
-        // If different EOS network, send to bridge
-        const actions = [
-          {
-            account: this.token_contract,
-            name: "transfer",
-            data: {
-              from: this.accountName.toLowerCase(),
-              to: "bridge.start",
-              quantity: `${parseFloat(this.getAmount).toFixed(
-                this.token_precision
-              )} ${this.token_symbol}`,
-              memo: `${
-                this.getToAccount
-              }@${this.getToChain.NETWORK_NAME.toLowerCase()}|${this.getMemo}`
-            }
-          }
-        ];
-        transaction = await this.$store.$api.signTransaction(actions);
-      }
+      } 
+      
       if (transaction) {
         this.showTransaction = true;
         this.transaction = transaction.transactionId;
         // TODO clear values
-        this.$store.commit("bridge/setAmount", "");
-        this.$store.commit("bridge/setToAccount", "");
-        this.$store.commit("bridge/setMemo", "");
+        this.$store.commit("swap/setAmount", "");
+        this.$store.commit("swap/setMemo", "");
       }
+      await this.updateTokenBalances(this.accountName);
     },
 
     async onLogin(idx) {
