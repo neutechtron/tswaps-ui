@@ -19,10 +19,8 @@
 
               <div class="row justify-center q-mt-xs q-mb-xs">
                 <span class="ml-2 fa-stack fa-1x">
-                  <i class="fas fa-square fa-stack-2x swapSquare"></i>
-                  <i
-                    class="fas fa-arrow-down  fa-stack-1x fa-inverse swapArrow"
-                  ></i>
+                  <i class="fas fa-circle fa-stack-2x swapCircle"></i>
+                  <i class="fas fa-plus  fa-stack-1x fa-inverse swapArrow"></i>
                 </span>
               </div>
 
