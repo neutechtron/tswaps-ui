@@ -1,8 +1,8 @@
 <template>
   <q-layout view="LHh Lpr lFf">
-    <q-header class="transparent">
+    <q-header class="main-header">
       <q-toolbar class="toolbar">
-        <div class="q-py-sm">
+        <div class="q-pa-sm">
           <router-link to="/" class="row items-center q-gutter-x-xs">
             <img
               alt="Telos EVM logo"
@@ -13,7 +13,7 @@
           </router-link>
         </div>
 
-        <div v-if="$q.platform.is.desktop">
+        <div class="desktop-only q-ql-xs">
           <q-btn flat to="/" no-caps> Swap </q-btn>
 
           <q-btn flat to="/liquidity" no-caps> Liquidity </q-btn>
@@ -79,39 +79,22 @@
 
     <q-footer
       bordered
-      class="transparent"
+      class="toolbar-mobile"
       v-if="$q.platform.is.mobile"
       reveal
-      elevated
     >
       <q-tabs
         v-model="tab"
         align="justify"
         no-caps
-        active-color="primary"
         indicator-color="transparent"
         :breakpoint="0"
       >
-        <q-route-tab class="text-purple" name="swap" label="Swap" to="/" />
-        <q-route-tab
-          class="text-purple"
-          name="liquidity"
-          label="Liquidity"
-          to="/liquidity"
-        />
-        <q-route-tab
-          class="text-purple"
-          name="pools"
-          label="Pools"
-          to="/pools"
-        />
+        <q-route-tab name="swap" label="Swap" to="/" />
+        <q-route-tab name="liquidity" label="Liquidity" to="/liquidity" />
+        <q-route-tab name="pools" label="Pools" to="/pools" />
         <!-- TODO: Need to deleselect bridge tab to previous selected tab when clicked -->
-        <q-route-tab
-          class="text-purple"
-          name="bridge"
-          to=""
-          @click="openUrl(TSWAPS_BRIDGE)"
-        >
+        <q-route-tab name="bridge" to="" @click="openUrl(TSWAPS_BRIDGE)">
           <div class="row items-center">
             Bridge
             <q-icon
