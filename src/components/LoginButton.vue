@@ -106,10 +106,8 @@ export default {
     copyAccountName() {
       copyToClipboard(this.accountName).then(() => {
         this.$q.notify({
-          color: "green-4",
-          textColor: "secondary",
-          message: "Copied address to clipboard",
-          timeout: 1000
+          color: "positive",
+          message: "Copied address to clipboard"
         });
       });
     }

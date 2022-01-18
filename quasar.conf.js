@@ -23,7 +23,14 @@ module.exports = function(/* ctx */) {
     // app boot file (/src/boot)
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
-    boot: ["ual", "hyperion", "api", "assetHandler", "errorHandler"],
+    boot: [
+      "ual",
+      "hyperion",
+      "api",
+      "assetHandler",
+      "errorHandler",
+      "notifyDefaults"
+    ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
     css: ["fonts/silka/silka.css", "app.scss"],
