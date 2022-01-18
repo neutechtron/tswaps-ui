@@ -9,7 +9,8 @@ export default function() {
       chain: "telos",
       tportstart: false,
       telosdio: true,
-      bridgestart: false
+      bridgestart: false,
+      toTokens: []
     },
     toToken: {
       contract: "",
@@ -20,7 +21,8 @@ export default function() {
       chain: "telos",
       tportstart: true,
       telosdio: false,
-      bridgestart: true
+      bridgestart: true,
+      fromTokens: []
     },
     amount: 0,
     estimate: 0,

@@ -34,6 +34,13 @@
                   <swap-button />
                 </div>
               </div>
+              <q-card
+                v-if="!getIsValidPair"
+                flat
+                class="warning-card text-center q-mt-md"
+              >
+                No pool exists for the selected pair
+              </q-card>
             </q-card-section>
           </q-card>
         </div>
@@ -56,6 +63,9 @@ export default {
     toCard,
     headButtons,
     swapButton
+  },
+  computed: {
+    ...mapGetters("swap", ["getIsValidPair"])
   },
   methods: {
     ...mapActions("swap", ["swapToAndFrom"])

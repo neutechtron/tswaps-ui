@@ -50,6 +50,12 @@ body {
   align-items: center;
 }
 
+.warning-card {
+  padding: 8px;
+  background: $yellow-4;
+  color: $dark;
+}
+
 // Light/Dark Theme
 body.body--light {
   .main-header {

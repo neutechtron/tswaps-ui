@@ -6,6 +6,7 @@
       class="sendBtn full-width"
       label="Swap"
       @click="trySwap()"
+      :disable="!getIsValidPair"
     />
     <q-btn
       v-else
@@ -43,7 +44,8 @@ export default {
       "getFromToken",
       "getToToken",
       "getAmount",
-      "getMemo"
+      "getMemo",
+      "getIsValidPair"
     ]),
     token_contract() {
       return this.getFromToken?.contract;
