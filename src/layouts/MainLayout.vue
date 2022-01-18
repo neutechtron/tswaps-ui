@@ -14,11 +14,22 @@
         </div>
 
         <div class="gt-sm q-ql-xs">
-          <q-btn flat to="/swap" no-caps> Swap </q-btn>
+          <q-btn flat to="/swap" no-caps :class="isSelectedTab('swap')">
+            Swap
+          </q-btn>
 
-          <q-btn flat to="/liquidity" no-caps> Liquidity </q-btn>
+          <q-btn
+            flat
+            to="/liquidity"
+            no-caps
+            :class="isSelectedTab('liquidity')"
+          >
+            Liquidity
+          </q-btn>
 
-          <q-btn flat to="/pools" no-caps> Pools </q-btn>
+          <q-btn flat to="/pools" no-caps :class="isSelectedTab('pools')">
+            Pools
+          </q-btn>
 
           <q-btn flat type="a" :href="TSWAPS_BRIDGE" target="_blank" no-caps>
             Bridge
@@ -38,19 +49,31 @@
         <q-btn icon="menu" flat>
           <q-menu :offset="[0, 15]">
             <q-list style="min-width: 180px" class="menu">
-              <q-item clickable class="lt-md">
+              <q-item clickable :class="`lt-md ${isSelectedTab('swap')}`">
                 <q-item-section>
                   <router-link to="/swap">Swap</router-link>
                 </q-item-section>
               </q-item>
-              <q-item clickable class="lt-md">
+              <q-item clickable :class="`lt-md ${isSelectedTab('liquidity')}`">
                 <q-item-section>
                   <router-link to="/liquidity">Liquidity</router-link>
                 </q-item-section>
               </q-item>
-              <q-item clickable class="lt-md">
+              <q-item clickable :class="`lt-md ${isSelectedTab('pools')}`">
                 <q-item-section>
                   <router-link to="/pools">Pools</router-link>
+                </q-item-section>
+              </q-item>
+              <q-item clickable class="lt-md">
+                <q-item-section>
+                  <div class="row items-center">
+                    Bridge
+                    <q-icon
+                      name="fas fa-external-link-alt"
+                      size="0.8rem"
+                      class="q-pl-xs"
+                    />
+                  </div>
                 </q-item-section>
               </q-item>
               <q-separator class="lt-md" />
@@ -173,6 +196,9 @@ export default {
     },
     openUrl(url) {
       window.open(url, "_blank");
+    },
+    isSelectedTab(tab) {
+      return this.$route.name == tab ? "selectedTab" : "";
     }
   },
   created() {
@@ -191,5 +217,9 @@ export default {
   .t-swaps-title {
     display: none;
   }
+}
+
+.selectedTab {
+  font-weight: 700;
 }
 </style>
