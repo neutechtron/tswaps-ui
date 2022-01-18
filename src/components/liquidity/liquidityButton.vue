@@ -1,85 +1,36 @@
 <template>
-  <div >
-    <q-btn v-if="isAuthenticated"
+  <div>
+    <q-btn
+      v-if="isAuthenticated"
       no-caps
       class="sendBtn full-width"
       label="Add liquidity"
       @click="tryAddLiquidity()"
     />
-    <q-btn v-else
+    <q-btn
+      v-else
       no-caps
       class="sendBtn full-width"
-      label="Connect Wallet"
+      label="Login"
       @click="showLogin = true"
     />
-
-    <q-dialog v-model="showLogin">
-      <q-list>
-        <q-item
-          v-for="(wallet, idx) in $ual.authenticators"
-          :key="wallet.getStyle().text"
-          v-ripple
-          :style="{
-            background: wallet.getStyle().background,
-            color: wallet.getStyle().textColor
-          }"
-        >
-          <q-item-section class="cursor-pointer" avatar @click="onLogin(idx)">
-            <img :src="wallet.getStyle().icon" width="30" />
-          </q-item-section>
-          <q-item-section class="cursor-pointer" @click="onLogin(idx)">
-            {{ wallet.getStyle().text }}
-          </q-item-section>
-          <q-item-section class="flex" avatar>
-            <q-spinner
-              v-if="loading === wallet.getStyle().text"
-              :color="wallet.getStyle().textColor"
-              size="2em"
-            />
-            <q-btn
-              v-else
-              :color="wallet.getStyle().textColor"
-              icon="get_app"
-              @click="openUrl(wallet.getOnboardingLink())"
-              target="_blank"
-              dense
-              flat
-              size="12px"
-            >
-              <q-tooltip>
-                Get app
-              </q-tooltip>
-            </q-btn>
-          </q-item-section>
-        </q-item>
-        <q-item
-          v-if="error"
-          :active="!!error"
-          active-class="bg-red-1 text-grey-8"
-        >
-          <q-item-section>
-            {{ error }}
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-dialog>
+    <ual-dialog :showLogin.sync="showLogin" />
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import UalDialog from "src/components/UalDialog.vue";
 
 export default {
-  name: "Index",
-  components: { 
-  },
+  components: { UalDialog },
   data() {
     return {
       showTransaction: false,
       transaction: null,
       fromNetwork: "TELOS",
       pollTokens: null,
-      showLogin: false, 
+      showLogin: false,
       error: null
     };
   },
@@ -90,36 +41,29 @@ export default {
       "loading",
       "isAutoLoading"
     ]),
-    ...mapGetters("blockchains", [
-      "getAllPossibleChains",
-      "getCurrentChain",
-      "getNetworkByName"
-    ]),
     ...mapGetters("liquidity", [
       "getToken1",
       "getToken2",
       "getValue1",
       "getValue2",
-      "getPool"
-    ]),
+      "getPool",
+      "getMemo"
+    ])
   },
   methods: {
-    ...mapActions("account", ["accountExistsOnChain","login"]),
+    ...mapActions("account", ["accountExistsOnChain", "login"]),
     ...mapActions("pools", ["updatePools"]),
-    ...mapActions("tokens", [
-      "updateTokens",
-      "updateTokenBalances"
-    ]),
+    ...mapActions("liquidity", ["createMemo"]),
+    ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
 
     async tryAddLiquidity() {
       try {
         await this.createMemo();
-        await this.swap();
+        await this.add();
         this.$q.notify({
           color: "green-4",
           textColor: "white",
-          icon: "cloud_done",
-          message: "Swap complete"
+          message: "Liquidity added"
         });
       } catch (error) {
         this.$errorNotification(error);
@@ -131,17 +75,17 @@ export default {
         throw new Error(`Account ${this.getToAccount} does not exist`);
       }
       if (Number(this.token_balance) <= Number(this.getAmount)) {
-        throw new Error(`Account ${this.accountName} does not have the required funds to preform swap`);
+        throw new Error(
+          `Account ${this.accountName} does not have the required funds to preform swap`
+        );
       }
 
       let transaction;
-      if (
-         true 
-      ) {
+      if (true) {
         console.log("Trying to do add liquidity");
         const actions = [
           {
-            account: this.getToken1?.contract,// token contract
+            account: this.getToken1?.contract, // token contract
             name: "transfer",
             data: {
               from: this.accountName.toLowerCase(),
@@ -153,7 +97,7 @@ export default {
             }
           },
           {
-            account: this.getToken1?.contract,// token contract
+            account: this.getToken1?.contract, // token contract
             name: "transfer",
             data: {
               from: this.accountName.toLowerCase(),
@@ -165,7 +109,7 @@ export default {
             }
           },
           {
-            account: this.getPool?.id,// token contract
+            account: this.getPool?.id, // token contract
             name: "push",
             data: {
               from: this.accountName.toLowerCase(),
@@ -178,8 +122,8 @@ export default {
           }
         ];
         transaction = await this.$store.$api.signTransaction(actions);
-      } 
-      
+      }
+
       if (transaction) {
         this.showTransaction = true;
         this.transaction = transaction.transactionId;
@@ -190,15 +134,6 @@ export default {
       await this.updateTokenBalances(this.accountName);
     },
 
-    async onLogin(idx) {
-      this.error = null;
-      const error = await this.login({ idx });
-      if (!error) {
-        this.showLogin = false;
-      } else {
-        this.error = error;
-      }
-    },
     openUrl(url) {
       window.open(url);
     }
@@ -213,10 +148,7 @@ export default {
     //   this.updateAllTokensBalances(this.accountName);
     // }
   },
-  created() {
-    this.$store.commit("bridge/setFromChain", this.getAllPossibleChains[0]);
-    this.$store.commit("bridge/setToChain", this.getAllPossibleChains[1]);
-  },
+  created() {},
   watch: {
     async getFromChain() {
       await this.updateTokens();

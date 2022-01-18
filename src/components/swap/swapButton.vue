@@ -25,7 +25,6 @@ import { mapGetters, mapActions } from "vuex";
 import UalDialog from "src/components/UalDialog.vue";
 
 export default {
-  name: "Index",
   components: { UalDialog },
   data() {
     return {
