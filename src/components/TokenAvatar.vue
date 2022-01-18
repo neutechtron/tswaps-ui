@@ -13,7 +13,8 @@
         <q-spinner-puff color="primary" :style="avatarStyle" />
       </template>
     </q-img>
-    <div v-else v-html="identicon" />
+    <!-- <div v-else v-html="identicon" /> -->
+    <div class="icon-placeholder" v-else></div>
   </q-avatar>
 </template>
 
@@ -105,4 +106,32 @@ export default {
 };
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.icon-placeholder {
+  width: 100%;
+  height: 100%;
+  background-image: linear-gradient(
+    to left bottom,
+    $purpleBright 20%,
+    $blueLight 80%
+  );
+}
+// body.body--light {
+//   .icon-placeholder {
+//     background-image: linear-gradient(
+//       to right bottom,
+//       $purpleBright  20%,
+//       $white 100%
+//     );
+//   }
+// }
+// body.body--dark {
+//   .icon-placeholder {
+//     background-image: linear-gradient(
+//       to right bottom,
+//       #7f3de2 20%,
+//       $blueLight 100%
+//     );
+//   }
+// }
+</style>

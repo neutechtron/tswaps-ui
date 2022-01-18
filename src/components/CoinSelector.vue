@@ -3,14 +3,36 @@
     class="selectorContainer row items-center no-wrap"
     @click="showCoinDialog = !showCoinDialog"
   >
-    <token-avatar v-if="isSwap" :token="isFrom ? getFromToken.symbol.toString() : getToToken.symbol.toString() " :avatarSize="40" />
-    <token-avatar v-else :token="isFrom ? getToken1.symbol.toString() : getToken2.symbol.toString() " :avatarSize="40" />
-    <div v-if="isSwap" class="text-h6 q-mx-sm">{{ isFrom ? getFromToken.symbol.toString() : getToToken.symbol.toString() }}</div>
-    <div v-else class="text-h6 q-mx-sm">{{ isFrom ? getToken1.symbol.toString() : getToken2.symbol.toString() }}</div>
+    <token-avatar
+      v-if="isSwap"
+      :token="
+        isFrom ? getFromToken.symbol.toString() : getToToken.symbol.toString()
+      "
+      :avatarSize="40"
+    />
+    <token-avatar
+      v-else
+      :token="
+        isFrom ? getToken1.symbol.toString() : getToken2.symbol.toString()
+      "
+      :avatarSize="40"
+    />
+    <div v-if="isSwap" class="text-h6 q-mx-sm">
+      {{
+        isFrom ? getFromToken.symbol.toString() : getToToken.symbol.toString()
+      }}
+    </div>
+    <div v-else class="text-h6 q-mx-sm">
+      {{ isFrom ? getToken1.symbol.toString() : getToken2.symbol.toString() }}
+    </div>
     <div class="col row justify-end">
       <dropdown-btn />
     </div>
-    <coin-dialog :showCoinDialog.sync="showCoinDialog" :isFrom="isFrom" :isSwap="isSwap" />
+    <coin-dialog
+      :showCoinDialog.sync="showCoinDialog"
+      :isFrom="isFrom"
+      :isSwap="isSwap"
+    />
   </div>
 </template>
 
