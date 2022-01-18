@@ -3,7 +3,7 @@
     <q-header class="main-header">
       <q-toolbar class="toolbar">
         <div class="q-pa-sm">
-          <router-link to="/" class="row items-center q-gutter-x-xs">
+          <router-link to="/" class="row items-center q-gutter-x-sm">
             <img
               alt="Telos EVM logo"
               src="~assets/images/swap.png"
@@ -32,31 +32,40 @@
 
         <q-space />
 
-        <login-button></login-button>
+        <login-button />
 
         <!-- About, Help Center, Dark Theme, Docs, Legal & Privacy -->
         <q-btn icon="menu" flat>
-          <q-menu :offset="[0, 10]">
-            <q-list style="min-width: 180px">
+          <q-menu :offset="[0, 15]">
+            <q-list style="min-width: 180px" class="menu">
+              <q-item clickable @click="openUrl(TSWAPS_DOCS)">
+                <q-item-section> Docs </q-item-section>
+                <q-item-section side>
+                  <q-icon name="article" />
+                </q-item-section>
+              </q-item>
+              <q-item clickable @click="toggleDarkMode()">
+                <q-item-section>{{ darkMode.text }} </q-item-section>
+                <q-item-section side>
+                  <q-icon :name="darkMode.icon" />
+                </q-item-section>
+              </q-item>
+              <q-separator />
+              <q-item clickable @click="logout">
+                <q-item-section> Logout </q-item-section>
+                <q-item-section side>
+                  <q-icon name="fas fa-sign-out-alt" />
+                </q-item-section>
+              </q-item>
+              <!-- <q-item clickable>
+                <q-item-section> Help Center </q-item-section>
+              </q-item>
               <q-item clickable>
                 <q-item-section> About </q-item-section>
               </q-item>
               <q-item clickable>
-                <q-item-section> Help Center </q-item-section>
-              </q-item>
-              <q-item clickable @click="toggleDarkMode()">
-                <q-item-section>{{ darkMode.text }} </q-item-section>
-                <q-item-section avatar>
-                  <q-icon :name="darkMode.icon" style="font-size: 1.4rem" />
-                </q-item-section>
-              </q-item>
-              <q-item clickable @click="openUrl(TSWAPS_DOCS)">
-                <q-item-section> Docs </q-item-section>
-                <q-icon name="article" style="font-size: 1.6rem" />
-              </q-item>
-              <q-item clickable>
                 <q-item-section> Legal &amp; Privacy </q-item-section>
-              </q-item>
+              </q-item> -->
             </q-list>
           </q-menu>
         </q-btn>
@@ -103,6 +112,7 @@
 
 <script>
 import LoginButton from "components/LoginButton.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "MainLayout",
@@ -119,6 +129,7 @@ export default {
     };
   },
   methods: {
+    ...mapActions("account", ["logout"]),
     toggleDarkMode() {
       this.$q.dark.toggle();
       localStorage.setItem("darkModeEnabled", this.$q.dark.isActive);

@@ -1,18 +1,24 @@
 <template>
   <div>
-    <div v-if="!isAuthenticated" class="q-px-sm">
+    <div v-if="!isAuthenticated" class="">
       <q-btn
         v-if="!isAuthenticated"
         @click="showLogin = true"
         label="Login"
         no-caps
+        flat
       />
     </div>
     <div v-if="isAuthenticated" class="q-px-sm row items-center">
-      <div class="account-name q-px-sm">
+      <q-btn
+        no-caps
+        outline
+        padding="0.2rem"
+        class="account-name q-px-sm"
+        @click="copyAccountName()"
+      >
         {{ accountName }}
-      </div>
-      <q-btn @click="logout" label="Logout" no-caps />
+      </q-btn>
     </div>
     <q-dialog v-model="showLogin">
       <q-list>
@@ -69,6 +75,7 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import { copyToClipboard } from "quasar";
 
 export default {
   data() {
@@ -95,6 +102,16 @@ export default {
     },
     openUrl(url) {
       window.open(url);
+    },
+    copyAccountName() {
+      copyToClipboard(this.accountName).then(() => {
+        this.$q.notify({
+          color: "green-4",
+          textColor: "secondary",
+          message: "Copied address to clipboard",
+          timeout: 1000
+        });
+      });
     }
   },
   async mounted() {
