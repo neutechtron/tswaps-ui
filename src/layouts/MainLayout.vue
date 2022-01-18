@@ -40,7 +40,7 @@
             <q-list style="min-width: 180px" class="menu">
               <q-item clickable class="lt-md">
                 <q-item-section>
-                  <router-link to="/">Swap</router-link>
+                  <router-link to="/swap">Swap</router-link>
                 </q-item-section>
               </q-item>
               <q-item clickable class="lt-md">
@@ -126,7 +126,7 @@
     <q-footer bordered class="footer q-pa-md">
       <div class="row justify-end">
         <p class="">
-          {{ SITE_VERSION }}
+          Version {{ SITE_VERSION }}
           <!-- <q-tooltip
             anchor="top left"
             :offset="[0, 5]"

@@ -253,6 +253,10 @@ body.body--dark {
   @media only screen and (max-width: 800px) {
     padding: 15px;
   }
+  .q-input {
+    width: 100%;
+    font-size: 1.8rem;
+  }
 }
 
 .q-dialog__inner > div {
@@ -294,11 +298,6 @@ body.body--dark {
     width: 3rem;
     height: 3rem;
   }
-}
-
-.q-input {
-  width: 100%;
-  font-size: 1.8rem;
 }
 
 @media only screen and (max-width: 550px) {

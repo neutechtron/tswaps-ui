@@ -7,7 +7,7 @@ const routes = [
     path: "/swap",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", name: "liquidity", component: () => import("pages/swap.vue") }
+      { path: "", name: "swap", component: () => import("pages/swap.vue") }
     ]
   },
   {

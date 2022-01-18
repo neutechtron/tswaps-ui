@@ -44,7 +44,12 @@ export default {
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
-    ...mapGetters("bridge", ["getToChain", "getToken", "getToChain", "getFromChain"])
+    ...mapGetters("bridge", [
+      "getToChain",
+      "getToken",
+      "getToChain",
+      "getFromChain"
+    ])
   },
   watch: {
     async toAccount() {
@@ -82,7 +87,7 @@ export default {
         this.getFromChain.NETWORK_NAME.toLowerCase() ===
         this.getToChain.NETWORK_NAME.toLowerCase()
       ) {
-        balance = this.getToken.amount
+        balance = this.getToken.amount;
       } else {
         let toToken = this.getToken.toTokens.find(
           c => c.chain === this.getToChain.NETWORK_NAME.toLowerCase()
