@@ -1,15 +1,15 @@
 export default function() {
   return {
     fromToken: {
-      contract: "token.start",
-      symbol: "START",
+      contract: "eosio.token",
+      symbol: "TLOS",
       balance: 0,
       precision: 4,
       enabled: true,
       chain: "telos",
-      tportstart: true,
-      telosdio: false,
-      bridgestart: true
+      tportstart: false,
+      telosdio: true,
+      bridgestart: false
     },
     toToken: {
       contract: "",
