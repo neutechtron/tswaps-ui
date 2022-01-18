@@ -13,7 +13,7 @@
             <q-card-section class="swapCardSection">
               <div class="row">
                 <div class="col-sm-12 ">
-                  <from-card />
+                  <input1 />
                 </div>
               </div>
 
@@ -25,7 +25,7 @@
 
               <div class="row ">
                 <div class="col-sm-12 ">
-                  <to-card />
+                  <input2 />
                 </div>
               </div>
 
@@ -67,16 +67,16 @@
 </template>
 
 <script>
-import fromCard from "src/components/liquidity/Input1.vue";
-import toCard from "src/components/liquidity/Input2.vue";
+import input1 from "src/components/liquidity/Input1.vue";
+import input2 from "src/components/liquidity/Input2.vue";
 import liquidityButton from "src/components/liquidity/liquidityButton.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Index",
   components: {
-    fromCard,
-    toCard,
+    input1,
+    input2,
     liquidityButton
   },
   computed: {

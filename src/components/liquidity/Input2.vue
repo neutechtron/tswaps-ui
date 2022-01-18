@@ -7,7 +7,11 @@
       </div>
     </div>
     <div class="row flex-wrap items-end">
-      <input-amount class="col-xs-12 col-sm-6 col-md-6 q-mt-sm" />
+      <input-amount
+        class="col-xs-12 col-sm-6 col-md-6 q-mt-xs"
+        :amount="getValue2"
+        @update:amount="updateValue2($event)"
+      />
       <div class="col-xs-12 col-sm-6 col-md-6 row justify-stretch q-mt-sm">
         <coin-selector class="col q-mr-sm" />
       </div>
@@ -25,7 +29,7 @@ export default {
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
-    ...mapGetters("liquidity", ["getToken2"]),
+    ...mapGetters("liquidity", ["getValue1", "getValue2", "getToken2"]),
     ...mapGetters("tokens", ["getTokens"]),
 
     balance() {
@@ -35,6 +39,9 @@ export default {
         return 0;
       }
     }
+  },
+  methods: {
+    ...mapActions("liquidity", ["updateValue1", "updateValue2"])
   }
 };
 </script>
