@@ -124,17 +124,17 @@
     </q-page-container>
 
     <q-footer bordered class="footer q-pa-md">
-      <div class="row" style="width: 500px">
-        <p class="col-5">
-          v{{ SITE_VERSION }}
-          <q-tooltip
+      <div class="row justify-end">
+        <p class="">
+          {{ SITE_VERSION }}
+          <!-- <q-tooltip
             anchor="top left"
             :offset="[0, 5]"
             self="bottom left"
             class="row"
           >
             Interface Version
-          </q-tooltip>
+          </q-tooltip> -->
         </p>
       </div>
     </q-footer>

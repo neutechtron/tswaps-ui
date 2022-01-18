@@ -41,6 +41,15 @@ body {
   }
 }
 
+.cardCircle {
+  width: 50px;
+  height: 50px;
+  border-radius: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 // Light/Dark Theme
 body.body--light {
   .main-header {
@@ -72,7 +81,8 @@ body.body--light {
     $white 100%
   );
 
-  .inputCard {
+  .inputCard,
+  .cardCircle {
     background: rgb(238, 234, 244);
     color: $dark-0;
   }
@@ -94,14 +104,6 @@ body.body--light {
     //   opacity: 0.9;
     //   border-radius: 30px;
     // }
-
-    .swapArrow {
-      color: $dark-0;
-    }
-
-    .swapCircle {
-      color: rgb(238, 234, 244);
-    }
   }
 
   .chart-card {
@@ -165,7 +167,8 @@ body.body--dark {
   );
 
   color: $white;
-  .inputCard {
+  .inputCard,
+  .cardCircle {
     background: rgba($blueDarkMode, 0.9);
     color: $white;
   }
@@ -191,14 +194,6 @@ body.body--dark {
     //   opacity: 0.9;
     //   border-radius: 30px;
     // }
-
-    .swapArrow {
-      color: $white;
-    }
-
-    .swapCircle {
-      color: rgba($blueDarkMode, 0.9);
-    }
   }
 
   .chart-card {
