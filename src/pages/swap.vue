@@ -1,10 +1,11 @@
 <template>
   <q-page>
     <div class="q-pa-sm ">
-      <div class="row justify-center q-mt-md">
-        <div class="col-12 ">
-          <head-buttons />
+      <div class="row justify-between q-my-md q-mx-md">
+        <div class="text-h5  ">
+          Swap
         </div>
+        <head-buttons />
       </div>
 
       <div class="row justify-center q-mt-xs">

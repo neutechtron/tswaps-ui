@@ -1,9 +1,9 @@
 <template>
   <q-page>
     <div class="q-pa-sm">
-      <div class="row justify-center q-my-md">
-        <div class="col-12">
-          <head-buttons />
+      <div class="row justify-between q-my-md q-mx-md">
+        <div class="text-h5 ">
+          Liquidity
         </div>
       </div>
 
@@ -61,7 +61,6 @@
 <script>
 import fromCard from "src/components/liquidity/Input1.vue";
 import toCard from "src/components/liquidity/Input2.vue";
-import headButtons from "src/components/liquidity/Head.vue";
 import liquidityButton from "src/components/liquidity/liquidityButton.vue";
 
 export default {
@@ -69,7 +68,6 @@ export default {
   components: {
     fromCard,
     toCard,
-    headButtons,
     liquidityButton
   }
 };
