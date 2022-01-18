@@ -90,7 +90,7 @@
                   <q-icon :name="darkMode.icon" />
                 </q-item-section>
               </q-item>
-              <q-separator />
+              <q-separator v-if="isAuthenticated" />
               <q-item v-if="isAuthenticated" clickable @click="logout">
                 <q-item-section> Logout </q-item-section>
                 <q-item-section side>
@@ -147,7 +147,7 @@
     </q-page-container>
 
     <q-footer bordered class="footer q-pa-md">
-      <div class="row justify-end">
+      <div class="row justify-center">
         <p class="">
           Version {{ SITE_VERSION }}
           <!-- <q-tooltip
