@@ -18,7 +18,7 @@
               </div>
 
               <div class="row justify-center q-mt-xs q-mb-xs">
-                <div class="cursor-pointer cardCircle">
+                <div class="cursor-pointer cardCircle" @click="swapToAndFrom()">
                   <i class="fas fa-arrow-down "></i>
                 </div>
               </div>
@@ -47,6 +47,7 @@ import fromCard from "src/components/swap/FromCard.vue";
 import toCard from "src/components/swap/ToCard.vue";
 import headButtons from "src/components/swap/Head.vue";
 import swapButton from "src/components/swap/swapButton.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "swap",
@@ -55,6 +56,9 @@ export default {
     toCard,
     headButtons,
     swapButton
+  },
+  methods: {
+    ...mapActions("swap", ["swapToAndFrom"])
   }
 };
 </script>
