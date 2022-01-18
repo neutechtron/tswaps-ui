@@ -83,47 +83,41 @@ export default {
 
       let transaction;
       if (true) {
-        console.log("Add liquidity");
         const actions = [
           {
             account: this.getToken1?.contract, // token contract
             name: "transfer",
             data: {
               from: this.accountName.toLowerCase(),
-              to: "nottswapsioa", // pool contract
+              to: process.env.SWAP_CONTRACT,
               quantity: `${parseFloat(this.getValue1).toFixed(
                 this.getToken1?.precision
               )} ${this.getToken1?.symbol}`,
               memo: `deposit,${this.getPool.id}`
             }
+          },
+          {
+            account: this.getToken2?.contract, // token contract
+            name: "transfer",
+            data: {
+              from: this.accountName.toLowerCase(),
+              to: process.env.SWAP_CONTRACT,
+              quantity: `${parseFloat(this.getValue2).toFixed(
+                this.getToken2?.precision
+              )} ${this.getToken2?.symbol}`,
+              memo: `deposit,${this.getPool.id}`
+            }
+          },
+          {
+            account: process.env.SWAP_CONTRACT,
+            name: "deposit",
+            data: {
+              owner: this.accountName,
+              pair_id: this.getPool.id // TODO include min_amount
+            }
           }
-          // {
-          //   account: this.getToken1?.contract, // token contract
-          //   name: "transfer",
-          //   data: {
-          //     from: this.accountName.toLowerCase(),
-          //     to: "nottswapsioa", // pool contract
-          //     quantity: `${parseFloat(this.getValue2).toFixed(
-          //       this.getToken2?.precision
-          //     )} ${this.getToken2?.symbol}`,
-          //     memo: ``
-          //   }
-          // },
-          // {
-          //   account: this.getPool?.id, // token contract
-          //   name: "push",
-          //   data: {
-          //     from: this.accountName.toLowerCase(),
-          //     to: "nottswapsioa", // pool contract
-          //     quantity: `${parseFloat(this.getAmount).toFixed(
-          //       this.token_precision
-          //     )} ${this.token_symbol}`,
-          //     memo: this.getMemo
-          //   }
-          // }
         ];
-        console.log(actions);
-        // transaction = await this.$store.$api.signTransaction(actions);
+        transaction = await this.$store.$api.signTransaction(actions);
       }
 
       if (transaction) {
