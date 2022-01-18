@@ -1,7 +1,7 @@
 <template>
-  <q-layout view="LHh Lpr lFf">
+  <q-layout view="LHh Lpr lff">
     <q-header class="main-header">
-      <q-toolbar class="toolbar">
+      <q-toolbar class=" toolbar">
         <div class="q-pa-sm">
           <router-link to="/" class="row items-center q-gutter-x-sm">
             <img
@@ -9,7 +9,7 @@
               src="~assets/images/swap.png"
               width="35"
             />
-            <div class="text-h5 gt-xs">T-Swaps</div>
+            <div class="t-swaps-title text-h5 ">T-Swaps</div>
           </router-link>
         </div>
 
@@ -38,6 +38,23 @@
         <q-btn icon="menu" flat>
           <q-menu :offset="[0, 15]">
             <q-list style="min-width: 180px" class="menu">
+              <q-item clickable class="lt-md">
+                <q-item-section>
+                  <router-link to="/">Swap</router-link>
+                </q-item-section>
+              </q-item>
+              <q-item clickable class="lt-md">
+                <q-item-section>
+                  <router-link to="/liquidity">Liquidity</router-link>
+                </q-item-section>
+              </q-item>
+              <q-item clickable class="lt-md">
+                <q-item-section>
+                  <router-link to="/pools">Pools</router-link>
+                </q-item-section>
+              </q-item>
+              <q-separator class="lt-md" />
+
               <q-item clickable @click="openUrl(TSWAPS_DOCS)">
                 <q-item-section> Docs </q-item-section>
                 <q-item-section side>
@@ -45,13 +62,13 @@
                 </q-item-section>
               </q-item>
               <q-item clickable @click="toggleDarkMode()">
-                <q-item-section>{{ darkMode.text }} </q-item-section>
+                <q-item-section> Theme </q-item-section>
                 <q-item-section side>
                   <q-icon :name="darkMode.icon" />
                 </q-item-section>
               </q-item>
               <q-separator />
-              <q-item clickable @click="logout">
+              <q-item v-if="isAuthenticated" clickable @click="logout">
                 <q-item-section> Logout </q-item-section>
                 <q-item-section side>
                   <q-icon name="fas fa-sign-out-alt" />
@@ -78,7 +95,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-footer bordered class="toolbar-mobile lt-md" reveal>
+    <!-- <q-footer bordered class="toolbar-mobile lt-md" reveal>
       <q-tabs
         v-model="tab"
         align="justify"
@@ -89,7 +106,6 @@
         <q-route-tab name="swap" label="Swap" to="/" />
         <q-route-tab name="liquidity" label="Liquidity" to="/liquidity" />
         <q-route-tab name="pools" label="Pools" to="/pools" />
-        <!-- TODO: Need to deleselect bridge tab to previous selected tab when clicked -->
         <q-route-tab name="bridge" to="" @click="openUrl(TSWAPS_BRIDGE)">
           <div class="row items-center">
             Bridge
@@ -101,12 +117,27 @@
           </div>
         </q-route-tab>
       </q-tabs>
-    </q-footer>
+    </q-footer> -->
 
     <q-page-container class="column items-center">
       <router-view />
-      <p class="text-center">Version: {{ SITE_VERSION }}<br /></p>
     </q-page-container>
+
+    <q-footer bordered class="footer q-pa-md">
+      <div class="row" style="width: 500px">
+        <p class="col-5">
+          v{{ SITE_VERSION }}
+          <q-tooltip
+            anchor="top left"
+            :offset="[0, 5]"
+            self="bottom left"
+            class="row"
+          >
+            Interface Version
+          </q-tooltip>
+        </p>
+      </div>
+    </q-footer>
   </q-layout>
 </template>
 
@@ -125,8 +156,12 @@ export default {
       },
       TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
       TSWAPS_DOCS: process.env.TSWAPS_DOCS,
-      SITE_VERSION: process.env.SITE_VERSION
+      SITE_VERSION: process.env.SITE_VERSION,
+      tab: ""
     };
+  },
+  computed: {
+    ...mapGetters("account", ["isAuthenticated"])
   },
   methods: {
     ...mapActions("account", ["logout"]),
@@ -150,5 +185,11 @@ export default {
 .pageContainer {
   flex: 0 1 1200px;
   padding: 1rem;
+}
+
+@media only screen and (max-width: 380px) {
+  .t-swaps-title {
+    display: none;
+  }
 }
 </style>

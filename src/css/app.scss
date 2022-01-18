@@ -61,6 +61,11 @@ body.body--light {
     color: $dark-0;
   }
 
+  .footer {
+    background: $white;
+    color: $dark-0;
+  }
+
   background-image: linear-gradient(
     to right bottom,
     $purpleGrey 50%,
@@ -130,6 +135,10 @@ body.body--light {
 }
 
 body.body--dark {
+  .q-tooltip {
+    background: $purpleBright;
+  }
+
   .main-header {
     background: $dark-0;
   }
@@ -140,6 +149,11 @@ body.body--dark {
   }
 
   .toolbar-mobile {
+    background: $dark-0;
+    color: $white;
+  }
+
+  .footer {
     background: $dark-0;
     color: $white;
   }
