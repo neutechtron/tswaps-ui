@@ -45,9 +45,9 @@
             </q-card-section>
           </q-card>
 
-          <div class="row q-mx-md q-mt-xl q-mb-md">
-            <div class="col-6 relative-position ">
-              <div class="text-h5 text-weight-bold">Your Liquidity</div>
+          <div class="row justify-between q-my-md q-mx-md">
+            <div class="text-h5 ">
+              Your Liquidity
             </div>
           </div>
 
