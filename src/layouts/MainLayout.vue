@@ -14,7 +14,7 @@
         </div>
 
         <div class="gt-sm q-ql-xs">
-          <q-btn flat to="/" no-caps> Swap </q-btn>
+          <q-btn flat to="/swap" no-caps> Swap </q-btn>
 
           <q-btn flat to="/liquidity" no-caps> Liquidity </q-btn>
 
