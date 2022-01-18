@@ -3,7 +3,7 @@ export default function() {
     token1: {
       contract: "token.start",
       symbol: "START",
-      balance: 0,
+      amount: 0, // aka `balance` to comply with token store
       precision: 4,
       enabled: true,
       chain: "telos",
@@ -14,7 +14,7 @@ export default function() {
     token2: {
       contract: "",
       symbol: "Select a token",
-      balance: 0,
+      amount: 0, // aka `balance` to comply with token store
       precision: 4,
       enabled: true,
       chain: "telos",

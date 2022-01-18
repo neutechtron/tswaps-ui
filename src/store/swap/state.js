@@ -3,7 +3,7 @@ export default function() {
     fromToken: {
       contract: "eosio.token",
       symbol: "TLOS",
-      balance: 0,
+      amount: 0, // aka `balance` to comply with token store
       precision: 4,
       enabled: true,
       chain: "telos",
@@ -15,7 +15,7 @@ export default function() {
     toToken: {
       contract: "",
       symbol: "Select a token",
-      balance: 0,
+      amount: 0, // aka `balance` to comply with token store
       precision: 4,
       enabled: true,
       chain: "telos",
