@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <div class="q-pa-sm">
+    <div class="q-pa-sm ">
       <div class="row justify-center q-mt-md">
         <div class="col-12 ">
           <head-buttons />

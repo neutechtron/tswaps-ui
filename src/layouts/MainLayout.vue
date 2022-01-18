@@ -99,8 +99,9 @@
       </q-tabs>
     </q-footer>
 
-    <q-page-container class="flex flex-center">
+    <q-page-container class="column items-center">
       <router-view />
+      <p class="text-center">Version: {{ SITE_VERSION }}<br /></p>
     </q-page-container>
   </q-layout>
 </template>
@@ -118,7 +119,8 @@ export default {
         icon: "fas fa-moon"
       },
       TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
-      TSWAPS_DOCS: process.env.TSWAPS_DOCS
+      TSWAPS_DOCS: process.env.TSWAPS_DOCS,
+      SITE_VERSION: process.env.SITE_VERSION
     };
   },
   methods: {

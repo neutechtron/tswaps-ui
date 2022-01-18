@@ -1,6 +1,15 @@
 // Fonts
 body {
   font-family: "silkaregular";
+
+  // Hide scrollbar
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  -ms-overflow-style: none; // IE and Edge
+  scrollbar-width: none; // Firefox
+
+  // overflow: hidden;
   .sendBtn {
     background-image: linear-gradient(
       to right,

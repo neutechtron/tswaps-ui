@@ -8,6 +8,9 @@
 /* eslint-env node */
 
 require("dotenv").config();
+const fs = require("fs");
+const packageJson = fs.readFileSync("./package.json");
+const siteVersion = JSON.parse(packageJson).version || 0;
 
 module.exports = function(/* ctx */) {
   return {
@@ -55,7 +58,8 @@ module.exports = function(/* ctx */) {
         LIQUIDITY_CONTRACT: process.env.LIQUIDITY_CONTRACT,
         LPTOKEN_CONTRACT: process.env.LPTOKEN_CONTRACT,
         TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
-        TSWAPS_DOCS: process.env.TSWAPS_DOCS
+        TSWAPS_DOCS: process.env.TSWAPS_DOCS,
+        SITE_VERSION: siteVersion
       },
 
       // transpile: false,
