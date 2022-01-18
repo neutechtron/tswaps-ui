@@ -52,7 +52,7 @@ export default {
   components: {},
 
   data() {
-    return { tolerance: false, address: "" };
+    return { tolerance: false, address: "", price: 0 };
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"]),

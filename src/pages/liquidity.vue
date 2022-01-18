@@ -34,6 +34,14 @@
                   <liquidity-button />
                 </div>
               </div>
+
+              <q-card
+                v-if="!getHasPool"
+                flat
+                class="warning-card text-center q-mt-md"
+              >
+                No pool exists for the selected pair
+              </q-card>
             </q-card-section>
           </q-card>
 
@@ -62,6 +70,7 @@
 import fromCard from "src/components/liquidity/Input1.vue";
 import toCard from "src/components/liquidity/Input2.vue";
 import liquidityButton from "src/components/liquidity/liquidityButton.vue";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Index",
@@ -69,6 +78,9 @@ export default {
     fromCard,
     toCard,
     liquidityButton
+  },
+  computed: {
+    ...mapGetters("liquidity", ["getPool", "getHasPool"])
   }
 };
 </script>

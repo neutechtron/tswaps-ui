@@ -6,6 +6,7 @@
       class="sendBtn full-width"
       label="Add liquidity"
       @click="tryAddLiquidity()"
+      :disable="!getHasPool"
     />
     <q-btn
       v-else
@@ -47,18 +48,18 @@ export default {
       "getValue1",
       "getValue2",
       "getPool",
-      "getMemo"
+      "getHasPool"
     ])
   },
   methods: {
     ...mapActions("account", ["accountExistsOnChain", "login"]),
     ...mapActions("pools", ["updatePools"]),
-    ...mapActions("liquidity", ["createMemo"]),
+    // ...mapActions("liquidity", ["createMemo"]),
     ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
 
     async tryAddLiquidity() {
       try {
-        await this.createMemo();
+        // await this.createMemo();
         await this.add();
         this.$q.notify({
           color: "green-4",
@@ -82,7 +83,7 @@ export default {
 
       let transaction;
       if (true) {
-        console.log("Trying to do add liquidity");
+        console.log("Add liquidity");
         const actions = [
           {
             account: this.getToken1?.contract, // token contract
@@ -93,35 +94,36 @@ export default {
               quantity: `${parseFloat(this.getValue1).toFixed(
                 this.getToken1?.precision
               )} ${this.getToken1?.symbol}`,
-              memo: ``
-            }
-          },
-          {
-            account: this.getToken1?.contract, // token contract
-            name: "transfer",
-            data: {
-              from: this.accountName.toLowerCase(),
-              to: "nottswapsioa", // pool contract
-              quantity: `${parseFloat(this.getValue2).toFixed(
-                this.getToken2?.precision
-              )} ${this.getToken2?.symbol}`,
-              memo: ``
-            }
-          },
-          {
-            account: this.getPool?.id, // token contract
-            name: "push",
-            data: {
-              from: this.accountName.toLowerCase(),
-              to: "nottswapsioa", // pool contract
-              quantity: `${parseFloat(this.getAmount).toFixed(
-                this.token_precision
-              )} ${this.token_symbol}`,
-              memo: this.getMemo
+              memo: `deposit,${this.getPool.id}`
             }
           }
+          // {
+          //   account: this.getToken1?.contract, // token contract
+          //   name: "transfer",
+          //   data: {
+          //     from: this.accountName.toLowerCase(),
+          //     to: "nottswapsioa", // pool contract
+          //     quantity: `${parseFloat(this.getValue2).toFixed(
+          //       this.getToken2?.precision
+          //     )} ${this.getToken2?.symbol}`,
+          //     memo: ``
+          //   }
+          // },
+          // {
+          //   account: this.getPool?.id, // token contract
+          //   name: "push",
+          //   data: {
+          //     from: this.accountName.toLowerCase(),
+          //     to: "nottswapsioa", // pool contract
+          //     quantity: `${parseFloat(this.getAmount).toFixed(
+          //       this.token_precision
+          //     )} ${this.token_symbol}`,
+          //     memo: this.getMemo
+          //   }
+          // }
         ];
-        transaction = await this.$store.$api.signTransaction(actions);
+        console.log(actions);
+        // transaction = await this.$store.$api.signTransaction(actions);
       }
 
       if (transaction) {
