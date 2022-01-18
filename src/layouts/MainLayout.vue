@@ -9,11 +9,11 @@
               src="~assets/images/swap.png"
               width="35"
             />
-            <div class="text-h5 desktop-only">T-Swaps</div>
+            <div class="text-h5 gt-xs">T-Swaps</div>
           </router-link>
         </div>
 
-        <div class="desktop-only q-ql-xs">
+        <div class="gt-sm q-ql-xs">
           <q-btn flat to="/" no-caps> Swap </q-btn>
 
           <q-btn flat to="/liquidity" no-caps> Liquidity </q-btn>
@@ -35,7 +35,7 @@
         <login-button></login-button>
 
         <!-- About, Help Center, Dark Theme, Docs, Legal & Privacy -->
-        <q-btn icon="reorder">
+        <q-btn icon="menu" flat>
           <q-menu :offset="[0, 10]">
             <q-list style="min-width: 180px">
               <q-item clickable>
@@ -69,12 +69,7 @@
       </q-toolbar>
     </q-header>
 
-    <q-footer
-      bordered
-      class="toolbar-mobile"
-      v-if="$q.platform.is.mobile"
-      reveal
-    >
+    <q-footer bordered class="toolbar-mobile lt-md" reveal>
       <q-tabs
         v-model="tab"
         align="justify"
