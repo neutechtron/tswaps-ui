@@ -10,7 +10,7 @@
       <div class="row justify-center q-mt-xs">
         <div class="col-12 tableCol">
 
-          <q-card flat class="swapCard">
+          <q-card class="tableCard">
             <q-card-section class="swapCardSection">
               <pool-table/>
             </q-card-section>
