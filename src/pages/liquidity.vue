@@ -55,7 +55,7 @@
             <q-card-section class="swapCardSection">
               <div class="row  q-my-md">
                 <div class="col-12 ">
-                  <liquidity-button />
+                  <your-liquidity />
                 </div>
               </div>
             </q-card-section>
@@ -70,6 +70,7 @@
 import input1 from "src/components/liquidity/Input1.vue";
 import input2 from "src/components/liquidity/Input2.vue";
 import liquidityButton from "src/components/liquidity/liquidityButton.vue";
+import yourLiquidity from "src/components/liquidity/yourLiquidity.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -77,11 +78,15 @@ export default {
   components: {
     input1,
     input2,
-    liquidityButton
+    liquidityButton,
+    yourLiquidity
   },
   computed: {
-    ...mapGetters("liquidity", ["getPool", "getHasPool"])
-  }
+    ...mapGetters("liquidity", ["getPool", "getHasPool"]),
+    ...mapGetters("account", ["accountName"])
+  },
+  methods: {},
+  mounted() {}
 };
 </script>
 
