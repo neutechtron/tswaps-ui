@@ -15,7 +15,7 @@
     </div>
     <div class="column flex-center q-mt-lg">
       <div class="slogan-text text-h5 text-center">
-        The best wapping platform on Telos native.
+        The best swapping platform on Telos native.
       </div>
       <div class="q-mt-lg">
         <q-btn to="/swap" label="Enter Dapp" outline no-caps />
