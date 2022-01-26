@@ -30,3 +30,7 @@ export const setErrorMsg = (state, errorMsg) => {
 export const setToEsitmate = (state, estimate) => {
   state.estimate = estimate;
 }
+
+export const setSlippage = (state, slippage) => {
+  state.slippage = slippage;
+}
