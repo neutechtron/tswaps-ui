@@ -21,24 +21,23 @@
         <q-card-section>
           <div class="text-subtitle1 text-grey-7">Slippage tolerance</div>
           <q-card-actions align="around">
-            <q-btn outline rounded>
-              <div class="font-size: 1.5em ">
-                0.1%
-              </div>
+            <q-btn outline rounded @click="setSlippage(0.1)">
+              <div class="font-size: 1.5em">0.1%</div>
             </q-btn>
-            <q-btn outline rounded>0.5%</q-btn>
-            <q-btn outline rounded>1.0%</q-btn>
+            <q-btn outline rounded @click="setSlippage(0.5)">0.5%</q-btn>
+            <q-btn outline rounded @click="setSlippage(1)">1.0%</q-btn>
+            <p>{{ putSlippage }}</p>
             <q-input
               class="col-3"
               input-style="font-size: 0.6em "
               dense
               rounded
               outlined
-              v-model="price"
               mask="#.##%"
               fill-mask="0"
               reverse-fill-mask
               input-class="text-right"
+              v-model="slippage"
             />
           </q-card-actions>
         </q-card-section>
@@ -52,17 +51,49 @@ export default {
   components: {},
 
   data() {
-    return { tolerance: false, address: "", price: 0 };
+    return {
+      tolerance: false,
+      address: "",
+      price: 0,
+      slippage: this.getSlippage,
+    };
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
     ...mapGetters("bridge", ["getToken"]),
-    ...mapGetters("tokens", ["getTokens"])
-  }
+    ...mapGetters("tokens", ["getTokens"]),
+    ...mapGetters("swap", ["getSlippage"]),
+    putSlippage: {
+      get() {
+        return this.slippage;
+      },
+      set(value) {
+        this.slippage = value;
+      },
+    },
+  },
+  methods: {
+    ...mapActions("swap", ["updateSlippage"]),
+    setSlippage(value) {
+      this.slippage = value;
+    },
+  },
+  watch: {
+    putSlippage() {
+      console.log("Watcher called - with slippage ",this.slippage)
+      // this.updateSlippage((this.slippage));
+
+      // const that = this;
+      // that.updateSlippage(parseFloat(that.slippage));
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
+.active {
+  color: red;
+}
 // body.body--light {
 //   .headButtons {
 //     background: "transparent";
