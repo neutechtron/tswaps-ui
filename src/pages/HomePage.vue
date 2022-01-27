@@ -20,15 +20,17 @@
       </div>
     </div>
     <benefits-page />
+    <get-started-page />
   </q-layout>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import benefitsPage from "src/components/home/BenefitsPage.vue";
+import getStartedPage from "src/components/home/GetStartedPage.vue";
 
 export default {
-  components: { benefitsPage },
+  components: { benefitsPage, getStartedPage },
   data() {
     return {
       darkMode: {
