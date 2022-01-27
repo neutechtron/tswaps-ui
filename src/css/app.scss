@@ -153,7 +153,7 @@ body.body--light {
 }
 
 body.body--dark,
-.homePageContainer {
+.home-page {
   .q-tooltip {
     background: $purpleBright;
   }
@@ -245,6 +245,35 @@ body.body--dark,
     background: $dark-2;
     border-radius: 30px;
     max-width: 100vw;
+  }
+}
+
+.home-page {
+  .text-h1 {
+    // min
+    // font-size: 2rem;
+    // line-height: 2.5rem;
+    // preferred
+    font-size: 4rem;
+    line-height: 4rem;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+  }
+  .text-h2 {
+    font-size: 2rem; // min
+    line-height: 2.5rem;
+    // font-size: 2.8rem;
+    text-align: center;
+  }
+  .text-h3 {
+    font-size: 1.6rem; // min
+    // font-size: 2.5rem;
+    font-family: "silkathin";
+    line-height: 2rem;
+    // font-weight: 700;
+    max-width: 25ch;
+    text-align: center;
   }
 }
 

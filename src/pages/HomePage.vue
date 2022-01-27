@@ -1,8 +1,6 @@
 <template>
-  <q-layout view="LHh Lpr lff" class="homePageContainer">
-    <div
-      class="title-page-container column items-center justify-center q-pa-sm"
-    >
+  <q-layout view="LHh Lpr lff" class="home-page">
+    <div class="title-page-container column items-center justify-center">
       <!-- <div class="logo">
         <img
           class="logo-icon"
@@ -21,13 +19,16 @@
         <q-btn to="#" no-caps class="outlineBtn " label="Learn More" outline />
       </div>
     </div>
+    <benefits-page />
   </q-layout>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import benefitsPage from "src/components/home/BenefitsPage.vue";
 
 export default {
+  components: { benefitsPage },
   data() {
     return {
       darkMode: {
@@ -61,7 +62,15 @@ export default {
 .slogan-text {
   max-width: 300px;
 }
+
+.sendBtn,
+.outlineBtn {
+  flex-basis: 200px;
+  height: 4rem;
+}
+
 .title-page-container {
+  padding: 0.8rem;
   background: url("~assets/home/home-swap-bg.png");
   background-repeat: no-repeat;
   background-size: cover;
@@ -147,25 +156,5 @@ export default {
     font-family: "silkathin";
     z-index: 1;
   }
-}
-.text-h2 {
-  font-size: 2rem; // min
-  // font-size: 2.8rem;
-  text-align: center;
-}
-.text-h3 {
-  font-size: 1.6rem; // min
-  // font-size: 2.5rem;
-  font-family: "silkathin";
-  line-height: 2rem;
-  // font-weight: 700;
-  max-width: 25ch;
-  text-align: center;
-}
-
-.sendBtn,
-.outlineBtn {
-  flex-basis: 200px;
-  height: 4rem;
 }
 </style>
