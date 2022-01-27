@@ -1,24 +1,24 @@
 <template>
-  <q-layout view="LHh Lpr lff" class="pageContainer">
-    <div class="logo text-center cursor-pointer">
-      <div
-        @click="toggleDarkMode()"
-        class="row items-center justify-center q-gutter-x-sm"
-      >
+  <q-layout view="LHh Lpr lff" class="homePageContainer">
+    <div
+      class="title-page-container column items-center justify-center q-pa-sm"
+    >
+      <!-- <div class="logo">
         <img
           class="logo-icon"
           alt="Telos EVM logo"
-          src="~assets/images/swap.png"
+          src="~assets/home/home-swap-icon-glow.png"
         />
-        <div class="logo-text">T-Swaps</div>
+      </div> -->
+      <div class="logo-img "></div>
+      <div class="logo-text q-mb-md">T-Swaps</div>
+      <div class="text-h2 q-mb-xs">Fast, Affortable Token Swaps</div>
+      <div class="text-h3 q-mb-lg">
+        An innovative trading platform on Telos native
       </div>
-    </div>
-    <div class="column flex-center q-mt-lg">
-      <div class="slogan-text text-h5 text-center">
-        The best swapping platform on Telos native.
-      </div>
-      <div class="q-mt-lg">
-        <q-btn to="/swap" label="Enter Dapp" outline no-caps />
+      <div class="row q-gutter-md full-width  items-center justify-center">
+        <q-btn to="/swap" no-caps class=" sendBtn " label="Launch App" />
+        <q-btn to="#" no-caps class="outlineBtn " label="Learn More" outline />
       </div>
     </div>
   </q-layout>
@@ -58,20 +58,114 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pageContainer {
-  display: grid;
-  place-content: center;
-}
-.logo {
-  // margin-top: 5rem;
-  .logo-icon {
-    width: 4.8rem;
-  }
-  .logo-text {
-    font-size: 3.2rem;
-  }
-}
 .slogan-text {
   max-width: 300px;
+}
+.title-page-container {
+  background: url("~assets/home/home-swap-bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  // width: 100%;
+  min-height: 100vh;
+  // display: grid;
+  // place-content: center;
+  // justify-items: center;
+  // grid-template-rows: 1fr 1fr;
+
+  // .logo {
+  //   position: relative;
+  //   // display: grid;
+  //   // place-content: center;
+  //   height: 10rem;
+  //   clip: inherit;
+  //   .logo-icon {
+  //     // width: clamp(15rem, 50%, 50rem);
+  //     width: 40rem;
+  //     position: absolute;
+  //     // clip: rect(100%, 100%, 100%, 100%);
+  //     clip: inherit;
+  //     left: -20rem;
+  //     // top: clamp(-10rem, -10vw, 1rem);
+  //     top: -12rem;
+  //     z-index: 0;
+
+  //   }
+  //   // margin-top: 5rem;
+  // }
+  // .logo {
+  //   position: relative;
+  //   height: 10rem;
+  //   width: 100%;
+  //   clip: inherit;
+  //   .logo-img {
+  //     // width: clamp(15rem, 50%, 50rem);
+  //     // width: 40rem;
+  //     position: absolute;
+  //     // clip: rect(100%, 100%, 100%, 100%);
+  //     // clip: inherit;
+  //     left: -20rem;
+  //     // top: clamp(-10rem, -10vw, 1rem);
+  //     top: -12rem;
+  //     z-index: 0;
+
+  //     background: url("~assets/home/home-swap-icon-glow.png");
+  //     // background-repeat: no-repeat;
+  //     background-size: 40rem;
+  //     // background-position: center;
+  //     // min-height: 5rem;
+  //     // min-width: 5rem;
+  //     // background-image: url("~assets/home/home-swap-icon-glow.png");
+  //     background-repeat: no-repeat;
+  //     // background-attachment: fixed;
+  //     background-position: center;
+  //     width: 100%;
+  //     height: 75px;
+  //     text-align: center;
+  //     overflow: hidden;
+  //   }
+  //   // margin-top: 5rem;
+  // }
+
+  .logo-img {
+    z-index: 0;
+    background: url("~assets/home/home-swap-icon-glow.png");
+    background-size: 40rem;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-top: -15rem;
+    margin-bottom: -16rem;
+    width: 100%;
+    height: 40rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .logo-text {
+    font-size: 4rem; // Min
+    // font-size: 8rem;
+    font-family: "silkathin";
+    z-index: 1;
+  }
+}
+.text-h2 {
+  font-size: 2rem; // min
+  // font-size: 2.8rem;
+  text-align: center;
+}
+.text-h3 {
+  font-size: 1.6rem; // min
+  // font-size: 2.5rem;
+  font-family: "silkathin";
+  line-height: 2rem;
+  // font-weight: 700;
+  max-width: 25ch;
+  text-align: center;
+}
+
+.sendBtn,
+.outlineBtn {
+  flex-basis: 200px;
+  height: 4rem;
 }
 </style>

@@ -23,6 +23,10 @@ body {
         $blueLight 80%
       );
     }
+  }
+
+  .sendBtn,
+  .outlineBtn {
     color: #ffffff;
     font-size: 1.2rem;
     flex-basis: 400px;
@@ -148,7 +152,8 @@ body.body--light {
   }
 }
 
-body.body--dark {
+body.body--dark,
+.homePageContainer {
   .q-tooltip {
     background: $purpleBright;
   }
