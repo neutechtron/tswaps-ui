@@ -21,6 +21,7 @@
     </div>
     <benefits-page />
     <get-started-page />
+    <telegram-page />
   </q-layout>
 </template>
 
@@ -28,9 +29,10 @@
 import { mapGetters, mapActions } from "vuex";
 import benefitsPage from "src/components/home/BenefitsPage.vue";
 import getStartedPage from "src/components/home/GetStartedPage.vue";
+import telegramPage from "src/components/home/TelegramPage.vue";
 
 export default {
-  components: { benefitsPage, getStartedPage },
+  components: { benefitsPage, getStartedPage, telegramPage },
   data() {
     return {
       darkMode: {
