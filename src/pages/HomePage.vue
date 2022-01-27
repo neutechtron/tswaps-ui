@@ -10,7 +10,7 @@
       </div> -->
       <div class="logo-img "></div>
       <div class="logo-text q-mb-md">T-Swaps</div>
-      <div class="text-h2 q-mb-xs">Fast, Affortable Token Swaps</div>
+      <div class="text-h2 q-mb-xs">Fast, Affordable Token Swaps</div>
       <div class="text-h3 q-mb-lg">
         An innovative trading platform on Telos native
       </div>

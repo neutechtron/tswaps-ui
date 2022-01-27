@@ -9,7 +9,7 @@
           <div class="benefits-icon">
             <img src="~assets/home/home-bolt.svg" />
           </div>
-          <div class="text-h2">Fast & Affortable</div>
+          <div class="text-h2">Fast & Affordable</div>
           <p class="benefits-description">
             Battle tested 10 000 transactions per second. No gas fees on Telos
             Native.
