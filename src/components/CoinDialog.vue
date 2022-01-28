@@ -64,6 +64,7 @@ export default {
   props: ["showCoinDialog", "isFrom", "isSwap"],
   computed: {
     ...mapGetters("tokens", ["getTokens"]),
+    // ...mapGetters("swap", ["getFromToken", "getToToken"]),
     ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"]),
     availableTokens() {
       if (this.filteredTokens.length > 0) {
@@ -72,23 +73,31 @@ export default {
         return this.getTokens;
       }
     }
+    // tokensForValidPair() {
+    //   if (this.isSwap) {
+    //     if (this.isFrom) return this.getToToken.toTokens;
+    //     else return this.getFromToken.toTokens;
+    //   } else {
+    //     return [];
+    //   }
+    // }
   },
   methods: {
     ...mapActions("swap", ["updateSwapPool", "updateEstimate"]),
     ...mapActions("liquidity", ["updateActivePool"]),
     updateSelectedCoin(token) {
-      if(this.isSwap){
-        if(this.isFrom){
-        this.$store.commit("swap/setFromToken", token);
-        } else{
+      if (this.isSwap) {
+        if (this.isFrom) {
+          this.$store.commit("swap/setFromToken", token);
+        } else {
           this.$store.commit("swap/setToToken", token);
         }
         this.updateSwapPool();
         this.updateEstimate();
       } else {
-        if(this.isFrom){
+        if (this.isFrom) {
           this.$store.commit("liquidity/setToken1", token);
-        } else{
+        } else {
           this.$store.commit("liquidity/setToken2", token);
         }
         this.updateActivePool();
@@ -122,6 +131,15 @@ export default {
         );
       });
     }
+    // Used in token list with :class="isValidToken(token) ? '' : 'greyItem'"
+    // isValidToken(token) {
+    //   const res = this.tokensForValidPair?.find(
+    //     el =>
+    //       el.symbol.toLowerCase().includes(token.symbol.toLowerCase()) &&
+    //       el.contract.toLowerCase().includes(token.contract.toLowerCase())
+    //   );
+    //   return res !== undefined;
+    // },
   }
 };
 </script>
@@ -130,5 +148,9 @@ export default {
 .dialogCard {
   flex: 0 1 350px;
   height: 80vh;
+}
+
+.greyItem {
+  background: rgba($grey-4, 20%);
 }
 </style>
