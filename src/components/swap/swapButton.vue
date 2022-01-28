@@ -114,7 +114,7 @@ export default {
         this.showTransaction = true;
         this.transaction = transaction.transactionId;
         // TODO clear values
-        this.$store.commit("swap/setAmount", "");
+        this.$store.commit("swap/setAmount", 0);
         this.$store.commit("swap/setMemo", "");
       }
       await this.updateTokenBalances(this.accountName);

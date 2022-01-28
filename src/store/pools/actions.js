@@ -13,14 +13,14 @@ export const formatPoolList = function ({ commit, rootGetters }, rows) {
                 ...pool,
                 reserve0: {
                     quantity: this.$getQuantity(res0),
-                    symbol: this.$exSymToSymbol(res0),
-                    precision: this.$exSymToPrecision(res0),
+                    symbol: this.$exAssToSymbol(res0),
+                    precision: this.$exAssToPrecision(res0),
                     contract: res0.contract
                 },
                 reserve1: {
                     quantity: this.$getQuantity(res1),
-                    symbol: this.$exSymToSymbol(res1),
-                    precision: this.$exSymToPrecision(res1),
+                    symbol: this.$exAssToSymbol(res1),
+                    precision: this.$exAssToPrecision(res1),
                     contract: res1.contract
                 },
                 contract0: res0.contract,
@@ -88,3 +88,20 @@ export const updateUserLiquidityPools = async function (
         commit("general/setErrorMsg", error.message || error, { root: true });
     }
 };
+
+export const updateConfig = async function ({ commit, rootGetters }) {
+    try {
+        const config = await this.$api.getTableRows({
+            code: process.env.SWAP_CONTRACT,
+            scope: process.env.SWAP_CONTRACT,
+            table: "config",
+            limit: 10000,
+            reverse: false,
+            show_payer: false
+        });
+
+        commit("setConfig", config.rows[0]);
+    } catch (error) {
+        commit("general/setErrorMsg", error.message || error, { root: true });
+    }
+}

@@ -55,6 +55,7 @@ export default {
     ...mapActions("pools", ["updatePools"]),
     // ...mapActions("liquidity", ["createMemo"]),
     ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
+    ...mapActions("liquidity", ["updateActivePool"]),
 
     async tryAddLiquidity() {
       try {
@@ -125,7 +126,10 @@ export default {
         this.$store.commit("liquidity/setValue1", 0);
         this.$store.commit("liquidity/setValue2", 0);
       }
+      await this.updatePools();
+      await this.updateTokens();
       await this.updateTokenBalances(this.accountName);
+      await this.updateActivePool();
     },
 
     openUrl(url) {
@@ -137,10 +141,6 @@ export default {
     await this.updateTokens();
     await this.updateTokenBalances(this.accountName);
 
-    // TODO remove, not a fan of hyperion
-    // if (this.isAuthenticated) {
-    //   this.updateAllTokensBalances(this.accountName);
-    // }
   },
   created() {},
   watch: {

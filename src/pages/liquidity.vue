@@ -35,7 +35,8 @@
                 class="warning-card text-center q-mt-md"
               >
                 No pool exists for the selected pair. The ratio of tokens you
-                add will set the price of this pool.
+                add will set the price of this pool. A fee of
+                {{listingFee.quantity}} will be paid on creation.
               </q-card>
 
               <div class="row  q-mt-md">
@@ -46,6 +47,9 @@
                   <create-button />
                 </div>
               </div>
+
+              <!-- TODO add initial prices and pool share info like pancake -->
+              <!-- TODO add percentage fee you gain from adding like pancake -->
             </q-card-section>
           </q-card>
 
@@ -89,10 +93,24 @@ export default {
   },
   computed: {
     ...mapGetters("liquidity", ["getPool", "getHasPool"]),
-    ...mapGetters("account", ["accountName"])
+    ...mapGetters("account", ["accountName"]),
+    ...mapGetters("pools", ["getConfig"]),
+
+    listingFee() {
+        if (this.getConfig) {
+            return this.getConfig?.listing_fee;
+        } else {
+            return {quantity: 0};
+        }
+    }
   },
-  methods: {},
-  mounted() {}
+  methods: {
+    ...mapActions("pools", [ "updateConfig"]),
+  },
+  async mounted() {
+    await this.updateConfig();
+
+  }
 };
 </script>
 

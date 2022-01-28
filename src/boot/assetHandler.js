@@ -1,14 +1,14 @@
-// Gets decimal from base token extended_symbol {quantity: '2000.0000 AB', contract: 'notslptokens'}
-const exSymToPrecision = extended_symbol => {
-    let idx = extended_symbol.quantity.indexOf(" ");
-    let quantity = extended_symbol.quantity.slice(0, idx);
+// Gets decimal from base token extended_asset {quantity: '2000.0000 AB', contract: 'notslptokens'}
+const exAssToPrecision = extended_asset => {
+    let idx = extended_asset.quantity.indexOf(" ");
+    let quantity = extended_asset.quantity.slice(0, idx);
     return decimalCount(quantity);
 };
 
-// Gets symbol from base token extended_symbol {quantity: '2000.0000 AB', contract: 'notslptokens'}
-const exSymToSymbol = extended_symbol => {
-    let idx = extended_symbol.quantity.indexOf(" ") + 1;
-    let sym = extended_symbol.quantity.slice(idx);
+// Gets symbol from base token extended_asset {quantity: '2000.0000 AB', contract: 'notslptokens'}
+const exAssToSymbol = extended_asset => {
+    let idx = extended_asset.quantity.indexOf(" ") + 1;
+    let sym = extended_asset.quantity.slice(idx);
     return sym
 };
 
@@ -24,10 +24,10 @@ const decimalCount = num => {
     return 0;
 }
 
-// Gets quantity from base token extended_symbol {quantity: '2000.0000 AB', contract: 'notslptokens'}
-const getQuantity = extended_symbol => {
-    let idx = extended_symbol.quantity.indexOf(" ");
-    let quantity = extended_symbol.quantity.slice(0, idx);
+// Gets quantity from base token extended_asset {quantity: '2000.0000 AB', contract: 'notslptokens'}
+const getQuantity = extended_asset => {
+    let idx = extended_asset.quantity.indexOf(" ");
+    let quantity = extended_asset.quantity.slice(0, idx);
     return quantity;
 }
 
@@ -80,8 +80,8 @@ const truncate = (n, digits) => {
 }
 
 export default async ({ Vue, store }) => {
-    Vue.prototype.$exSymToPrecision = exSymToPrecision;
-    Vue.prototype.$exSymToSymbol = exSymToSymbol;
+    Vue.prototype.$exAssToPrecision = exAssToPrecision;
+    Vue.prototype.$exAssToSymbol = exAssToSymbol;
     Vue.prototype.$exSymToContract = exSymToContract;
     Vue.prototype.$toAsset = toAsset;
     Vue.prototype.$assetToAmount = assetToAmount;
@@ -89,8 +89,8 @@ export default async ({ Vue, store }) => {
     Vue.prototype.$assetToSymbol = assetToSymbol;
     Vue.prototype.$getQuantity = getQuantity;
     Vue.prototype.$truncate = truncate;
-    store["$exSymToPrecision"] = exSymToPrecision;
-    store["$exSymToSymbol"] = exSymToSymbol;
+    store["$exAssToPrecision"] = exAssToPrecision;
+    store["$exAssToSymbol"] = exAssToSymbol;
     store["$exSymToContract"] = exSymToContract;
     store["$toAsset"] = toAsset;
     store["$assetToAmount"] = assetToAmount;

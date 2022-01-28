@@ -36,9 +36,9 @@ export const updateAmount = async function ({ commit, getters }, amount) {
                 estimate = Number(amount) * Number(pool?.price1_last);
             }
             estimate = this.$truncate(estimate, getters.getToToken.precision);
-            commit("setToEsitmate", estimate);
+            commit("setToEstimate", estimate);
         } else {
-            commit("setToEsitmate", 0);
+            commit("setToEstimate", 0);
         }
     } catch (error) {
         console.log("Error getting swap pool", error);
@@ -58,9 +58,9 @@ export const updateEstimate = async function ({ commit, getters }) {
             } else {
                 estimate = Number(amount) * Number(pool?.price1_last);
             }
-            commit("setToEsitmate", estimate);
+            commit("setToEstimate", estimate);
         } else {
-            commit("setToEsitmate", 0);
+            commit("setToEstimate", 0);
         }
     } catch (error) {
         console.log("Error getting swap pool", error);
