@@ -32,7 +32,7 @@ export default {
       fromNetwork: "TELOS",
       pollTokens: null,
       showLogin: false,
-      error: null
+      error: null,
     };
   },
   computed: {
@@ -48,8 +48,11 @@ export default {
       "getValue1",
       "getValue2",
       "getPool",
-      "getHasPool"
+      "getHasPool",
+      "getAmplifier",
+      "getProtocol"
     ]),
+    ...mapGetters("pools", ["getConfig"]),
 
     hasInput() {
         return (
@@ -58,18 +61,18 @@ export default {
             this.getValue1 &&
             this.getValue2
         );
-    }
+    },
+
   },
   methods: {
     ...mapActions("account", ["accountExistsOnChain", "login"]),
-    ...mapActions("pools", ["updatePools"]),
-    // ...mapActions("liquidity", ["createMemo"]),
+    ...mapActions("pools", ["updatePools", "updateConfig"]),
     ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
+    ...mapActions("liquidity", ["updateActivePool"]),
 
     async tryCreatePool() {
       try {
-        // await this.createMemo();
-        await this.add();
+        await this.createPool();
         this.$q.notify({
           color: "green-4",
           textColor: "white",
@@ -80,19 +83,39 @@ export default {
       }
     },
 
-    async add() {
+    async createPool() {
+      await this.updateConfig();
+
       if (!this.accountName) {
         throw new Error(`Account ${this.getToAccount} does not exist`);
-      }
-      if (Number(this.token_balance) <= Number(this.getAmount)) {
-        throw new Error(
-          `Account ${this.accountName} does not have the required funds to preform swap`
-        );
       }
 
       let transaction;
       if (true) {
         const actions = [
+          {
+            account: this.getConfig.listing_fee?.contract, // token contract
+            name: "transfer",
+            data: {
+              from: this.accountName.toLowerCase(),
+              to: process.env.SWAP_CONTRACT,
+              quantity: `${parseFloat(this.$getQuantity(this.getConfig.listing_fee)).toFixed(
+                this.$exAssToPrecision(this.getConfig.listing_fee)
+              )} ${this.$exAssToSymbol(this.getConfig.listing_fee)}`,
+              memo: `listingfee`
+            }
+          },
+          {
+            account: process.env.SWAP_CONTRACT,
+            name: "createpair",
+            data: {
+              creator: this.accountName,
+              reserve0: {sym: `${this.getToken1.precision},${this.getToken1.symbol}`, contract: this.getToken1.contract},
+              reserve1: {sym: `${this.getToken2.precision},${this.getToken2.symbol}`, contract: this.getToken2.contract},
+              amplifier: this.getAmplifier,
+              protocol: this.getProtocol
+            }
+          },
           {
             account: this.getToken1?.contract, // token contract
             name: "transfer",
@@ -102,7 +125,7 @@ export default {
               quantity: `${parseFloat(this.getValue1).toFixed(
                 this.getToken1?.precision
               )} ${this.getToken1?.symbol}`,
-              memo: `deposit,${this.getPool.id}`
+              memo: `deposit,${this.getConfig.last_pair_id+1}`
             }
           },
           {
@@ -114,7 +137,7 @@ export default {
               quantity: `${parseFloat(this.getValue2).toFixed(
                 this.getToken2?.precision
               )} ${this.getToken2?.symbol}`,
-              memo: `deposit,${this.getPool.id}`
+              memo: `deposit,${this.getConfig.last_pair_id+1}`
             }
           },
           {
@@ -122,7 +145,7 @@ export default {
             name: "deposit",
             data: {
               owner: this.accountName,
-              pair_id: this.getPool.id // TODO include min_amount
+              pair_id: this.getConfig.last_pair_id+1 // TODO include min_amount
             }
           }
         ];
@@ -132,11 +155,13 @@ export default {
       if (transaction) {
         this.showTransaction = true;
         this.transaction = transaction.transactionId;
-        // TODO clear values
-        this.$store.commit("swap/setAmount", "");
-        this.$store.commit("swap/setMemo", "");
+        this.$store.commit("liquidity/setValue1", 0);
+        this.$store.commit("liquidity/setValue2", 0);
       }
-      await this.updateTokenBalances(this.accountName);
+        await this.updatePools();
+        await this.updateTokens();
+        await this.updateTokenBalances(this.accountName);
+        await this.updateActivePool();
     },
 
     openUrl(url) {
@@ -147,12 +172,8 @@ export default {
     await this.updatePools();
     await this.updateTokens();
     await this.updateTokenBalances(this.accountName);
-
-    // TODO remove, not a fan of hyperion
-    // if (this.isAuthenticated) {
-    //   this.updateAllTokensBalances(this.accountName);
-    // }
   },
+
   watch: {
     async getFromChain() {
       await this.updateTokens();

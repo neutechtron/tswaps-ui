@@ -1,5 +1,6 @@
 export default () => ({
-  pools: [],
-  userPools: [],
-  isLoading: null
+    pools: [],
+    userPools: [],
+    isLoading: null,
+    config: []
 });

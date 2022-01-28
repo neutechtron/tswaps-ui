@@ -1,35 +1,35 @@
 export const setFromToken = (state, fromToken) => {
-  state.fromToken = fromToken;
+    state.fromToken = fromToken;
 };
 
 export const setToToken = (state, toToken) => {
-  state.toToken = toToken;
+    state.toToken = toToken;
 };
 
 export const setMemo = (state, memo) => {
-  state.memo = memo;
+    state.memo = memo;
 };
 
 export const setAmount = (state, amount) => {
-  state.amount = amount;
+    state.amount = amount;
 };
 
 export const setPool = (state, pool) => {
-  state.pool = pool;
+    state.pool = pool;
 };
 
 export const setCanSwap = (state, canSwap) => {
-  state.canSwap = canSwap;
+    state.canSwap = canSwap;
 };
 
 export const setErrorMsg = (state, errorMsg) => {
-  state.errorMsg = errorMsg;
+    state.errorMsg = errorMsg;
 };
 
 export const setToEstimate = (state, estimate) => {
-  state.estimate = estimate;
+    state.estimate = estimate;
 };
 
 export const setSlippage = (state, slippage) => {
-  state.slippage = slippage;
+    state.slippage = slippage;
 };
