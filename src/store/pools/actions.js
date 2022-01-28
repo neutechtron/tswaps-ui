@@ -11,8 +11,6 @@ export const formatPoolList = function ({ commit, rootGetters }, rows) {
 
             let temp_pool = {
                 ...pool,
-                token0_symbol: this.$exSymToSymbol(res0),
-                token1_symbol: this.$exSymToSymbol(res1),
                 reserve0: {
                     quantity: this.$getQuantity(res0),
                     symbol: this.$exSymToSymbol(res0),
@@ -82,7 +80,8 @@ export const updateUserLiquidityPools = async function (
             lpTokens.push(...res.rows);
 
             const pools = lpTokens;
-            // const pools = formatPoolList(lpTokens);
+            // TODO show your liquidity pools
+            // const pools = await dispatch("formatPoolList", tableResults.rows);
             commit("setUserLiquidityPools", pools);
         }
     } catch (error) {

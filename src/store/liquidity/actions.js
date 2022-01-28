@@ -50,15 +50,16 @@ export const updateValue1 = async function ({ commit, getters }, amount) {
         if (getters.getHasPool) {
             let estimate = 0;
             let pool = getters.getPool;
-            console.log(pool)
             if (token1.symbol == pool?.reserve0?.symbol) {
                 estimate = Number(amount) * Number(pool?.price0_last);
             } else {
                 estimate = Number(amount) * Number(pool?.price1_last);
             }
+
+            estimate = this.$truncate(estimate, getters.getToken2.precision);
             commit("setValue2", estimate);
         } else {
-            commit("setValue2", 0);
+            // commit("setValue2", 0);
         }
     } catch (error) {
         console.log("Error updating value", error);
@@ -78,9 +79,11 @@ export const updateValue2 = async function ({ commit, getters }, amount) {
             } else {
                 estimate = Number(amount) * Number(pool?.price1_last);
             }
+
+            estimate = this.$truncate(estimate, getters.getToken1.precision);
             commit("setValue1", estimate);
         } else {
-            commit("setValue1", 0);
+            // commit("setValue1", 0);
         }
     } catch (error) {
         console.log("Error updating value", error);
