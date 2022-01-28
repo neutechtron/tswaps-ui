@@ -1,4 +1,3 @@
-
 export const setFromToken = (state, fromToken) => {
   state.fromToken = fromToken;
 };
@@ -17,20 +16,20 @@ export const setAmount = (state, amount) => {
 
 export const setPool = (state, pool) => {
   state.pool = pool;
-}
+};
 
 export const setCanSwap = (state, canSwap) => {
   state.canSwap = canSwap;
-}
+};
 
 export const setErrorMsg = (state, errorMsg) => {
   state.errorMsg = errorMsg;
-}
+};
 
-export const setToEsitmate = (state, estimate) => {
+export const setToEstimate = (state, estimate) => {
   state.estimate = estimate;
-}
+};
 
 export const setSlippage = (state, slippage) => {
   state.slippage = slippage;
-}
+};

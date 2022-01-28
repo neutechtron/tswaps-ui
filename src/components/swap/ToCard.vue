@@ -10,6 +10,7 @@
       <input-amount
         class="col-xs-12 col-sm-6 col-md-6 q-mt-xs"
         :amount="getToEstimate"
+        @update:amount="updateEstimate($event)"
       />
       <div class="col-xs-12 col-sm-6 col-md-6 row justify-stretch q-mt-sm">
         <coin-selector class="col q-mr-sm" :is-swap="true" />
@@ -38,10 +39,10 @@ export default {
         return 0;
       }
     }
+  },
+  methods: {
+    ...mapActions("swap", ["updateEstimate"])
   }
-  // methods: {
-  //   ...mapActions("swap", ["updateEstimate"])
-  // }
 };
 </script>
 
