@@ -1,8 +1,8 @@
 export default function() {
   return {
     fromToken: {
-      contract: "eosio.token",
-      symbol: "TLOS",
+      contract: "",
+      symbol: "Select a token",
       amount: 0, // aka `balance` to comply with token store
       precision: 4,
       enabled: true,

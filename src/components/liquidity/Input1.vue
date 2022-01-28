@@ -2,7 +2,12 @@
   <q-card flat class="inputCard">
     <div class="row justify-between">
       <div class="text-subtitle1 text-weight-bold">Input</div>
-      <div class="text-subtitle1" v-if="isAuthenticated">
+      <div
+        class="text-subtitle1"
+        style="cursor: pointer"
+        @click="updateValue1(balance)"
+        v-if="isAuthenticated"
+      >
         Balance: {{ balance }}
       </div>
     </div>

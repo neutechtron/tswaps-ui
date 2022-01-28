@@ -4,8 +4,9 @@
       v-if="isAuthenticated"
       no-caps
       class="sendBtn full-width"
-      label="Add liquidity"
-      @click="tryAddLiquidity()"
+      label="Create Pool"
+      @click="tryCreatePool()"
+      :disable="!hasInput"
     />
     <q-btn
       v-else
@@ -48,7 +49,16 @@ export default {
       "getValue2",
       "getPool",
       "getHasPool"
-    ])
+    ]),
+
+    hasInput() {
+        return (
+            this.getToken1 &&
+            this.getToken2 &&
+            this.getValue1 &&
+            this.getValue2
+        );
+    }
   },
   methods: {
     ...mapActions("account", ["accountExistsOnChain", "login"]),
@@ -56,14 +66,14 @@ export default {
     // ...mapActions("liquidity", ["createMemo"]),
     ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
 
-    async tryAddLiquidity() {
+    async tryCreatePool() {
       try {
         // await this.createMemo();
         await this.add();
         this.$q.notify({
           color: "green-4",
           textColor: "white",
-          message: "Liquidity added"
+          message: "Pool Created"
         });
       } catch (error) {
         this.$errorNotification(error);
@@ -122,8 +132,9 @@ export default {
       if (transaction) {
         this.showTransaction = true;
         this.transaction = transaction.transactionId;
-        this.$store.commit("liquidity/setValue1", 0);
-        this.$store.commit("liquidity/setValue2", 0);
+        // TODO clear values
+        this.$store.commit("swap/setAmount", "");
+        this.$store.commit("swap/setMemo", "");
       }
       await this.updateTokenBalances(this.accountName);
     },
@@ -142,7 +153,6 @@ export default {
     //   this.updateAllTokensBalances(this.accountName);
     // }
   },
-  created() {},
   watch: {
     async getFromChain() {
       await this.updateTokens();

@@ -20,10 +20,10 @@
     <template v-slot:body="props">
       <q-tr :props="props">
         <q-td auto-width>
-          <token-avatar :token="props.row.token0_symbol" :avatarSize="40" />
+          <token-avatar :token="props.row.reserve0.symbol" :avatarSize="40" />
 
           <token-avatar
-            :token="props.row.token0_symbol"
+            :token="props.row.reserve1.symbol"
             :avatarSize="40"
             class="avatarOverlap"
           />
@@ -31,7 +31,7 @@
 
         <q-td auto-width>
           <div class="text-body1 text-bold ">
-            {{ props.row.token0_symbol + "/" + props.row.token1_symbol }}
+            {{ props.row.reserve0.symbol + "/" + props.row.reserve1.symbol }}
           </div>
           <div>
             <q-badge outline color="primary">0.3% LP fees</q-badge>
@@ -114,7 +114,7 @@ const columns = [
     required: true,
     label: "Name",
     align: "left",
-    field: row => row.token0_symbol + "/" + row.token1_symbol,
+    field: row => row.reserve0.symbol + "/" + row.reserve1.symbol,
     format: val => `${val}`,
     sortable: true
   },
