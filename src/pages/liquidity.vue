@@ -29,19 +29,23 @@
                 </div>
               </div>
 
-              <div class="row  q-mt-md">
-                <div class="col-12 ">
-                  <liquidity-button />
-                </div>
-              </div>
-
               <q-card
                 v-if="!getHasPool"
                 flat
                 class="warning-card text-center q-mt-md"
               >
-                No pool exists for the selected pair
+                No pool exists for the selected pair. The ratio of tokens you
+                add will set the price of this pool.
               </q-card>
+
+              <div class="row  q-mt-md">
+                <div v-if="getHasPool" class="col-12 ">
+                  <liquidity-button />
+                </div>
+                <div v-else class="col-12 ">
+                  <create-button />
+                </div>
+              </div>
             </q-card-section>
           </q-card>
 
@@ -70,6 +74,7 @@
 import input1 from "src/components/liquidity/Input1.vue";
 import input2 from "src/components/liquidity/Input2.vue";
 import liquidityButton from "src/components/liquidity/liquidityButton.vue";
+import createButton from "src/components/liquidity/createButton.vue";
 import yourLiquidity from "src/components/liquidity/yourLiquidity.vue";
 import { mapGetters, mapActions } from "vuex";
 
@@ -79,7 +84,8 @@ export default {
     input1,
     input2,
     liquidityButton,
-    yourLiquidity
+    yourLiquidity,
+    createButton
   },
   computed: {
     ...mapGetters("liquidity", ["getPool", "getHasPool"]),

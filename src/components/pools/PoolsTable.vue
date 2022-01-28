@@ -23,7 +23,7 @@
           <token-avatar :token="props.row.token0_symbol" :avatarSize="40" />
 
           <token-avatar
-            :token="props.row.token0_symbol"
+            :token="props.row.token1_symbol"
             :avatarSize="40"
             class="avatarOverlap"
           />
