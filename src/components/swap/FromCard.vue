@@ -1,7 +1,7 @@
 <template>
   <q-card flat class="inputCard">
     <div class="row justify-between">
-      <div class="text-subtitle1 text-weight-bold">FROM</div>
+      <div class="text-subtitle1 text-weight-bold">From</div>
       <div
         class="text-subtitle1"
         style="cursor: pointer"

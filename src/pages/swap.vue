@@ -36,7 +36,7 @@
                 </div>
               </div>
               <q-card
-                v-if="!getIsValidPair"
+                v-if="!showPoolExistsWarning"
                 flat
                 class="warning-card text-center q-mt-md"
               >
@@ -66,8 +66,16 @@ export default {
     swapButton
   },
   computed: {
-    ...mapGetters("swap", ["getIsValidPair"]),
-    ...mapGetters("tokens", ["getTokens"])
+    ...mapGetters("swap", ["getIsValidPair", "getToToken", "getFromToken"]),
+    ...mapGetters("tokens", ["getTokens"]),
+    showPoolExistsWarning() {
+      const defaultMsg = "Select a token";
+      return (
+        this.getIsValidPair ||
+        this.getToToken.symbol == defaultMsg ||
+        this.getFromToken.symbol == defaultMsg
+      );
+    }
   },
   methods: {
     ...mapActions("swap", ["swapToAndFrom"]),
