@@ -1,67 +1,107 @@
-export const updatePools = async function({ commit, rootGetters }) {
-  try {
-    const pools = [];
+export const formatPoolList = function ({ commit, rootGetters }, rows) {
     const getCurrentChain = rootGetters[
-      "blockchains/getCurrentChain"
+        "blockchains/getCurrentChain"
     ].NETWORK_NAME.toLowerCase();
-    let temp_pools = [];
+    const pools = [];
 
-    const tableResults = await this.$api.getTableRows({
-      code: process.env.SWAP_CONTRACT,
-      scope: process.env.SWAP_CONTRACT,
-      table: "pairs",
-      limit: 10000,
-      reverse: false,
-      show_payer: false
-    });
+    if (rows) {
+        for (const pool of rows) {
+            let res0 = pool.reserve0;
+            let res1 = pool.reserve1;
 
-    temp_pools.push(...tableResults.rows);
+            let temp_pool = {
+                ...pool,
+                reserve0: {
+                    quantity: this.$getQuantity(res0),
+                    symbol: this.$exAssToSymbol(res0),
+                    precision: this.$exAssToPrecision(res0),
+                    contract: res0.contract
+                },
+                reserve1: {
+                    quantity: this.$getQuantity(res1),
+                    symbol: this.$exAssToSymbol(res1),
+                    precision: this.$exAssToPrecision(res1),
+                    contract: res1.contract
+                },
+                contract0: res0.contract,
+                contract1: res1.contract,
+                chain: getCurrentChain
+            };
 
-    for (const pool of temp_pools) {
-      let res0 = pool.reserve0;
-      let res1 = pool.reserve1;
-
-      let temp_pool = {
-        ...pool,
-        token0_symbol: this.$exSymToSymbol(res0),
-        token1_symbol: this.$exSymToSymbol(res1),
-        reserve0: {
-          quantity: this.$getQuantity(res0),
-          symbol: this.$exSymToSymbol(res0),
-          precision: this.$exSymToPrecision(res0),
-          contract: res0.contract
-        },
-        reserve1: {
-          quantity: this.$getQuantity(res1),
-          symbol: this.$exSymToSymbol(res1),
-          precision: this.$exSymToPrecision(res1),
-          contract: res1.contract
-        },
-        contract0: res0.contract,
-        contract1: res1.contract,
-        chain: getCurrentChain
-      };
-
-      // Check duplicates for pools
-      if (!pools.find(t => t.id === pool.id)) {
-        pools.push(temp_pool);
-      }
+            // Check duplicates for pools
+            if (!pools.find(t => t.id === pool.id)) {
+                pools.push(temp_pool);
+            }
+        }
     }
 
-    commit("setPools", pools);
-  } catch (error) {
-    commit("general/setErrorMsg", error.message || error, { root: true });
-  }
+    return pools;
 };
 
-export const updateUserLiquidityPools = async function({
-  commit,
-  rootGetters
-}) {
-  try {
-    const pools = [];
-    commit("setUserLiquidityPools", pools);
-  } catch (error) {
-    commit("general/setErrorMsg", error.message || error, { root: true });
-  }
+export const updatePools = async function ({ commit, rootGetters, dispatch }) {
+    try {
+        let temp_pools = [];
+
+        const tableResults = await this.$api.getTableRows({
+            code: process.env.SWAP_CONTRACT,
+            scope: process.env.SWAP_CONTRACT,
+            table: "pairs",
+            limit: 10000,
+            reverse: false,
+            show_payer: false
+        });
+
+        // console.log(tableResults.rows);
+
+        const pools = await dispatch("formatPoolList", tableResults.rows);
+
+        commit("setPools", pools);
+    } catch (error) {
+        commit("general/setErrorMsg", error.message || error, { root: true });
+    }
 };
+
+export const updateUserLiquidityPools = async function (
+    { commit, rootGetters },
+    accountName
+) {
+    try {
+        if (accountName !== null) {
+            // console.log("Account: " + accountName);
+            let lpTokens = [];
+            const res = await this.$api.getTableRows({
+                code: process.env.LPTOKEN_CONTRACT,
+                scope: accountName,
+                table: "accounts",
+                limit: 10000,
+                reverse: false,
+                show_payer: false
+            });
+            lpTokens.push(...res.rows);
+
+            const pools = lpTokens;
+            // TODO show your liquidity pools
+            // const pools = await dispatch("formatPoolList", tableResults.rows);
+            commit("setUserLiquidityPools", pools);
+        }
+    } catch (error) {
+        commit("general/setErrorMsg", error.message || error, { root: true });
+    }
+};
+
+export const updateConfig = async function ({ commit, rootGetters }) {
+    try {
+        const config = await this.$api.getTableRows({
+            code: process.env.SWAP_CONTRACT,
+            scope: process.env.SWAP_CONTRACT,
+            table: "config",
+            limit: 10000,
+            reverse: false,
+            show_payer: false
+        });
+
+        commit("setConfig", config.rows[0]);
+    } catch (error) {
+        commit("general/setErrorMsg", error.message || error, { root: true });
+    }
+}

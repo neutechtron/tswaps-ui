@@ -146,7 +146,7 @@
       <router-view />
     </q-page-container>
 
-    <q-footer bordered class="footer q-pa-md">
+    <q-footer class="footer q-pt-md">
       <div class="row justify-center">
         <p class="">
           Version {{ SITE_VERSION }}

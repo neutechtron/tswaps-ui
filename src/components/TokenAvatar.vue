@@ -51,7 +51,7 @@ export default {
       if (this.token === "" || this.token === undefined) return ""
       else if (this.token.includes("/")) return this.token; // If link provided
       // TODO Check link
-      else { 
+      else {
         // If no link provided
         const token = this.token.toUpperCase();
         if (this.grayscale) {
@@ -81,7 +81,7 @@ export default {
             case "TELOS EVM" : return "/tokens/tlos.png";
             case "BTC": case "BITCOIN" : return "/tokens/bitcoin.svg";
             case "ETH": case "ETHEREUM": case "ROPSTEN" : return "/tokens/eth.svg";
-            default: 
+            default:
               // Search for the avatar link on the pools.start/pooltokens table
               // Assumes the pools/setPoolTokens state action is called.
               if (this.chainSrc[token]) return this.chainSrc[token]
