@@ -208,10 +208,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.pageContainer {
-  flex: 0 1 1200px;
-  padding: 1rem;
-}
 
 @media only screen and (max-width: 380px) {
   .t-swaps-title {

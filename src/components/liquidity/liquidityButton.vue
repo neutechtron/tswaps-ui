@@ -140,6 +140,7 @@ export default {
     await this.updatePools();
     await this.updateTokens();
     await this.updateTokenBalances(this.accountName);
+    await this.updateActivePool();
 
   },
   created() {},

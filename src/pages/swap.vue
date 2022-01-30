@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="pageContainer medium">
     <div class="q-pa-sm ">
       <div class="row justify-between q-my-md q-mx-md">
         <div class="text-h5  ">

@@ -33,6 +33,16 @@ body {
     height: 3rem;
   }
 }
+.pageContainer{
+  &.medium{
+    flex: 0 1 700px;
+    max-width: 700px;
+  };
+  &.large{
+    flex: 0 1 700px;
+    max-width: 1400px;
+  }
+}
 
 .selectorContainer .text-h6 {
   font-weight: 600;
@@ -378,5 +388,5 @@ a:-webkit-any-link {
 }
 
 .avatarOverlap {
-  left: -20px;
+  left: -12px;
 }

@@ -5,7 +5,7 @@
       <div class="col-6 relative-position ">
         <div class="text-h5 text-weight-bold">Pools</div>
       </div>
-      <div class="col-2">
+      <!-- <div class="col-2">
         <q-btn flat class="float-right"
           :icon="'fas fa-cog'"
           @click="tolerance = true">
@@ -26,7 +26,7 @@
           <strong>New Pool</strong> 
         </q-tooltip>
         </q-btn>
-      </div>
+      </div> -->
       <q-dialog v-model="tolerance" persistent>
         <q-card style="min-width: 350px">
           <q-card-section>

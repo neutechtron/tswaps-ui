@@ -1,5 +1,5 @@
 <template>
-  <q-page >
+  <q-page class="pageContainer large">
 
       <div class="row q-my-md">
         <div class="col-12">

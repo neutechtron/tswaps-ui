@@ -1,5 +1,5 @@
 <template>
-  <q-page>
+  <q-page class="pageContainer medium">
     <div class="q-pa-sm">
       <div class="row justify-between q-my-md q-mx-md">
         <div class="text-h5 ">
@@ -29,15 +29,19 @@
                 </div>
               </div>
 
-              <q-card
-                v-if="!getHasPool"
-                flat
-                class="warning-card text-center q-mt-md"
-              >
-                No pool exists for the selected pair. The ratio of tokens you
-                add will set the price of this pool. A fee of
-                {{listingFee.quantity}} will be paid on creation.
-              </q-card>
+              <div class="row ">
+                <div class="col-sm-12 ">
+                  <q-card
+                    v-if="!getHasPool"
+                    flat
+                    class="warning-card text-center q-mt-md"
+                  >
+                    No pool exists for the selected pair. The ratio of tokens you
+                    add will set the price of this pool. A fee of
+                    {{listingFee.quantity}} will be paid on creation.
+                  </q-card>
+                </div>
+              </div>
 
               <div class="row  q-mt-md">
                 <div v-if="getHasPool" class="col-12 ">

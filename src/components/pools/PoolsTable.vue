@@ -5,22 +5,37 @@
     :columns="columns"
     row-key="id"
     flat
-    hide-header
   >
     <template v-slot:header="props">
       <q-tr :props="props">
         <q-th auto-width />
-        <q-th v-for="col in props.cols" :key="col.name" :props="props">
-          {{ col.label }}
+        <q-th auto-width >
+          Name
         </q-th>
-        <q-th auto-width />
+        <q-th auto-width >
+          Price
+        </q-th>
+        <q-th auto-width >
+          Token1 locked
+        </q-th>
+        <q-th auto-width >
+          Token2 locked
+        </q-th>
+        <!-- <q-th v-for="col in props.cols" :key="col.name" :props="props">
+          {{ col.label }}
+        </q-th> -->
+        <!-- <q-th auto-width /> -->
       </q-tr>
     </template>
 
     <template v-slot:body="props">
       <q-tr :props="props">
-        <q-td auto-width>
-          <token-avatar :token="props.row.reserve0.symbol" :avatarSize="40" />
+        
+        <q-td auto-width >
+          <token-avatar 
+          :token="props.row.reserve0.symbol" 
+          :avatarSize="40" 
+          />
 
           <token-avatar
             :token="props.row.reserve1.symbol"
@@ -30,19 +45,21 @@
         </q-td>
 
         <q-td auto-width>
-          <div class="text-body1 text-bold ">
-            {{ props.row.reserve0.symbol + "/" + props.row.reserve1.symbol }}
-          </div>
-          <div>
+          <q-btn flat @click="addLiquidity(props.row)">
+            <div class="text-body1 text-bold" >
+              {{ props.row.reserve0.symbol + "/" + props.row.reserve1.symbol }}
+            </div>
+          </q-btn>
+          <!-- <div>
             <q-badge outline color="primary">0.3% LP fees</q-badge>
-          </div>
+          </div> -->
         </q-td>
 
         <q-td auto-width>
-          <div class="text-body2 text-weight-light">
+          <!-- <div class="text-body2 text-weight-light">
             Price
-          </div>
-          <div class="text-body1 text-bold">
+          </div> -->
+          <div class="text-body1 ">
             {{
               parseFloat(props.row.virtual_price).toFixed(
                 Math.max(
@@ -55,10 +72,10 @@
         </q-td>
 
         <q-td auto-width>
-          <div class="text-weight-thin">
+          <!-- <div class="text-weight-thin">
             Total locked {{ props.row.reserve0.symbol }}
-          </div>
-          <div class="text-body1 text-bold">
+          </div> -->
+          <div class="text-body1 ">
             {{
               parseFloat(props.row.reserve0.quantity).toFixed(
                 props.row.reserve0.precision
@@ -68,10 +85,10 @@
         </q-td>
 
         <q-td auto-width>
-          <div class="text-weight-thin">
+          <!-- <div class="text-weight-thin">
             Total locked {{ props.row.reserve1.symbol }}
-          </div>
-          <div class="text-body1 text-bold">
+          </div> -->
+          <div class="text-body1 ">
             {{
               parseFloat(props.row.reserve1.quantity).toFixed(
                 props.row.reserve1.precision
@@ -80,7 +97,7 @@
           </div>
         </q-td>
 
-        <q-td auto-width>
+        <!-- <q-td auto-width>
           <q-btn
             position="sticky"
             size="sm"
@@ -90,15 +107,17 @@
             @click="props.expand = !props.expand"
             :icon="props.expand ? 'remove' : 'add'"
           />
-        </q-td>
+        </q-td> -->
       </q-tr>
-      <q-tr v-show="props.expand" :props="props">
+
+      <!-- <q-tr v-show="props.expand" :props="props">
         <q-td colspan="100%">
           <div class="text-left">
             <expanding-row :pool="props.row" />
           </div>
         </q-td>
-      </q-tr>
+      </q-tr> -->
+
     </template>
   </q-table>
 </template>
@@ -145,21 +164,43 @@ const columns = [
 export default {
   name: "Pools",
   components: {
-    TokenAvatar,
-    ExpandingRow
+    TokenAvatar
   },
   methods: {
     ...mapActions("pools", ["updatePools"]),
     ...mapActions("tokens", ["updateTokens"]),
     printfunction(i) {
       console.log(i);
+    },
+    addLiquidity(pool){
+      let tokens = this.getTokens
+      let token1 = this.filterByToken(tokens, pool.reserve0.symbol, pool.reserve0.contract)
+      let token2 = this.filterByToken(tokens, pool.reserve1.symbol, pool.reserve1.contract)
+      if (token1) {
+        this.$store.commit("liquidity/setToken1", token1);
+      }
+      if (token2) {
+        this.$store.commit("liquidity/setToken2", token2);
+      }
+      this.$router.push({ path: "/liquidity" });
+    },
+    filterByToken(tokens,symbol,contract) {
+      return tokens.find(token => {
+        return (
+          token.symbol.toLowerCase().includes(symbol.toLowerCase()) &&
+          token.contract.toLowerCase().includes(contract.toLowerCase())
+        );
+      });
     }
   },
   async mounted() {
     await this.updatePools();
     await this.updateTokens();
   },
-  computed: mapGetters("pools", ["getPools", "getUserPools"]),
+  computed: {
+  ...mapGetters("pools", ["getPools", "getUserPools"]),
+  ...mapGetters("tokens", ["getTokens"])
+  },
   data() {
     return {
       columns,
