@@ -12,6 +12,14 @@ const exAssToSymbol = extended_asset => {
     return sym
 };
 
+// Gets symbol and balace from obj { "balance": "13.0638 AB" }
+const exBalanceSymbol = extended_asset => {
+    let idx = extended_asset.balance.indexOf(" ") + 1;
+    let sym = extended_asset.balance.slice(idx);
+    let balance = extended_asset.balance.slice(0, idx -1);
+    return [sym,balance]
+};
+
 // Returns decimal count of number to determine precision: 2000.0000 => 4
 const decimalCount = num => {
     // Convert to String
@@ -89,6 +97,7 @@ export default async ({ Vue, store }) => {
     Vue.prototype.$assetToSymbol = assetToSymbol;
     Vue.prototype.$getQuantity = getQuantity;
     Vue.prototype.$truncate = truncate;
+    Vue.prototype.$exAssToPrecision = exBalanceSymbol;
     store["$exAssToPrecision"] = exAssToPrecision;
     store["$exAssToSymbol"] = exAssToSymbol;
     store["$exSymToContract"] = exSymToContract;
@@ -98,4 +107,5 @@ export default async ({ Vue, store }) => {
     store["$assetToSymbol"] = assetToSymbol;
     store["$getQuantity"] = getQuantity;
     store["$truncate"] = truncate;
+    store["$exBalanceSymbol"] = exBalanceSymbol;
 };

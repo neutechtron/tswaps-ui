@@ -25,6 +25,9 @@ export const formatPoolList = function ({ commit, rootGetters }, rows) {
                 },
                 contract0: res0.contract,
                 contract1: res1.contract,
+                lpSymbol: this.$exAssToSymbol(pool.liquidity),
+                lpPrecision: this.$exAssToPrecision(pool.liquidity),
+                lpContract: pool.liquidity.contract,
                 chain: getCurrentChain
             };
 
@@ -62,7 +65,7 @@ export const updatePools = async function ({ commit, rootGetters, dispatch }) {
 };
 
 export const updateUserLiquidityPools = async function (
-    { commit, rootGetters },
+    { commit, rootGetters, getters },
     accountName
 ) {
     try {
@@ -79,10 +82,27 @@ export const updateUserLiquidityPools = async function (
             });
             lpTokens.push(...res.rows);
 
-            const pools = lpTokens;
+            const allpools = getters.getPools;
+            const userPools = [];
+            console.log(allpools)
+            console.log(lpTokens)
+
+            for (const token of lpTokens)
+            {
+                console.log(token)
+                let val = this.$exBalanceSymbol(token)
+                console.log(val)
+                let temp = allpools.find(p => 
+                    p.lpSymbol == val[0]
+                );
+                if (temp){
+                    userPools.push({...temp,lpBalance:val[1]})
+                }
+            }
+            console.log(userPools)
             // TODO show your liquidity pools
             // const pools = await dispatch("formatPoolList", tableResults.rows);
-            commit("setUserLiquidityPools", pools);
+            commit("setUserLiquidityPools", userPools);
         }
     } catch (error) {
         commit("general/setErrorMsg", error.message || error, { root: true });

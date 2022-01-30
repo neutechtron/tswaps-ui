@@ -35,11 +35,9 @@ body {
 }
 .pageContainer{
   &.medium{
-    flex: 0 1 700px;
-    max-width: 700px;
+    max-width: 650px;
   };
   &.large{
-    flex: 0 1 700px;
     max-width: 1400px;
   }
 }
@@ -102,7 +100,9 @@ body.body--light {
   );
 
   .inputCard,
-  .cardCircle {
+  .cardCircle,
+  .liquidityCard
+   {
     background: rgb(238, 234, 244);
     color: $dark-0;
   }
@@ -201,7 +201,8 @@ body.body--dark,
 
   color: $white;
   .inputCard,
-  .cardCircle {
+  .cardCircle,
+  .liquidityCard {
     background: rgba($inputCardDarkMode, 0.9);
     color: $white;
   }
@@ -321,6 +322,10 @@ body.body--dark,
     width: 100%;
     font-size: 1.8rem;
   }
+}
+
+.liquidityCard{
+  border-radius: 20px
 }
 
 .q-dialog__inner > div {
