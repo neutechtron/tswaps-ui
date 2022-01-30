@@ -7,71 +7,81 @@
       label="Connect Wallet"
       @click="showLogin = true"
     />
-    <div
-      v-for="pool in getUserPools" 
-     :key= pool.lpSymbol>
-     <q-card 
-     class="liquidityCard q-mb-sm">
-      <q-card-section>
-        <div class="row">
-          <div class="q-pt-sm">
-            <token-avatar 
-              :token="pool.reserve0.symbol" 
-              :avatarSize="40" 
-            />
+    <div v-for="pool in getUserPools" :key="pool.lpSymbol">
+      <q-card class="liquidityCard q-mb-sm">
+        <q-card-section>
+          <div class="row">
+            <div class="q-pt-sm">
+              <token-avatar :token="pool.reserve0.symbol" :avatarSize="40" />
 
-            <token-avatar
-              :token="pool.reserve1.symbol"
-              :avatarSize="40"
-              class="avatarOverlap"
-            />
-            {{ pool.reserve0.symbol + "/" + pool.reserve1.symbol }}
-          </div>
-          <q-space />
-          <div >
-            <q-btn outline color="accent" @click="removePopup(pool)">
-              <div class="text-body1" >
-                Remove
-              </div>
-            </q-btn>
+              <token-avatar
+                :token="pool.reserve1.symbol"
+                :avatarSize="40"
+                class="avatarOverlap"
+              />
+              {{ pool.reserve0.symbol + "/" + pool.reserve1.symbol }}
+            </div>
+            <q-space />
             <div>
-              <q-badge outline color="primary">{{pool.lpBalance +" "+ pool.lpSymbol}}</q-badge>
-            </div> 
+              <q-btn outline color="accent" @click="removePopup(pool)">
+                <div class="text-body1">
+                  Remove
+                </div>
+              </q-btn>
+              <div>
+                <q-badge outline color="primary">{{
+                  pool.lpBalance + " " + pool.lpSymbol
+                }}</q-badge>
+              </div>
+            </div>
           </div>
-        </div>
-      </q-card-section>
-    </q-card>
+        </q-card-section>
+      </q-card>
     </div>
     <q-dialog v-model="remove">
       <q-card style="min-width: 350px; max-width: 400px">
         <q-card-section class="text-grey-9">
           <div class="row">
-          <div class="text-h6"> {{ removePool ? removePool.reserve0.symbol + "/" + removePool.reserve1.symbol : "Remove liquidity" }} </div>
-          
-          <q-space/>
-            <q-btn outline color="accent" @click="liquidity = removePool.lpBalance">
+            <div class="text-h6">
+              {{
+                removePool
+                  ? removePool.reserve0.symbol +
+                    "/" +
+                    removePool.reserve1.symbol
+                  : "Remove liquidity"
+              }}
+            </div>
+
+            <q-space />
+            <q-btn
+              outline
+              color="accent"
+              @click="liquidity = removePool.lpBalance"
+            >
               <div class="font-size: 1.5em">max</div>
             </q-btn>
           </div>
           <div class="text-body1">
-              {{removePool ? removePool.lpBalance +" "+ removePool.lpSymbol : "" }}
-            </div> 
+            {{
+              removePool ? removePool.lpBalance + " " + removePool.lpSymbol : ""
+            }}
+          </div>
         </q-card-section>
 
         <q-separator />
 
         <q-card-section>
-            <div class="row">
-              <div>
-                <q-input  outlined v-model="liquidity" dense />
-              </div>
-              <q-space/>
-              <div>
-                <q-btn outline color="primary" @click="removeLiquidity()">
-                  <div class="font-size: 1.5em">Remove</div>
-                </q-btn>
-              </div>
+          <div class="row">
+            <div>
+              <q-input outlined v-model="liquidity" dense />
             </div>
+            <q-space />
+            <div>
+              <q-btn outline color="primary" @click="removeLiquidity()">
+                <div class="font-size: 1.5em">Remove</div>
+              </q-btn>
+            </div>
+          </div>
         </q-card-section>
       </q-card>
     </q-dialog>
@@ -95,7 +105,7 @@ export default {
       pollTokens: null,
       showLogin: false,
       remove: false,
-      liquidity:0.0,
+      liquidity: 0.0,
       removePool: null,
       error: null
     };
@@ -108,10 +118,10 @@ export default {
     ...mapActions("account", ["accountExistsOnChain", "login"]),
     ...mapActions("pools", ["updateUserLiquidityPools", "updatePools"]),
     ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
-    removePopup(pool){
-      this.removePool = pool
-      this.liquidity = pool.lpBalance
-      this.remove = true
+    removePopup(pool) {
+      this.removePool = pool;
+      this.liquidity = pool.lpBalance;
+      this.remove = true;
     },
     async removeLiquidity() {
       if (!this.accountName) {
@@ -131,7 +141,7 @@ export default {
             name: "transfer",
             data: {
               from: this.accountName.toLowerCase(),
-              to: process.env.LPTOKEN_CONTRACT,
+              to: process.env.SWAP_CONTRACT,
               quantity: `${parseFloat(this.liquidity).toFixed(
                 this.removePool?.lpPrecision
               )} ${this.removePool?.lpSymbol}`,
@@ -150,7 +160,7 @@ export default {
       await this.updateTokens();
       await this.updateTokenBalances(this.accountName);
       await this.updateUserLiquidityPools(this.accountName);
-    },
+    }
   },
   async mounted() {
     await this.updatePools();
