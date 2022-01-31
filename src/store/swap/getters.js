@@ -11,3 +11,17 @@ export const getIsValidPair = ({ fromToken, toToken }) => {
         fromToken.toTokens.filter(el => el.symbol == toToken.symbol).length > 0
     );
 };
+export const getFromReserve = ({ fromToken, pool }) => {
+    if (pool?.reserve0?.contract == fromToken?.contract && pool?.reserve0?.symbol == fromToken?.symbol) {
+        return pool?.reserve0;
+    } else {
+        return pool?.reserve1;
+    }
+}
+export const getToReserve = ({ toToken, pool }) => {
+    if (pool?.reserve0?.contract == toToken?.contract && pool?.reserve0?.symbol == toToken?.symbol) {
+        return pool?.reserve0;
+    } else {
+        return pool?.reserve1;
+    }
+}

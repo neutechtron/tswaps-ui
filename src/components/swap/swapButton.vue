@@ -33,7 +33,7 @@ export default {
       fromNetwork: "TELOS",
       pollTokens: null,
       showLogin: false,
-      error: null
+      error: null,
     };
   },
   computed: {
@@ -44,7 +44,7 @@ export default {
       "getToToken",
       "getAmount",
       "getMemo",
-      "getIsValidPair"
+      "getIsValidPair",
     ]),
     token_contract() {
       return this.getFromToken?.contract;
@@ -57,7 +57,7 @@ export default {
     },
     token_balance() {
       return this.getFromToken?.amount;
-    }
+    },
   },
   methods: {
     ...mapActions("account", ["accountExistsOnChain", "logout"]),
@@ -73,7 +73,7 @@ export default {
           color: "green-4",
           textColor: "white",
           icon: "cloud_done",
-          message: "Swap complete"
+          message: "Swap complete",
         });
       } catch (error) {
         this.$errorNotification(error);
@@ -103,9 +103,9 @@ export default {
               quantity: `${parseFloat(this.getAmount).toFixed(
                 this.token_precision
               )} ${this.token_symbol}`,
-              memo: this.getMemo
-            }
-          }
+              memo: this.getMemo,
+            },
+          },
         ];
         transaction = await this.$store.$api.signTransaction(actions);
       }
@@ -113,12 +113,12 @@ export default {
       if (transaction) {
         this.showTransaction = true;
         this.transaction = transaction.transactionId;
-        // TODO clear values
         this.$store.commit("swap/setAmount", 0);
         this.$store.commit("swap/setMemo", "");
+        this.$store.commit("swap/setToEstimate", 0);
       }
       await this.updateTokenBalances(this.accountName);
-    }
+    },
   },
   async mounted() {
     await this.updatePools();
@@ -134,8 +134,8 @@ export default {
       if (this.isAuthenticated) {
         await this.updateTokenBalances(this.accountName);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

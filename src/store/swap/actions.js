@@ -1,3 +1,40 @@
+export const calculateUniswapOut = function ({ commit, rootGetters, getters }, payload) {
+    try {
+        const config = rootGetters["pools/getConfig"];
+        const pool = getters.getPool
+        let swappingFee = (pool.trade_fee + config.protocol_fee) / 10000;
+        let amountInWithFee = payload.amount * (1 - swappingFee);
+        let reserveFrom = {};
+        let reserveTo = {}
+        if (payload.reserse) {
+            reserveFrom = parseFloat(getters.getToReserve.quantity);
+            reserveTo = parseFloat(getters.getFromReserve.quantity);
+        } else {
+            reserveFrom = parseFloat(getters.getFromReserve.quantity);
+            reserveTo = parseFloat(getters.getToReserve.quantity);
+        }
+
+
+        console.log("calculateUniswapOut:", payload.amount, amountInWithFee, reserveFrom, reserveTo);
+
+        let constantProduct = reserveFrom * reserveTo;
+        console.log("constantProduct", constantProduct);
+        let reserveToAfter =
+            constantProduct / (reserveFrom + amountInWithFee);
+        console.log("reserveToAfter", reserveToAfter);
+        let amountOut = reserveTo - reserveToAfter;
+        console.log("amountOut", amountOut);
+
+        amountOut = this.$truncate(amountOut, getters.getToToken.precision);
+        return amountOut;
+    } catch (error) {
+        console.log("calculateUniswapOut", error);
+        commit("general/setErrorMsg", error.message || error, { root: true });
+    }
+
+}
+
+
 export const updateSwapPool = async function ({ commit, rootGetters, getters }) {
     try {
         const fromToken = getters.getFromToken;
@@ -23,19 +60,17 @@ export const updateSwapPool = async function ({ commit, rootGetters, getters }) 
     }
 };
 
-export const updateAmount = async function ({ commit, getters }, amount) {
+export const updateAmount = async function ({ commit, getters, dispatch }, amount) {
     try {
         commit("setAmount", amount);
         if (getters.getCanSwap) {
-            const fromToken = getters.getFromToken;
             const pool = getters.getPool;
             let estimate = 0;
-            if (fromToken.symbol == pool?.reserve0?.symbol) {
-                estimate = Number(amount) * Number(pool?.price0_last);
+            if (pool.protocol === "curve") {
+                estimate = await dispatch("calculateUniswapOut", { amount: amount });
             } else {
-                estimate = Number(amount) * Number(pool?.price1_last);
+                estimate = await dispatch("calculateUniswapOut", { amount: amount })
             }
-            estimate = this.$truncate(estimate, getters.getToToken.precision);
             commit("setToEstimate", estimate);
         } else {
             commit("setToEstimate", 0);
@@ -60,12 +95,13 @@ export const updateEstimate = async function (
                 const toToken = getters.getToToken;
                 const pool = getters.getPool;
                 let amount = getters.getAmount;
-                if (toToken.symbol == pool?.reserve0?.symbol) {
-                    amount = Number(estimate) * Number(pool?.price0_last);
-                } else {
-                    amount = Number(estimate) * Number(pool?.price1_last);
+                // TODO curve protocol estimate
+                if (pool.protocol === "curve") {
+                    amount = await dispatch("calculateUniswapOut", { amount: estimate, reserse: true });
                 }
-                amount = this.$truncate(amount, getters.getFromToken.precision);
+                else {
+                    amount = await dispatch("calculateUniswapOut", { amount: estimate, reserse: true })
+                }
                 commit("setAmount", amount);
             } else {
                 // commit("setToEstimate", 0);

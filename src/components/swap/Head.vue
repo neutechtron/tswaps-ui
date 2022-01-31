@@ -32,7 +32,6 @@
               dense
               rounded
               outlined
-              mask="#.##"
               fill-mask="0.00"
               input-class="text-right"
               v-model="slippage"

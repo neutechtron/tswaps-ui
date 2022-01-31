@@ -101,8 +101,8 @@
                   >
                 </div>
               </div>
-              <div v-if="priceImpact < 0.01">&lt;0.01%</div>
-              <div v-else>{{ priceImpact.toFixed(2) }}%</div>
+              <div v-if="priceImpact * 100 < 0.01">&lt;0.01%</div>
+              <div v-else>{{ (priceImpact * 100).toFixed(2) }}%</div>
             </div>
             <div class="fit row justify-between">
               <div>
@@ -126,7 +126,7 @@
                 </div>
               </div>
               <div>
-                {{ getAmount * swappingFee }}
+                {{ (getAmount * swappingFee).toFixed(getFromToken.precision) }}
                 {{ getFromToken.symbol }}
               </div>
             </div>
