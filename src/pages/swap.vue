@@ -133,8 +133,6 @@
           </div>
         </q-card>
       </div>
-
-      {{ getPool }}
     </div>
   </q-page>
 </template>
