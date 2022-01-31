@@ -5,22 +5,17 @@
     :columns="columns"
     row-key="id"
     flat
+    virtual-scroll
+    :rows-per-page-options="[0]"
+    hide-bottom
   >
     <template v-slot:header="props">
       <q-tr :props="props">
         <q-th auto-width />
-        <q-th auto-width >
-          Name
-        </q-th>
-        <q-th auto-width >
-          Price
-        </q-th>
-        <q-th auto-width >
-          Token1 locked
-        </q-th>
-        <q-th auto-width >
-          Token2 locked
-        </q-th>
+        <q-th auto-width> Name </q-th>
+        <q-th auto-width> Price </q-th>
+        <q-th auto-width> Token1 liquidity </q-th>
+        <q-th auto-width> Token2 liquidity </q-th>
         <!-- <q-th v-for="col in props.cols" :key="col.name" :props="props">
           {{ col.label }}
         </q-th> -->
@@ -30,12 +25,8 @@
 
     <template v-slot:body="props">
       <q-tr :props="props">
-        
-        <q-td auto-width >
-          <token-avatar 
-          :token="props.row.reserve0.symbol" 
-          :avatarSize="40" 
-          />
+        <q-td auto-width>
+          <token-avatar :token="props.row.reserve0.symbol" :avatarSize="40" />
 
           <token-avatar
             :token="props.row.reserve1.symbol"
@@ -46,7 +37,7 @@
 
         <q-td auto-width>
           <q-btn flat @click="addLiquidity(props.row)">
-            <div class="text-body1 text-bold" >
+            <div class="text-body1 text-bold">
               {{ props.row.reserve0.symbol + "/" + props.row.reserve1.symbol }}
             </div>
           </q-btn>
@@ -59,7 +50,7 @@
           <!-- <div class="text-body2 text-weight-light">
             Price
           </div> -->
-          <div class="text-body1 ">
+          <div class="text-body1">
             {{
               parseFloat(props.row.virtual_price).toFixed(
                 Math.max(
@@ -75,7 +66,7 @@
           <!-- <div class="text-weight-thin">
             Total locked {{ props.row.reserve0.symbol }}
           </div> -->
-          <div class="text-body1 ">
+          <div class="text-body1">
             {{
               parseFloat(props.row.reserve0.quantity).toFixed(
                 props.row.reserve0.precision
@@ -88,7 +79,7 @@
           <!-- <div class="text-weight-thin">
             Total locked {{ props.row.reserve1.symbol }}
           </div> -->
-          <div class="text-body1 ">
+          <div class="text-body1">
             {{
               parseFloat(props.row.reserve1.quantity).toFixed(
                 props.row.reserve1.precision
@@ -117,7 +108,6 @@
           </div>
         </q-td>
       </q-tr> -->
-
     </template>
   </q-table>
 </template>
@@ -133,38 +123,38 @@ const columns = [
     required: true,
     label: "Name",
     align: "left",
-    field: row => row.reserve0.symbol + "/" + row.reserve1.symbol,
-    format: val => `${val}`,
-    sortable: true
+    field: (row) => row.reserve0.symbol + "/" + row.reserve1.symbol,
+    format: (val) => `${val}`,
+    sortable: true,
   },
-  { name: "price", label: "Price", field: row => row.virtual_price },
+  { name: "price", label: "Price", field: (row) => row.virtual_price },
   {
     name: "liquidity",
     align: "center",
     label: "Liquidity",
-    field: row => row.liquidity.quantity,
-    sortable: true
+    field: (row) => row.liquidity.quantity,
+    sortable: true,
   },
   {
     name: "volume24",
     label: "Volume 1",
-    field: row => row.volume0,
-    sortable: true
+    field: (row) => row.volume0,
+    sortable: true,
   },
   {
     name: "volume7d",
     label: "Volume 2",
-    field: row => row.volume1,
-    sortable: true
+    field: (row) => row.volume1,
+    sortable: true,
   },
   { name: "apy1week", label: "APY (1 week)", field: "apy1week" },
-  { name: "actions", label: "Actions", field: "actions" }
+  { name: "actions", label: "Actions", field: "actions" },
 ];
 
 export default {
   name: "Pools",
   components: {
-    TokenAvatar
+    TokenAvatar,
   },
   methods: {
     ...mapActions("pools", ["updatePools"]),
@@ -172,10 +162,18 @@ export default {
     printfunction(i) {
       console.log(i);
     },
-    addLiquidity(pool){
-      let tokens = this.getTokens
-      let token1 = this.filterByToken(tokens, pool.reserve0.symbol, pool.reserve0.contract)
-      let token2 = this.filterByToken(tokens, pool.reserve1.symbol, pool.reserve1.contract)
+    addLiquidity(pool) {
+      let tokens = this.getTokens;
+      let token1 = this.filterByToken(
+        tokens,
+        pool.reserve0.symbol,
+        pool.reserve0.contract
+      );
+      let token2 = this.filterByToken(
+        tokens,
+        pool.reserve1.symbol,
+        pool.reserve1.contract
+      );
       if (token1) {
         this.$store.commit("liquidity/setToken1", token1);
       }
@@ -184,28 +182,28 @@ export default {
       }
       this.$router.push({ path: "/liquidity" });
     },
-    filterByToken(tokens,symbol,contract) {
-      return tokens.find(token => {
+    filterByToken(tokens, symbol, contract) {
+      return tokens.find((token) => {
         return (
           token.symbol.toLowerCase().includes(symbol.toLowerCase()) &&
           token.contract.toLowerCase().includes(contract.toLowerCase())
         );
       });
-    }
+    },
   },
   async mounted() {
     await this.updatePools();
     await this.updateTokens();
   },
   computed: {
-  ...mapGetters("pools", ["getPools", "getUserPools"]),
-  ...mapGetters("tokens", ["getTokens"])
+    ...mapGetters("pools", ["getPools", "getUserPools"]),
+    ...mapGetters("tokens", ["getTokens"]),
   },
   data() {
     return {
       columns,
-      userLiquidity: true
+      userLiquidity: true,
     };
-  }
+  },
 };
 </script>
