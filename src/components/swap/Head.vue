@@ -12,32 +12,31 @@
     </div>
     <q-dialog v-model="tolerance">
       <q-card style="min-width: 350px; max-width: 400px">
-        <q-card-section class="text-grey-9">
+        <q-card-section class="text-white-9">
           <div class="text-h6">Transaction Settings</div>
         </q-card-section>
 
         <q-separator />
 
         <q-card-section>
-          <div class="text-subtitle1 text-grey-7">Slippage tolerance</div>
+          <div class="text-subtitle1 text-white-7">Slippage tolerance</div>
           <q-card-actions align="around">
-            <q-btn outline rounded @click="setSlippage(0.1)">
+            <q-btn outline rounded @click="slippage = 0.1">
               <div class="font-size: 1.5em">0.1%</div>
             </q-btn>
-            <q-btn outline rounded @click="setSlippage(0.5)">0.5%</q-btn>
-            <q-btn outline rounded @click="setSlippage(1)">1.0%</q-btn>
-            <p>{{ putSlippage }}</p>
+            <q-btn outline rounded @click="slippage = 0.5">0.5%</q-btn>
+            <q-btn outline rounded @click="slippage = 1">1.0%</q-btn>
             <q-input
               class="col-3"
-              input-style="font-size: 0.6em "
+              input-style="font-size: 1em "
               dense
               rounded
               outlined
-              mask="#.##%"
-              fill-mask="0"
-              reverse-fill-mask
+              mask="#.##"
+              fill-mask="0.00"
               input-class="text-right"
               v-model="slippage"
+              suffix="%"
             />
           </q-card-actions>
         </q-card-section>
@@ -74,17 +73,10 @@ export default {
   },
   methods: {
     ...mapActions("swap", ["updateSlippage"]),
-    setSlippage(value) {
-      this.slippage = value;
-    },
   },
   watch: {
     putSlippage() {
-      console.log("Watcher called - with slippage ",this.slippage)
-      // this.updateSlippage((this.slippage));
-
-      // const that = this;
-      // that.updateSlippage(parseFloat(that.slippage));
+      this.updateSlippage(parseFloat(this.slippage / 100));
     },
   },
 };
