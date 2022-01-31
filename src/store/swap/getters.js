@@ -7,7 +7,7 @@ export const getCanSwap = ({ canSwap }) => canSwap;
 export const getPool = ({ pool }) => pool;
 export const getSlippage = ({ slippage }) => slippage;
 export const getIsValidPair = ({ fromToken, toToken }) => {
-  return (
-    fromToken.toTokens.filter(el => el.symbol == toToken.symbol).length > 0
-  );
+    return (
+        fromToken.toTokens.filter(el => el.symbol == toToken.symbol).length > 0
+    );
 };

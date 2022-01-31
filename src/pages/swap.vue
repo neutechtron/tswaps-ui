@@ -72,6 +72,68 @@
         </div>
       </div>
 
+      <div v-if="getCanSwap" class="q-mt-md">
+        <q-card class="q-pa-xs">
+          <div class="q-ma-md">
+            <div class="fit row justify-between q-pb-xs">
+              <div>
+                <div class="fit row wrap items-center content-center">
+                  Minimum received
+                  <q-icon class="q-ml-xs" name="far fa-question-circle">
+                    <q-tooltip anchor="top middle" self="center middle">
+                      Your transaction will revert if there is a large,
+                      unfavorable price movement before it is confirmed.
+                    </q-tooltip></q-icon
+                  >
+                </div>
+              </div>
+              <div>{{ minimumReceived }} {{ getToToken.symbol }}</div>
+            </div>
+            <div class="fit row justify-between q-pb-xs">
+              <div>
+                <div class="fit row wrap items-center content-center">
+                  Price Impact
+                  <q-icon class="q-ml-xs" name="far fa-question-circle">
+                    <q-tooltip anchor="top middle" self="center middle">
+                      The difference between the market price and estimated
+                      price due to trade size.
+                    </q-tooltip></q-icon
+                  >
+                </div>
+              </div>
+              <div v-if="priceImpact < 0.01">&lt;0.01%</div>
+              <div v-else>{{ priceImpact.toFixed(2) }}%</div>
+            </div>
+            <div class="fit row justify-between">
+              <div>
+                <div class="fit row wrap items-center content-center">
+                  Swapping Fee
+                  <q-icon class="q-ml-xs" name="far fa-question-circle">
+                    <q-tooltip anchor="top middle" self="center middle">
+                      For each trade a
+                      {{
+                        getPool.trade_fee / 100 + getConfig.protocol_fee / 100
+                      }}% fee is paid
+                      <div>
+                        - {{ getPool.trade_fee / 100 }}% to LP token holders
+                      </div>
+                      <div>
+                        - {{ getConfig.protocol_fee / 100 }}% as platform and
+                        rewards fee
+                      </div>
+                    </q-tooltip></q-icon
+                  >
+                </div>
+              </div>
+              <div>
+                {{ getAmount * swappingFee }}
+                {{ getFromToken.symbol }}
+              </div>
+            </div>
+          </div>
+        </q-card>
+      </div>
+
       {{ getPool }}
     </div>
   </q-page>
@@ -105,8 +167,12 @@ export default {
       "getSlippage",
       "getPool",
       "getCanSwap",
+      "getAmount",
+      "getToEstimate",
     ]),
     ...mapGetters("tokens", ["getTokens"]),
+    ...mapGetters("pools", ["getConfig"]),
+
     showPoolExistsWarning() {
       const defaultMsg = "Select a token";
       return (
@@ -135,10 +201,53 @@ export default {
         return "";
       }
     },
+
+    swappingFee() {
+      if (this.getCanSwap) {
+        let feePercentage =
+          (this.getPool.trade_fee + this.getConfig.protocol_fee) / 10000;
+        let fee = parseFloat(feePercentage);
+        return fee;
+      } else {
+        return 0;
+      }
+    },
+
+    minimumReceived() {
+      if (this.getCanSwap) {
+        let minimum = Number(this.getToEstimate) * (1 - this.getSlippage);
+        return this.$truncate(minimum, this.getToToken.precision);
+      } else {
+        return 0;
+      }
+    },
+
+    priceImpact() {
+      // https://ethereum.stackexchange.com/questions/102063/understand-price-impact-and-liquidity-in-pancakeswap
+      if (this.getCanSwap) {
+        let amountInWithFee = this.getAmount * (1 - this.swappingFee);
+        let price_impact =
+          amountInWithFee / (this.getFromReserves + amountInWithFee);
+        return price_impact;
+      } else {
+        return 0;
+      }
+    },
+
+    getFromReserves() {
+      if (this.getCanSwap) {
+        if (this.getFromToken.symbol === this.getPool.reserve0.symbol) {
+          return parseFloat(this.getPool.reserve0.quantity);
+        } else {
+          return parseFloat(this.getPool.reserve1.quantity);
+        }
+      }
+      return 0;
+    },
   },
   methods: {
     ...mapActions("swap", ["swapToAndFrom"]),
-    ...mapActions("pools", ["updatePools"]),
+    ...mapActions("pools", ["updatePools", "updateConfig"]),
     ...mapActions("tokens", ["updateTokens"]),
     findToken(tokenQuery) {
       // console.log("query:", tokenQuery);
@@ -170,6 +279,7 @@ export default {
     const toToken = this.findToken(this.$route.query.toToken);
     // console.log(toToken);
     if (toToken) this.$store.commit("swap/setToToken", toToken);
+    await this.updateConfig();
   },
 };
 </script>
