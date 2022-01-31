@@ -1,10 +1,8 @@
 <template>
   <q-page class="pageContainer medium">
-    <div class="q-pa-sm ">
+    <div class="q-pa-sm">
       <div class="row justify-between q-my-md q-mx-md">
-        <div class="text-h5  ">
-          Swap
-        </div>
+        <div class="text-h5">Swap</div>
         <head-buttons />
       </div>
 
@@ -13,25 +11,52 @@
           <q-card flat class="swapCard">
             <q-card-section class="swapCardSection">
               <div class="row">
-                <div class="col-sm-12 ">
+                <div class="col-sm-12">
                   <from-card />
                 </div>
               </div>
 
               <div class="row justify-center q-mt-xs q-mb-xs">
                 <div class="cursor-pointer cardCircle" @click="swapToAndFrom()">
-                  <i class="fas fa-arrow-down "></i>
+                  <i class="fas fa-arrow-down"></i>
                 </div>
               </div>
 
-              <div class="row ">
-                <div class="col-sm-12 ">
+              <div class="row">
+                <div class="col-sm-12">
                   <to-card />
                 </div>
               </div>
 
               <div class="row q-mt-md">
-                <div class="col-12 ">
+                <div class="fit row justify-between q-ml-md q-mr-md">
+                  <div>Slippage Tolerance:</div>
+                  <div>{{ getSlippage * 100 }}%</div>
+                </div>
+
+                <div
+                  v-if="getCanSwap"
+                  class="fit row justify-between q-ml-md q-mr-md q-mt-md"
+                >
+                  <div>Price:</div>
+                  <div>
+                    <div class="fit row wrap items-center content-center">
+                      {{ pricePerToken
+                      }}<q-btn
+                        round
+                        class="q-ml-xs"
+                        color="black"
+                        icon="fas fa-sync-alt"
+                        size="0.5em"
+                        @click="swapPrice = !swapPrice"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row q-mt-md">
+                <div class="col-12">
                   <swap-button />
                 </div>
               </div>
@@ -46,6 +71,8 @@
           </q-card>
         </div>
       </div>
+
+      {{ getPool }}
     </div>
   </q-page>
 </template>
@@ -63,10 +90,22 @@ export default {
     fromCard,
     toCard,
     headButtons,
-    swapButton
+    swapButton,
+  },
+  data() {
+    return {
+      swapPrice: false,
+    };
   },
   computed: {
-    ...mapGetters("swap", ["getIsValidPair", "getToToken", "getFromToken"]),
+    ...mapGetters("swap", [
+      "getIsValidPair",
+      "getToToken",
+      "getFromToken",
+      "getSlippage",
+      "getPool",
+      "getCanSwap",
+    ]),
     ...mapGetters("tokens", ["getTokens"]),
     showPoolExistsWarning() {
       const defaultMsg = "Select a token";
@@ -75,7 +114,27 @@ export default {
         this.getToToken.symbol == defaultMsg ||
         this.getFromToken.symbol == defaultMsg
       );
-    }
+    },
+
+    pricePerToken() {
+      let token0 = this.getPool.reserve0;
+      let token1 = this.getPool.reserve1;
+      if (this.getCanSwap) {
+        let price0 = parseFloat(this.getPool.price1_last).toFixed(
+          token0.precision
+        );
+        let price1 = parseFloat(this.getPool.price0_last).toFixed(
+          token1.precision
+        );
+        if (this.swapPrice) {
+          return `${price0} ${token0.symbol} per ${token1.symbol}`;
+        } else {
+          return `${price1} ${token1.symbol} per ${token0.symbol}`;
+        }
+      } else {
+        return "";
+      }
+    },
   },
   methods: {
     ...mapActions("swap", ["swapToAndFrom"]),
@@ -91,7 +150,7 @@ export default {
           const token_contract = arr[0];
           const token_sym = arr[1];
           res = this.getTokens.find(
-            token =>
+            (token) =>
               token.symbol.toLowerCase().includes(token_sym.toLowerCase()) &&
               token.contract
                 .toLowerCase()
@@ -100,7 +159,7 @@ export default {
         }
       }
       return res;
-    }
+    },
   },
   async mounted() {
     await this.updatePools();
@@ -111,7 +170,7 @@ export default {
     const toToken = this.findToken(this.$route.query.toToken);
     // console.log(toToken);
     if (toToken) this.$store.commit("swap/setToToken", toToken);
-  }
+  },
 };
 </script>
 
