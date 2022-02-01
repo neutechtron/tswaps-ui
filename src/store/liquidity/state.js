@@ -2,7 +2,7 @@ export default function () {
     return {
         token1: {
             contract: "token.start",
-            symbol: "START",
+            symbol: "Select a token",
             amount: 0, // aka `balance` to comply with token store
             precision: 4,
             enabled: true,

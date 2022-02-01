@@ -24,8 +24,11 @@
           />
         </q-item>
         <div class="q-pl-md q-pb-sm q-pr-md">
-          <a v-if="!addingToken" class="addToken" @click="addingToken = true"
-            >Not seeing your token? Add it</a
+          <q-item-label
+            v-if="!addingToken"
+            class="addToken"
+            @click="addingToken = true"
+            >Not seeing your token? Add it</q-item-label
           >
           <div v-if="addingToken" class="fit row">
             <q-input
@@ -42,19 +45,39 @@
               placeholder="Symbol"
               class="col-4 q-pr-xs"
             />
-            <q-btn
-              no-caps
-              class="addBtn"
-              label="Add"
-              @click="
-                updateAddNewToken({
-                  contract: newTokenContract,
-                  symbol: newTokenSymbol,
-                  accountName: accountName,
-                });
-                addingToken = false;
-              "
-            />
+
+            <div>
+              <div class="fit column">
+                <q-btn
+                  no-caps
+                  size="sm"
+                  class="addBtn col q-mb-xs"
+                  label="Add"
+                  @click="
+                    updateAddNewToken({
+                      contract: newTokenContract,
+                      symbol: newTokenSymbol,
+                      accountName: accountName,
+                    });
+                    addingToken = false;
+                  "
+                />
+                <q-btn
+                  no-caps
+                  size="sm"
+                  class="addBtn col"
+                  label="Remove"
+                  @click="
+                    updateRemoveToken({
+                      contract: newTokenContract,
+                      symbol: newTokenSymbol,
+                      accountName: accountName,
+                    });
+                    addingToken = false;
+                  "
+                />
+              </div>
+            </div>
           </div>
         </div>
         <q-separator />
@@ -129,6 +152,7 @@ export default {
       "updateTokenBalances",
       "updateAllTokensBalances",
       "updateAddNewToken",
+      "updateRemoveToken",
     ]),
     updateSelectedCoin(token) {
       if (this.isSwap) {
@@ -190,7 +214,7 @@ export default {
     await this.updatePools();
     await this.updateTokens();
     await this.updateTokenBalances(this.accountName);
-    await this.updateAllTokensBalances(this.accountName);
+    // await this.updateAllTokensBalances(this.accountName);
   },
 };
 </script>
@@ -206,7 +230,7 @@ export default {
 }
 
 .addToken {
-  color: $primary;
+  //   color: $primary;
   text-decoration: underline;
   cursor: pointer;
 }

@@ -157,6 +157,36 @@ export const updateAddNewToken = async function ({ commit, getters, rootGetters,
     }
 }
 
+export const updateRemoveToken = async function ({ commit, getters, rootGetters, dispatch }, payload) {
+    try {
+        const getCurrentChain = rootGetters[
+            "blockchains/getCurrentChain"
+        ].NETWORK_NAME.toLowerCase();
+        let contract = payload.contract
+        let symbol = payload.symbol
+        let accountName = payload.accountName
+        let tokens = getters.getTokens
+        let localTokens = JSON.parse(localStorage.getItem("tokens")) || []
+
+        // remove token
+        let index = localTokens.findIndex(t => t.symbol === symbol && t.chain === getCurrentChain && t.contract === contract)
+        localTokens.splice(index, 1)
+        index = tokens.findIndex(t => t.symbol === symbol && t.chain === getCurrentChain && t.contract === contract)
+        tokens.splice(index, 1)
+
+        // add to local storage
+        let parsed = JSON.stringify(localTokens)
+        localStorage.setItem("tokens", parsed)
+
+        // update tokens
+        commit("setTokens", { tokens });
+
+    } catch (error) {
+        console.error("Error removing token:", error);
+        commit("general/setErrorMsg", error.message || error, { root: true });
+    }
+}
+
 export const updateTokenBalances = async function (
     { commit, getters },
     accountName
