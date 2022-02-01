@@ -86,6 +86,7 @@ export const updateTokens = async function ({
         // Load tokens from local storage
         let localTokens = JSON.parse(localStorage.getItem("tokens")) || [];
         if (localTokens.length > 0) {
+            localTokens = localTokens.filter(val => !tokens.find(t => t.contract === val.contract && t.symbol === val.symbol && t.chain === val.chain));
             tokens.push(...localTokens);
         }
 
