@@ -65,7 +65,7 @@
                   <router-link to="/pools">Pools</router-link>
                 </q-item-section>
               </q-item>
-              <q-item clickable class="lt-md">
+              <q-item clickable @click="openUrl(TSWAPS_BRIDGE)" class="lt-md">
                 <q-item-section>
                   <div class="row items-center">
                     Bridge

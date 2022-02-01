@@ -4,7 +4,7 @@
       v-if="!isAuthenticated"
       no-caps
       class="sendBtn full-width"
-      label="Connect Wallet"
+      label="Login"
       @click="showLogin = true"
     />
     <div v-for="pool in getUserPools" :key="pool.lpSymbol">
