@@ -36,7 +36,8 @@
                   >
                     No pool exists for the selected pair. The ratio of tokens
                     you add will set the price of this pool. A fee of
-                    {{ listingFee.quantity }} will be paid on creation.
+                    {{ this.$getQuantity(listingFee) }}
+                    {{ $exAssToSymbol(listingFee) }} will be paid on creation.
                   </q-card>
                 </div>
               </div>
@@ -97,10 +98,10 @@ export default {
     ...mapGetters("pools", ["getConfig"]),
 
     listingFee() {
-      if (this.getConfig.length > 0) {
+      if (this.getConfig?.listing_fee !== undefined) {
         return this.getConfig?.listing_fee;
       } else {
-        return { quantity: 0 };
+        return { quantity: "error SWAP" };
       }
     },
   },

@@ -16,8 +16,8 @@ const exAssToSymbol = extended_asset => {
 const exBalanceSymbol = extended_asset => {
     let idx = extended_asset.balance.indexOf(" ") + 1;
     let sym = extended_asset.balance.slice(idx);
-    let balance = extended_asset.balance.slice(0, idx -1);
-    return [sym,balance]
+    let balance = extended_asset.balance.slice(0, idx - 1);
+    return [sym, balance]
 };
 
 // Returns decimal count of number to determine precision: 2000.0000 => 4
@@ -36,7 +36,7 @@ const decimalCount = num => {
 const getQuantity = extended_asset => {
     let idx = extended_asset.quantity.indexOf(" ");
     let quantity = extended_asset.quantity.slice(0, idx);
-    return quantity;
+    return parseFloat(quantity);
 }
 
 // Gets contract from base token extended_symbol { "sym": "4,START", "contract": "token.start" }
@@ -97,7 +97,7 @@ export default async ({ Vue, store }) => {
     Vue.prototype.$assetToSymbol = assetToSymbol;
     Vue.prototype.$getQuantity = getQuantity;
     Vue.prototype.$truncate = truncate;
-    Vue.prototype.$exAssToPrecision = exBalanceSymbol;
+    Vue.prototype.$exBalanceSymbol = exBalanceSymbol;
     store["$exAssToPrecision"] = exAssToPrecision;
     store["$exAssToSymbol"] = exAssToSymbol;
     store["$exSymToContract"] = exSymToContract;

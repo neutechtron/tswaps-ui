@@ -12,7 +12,6 @@ export const setTokenPrecision = (state, { token, precision }) => {
             t.chain === token.chain
     );
     if (new_token !== undefined) {
-        console.log("setTokenPrecision", new_token, precision);
         new_token.precision = precision;
     }
 };

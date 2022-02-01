@@ -102,8 +102,8 @@ export default {
             data: {
               from: this.accountName.toLowerCase(),
               to: process.env.SWAP_CONTRACT,
-              quantity: `${parseFloat(
-                this.$getQuantity(this.getConfig.listing_fee)
+              quantity: `${this.$getQuantity(
+                this.getConfig.listing_fee
               ).toFixed(
                 this.$exAssToPrecision(this.getConfig.listing_fee)
               )} ${this.$exAssToSymbol(this.getConfig.listing_fee)}`,
