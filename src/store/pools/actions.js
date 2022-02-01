@@ -84,22 +84,21 @@ export const updateUserLiquidityPools = async function (
 
             const allpools = getters.getPools;
             const userPools = [];
-            console.log(allpools)
-            console.log(lpTokens)
+            // console.log(allpools)
+            // console.log(lpTokens)
 
-            for (const token of lpTokens)
-            {
-                console.log(token)
+            for (const token of lpTokens) {
+                // console.log(token)
                 let val = this.$exBalanceSymbol(token)
-                console.log(val)
-                let temp = allpools.find(p => 
+                // console.log(val)
+                let temp = allpools.find(p =>
                     p.lpSymbol == val[0]
                 );
-                if (temp){
-                    userPools.push({...temp,lpBalance:val[1]})
+                if (temp) {
+                    userPools.push({ ...temp, lpBalance: val[1] })
                 }
             }
-            console.log(userPools)
+            // console.log(userPools)
             // TODO show your liquidity pools
             // const pools = await dispatch("formatPoolList", tableResults.rows);
             commit("setUserLiquidityPools", userPools);

@@ -31,7 +31,7 @@ export default {
       fromNetwork: "TELOS",
       pollTokens: null,
       showLogin: false,
-      error: null
+      error: null,
     };
   },
   computed: {
@@ -39,7 +39,7 @@ export default {
       "isAuthenticated",
       "accountName",
       "loading",
-      "isAutoLoading"
+      "isAutoLoading",
     ]),
     ...mapGetters("liquidity", [
       "getToken1",
@@ -47,14 +47,18 @@ export default {
       "getValue1",
       "getValue2",
       "getPool",
-      "getHasPool"
-    ])
+      "getHasPool",
+    ]),
   },
   methods: {
     ...mapActions("account", ["accountExistsOnChain", "login"]),
     ...mapActions("pools", ["updatePools"]),
     // ...mapActions("liquidity", ["createMemo"]),
-    ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
+    ...mapActions("tokens", [
+      "updateTokens",
+      "updateTokenBalances",
+      "updateAllTokensBalances",
+    ]),
     ...mapActions("liquidity", ["updateActivePool"]),
 
     async tryAddLiquidity() {
@@ -64,7 +68,7 @@ export default {
         this.$q.notify({
           color: "green-4",
           textColor: "white",
-          message: "Liquidity added"
+          message: "Liquidity added",
         });
       } catch (error) {
         this.$errorNotification(error);
@@ -93,8 +97,8 @@ export default {
               quantity: `${parseFloat(this.getValue1).toFixed(
                 this.getToken1?.precision
               )} ${this.getToken1?.symbol}`,
-              memo: `deposit,${this.getPool.id}`
-            }
+              memo: `deposit,${this.getPool.id}`,
+            },
           },
           {
             account: this.getToken2?.contract, // token contract
@@ -105,17 +109,17 @@ export default {
               quantity: `${parseFloat(this.getValue2).toFixed(
                 this.getToken2?.precision
               )} ${this.getToken2?.symbol}`,
-              memo: `deposit,${this.getPool.id}`
-            }
+              memo: `deposit,${this.getPool.id}`,
+            },
           },
           {
             account: process.env.SWAP_CONTRACT,
             name: "deposit",
             data: {
               owner: this.accountName,
-              pair_id: this.getPool.id // TODO include min_amount
-            }
-          }
+              pair_id: this.getPool.id, // TODO include min_amount
+            },
+          },
         ];
         transaction = await this.$store.$api.signTransaction(actions);
       }
@@ -134,14 +138,10 @@ export default {
 
     openUrl(url) {
       window.open(url);
-    }
+    },
   },
   async mounted() {
-    await this.updatePools();
-    await this.updateTokens();
-    await this.updateTokenBalances(this.accountName);
     await this.updateActivePool();
-
   },
   created() {},
   watch: {
@@ -152,8 +152,8 @@ export default {
       if (this.isAuthenticated) {
         await this.updateTokenBalances(this.accountName);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

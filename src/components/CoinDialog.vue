@@ -6,7 +6,7 @@
     class="dialogContainer"
   >
     <q-card class="dialogCard">
-      <div class="dialogHeader ">
+      <div class="dialogHeader">
         <div class="row justify-between items-center q-pt-sm">
           <div class="text-h6 q-pl-md">Select a token</div>
           <div class="q-pr-sm">
@@ -23,6 +23,40 @@
             class="col"
           />
         </q-item>
+        <div class="q-pl-md q-pb-sm q-pr-md">
+          <a v-if="!addingToken" class="addToken" @click="addingToken = true"
+            >Not seeing your token? Add it</a
+          >
+          <div v-if="addingToken" class="fit row">
+            <q-input
+              v-model="newTokenContract"
+              outlined
+              round
+              placeholder="Contract"
+              class="col q-pr-xs"
+            />
+            <q-input
+              v-model="newTokenSymbol"
+              outlined
+              round
+              placeholder="Symbol"
+              class="col-4 q-pr-xs"
+            />
+            <q-btn
+              no-caps
+              class="addBtn"
+              label="Add"
+              @click="
+                updateAddNewToken({
+                  contract: newTokenContract,
+                  symbol: newTokenSymbol,
+                  accountName: accountName,
+                });
+                addingToken = false;
+              "
+            />
+          </div>
+        </div>
         <q-separator />
       </div>
       <q-list class="dialogList">
@@ -58,12 +92,16 @@ export default {
   data() {
     return {
       search: "",
-      filteredTokens: []
+      filteredTokens: [],
+      addingToken: false,
+      newTokenContract: "",
+      newTokenSymbol: "",
     };
   },
   props: ["showCoinDialog", "isFrom", "isSwap"],
   computed: {
     ...mapGetters("tokens", ["getTokens"]),
+    ...mapGetters("account", ["isAuthenticated", "accountName"]),
     // ...mapGetters("swap", ["getFromToken", "getToToken"]),
     ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"]),
     availableTokens() {
@@ -72,7 +110,7 @@ export default {
       } else {
         return this.getTokens;
       }
-    }
+    },
     // tokensForValidPair() {
     //   if (this.isSwap) {
     //     if (this.isFrom) return this.getToToken.toTokens;
@@ -85,6 +123,13 @@ export default {
   methods: {
     ...mapActions("swap", ["updateSwapPool", "updateEstimate"]),
     ...mapActions("liquidity", ["updateActivePool"]),
+    ...mapActions("pools", ["updatePools"]),
+    ...mapActions("tokens", [
+      "updateTokens",
+      "updateTokenBalances",
+      "updateAllTokensBalances",
+      "updateAddNewToken",
+    ]),
     updateSelectedCoin(token) {
       if (this.isSwap) {
         if (this.isFrom) {
@@ -105,8 +150,8 @@ export default {
 
       let defaultToChain = {};
       if (token.toChain !== undefined) {
-        defaultToChain = this.getAllPossibleChains.filter(el =>
-          token.toChain.map(c => c.toUpperCase()).includes(el.NETWORK_NAME)
+        defaultToChain = this.getAllPossibleChains.filter((el) =>
+          token.toChain.map((c) => c.toUpperCase()).includes(el.NETWORK_NAME)
         )[0];
       } else {
         defaultToChain = this.getCurrentChain;
@@ -124,13 +169,13 @@ export default {
       } else this.filteredTokens = this.getTokens;
     },
     filterByText(tokens) {
-      this.filteredTokens = tokens.filter(token => {
+      this.filteredTokens = tokens.filter((token) => {
         return (
           token.symbol.toLowerCase().includes(this.search.toLowerCase()) ||
           token.contract.toLowerCase().includes(this.search.toLowerCase())
         );
       });
-    }
+    },
     // Used in token list with :class="isValidToken(token) ? '' : 'greyItem'"
     // isValidToken(token) {
     //   const res = this.tokensForValidPair?.find(
@@ -140,7 +185,13 @@ export default {
     //   );
     //   return res !== undefined;
     // },
-  }
+  },
+  async mounted() {
+    await this.updatePools();
+    await this.updateTokens();
+    await this.updateTokenBalances(this.accountName);
+    await this.updateAllTokensBalances(this.accountName);
+  },
 };
 </script>
 
@@ -152,5 +203,27 @@ export default {
 
 .greyItem {
   background: rgba($grey-4, 20%);
+}
+
+.addToken {
+  color: $primary;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.addBtn {
+  color: white;
+  background-image: linear-gradient(
+    to right,
+    $purpleBright 20%,
+    $blueLight 80%
+  );
+  &:hover {
+    background-image: linear-gradient(
+      to left,
+      $purpleBright 20%,
+      $blueLight 80%
+    );
+  }
 }
 </style>

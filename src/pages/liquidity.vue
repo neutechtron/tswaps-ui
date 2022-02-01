@@ -2,9 +2,7 @@
   <q-page class="pageContainer medium">
     <div class="q-pa-sm">
       <div class="row justify-between q-my-md q-mx-md">
-        <div class="text-h5 ">
-          Liquidity
-        </div>
+        <div class="text-h5">Liquidity</div>
       </div>
 
       <div class="row justify-center q-mt-xs">
@@ -12,42 +10,42 @@
           <q-card flat class="swapCard">
             <q-card-section class="swapCardSection">
               <div class="row">
-                <div class="col-sm-12 ">
+                <div class="col-sm-12">
                   <input1 />
                 </div>
               </div>
 
               <div class="row justify-center q-mt-xs q-mb-xs">
                 <div class="cardCircle">
-                  <i class="fas fa-plus "></i>
+                  <i class="fas fa-plus"></i>
                 </div>
               </div>
 
-              <div class="row ">
-                <div class="col-sm-12 ">
+              <div class="row">
+                <div class="col-sm-12">
                   <input2 />
                 </div>
               </div>
 
-              <div class="row ">
-                <div class="col-sm-12 ">
+              <div class="row">
+                <div class="col-sm-12">
                   <q-card
                     v-if="!getHasPool"
                     flat
                     class="warning-card text-center q-mt-md"
                   >
-                    No pool exists for the selected pair. The ratio of tokens you
-                    add will set the price of this pool. A fee of
-                    {{listingFee.quantity}} will be paid on creation.
+                    No pool exists for the selected pair. The ratio of tokens
+                    you add will set the price of this pool. A fee of
+                    {{ listingFee.quantity }} will be paid on creation.
                   </q-card>
                 </div>
               </div>
 
-              <div class="row  q-mt-md">
-                <div v-if="getHasPool" class="col-12 ">
+              <div class="row q-mt-md">
+                <div v-if="getHasPool" class="col-12">
                   <liquidity-button />
                 </div>
-                <div v-else class="col-12 ">
+                <div v-else class="col-12">
                   <create-button />
                 </div>
               </div>
@@ -58,15 +56,13 @@
           </q-card>
 
           <div class="row justify-between q-my-md q-mx-md">
-            <div class="text-h5 ">
-              Your Liquidity
-            </div>
+            <div class="text-h5">Your Liquidity</div>
           </div>
 
           <q-card flat class="swapCard">
             <q-card-section class="swapCardSection">
-              <div class="row  q-my-md">
-                <div class="col-12 ">
+              <div class="row q-my-md">
+                <div class="col-12">
                   <your-liquidity />
                 </div>
               </div>
@@ -93,7 +89,7 @@ export default {
     input2,
     liquidityButton,
     yourLiquidity,
-    createButton
+    createButton,
   },
   computed: {
     ...mapGetters("liquidity", ["getPool", "getHasPool"]),
@@ -101,20 +97,19 @@ export default {
     ...mapGetters("pools", ["getConfig"]),
 
     listingFee() {
-        if (this.getConfig) {
-            return this.getConfig?.listing_fee;
-        } else {
-            return {quantity: 0};
-        }
-    }
+      if (this.getConfig.length > 0) {
+        return this.getConfig?.listing_fee;
+      } else {
+        return { quantity: 0 };
+      }
+    },
   },
   methods: {
-    ...mapActions("pools", [ "updateConfig"]),
+    ...mapActions("pools", ["updateConfig"]),
   },
   async mounted() {
     await this.updateConfig();
-
-  }
+  },
 };
 </script>
 

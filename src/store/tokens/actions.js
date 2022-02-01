@@ -1,7 +1,8 @@
 // Get tokens from tokens table 
 export const updateTokens = async function ({
     commit,
-    rootGetters
+    rootGetters,
+    dispatch
 }) {
     try {
         const getCurrentChain = rootGetters[
@@ -42,78 +43,115 @@ export const updateTokens = async function ({
                 toTokens: []
             }
 
-            // Check duplicates for token0
-            if (
-                tokens.find(
-                    t =>
-                        t.symbol === token0.symbol &&
-                        t.chain === token0.chain &&
-                        t.contract === token0.contract
-                )
-            ) {
-                // append toToken
-                let index = tokens.findIndex(
-                    t =>
-                        t.symbol === token0.symbol &&
-                        t.chain === token0.chain &&
-                        t.contract === token0.contract
-                );
-                tokens[index].toTokens.push({
-                    contract: token1.contract,
-                    symbol: token1.symbol,
-                    precision: token1.precision,
-                    pool: pool.id
-                });
-            } else {
-                token0.toTokens.push({
-                    contract: token1.contract,
-                    symbol: token1.symbol,
-                    precision: token1.precision,
-                    pool: pool.id
-                });
-                tokens.push(token0);
+            const checkDuplicates = function (tokens, token, tokenTo) {
+                // Check duplicates for token
+                if (
+                    tokens.find(
+                        t =>
+                            t.symbol === token.symbol &&
+                            t.chain === token.chain &&
+                            t.contract === token.contract
+                    )
+                ) {
+                    // append toToken
+                    let index = tokens.findIndex(
+                        t =>
+                            t.symbol === token.symbol &&
+                            t.chain === token.chain &&
+                            t.contract === token.contract
+                    );
+                    tokens[index].toTokens.push({
+                        contract: tokenTo.contract,
+                        symbol: tokenTo.symbol,
+                        precision: tokenTo.precision,
+                        pool: pool.id
+                    });
+                } else {
+                    token.toTokens.push({
+                        contract: tokenTo.contract,
+                        symbol: tokenTo.symbol,
+                        precision: tokenTo.precision,
+                        pool: pool.id
+                    });
+                    tokens.push(token);
+                }
             }
 
-            // Check duplicates for token1
-            if (
-                tokens.find(
-                    t =>
-                        t.symbol === token1.symbol &&
-                        t.chain === token1.chain &&
-                        t.contract === token1.contract
-                )
-            ) {
-                // append toToken
-                let index = tokens.findIndex(
-                    t =>
-                        t.symbol === token1.symbol &&
-                        t.chain === token1.chain &&
-                        t.contract === token1.contract
-                );
-                tokens[index].toTokens.push({
-                    contract: token0.contract,
-                    symbol: token0.symbol,
-                    precision: token0.precision,
-                    pool: pool.id
-                });
-            } else {
-                token1.toTokens.push({
-                    contract: token0.contract,
-                    symbol: token0.symbol,
-                    precision: token0.precision,
-                    pool: pool.id
-                });
-                tokens.push(token1);
-            }
+            // Check duplicates
+            checkDuplicates(tokens, token0, token1);
+            checkDuplicates(tokens, token1, token0);
+
         }
+
+        // TODO Load tokens from local storage
+        console.log("get tokens", JSON.parse(localStorage.getItem("tokens")));
 
         commit("setTokens", { tokens });
 
     } catch (error) {
-        console.log("Error getting tokens:", error);
+        console.error("Error getting tokens:", error);
         commit("general/setErrorMsg", error.message || error, { root: true });
     }
 };
+
+export const updateAddNewToken = async function ({ commit, getters, rootGetters, dispatch },
+    payload
+) {
+    try {
+        const getCurrentChain = rootGetters[
+            "blockchains/getCurrentChain"
+        ].NETWORK_NAME.toLowerCase();
+        let contract = payload.contract
+        let symbol = payload.symbol
+        let accountName = payload.accountName
+        let tokens = JSON.parse(JSON.stringify(getters.getTokens))
+
+        console.log(contract, symbol)
+
+        // check duplicates
+        let token = {
+            symbol: symbol,
+            contract: contract,
+            precision: 0,
+            chain: getCurrentChain,
+            toTokens: []
+        }
+
+        // Check duplicates for token
+        if (
+            !tokens.find(
+                t =>
+                    t.symbol === token.symbol &&
+                    t.chain === token.chain &&
+                    t.contract === token.contract
+            )
+        ) { tokens.push(token); }
+
+        // add token
+        commit("setTokens", { tokens });
+
+        // update balance
+        if (accountName !== undefined) {
+            await dispatch("updateTokenBalances", accountName);
+        }
+        let newToken = getters.getTokens.find(t => t.symbol === token.symbol &&
+            t.chain === token.chain &&
+            t.contract === token.contract)
+        console.log("newToken", newToken)
+
+        // TODO add to local storage
+        let localTokens = JSON.parse(localStorage.getItem("tokens"))
+        localTokens.push(newToken)
+        console.log("localTokens", localTokens)
+        let parsed = JSON.stringify(localTokens)
+        localStorage.setItem("tokens", parsed)
+        console.log(parsed)
+
+    } catch (error) {
+        console.error("Error adding token:", error);
+        commit("general/setErrorMsg", error.message || error, { root: true });
+    }
+}
 
 export const updateTokenBalances = async function (
     { commit, getters },
@@ -135,6 +173,13 @@ export const updateTokenBalances = async function (
                     // console.log("balance:")
                     // console.log(balance)
                     if (balance !== undefined) {
+                        let precision = this.$assetToPrecision(balance)
+                        if (precision === 0) {
+                            commit("setTokenPrecision", {
+                                token: token,
+                                precision: precision
+                            });
+                        }
                         commit("setTokenAmount", {
                             token: token,
                             amount: this.$assetToAmount(balance)
@@ -165,7 +210,7 @@ export const updateAllTokensBalances = async function (
                 `/v2/state/get_tokens?account=${accountName}&limit=1000`
             );
             console.log("user token balances:", userCoins.data.tokens);
-            commit("setTokenBalances", { tokens }); //TODO: set token balances
+            // commit("setTokenBalances", { tokens }); //TODO: set token balances
         }
     } catch (error) {
         console.log("Error getting all tokens balances:", error);
