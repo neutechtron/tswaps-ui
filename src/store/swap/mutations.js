@@ -11,7 +11,11 @@ export const setMemo = (state, memo) => {
 };
 
 export const setAmount = (state, amount) => {
-    state.amount = amount;
+    if (Number.isNaN(amount)) {
+        state.amount = 0;
+    } else {
+        state.amount = amount;
+    }
 };
 
 export const setPool = (state, pool) => {
@@ -27,7 +31,11 @@ export const setErrorMsg = (state, errorMsg) => {
 };
 
 export const setToEstimate = (state, estimate) => {
-    state.estimate = estimate;
+    if (Number.isNaN(estimate)) {
+        state.estimate = 0;
+    } else {
+        state.estimate = estimate;
+    }
 };
 
 export const setSlippage = (state, slippage) => {

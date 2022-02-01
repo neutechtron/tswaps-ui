@@ -130,6 +130,20 @@
                 {{ getFromToken.symbol }}
               </div>
             </div>
+            <!-- TODO Routes -->
+            <!-- <div class="fit row justify-between q-pb-xs">
+              <div>
+                <div class="fit row wrap items-center content-center">
+                  Route
+                  <q-icon class="q-ml-xs" name="far fa-question-circle">
+                    <q-tooltip anchor="top middle" self="center middle">
+                      Routing through these tokens resulted in the best price for your trade.
+                    </q-tooltip></q-icon
+                  >
+                </div>
+              </div>
+              <div>{{ minimumReceived }}</div>
+            </div> -->
           </div>
         </q-card>
       </div>

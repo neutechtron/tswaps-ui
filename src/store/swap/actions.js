@@ -3,30 +3,33 @@ export const calculateUniswapOut = function ({ commit, rootGetters, getters }, p
         const config = rootGetters["pools/getConfig"];
         const pool = getters.getPool
         let swappingFee = (pool.trade_fee + config.protocol_fee) / 10000;
-        let amountInWithFee = payload.amount * (1 - swappingFee);
-        let reserveFrom = {};
-        let reserveTo = {}
+        let reserveFrom = parseFloat(getters.getFromReserve.quantity);
+        let reserveTo = parseFloat(getters.getToReserve.quantity);
         if (payload.reserse) {
-            reserveFrom = parseFloat(getters.getToReserve.quantity);
-            reserveTo = parseFloat(getters.getFromReserve.quantity);
+            // console.log("calculateUniswapOut:", payload.amount, reserveFrom, reserveTo);
+            let constantProduct = reserveFrom * reserveTo;
+            // console.log("constantProduct", constantProduct);
+            let reserveToAfter = reserveTo - payload.amount;
+            // console.log("reserveToAfter", reserveToAfter);
+            let amountIn = (constantProduct / reserveToAfter) - reserveFrom;
+            // console.log("amountIn", amountIn);
+            amountIn = this.$truncate(amountIn, getters.getFromToken.precision);
+            return amountIn;
+
         } else {
-            reserveFrom = parseFloat(getters.getFromReserve.quantity);
-            reserveTo = parseFloat(getters.getToReserve.quantity);
+            let amountInWithFee = payload.amount * (1 - swappingFee);
+            // console.log("calculateUniswapOut:", payload.amount, amountInWithFee, reserveFrom, reserveTo);
+            let constantProduct = reserveFrom * reserveTo;
+            // console.log("constantProduct", constantProduct);
+            let reserveToAfter =
+                constantProduct / (reserveFrom + amountInWithFee);
+            // console.log("reserveToAfter", reserveToAfter);
+            let amountOut = reserveTo - reserveToAfter;
+            // console.log("amountOut", amountOut);
+            amountOut = this.$truncate(amountOut, getters.getToToken.precision);
+            return amountOut;
         }
 
-
-        console.log("calculateUniswapOut:", payload.amount, amountInWithFee, reserveFrom, reserveTo);
-
-        let constantProduct = reserveFrom * reserveTo;
-        console.log("constantProduct", constantProduct);
-        let reserveToAfter =
-            constantProduct / (reserveFrom + amountInWithFee);
-        console.log("reserveToAfter", reserveToAfter);
-        let amountOut = reserveTo - reserveToAfter;
-        console.log("amountOut", amountOut);
-
-        amountOut = this.$truncate(amountOut, getters.getToToken.precision);
-        return amountOut;
     } catch (error) {
         console.log("calculateUniswapOut", error);
         commit("general/setErrorMsg", error.message || error, { root: true });

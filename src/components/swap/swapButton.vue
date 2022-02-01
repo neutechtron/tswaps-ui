@@ -63,7 +63,7 @@ export default {
     ...mapActions("account", ["accountExistsOnChain", "logout"]),
     ...mapActions("pools", ["updatePools"]),
     ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
-    ...mapActions("swap", ["createMemo"]),
+    ...mapActions("swap", ["createMemo", "updateSwapPool"]),
 
     async trySwap() {
       try {
@@ -117,13 +117,17 @@ export default {
         this.$store.commit("swap/setMemo", "");
         this.$store.commit("swap/setToEstimate", 0);
       }
+      await this.updatePools();
+      await this.updateTokens();
       await this.updateTokenBalances(this.accountName);
+      await this.updateSwapPool();
     },
   },
   async mounted() {
     await this.updatePools();
     await this.updateTokens();
     await this.updateTokenBalances(this.accountName);
+    await this.updateSwapPool();
   },
   watch: {
     async isAuthenticated() {
