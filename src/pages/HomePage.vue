@@ -14,10 +14,13 @@
       <div class="text-h3 q-mb-lg">
         An innovative trading platform on Telos native
       </div>
-      <div class="row q-gutter-md full-width  items-center justify-center">
+      <div class="row full-width  items-center justify-center">
+        <q-btn to="/swap" no-caps class=" sendBtn " label="Launch App" />
+      </div>
+      <!-- <div class="row q-gutter-md full-width  items-center justify-center">
         <q-btn to="/swap" no-caps class=" sendBtn " label="Launch App" />
         <q-btn to="#" no-caps class="outlineBtn " label="Learn More" outline />
-      </div>
+      </div> -->
     </div>
     <benefits-page />
     <get-started-page />

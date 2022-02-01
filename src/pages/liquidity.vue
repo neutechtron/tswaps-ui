@@ -30,7 +30,7 @@
               <div class="row">
                 <div class="col-sm-12">
                   <q-card
-                    v-if="!getHasPool"
+                    v-if="!showPoolExistsWarning"
                     flat
                     class="warning-card text-center q-mt-md"
                   >
@@ -90,10 +90,15 @@ export default {
     input2,
     liquidityButton,
     yourLiquidity,
-    createButton,
+    createButton
   },
   computed: {
-    ...mapGetters("liquidity", ["getPool", "getHasPool"]),
+    ...mapGetters("liquidity", [
+      "getPool",
+      "getHasPool",
+      "getToken1",
+      "getToken2"
+    ]),
     ...mapGetters("account", ["accountName"]),
     ...mapGetters("pools", ["getConfig"]),
 
@@ -104,13 +109,21 @@ export default {
         return { quantity: "error SWAP" };
       }
     },
+    showPoolExistsWarning() {
+      const defaultMsg = "Select a token";
+      return (
+        this.getHasPool ||
+        this.getToken1.symbol == defaultMsg ||
+        this.getToken2.symbol == defaultMsg
+      );
+    }
   },
   methods: {
-    ...mapActions("pools", ["updateConfig"]),
+    ...mapActions("pools", ["updateConfig"])
   },
   async mounted() {
     await this.updateConfig();
-  },
+  }
 };
 </script>
 

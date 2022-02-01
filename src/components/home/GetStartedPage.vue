@@ -12,7 +12,7 @@
         </div>
         <div class="step-text-container">
           <div class="step-title">Create a Telos Account</div>
-          <a class="step-subtitle" href="#">Access Guide</a>
+          <!-- <a class="step-subtitle" href="#">Access Guide</a> -->
         </div>
       </div>
       <div class="step-container">
@@ -22,7 +22,7 @@
         </div>
         <div class="step-text-container">
           <div class="step-title">Connect your Wallet</div>
-          <a class="step-subtitle" href="#">Access Guide</a>
+          <!-- <a class="step-subtitle" href="#">Access Guide</a> -->
         </div>
       </div>
       <div class="step-container">
@@ -32,7 +32,7 @@
         </div>
         <div class="step-text-container">
           <div class="step-title">Get Telos native tokens</div>
-          <a class="step-subtitle" href="#">Access Guide</a>
+          <!-- <a class="step-subtitle" href="#">Access Guide</a> -->
         </div>
       </div>
     </div>

@@ -78,12 +78,12 @@
               </q-item>
               <q-separator class="lt-md" />
 
-              <q-item clickable @click="openUrl(TSWAPS_DOCS)">
+              <!-- <q-item clickable @click="openUrl(TSWAPS_DOCS)">
                 <q-item-section> Docs </q-item-section>
                 <q-item-section side>
                   <q-icon name="article" />
                 </q-item-section>
-              </q-item>
+              </q-item> -->
               <q-item clickable @click="toggleDarkMode()">
                 <q-item-section> Theme </q-item-section>
                 <q-item-section side>
@@ -147,9 +147,9 @@
     </q-page-container>
 
     <q-footer class="footer q-pt-md">
-      <div class="row justify-center">
-        <p class="">
-          Version {{ SITE_VERSION }}
+      <div class="column items-center justify-center q-pb-md">
+        <div>
+          c 2022 T-Swaps • Version {{ SITE_VERSION }}
           <!-- <q-tooltip
             anchor="top left"
             :offset="[0, 5]"
@@ -158,7 +158,7 @@
           >
             Interface Version
           </q-tooltip> -->
-        </p>
+        </div>
       </div>
     </q-footer>
   </q-layout>
@@ -208,7 +208,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 @media only screen and (max-width: 380px) {
   .t-swaps-title {
     display: none;
