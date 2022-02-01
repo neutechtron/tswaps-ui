@@ -83,8 +83,11 @@ export const updateTokens = async function ({
 
         }
 
-        // TODO Load tokens from local storage
-        console.log("get tokens", JSON.parse(localStorage.getItem("tokens")));
+        // Load tokens from local storage
+        let localTokens = JSON.parse(localStorage.getItem("tokens")) || [];
+        if (localTokens.length > 0) {
+            tokens.push(...localTokens);
+        }
 
         commit("setTokens", { tokens });
 
@@ -137,12 +140,12 @@ export const updateAddNewToken = async function ({ commit, getters, rootGetters,
         let newToken = getters.getTokens.find(t => t.symbol === token.symbol &&
             t.chain === token.chain &&
             t.contract === token.contract)
-        console.log("newToken", newToken)
 
-        // TODO add to local storage
-        let localTokens = JSON.parse(localStorage.getItem("tokens"))
-        localTokens.push(newToken)
-        console.log("localTokens", localTokens)
+        // add to local storage
+        let localTokens = JSON.parse(localStorage.getItem("tokens")) || []
+        if (!localTokens.find(t => t.symbol === newToken.symbol && t.chain === newToken.chain && t.contract === newToken.contract)) {
+            localTokens.push(newToken)
+        }
         let parsed = JSON.stringify(localTokens)
         localStorage.setItem("tokens", parsed)
         console.log(parsed)
@@ -174,7 +177,7 @@ export const updateTokenBalances = async function (
                     // console.log(balance)
                     if (balance !== undefined) {
                         let precision = this.$assetToPrecision(balance)
-                        if (precision === 0) {
+                        if (token.precision === 0) {
                             commit("setTokenPrecision", {
                                 token: token,
                                 precision: precision
