@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="LHh Lpr lff">
+  <q-layout view="Lhh Lpr lff">
     <q-header class="main-header">
       <q-toolbar class="testnet-banner" v-if="TESTNET">
         Running on Telos testnet
@@ -88,13 +88,13 @@
                   <q-icon name="article" />
                 </q-item-section>
               </q-item> -->
-              <q-item clickable @click="toggleDarkMode()">
+              <!-- <q-item clickable @click="toggleDarkMode()">
                 <q-item-section> Theme </q-item-section>
                 <q-item-section side>
                   <q-icon :name="darkMode.icon" />
                 </q-item-section>
-              </q-item>
-              <q-separator v-if="isAuthenticated" />
+              </q-item> -->
+              <q-separator v-if="isAuthenticated" class="lt-md" />
               <q-item v-if="isAuthenticated" clickable @click="logout">
                 <q-item-section> Logout </q-item-section>
                 <q-item-section side>
@@ -150,7 +150,23 @@
       <router-view />
     </q-page-container>
 
-    <q-footer class="footer q-pt-md">
+    <q-footer class="footer q-pt-md q-px-lg">
+      <div class="row justify-between items-center">
+        <q-btn class="theme-icon" flat round @click="toggleDarkMode()">
+          <q-icon :name="darkMode.icon" />
+        </q-btn>
+        <div>
+          <q-btn
+            flat
+            class="buy-swap-btn"
+            no-caps
+            href="/swap/?fromToken=eosio.token-TLOS&toToken=swap.swaps-SWAP"
+            label="Buy SWAP"
+            target="_blank"
+            type="a"
+          />
+        </div>
+      </div>
       <div class="column items-center justify-center q-pb-md">
         <div>
           c 2022 T-Swaps • Version {{ SITE_VERSION }}
@@ -227,5 +243,26 @@ export default {
   background: $primary;
   min-height: 1.2rem;
   justify-content: center;
+}
+
+body.body--light {
+  .buy-swap-btn {
+    // background: rgba($dark, 50%);
+    // background: rgba($primary, 80%);
+    background: $primary;
+    color: $white;
+  }
+  .theme-icon {
+    color: rgba($dark, 50%);
+  }
+}
+body.body--dark {
+  .buy-swap-btn {
+    background: $white;
+    color: $dark;
+  }
+  .theme-icon {
+    color: rgba($white, 80%);
+  }
 }
 </style>

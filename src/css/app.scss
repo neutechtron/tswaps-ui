@@ -10,12 +10,14 @@ body {
   scrollbar-width: none; // Firefox
 
   // overflow: hidden;
-  .sendBtn {
+  .sendBtn,
+  .gradientBtn {
     background-image: linear-gradient(
       to right,
       $purpleBright 20%,
       $blueLight 80%
     );
+    color: #ffffff !important;
     &:hover {
       background-image: linear-gradient(
         to left,
@@ -33,11 +35,11 @@ body {
     height: 3rem;
   }
 }
-.pageContainer{
-  &.medium{
+.pageContainer {
+  &.medium {
     max-width: 650px;
-  };
-  &.large{
+  }
+  &.large {
     max-width: 1400px;
   }
 }
@@ -101,8 +103,7 @@ body.body--light {
 
   .inputCard,
   .cardCircle,
-  .liquidityCard
-   {
+  .liquidityCard {
     background: rgb(238, 234, 244);
     color: $dark-0;
   }
@@ -324,8 +325,8 @@ body.body--dark,
   }
 }
 
-.liquidityCard{
-  border-radius: 20px
+.liquidityCard {
+  border-radius: 20px;
 }
 
 .q-dialog__inner > div {

@@ -73,7 +73,7 @@
       </div>
 
       <div v-if="getCanSwap" class="q-mt-md">
-        <q-card class="q-pa-xs">
+        <q-card flat class="q-pa-xs swapCard">
           <div class="q-ma-md">
             <div class="fit row justify-between q-pb-xs">
               <div>
@@ -164,11 +164,11 @@ export default {
     fromCard,
     toCard,
     headButtons,
-    swapButton,
+    swapButton
   },
   data() {
     return {
-      swapPrice: false,
+      swapPrice: false
     };
   },
   computed: {
@@ -180,7 +180,7 @@ export default {
       "getPool",
       "getCanSwap",
       "getAmount",
-      "getToEstimate",
+      "getToEstimate"
     ]),
     ...mapGetters("tokens", ["getTokens"]),
     ...mapGetters("pools", ["getConfig"]),
@@ -255,7 +255,7 @@ export default {
         }
       }
       return 0;
-    },
+    }
   },
   methods: {
     ...mapActions("swap", ["swapToAndFrom"]),
@@ -271,7 +271,7 @@ export default {
           const token_contract = arr[0];
           const token_sym = arr[1];
           res = this.getTokens.find(
-            (token) =>
+            token =>
               token.symbol.toLowerCase().includes(token_sym.toLowerCase()) &&
               token.contract
                 .toLowerCase()
@@ -280,7 +280,7 @@ export default {
         }
       }
       return res;
-    },
+    }
   },
   async mounted() {
     await this.updatePools();
@@ -292,7 +292,7 @@ export default {
     // console.log(toToken);
     if (toToken) this.$store.commit("swap/setToToken", toToken);
     await this.updateConfig();
-  },
+  }
 };
 </script>
 
