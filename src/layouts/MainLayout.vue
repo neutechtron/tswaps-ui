@@ -1,6 +1,9 @@
 <template>
   <q-layout view="LHh Lpr lff">
     <q-header class="main-header">
+      <q-toolbar class="testnet-banner" v-if="TESTNET">
+        Running on Telos testnet
+      </q-toolbar>
       <q-toolbar class=" toolbar">
         <div class="q-pa-sm">
           <router-link to="/" class="row items-center q-gutter-x-sm">
@@ -181,6 +184,7 @@ export default {
       TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
       TSWAPS_DOCS: process.env.TSWAPS_DOCS,
       SITE_VERSION: process.env.SITE_VERSION,
+      TESTNET: process.env.TESTNET?.toLowerCase() === "true",
       tab: ""
     };
   },
@@ -217,5 +221,11 @@ export default {
 
 .selectedTab {
   font-weight: 700;
+}
+
+.testnet-banner {
+  background: $primary;
+  min-height: 1.2rem;
+  justify-content: center;
 }
 </style>
