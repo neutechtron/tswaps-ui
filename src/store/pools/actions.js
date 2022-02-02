@@ -116,6 +116,15 @@ export const updatePools = async function ({ commit, rootGetters, dispatch }) {
                         "tokens/getToken"
                     ](pool.reserve1.contract, pool.reserve1.symbol));
                     commit("tokens/setUsdPrice", { token: otherToken, price: pool.price1_last * TlosUsdPrice }, { root: true });
+
+                    // volume_24h
+                    if (pool.volume_24h !== undefined) {
+                        let volume_24h_0 = pool.volume_24h.find(token => token.key === TlosToken.symbol).value.split(" ")[0] * TlosUsdPrice;
+                        let volume_24h_1 = pool.volume_24h.find(token => token.key === otherToken.symbol).value.split(" ")[0] * pool.price1_last * TlosUsdPrice;
+
+                        pool.volume_24h.find(token => token.key === TlosToken.symbol).usdAmount = volume_24h_0;
+                        pool.volume_24h.find(token => token.key === otherToken.symbol).usdAmount = volume_24h_1;
+                    }
                 } else {
                     pool.reserve1.usdAmount = pool.reserve1.quantity * TlosUsdPrice;
                     pool.reserve0.usdAmount = pool.reserve0.quantity * TlosUsdPrice * pool.price0_last;
@@ -123,19 +132,18 @@ export const updatePools = async function ({ commit, rootGetters, dispatch }) {
                         "tokens/getToken"
                     ](pool.reserve0.contract, pool.reserve0.symbol));
                     commit("tokens/setUsdPrice", { token: otherToken, price: pool.price0_last * TlosUsdPrice }, { root: true });
-                }
 
-                // volume_24h
-                if (pool.volume_24h !== undefined) {
-                    let volume_24h_0 = pool.volume_24h.find(token => token.key === TlosToken.symbol).value.split(" ")[0] * TlosUsdPrice;
-                    let volume_24h_1 = pool.volume_24h.find(token => token.key === otherToken.symbol).value.split(" ")[0] * pool.price1_last * TlosUsdPrice;
+                    // volume_24h
+                    if (pool.volume_24h !== undefined) {
+                        let volume_24h_0 = pool.volume_24h.find(token => token.key === TlosToken.symbol).value.split(" ")[0] * TlosUsdPrice;
+                        let volume_24h_1 = pool.volume_24h.find(token => token.key === otherToken.symbol).value.split(" ")[0] * pool.price0_last * TlosUsdPrice;
 
-                    pool.volume_24h.find(token => token.key === TlosToken.symbol).usdAmount = volume_24h_0;
-                    pool.volume_24h.find(token => token.key === otherToken.symbol).usdAmount = volume_24h_1;
+                        pool.volume_24h.find(token => token.key === TlosToken.symbol).usdAmount = volume_24h_0;
+                        pool.volume_24h.find(token => token.key === otherToken.symbol).usdAmount = volume_24h_1;
+                    }
                 }
 
                 temp_pools[index] = pool;
-
             }
         }
 
