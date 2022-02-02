@@ -157,7 +157,7 @@ export default {
     TokenAvatar,
   },
   methods: {
-    ...mapActions("pools", ["updatePools"]),
+    ...mapActions("pools", ["updatePools", "updateConfig"]),
     ...mapActions("tokens", ["updateTokens", "updateUsdValue"]),
     printfunction(i) {
       console.log(i);
@@ -192,6 +192,7 @@ export default {
     },
   },
   async mounted() {
+    await this.updateConfig();
     await this.updateTokens();
     await this.updateUsdValue();
     await this.updatePools();

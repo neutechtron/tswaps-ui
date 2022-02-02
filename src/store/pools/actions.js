@@ -41,7 +41,7 @@ export const formatPoolList = function ({ commit, rootGetters }, rows) {
     return pools;
 };
 
-export const updatePools = async function ({ commit, rootGetters, dispatch }) {
+export const updatePools = async function ({ commit, rootGetters, dispatch, getters }) {
     try {
         let temp_pools = [];
 
@@ -125,6 +125,7 @@ export const updatePools = async function ({ commit, rootGetters, dispatch }) {
                         pool.volume_24h.find(token => token.key === TlosToken.symbol).usdAmount = volume_24h_0;
                         pool.volume_24h.find(token => token.key === otherToken.symbol).usdAmount = volume_24h_1;
                     }
+
                 } else {
                     pool.reserve1.usdAmount = pool.reserve1.quantity * TlosUsdPrice;
                     pool.reserve0.usdAmount = pool.reserve0.quantity * TlosUsdPrice * pool.price0_last;
@@ -141,6 +142,19 @@ export const updatePools = async function ({ commit, rootGetters, dispatch }) {
                         pool.volume_24h.find(token => token.key === TlosToken.symbol).usdAmount = volume_24h_0;
                         pool.volume_24h.find(token => token.key === otherToken.symbol).usdAmount = volume_24h_1;
                     }
+                }
+
+                // calculate APR
+                // https://docs.pancakeswap.finance/products/yield-farming#calculating-lp-reward-apr
+                // 24h volume * fee
+                if (pool.volume_24h !== undefined) {
+                    let fee = pool.trade_fee / 10000
+                    let feeShare = (pool.volume_24h[0].usdAmount + pool.volume_24h[1].usdAmount) * fee;
+                    // yearly fees = feeShare * 365
+                    let yearlyFees = feeShare * 365;
+                    // APR = yearlyFees / (liquidity)
+                    let LP_APR = yearlyFees / (pool.reserve0.usdAmount + pool.reserve1.usdAmount)
+                    pool.APR = { LP: LP_APR, total: LP_APR }
                 }
 
                 temp_pools[index] = pool;
