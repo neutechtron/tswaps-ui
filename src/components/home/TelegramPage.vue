@@ -12,14 +12,26 @@
         </a>
       </div>
     </div>
-    <div class="text-center q-mt-xl">c 2022 T-Swaps</div>
+    <div class="column items-center justify-center q-gutter-y-xs">
+      <div>c 2022 T-Swaps • Version {{ SITE_VERSION }}</div>
+      <div>
+        Made with ♥ by
+        <a :href="KNOT_HOME" style="text-decoration:underline" target="_blank"
+          >Yknot BCS</a
+        >
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   data() {
-    return { tgLink: "https://t.me/tswaps" };
+    return {
+      tgLink: "https://t.me/tswaps",
+      SITE_VERSION: process.env.SITE_VERSION,
+      KNOT_HOME: process.env.KNOT_HOME
+    };
   }
 };
 </script>

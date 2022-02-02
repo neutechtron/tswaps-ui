@@ -67,7 +67,8 @@ module.exports = function (/* ctx */) {
                 STATS_CONTRACT: process.env.STATS_CONTRACT,
                 TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
                 TSWAPS_DOCS: process.env.TSWAPS_DOCS,
-                SITE_VERSION: siteVersion
+                SITE_VERSION: siteVersion,
+                KNOT_HOME: process.env.KNOT_HOME
             },
 
             // transpile: false,

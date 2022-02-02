@@ -33,11 +33,11 @@ body {
     height: 3rem;
   }
 }
-.pageContainer{
-  &.medium{
+.pageContainer {
+  &.medium {
     max-width: 650px;
-  };
-  &.large{
+  }
+  &.large {
     max-width: 1400px;
   }
 }
@@ -90,7 +90,8 @@ body.body--light {
 
   .footer {
     background: $white;
-    color: $dark-0;
+    color: #6b629c;
+    // color: rgba($dark-0, 90%);
   }
 
   background-image: linear-gradient(
@@ -101,8 +102,7 @@ body.body--light {
 
   .inputCard,
   .cardCircle,
-  .liquidityCard
-   {
+  .liquidityCard {
     background: rgb(238, 234, 244);
     color: $dark-0;
   }
@@ -184,7 +184,7 @@ body.body--dark,
 
   .footer {
     background: $footerDarkMode;
-    color: $white;
+    color: #c0bad6;
   }
 
   background-image: linear-gradient(
@@ -324,8 +324,8 @@ body.body--dark,
   }
 }
 
-.liquidityCard{
-  border-radius: 20px
+.liquidityCard {
+  border-radius: 20px;
 }
 
 .q-dialog__inner > div {
