@@ -151,9 +151,23 @@
     </q-page-container>
 
     <q-footer class="footer q-pt-md">
-      <div class="column items-center justify-center q-pb-md">
+      <div class="column items-center justify-center q-pb-md q-gutter-y-xs">
         <div>
           c 2022 T-Swaps • Version {{ SITE_VERSION }}
+          <!-- <q-tooltip
+            anchor="top left"
+            :offset="[0, 5]"
+            self="bottom left"
+            class="row"
+          >
+            Interface Version
+          </q-tooltip> -->
+        </div>
+        <div>
+          Made with ♥ by
+          <a :href="KNOT_HOME" style="text-decoration:underline" target="_blank"
+            >Yknot BCS</a
+          >
           <!-- <q-tooltip
             anchor="top left"
             :offset="[0, 5]"
@@ -185,6 +199,7 @@ export default {
       TSWAPS_DOCS: process.env.TSWAPS_DOCS,
       SITE_VERSION: process.env.SITE_VERSION,
       TESTNET: process.env.TESTNET?.toLowerCase() === "true",
+      KNOT_HOME: process.env.KNOT_HOME,
       tab: ""
     };
   },
