@@ -12,13 +12,13 @@
     <template v-slot:header="props">
       <q-tr :props="props">
         <q-th auto-width />
-        <q-th auto-width> Name </q-th>
-        <q-th auto-width> Price </q-th>
-        <q-th auto-width> Token1 liquidity </q-th>
-        <q-th auto-width> Token2 liquidity </q-th>
-        <!-- <q-th v-for="col in props.cols" :key="col.name" :props="props">
+        <!-- <q-th auto-width> Name </q-th>
+        <q-th auto-width> Liquidity </q-th>
+        <q-th auto-width> Volume 24h </q-th>
+        <q-th auto-width> APR </q-th> -->
+        <q-th v-for="col in props.cols" :key="col.name" :props="props">
           {{ col.label }}
-        </q-th> -->
+        </q-th>
         <!-- <q-th auto-width /> -->
       </q-tr>
     </template>
@@ -46,26 +46,21 @@
           </div> -->
         </q-td>
 
-        <q-td auto-width>
-          <!-- <div class="text-body2 text-weight-light">
-            Price
-          </div> -->
+        <q-td
+          :props="props"
+          v-for="col in props.cols.slice(1, 5)"
+          :key="col.name"
+        >
+          {{ col.value }}
+        </q-td>
+
+        <!-- <q-td auto-width>
           <div class="text-body1">
-            {{
-              parseFloat(props.row.virtual_price).toFixed(
-                Math.max(
-                  props.row.reserve0.precision,
-                  props.row.reserve1.precision
-                )
-              )
-            }}
+            {{ props.row }}
           </div>
         </q-td>
 
         <q-td auto-width>
-          <!-- <div class="text-weight-thin">
-            Total locked {{ props.row.reserve0.symbol }}
-          </div> -->
           <div class="text-body1">
             {{
               parseFloat(props.row.reserve0.quantity).toFixed(
@@ -76,9 +71,6 @@
         </q-td>
 
         <q-td auto-width>
-          <!-- <div class="text-weight-thin">
-            Total locked {{ props.row.reserve1.symbol }}
-          </div> -->
           <div class="text-body1">
             {{
               parseFloat(props.row.reserve1.quantity).toFixed(
@@ -86,7 +78,7 @@
               )
             }}
           </div>
-        </q-td>
+        </q-td> -->
 
         <!-- <q-td auto-width>
           <q-btn
@@ -127,28 +119,43 @@ const columns = [
     format: (val) => `${val}`,
     sortable: true,
   },
-  { name: "price", label: "Price", field: (row) => row.virtual_price },
+  //   { name: "price", label: "Price", field: (row) => row.virtual_price },
   {
     name: "liquidity",
     align: "center",
     label: "Liquidity",
-    field: (row) => row.liquidity.quantity,
+    field: (row) =>
+      (row.reserve0.usdAmount + row.reserve1.usdAmount).toFixed(2),
+    format: (val) => `$${val}`,
     sortable: true,
   },
   {
     name: "volume24",
-    label: "Volume 1",
-    field: (row) => row.volume0,
+    label: "Volume 24h",
+    field: (row) => row?.volume_24h,
+    format: (val) => `$${(val?.[0].usdAmount + val?.[1].usdAmount).toFixed(2)}`,
     sortable: true,
   },
+  //   {
+  //     name: "volume7d",
+  //     label: "Volume 2",
+  //     field: (row) => row.volume1,
+  //     sortable: true,
+  //   },
   {
-    name: "volume7d",
-    label: "Volume 2",
-    field: (row) => row.volume1,
-    sortable: true,
+    name: "apr1year",
+    label: "APR",
+    field: (row) => row?.APR?.total,
+    format: (val) => `${(val * 100).toFixed(2)}%`,
   },
-  { name: "apy1week", label: "APY (1 week)", field: "apy1week" },
-  { name: "actions", label: "Actions", field: "actions" },
+  //   {
+  //     name: "actions",
+  //     label: "Actions",
+  //     align: "center",
+  //     field: (row) => row.id,
+  //     format: (val) => `<expanding-row :pool="pools[${val}]"></expanding-row>`,
+  //   },
+  //   { name: "actions", label: "Actions", field: "actions" },
 ];
 
 export default {
