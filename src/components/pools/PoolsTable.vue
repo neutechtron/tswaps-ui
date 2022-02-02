@@ -158,7 +158,7 @@ export default {
   },
   methods: {
     ...mapActions("pools", ["updatePools"]),
-    ...mapActions("tokens", ["updateTokens"]),
+    ...mapActions("tokens", ["updateTokens", "updateUsdValue"]),
     printfunction(i) {
       console.log(i);
     },
@@ -192,8 +192,9 @@ export default {
     },
   },
   async mounted() {
-    await this.updatePools();
     await this.updateTokens();
+    await this.updateUsdValue();
+    await this.updatePools();
   },
   computed: {
     ...mapGetters("pools", ["getPools", "getUserPools"]),

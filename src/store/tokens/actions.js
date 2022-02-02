@@ -232,6 +232,20 @@ export const updateTokenBalances = async function (
     }
 };
 
+// Get TLOS usd value
+export const updateUsdValue = async function ({ commit, getters, rootGetters }) {
+    const tlosUsdDataPoints = await this.$api.getTableRows({
+        code: "delphioracle",
+        limit: "1000",
+        scope: "tlosusd",
+        table: "datapoints",
+    });
+
+    const tlosPrice = tlosUsdDataPoints.rows[0].median / 10000;
+
+    commit("setUsdPrice", { token: getters.getTLOSToken, price: tlosPrice });
+}
+
 // Update all tokens balances
 export const updateAllTokensBalances = async function (
     { commit, dispatch },
