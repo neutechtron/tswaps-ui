@@ -13,7 +13,7 @@
       <q-tr :props="props">
         <q-th auto-width />
         <q-th auto-width> Name </q-th>
-        <q-th auto-width> Price </q-th>
+        <!-- <q-th auto-width> Price </q-th> -->
         <q-th auto-width> Token1 liquidity </q-th>
         <q-th auto-width> Token2 liquidity </q-th>
         <!-- <q-th v-for="col in props.cols" :key="col.name" :props="props">
@@ -46,10 +46,10 @@
           </div> -->
         </q-td>
 
-        <q-td auto-width>
-          <!-- <div class="text-body2 text-weight-light">
+        <!-- <q-td auto-width>
+          <div class="text-body2 text-weight-light">
             Price
-          </div> -->
+          </div>
           <div class="text-body1">
             {{
               parseFloat(props.row.virtual_price).toFixed(
@@ -60,7 +60,7 @@
               )
             }}
           </div>
-        </q-td>
+        </q-td> -->
 
         <q-td auto-width>
           <!-- <div class="text-weight-thin">
