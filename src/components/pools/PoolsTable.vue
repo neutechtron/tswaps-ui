@@ -122,12 +122,12 @@ const columns = [
   {
     name: "name",
     required: true,
-    label: "Name",
+    label: "Pool",
     align: "center",
     field: (row) => row.reserve0.symbol + "/" + row.reserve1.symbol,
     format: (val) => `${val}`,
   },
-  //   { name: "price", label: "Price", field: (row) => row.virtual_price },
+  // { name: "price", label: "Price", field: (row) => row.virtual_price },
   {
     name: "liquidity",
     align: "center",

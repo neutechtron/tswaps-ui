@@ -55,7 +55,7 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
         });
 
         const formatPoolList = await dispatch("formatPoolList", tableResults.rows);
-        console.log(formatPoolList);
+        // console.log(formatPoolList);
 
 
         // Get pool stats from stats.swaps
@@ -68,7 +68,7 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
             show_payer: false
         });
 
-        console.log(statsResults.rows);
+        // console.log(statsResults.rows);
 
         // append pool stats to pools
         for (const pool of formatPoolList) {
@@ -94,14 +94,15 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
             }
         }
 
-        console.log(temp_pools);
+        // console.log(temp_pools);
 
-        // TODO calculate USD liquidity and volume_24h
+        // calculate USD liquidity and volume_24h
+        await dispatch("tokens/updateUsdValue", {}, { root: true });
         const TlosToken = (rootGetters[
             "tokens/getTLOSToken"
         ]);
         const TlosUsdPrice = TlosToken.UsdPrice
-        console.log("TlosUsdPrice", TlosUsdPrice);
+        // console.log("TlosUsdPrice", TlosUsdPrice);
 
         for (const [index, pool] of temp_pools.entries()) {
             // skip pool with don't include TLOS
