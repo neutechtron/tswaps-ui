@@ -136,7 +136,7 @@ const columns = [
       Number.isNaN(row.reserve0.usdAmount + row.reserve1.usdAmount)
         ? -1
         : row.reserve0.usdAmount + row.reserve1.usdAmount,
-    format: (val) => `$${val !== -1 ? val.toFixed(2) : "N/A"}`,
+    format: (val) => `$${val !== -1 ? val.toFixed(2) : "-"}`,
     sortable: true,
   },
   {
@@ -149,7 +149,7 @@ const columns = [
       )
         ? -1
         : row?.volume_24h?.[0]?.usdAmount + row?.volume_24h?.[1]?.usdAmount,
-    format: (val) => `$${val !== -1 ? val.toFixed(2) : "N/A"}`,
+    format: (val) => `$${val !== -1 ? val.toFixed(2) : "-"}`,
     sortable: true,
   },
   //   {
@@ -161,8 +161,13 @@ const columns = [
   {
     name: "apr",
     label: "APR",
-    field: (row) => (row?.APR?.total === undefined ? -1 : row?.APR?.total),
-    format: (val) => `${val !== -1 ? (val * 100).toFixed(2) : "N/A"}%`,
+    field: (row) =>
+      row?.APR?.total === undefined ||
+      Number.isNaN(row?.APR?.total) ||
+      row?.APR?.total === Infinity
+        ? -1
+        : row?.APR?.total,
+    format: (val) => `${val !== -1 ? (val * 100).toFixed(2) : "-"}%`,
     sortable: true,
     sortOrder: "ad",
   },
