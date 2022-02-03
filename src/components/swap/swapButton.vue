@@ -23,6 +23,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import UalDialog from "src/components/UalDialog.vue";
+import { openURL } from 'quasar'
 
 export default {
   components: { UalDialog },
@@ -73,7 +74,15 @@ export default {
           color: "green-4",
           textColor: "white",
           icon: "cloud_done",
-          message: "Swap complete",
+          message: `Swap complete ${this.transaction}` ,
+          actions: [
+            { label: 'View in Authority', color: 'white', 
+              handler: () => 
+              {
+                openURL(`https://eosauthority.com/transaction/${this.transaction}?network=${process.env.TESTNET == 'true' ? "telostest" : "telos"}`)
+              } 
+            }
+          ]
         });
       } catch (error) {
         this.$errorNotification(error);
