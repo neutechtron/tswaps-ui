@@ -94,7 +94,7 @@ export const updateUserLiquidityPools = async function (
                 let temp = allpools.find(p =>
                     p.lpSymbol == val[0]
                 );
-                if (temp) {
+                if (temp && !(val[1] <= 0)) {
                     userPools.push({ ...temp, lpBalance: val[1] })
                 }
             }
