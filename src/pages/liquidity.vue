@@ -56,11 +56,14 @@
             </q-card-section>
           </q-card>
 
-          <div class="row justify-between q-my-md q-mx-md">
+          <div
+            class="row justify-between q-my-md q-mx-md"
+            v-if="isAuthenticated"
+          >
             <div class="text-h5">Your Liquidity</div>
           </div>
 
-          <q-card flat class="swapCard">
+          <q-card flat class="swapCard" v-if="isAuthenticated">
             <q-card-section class="swapCardSection">
               <div class="row q-my-md">
                 <div class="col-12">
@@ -99,7 +102,7 @@ export default {
       "getToken1",
       "getToken2"
     ]),
-    ...mapGetters("account", ["accountName"]),
+    ...mapGetters("account", ["isAuthenticated", "accountName"]),
     ...mapGetters("pools", ["getConfig"]),
 
     listingFee() {

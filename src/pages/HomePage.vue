@@ -17,6 +17,7 @@
       <div class="row full-width  items-center justify-center">
         <q-btn to="/swap" no-caps class=" sendBtn " label="Launch App" />
       </div>
+      <scroll-arrow class="scroll-arrow " />
       <!-- <div class="row q-gutter-md full-width  items-center justify-center">
         <q-btn to="/swap" no-caps class=" sendBtn " label="Launch App" />
         <q-btn to="#" no-caps class="outlineBtn " label="Learn More" outline />
@@ -33,9 +34,10 @@ import { mapGetters, mapActions } from "vuex";
 import benefitsPage from "src/components/home/BenefitsPage.vue";
 import getStartedPage from "src/components/home/GetStartedPage.vue";
 import telegramPage from "src/components/home/TelegramPage.vue";
+import ScrollArrow from "src/components/home/ScrollArrow.vue";
 
 export default {
-  components: { benefitsPage, getStartedPage, telegramPage },
+  components: { benefitsPage, getStartedPage, telegramPage, ScrollArrow },
   data() {
     return {
       darkMode: {
@@ -162,6 +164,18 @@ export default {
     // font-size: 8rem;
     font-family: "silkathin";
     z-index: 1;
+  }
+
+  .scroll-arrow {
+    // Place arrow at bottom of screen
+    position: absolute;
+    top: calc(100vh - 60px);
+    left: calc(50vw - 20px);
+
+    // Hide on small screens to prevent overlap with launch button
+    @media only screen and (max-height: 650px) {
+      display: none;
+    }
   }
 }
 </style>

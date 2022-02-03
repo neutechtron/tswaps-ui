@@ -1,6 +1,9 @@
 <template>
   <q-layout view="LHh Lpr lff">
     <q-header class="main-header">
+      <q-toolbar class="testnet-banner" v-if="TESTNET">
+        Running on Telos testnet
+      </q-toolbar>
       <q-toolbar class=" toolbar">
         <div class="q-pa-sm">
           <router-link to="/" class="row items-center q-gutter-x-sm">
@@ -65,7 +68,7 @@
                   <router-link to="/pools">Pools</router-link>
                 </q-item-section>
               </q-item>
-              <q-item clickable class="lt-md">
+              <q-item clickable @click="openUrl(TSWAPS_BRIDGE)" class="lt-md">
                 <q-item-section>
                   <div class="row items-center">
                     Bridge
@@ -148,9 +151,23 @@
     </q-page-container>
 
     <q-footer class="footer q-pt-md">
-      <div class="column items-center justify-center q-pb-md">
+      <div class="column items-center justify-center q-pb-md q-gutter-y-xs">
         <div>
           c 2022 T-Swaps • Version {{ SITE_VERSION }}
+          <!-- <q-tooltip
+            anchor="top left"
+            :offset="[0, 5]"
+            self="bottom left"
+            class="row"
+          >
+            Interface Version
+          </q-tooltip> -->
+        </div>
+        <div>
+          Made with ♥ by
+          <a :href="KNOT_HOME" style="text-decoration:underline" target="_blank"
+            >Yknot BCS</a
+          >
           <!-- <q-tooltip
             anchor="top left"
             :offset="[0, 5]"
@@ -181,6 +198,8 @@ export default {
       TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
       TSWAPS_DOCS: process.env.TSWAPS_DOCS,
       SITE_VERSION: process.env.SITE_VERSION,
+      TESTNET: process.env.TESTNET?.toLowerCase() === "true",
+      KNOT_HOME: process.env.KNOT_HOME,
       tab: ""
     };
   },
@@ -217,5 +236,11 @@ export default {
 
 .selectedTab {
   font-weight: 700;
+}
+
+.testnet-banner {
+  background: $primary;
+  min-height: 1.2rem;
+  justify-content: center;
 }
 </style>
