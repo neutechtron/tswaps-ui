@@ -8,6 +8,10 @@
     virtual-scroll
     :rows-per-page-options="[0]"
     hide-bottom
+    :pagination="{
+      sortBy: 'liquidity',
+      descending: true,
+    }"
   >
     <template v-slot:header="props">
       <q-tr :props="props">
@@ -16,7 +20,12 @@
         <q-th auto-width> Liquidity </q-th>
         <q-th auto-width> Volume 24h </q-th>
         <q-th auto-width> APR </q-th> -->
-        <q-th v-for="col in props.cols" :key="col.name" :props="props">
+        <q-th
+          auto-width
+          v-for="col in props.cols"
+          :key="col.name"
+          :props="props"
+        >
           {{ col.label }}
         </q-th>
         <!-- <q-th auto-width /> -->
@@ -114,10 +123,9 @@ const columns = [
     name: "name",
     required: true,
     label: "Name",
-    align: "left",
+    align: "center",
     field: (row) => row.reserve0.symbol + "/" + row.reserve1.symbol,
     format: (val) => `${val}`,
-    sortable: true,
   },
   //   { name: "price", label: "Price", field: (row) => row.virtual_price },
   {
@@ -125,15 +133,23 @@ const columns = [
     align: "center",
     label: "Liquidity",
     field: (row) =>
-      (row.reserve0.usdAmount + row.reserve1.usdAmount).toFixed(2),
-    format: (val) => `$${val}`,
+      Number.isNaN(row.reserve0.usdAmount + row.reserve1.usdAmount)
+        ? -1
+        : row.reserve0.usdAmount + row.reserve1.usdAmount,
+    format: (val) => `$${val !== -1 ? val.toFixed(2) : "N/A"}`,
     sortable: true,
   },
   {
     name: "volume24",
     label: "Volume 24h",
-    field: (row) => row?.volume_24h,
-    format: (val) => `$${(val?.[0].usdAmount + val?.[1].usdAmount).toFixed(2)}`,
+    align: "center",
+    field: (row) =>
+      Number.isNaN(
+        row?.volume_24h?.[0]?.usdAmount + row?.volume_24h?.[1]?.usdAmount
+      )
+        ? -1
+        : row?.volume_24h?.[0]?.usdAmount + row?.volume_24h?.[1]?.usdAmount,
+    format: (val) => `$${val !== -1 ? val.toFixed(2) : "N/A"}`,
     sortable: true,
   },
   //   {
@@ -143,10 +159,12 @@ const columns = [
   //     sortable: true,
   //   },
   {
-    name: "apr1year",
+    name: "apr",
     label: "APR",
-    field: (row) => row?.APR?.total,
-    format: (val) => `${(val * 100).toFixed(2)}%`,
+    field: (row) => (row?.APR?.total === undefined ? -1 : row?.APR?.total),
+    format: (val) => `${val !== -1 ? (val * 100).toFixed(2) : "N/A"}%`,
+    sortable: true,
+    sortOrder: "ad",
   },
   //   {
   //     name: "actions",
