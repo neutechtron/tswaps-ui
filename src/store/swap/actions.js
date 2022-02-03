@@ -160,3 +160,28 @@ export const updateSlippage = async function ({ commit }, slippage) {
         commit("general/setErrorMsg", error.message || error, { root: true });
     }
 };
+
+export const updateToAndFromBalance = async function ({ commit, getters, rootGetters }) {
+    try {
+        const fromToken = getters.getFromToken;
+        const toToken = getters.getToToken;
+        const tokens = rootGetters["tokens/getTokens"];
+        let newToken = tokens?.find(
+            token =>
+                token.contract == toToken?.contract && token.symbol == toToken?.symbol
+        );
+        if(newToken){
+            commit("setToToken", newToken);
+        }
+        newToken = tokens?.find(
+            token =>
+                token.contract == fromToken?.contract && token.symbol == fromToken?.symbol
+        );
+        if(newToken){
+            commit("setFromToken", newToken);
+        }
+    } catch (error) {
+        console.log("Error creating memo", error);
+        commit("general/setErrorMsg", error.message || error, { root: true });
+    }
+};

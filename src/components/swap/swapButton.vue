@@ -64,7 +64,7 @@ export default {
     ...mapActions("account", ["accountExistsOnChain", "logout"]),
     ...mapActions("pools", ["updatePools"]),
     ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
-    ...mapActions("swap", ["createMemo", "updateSwapPool"]),
+    ...mapActions("swap", ["createMemo", "updateSwapPool", "updateToAndFromBalance"]),
 
     async trySwap() {
       try {
@@ -130,6 +130,7 @@ export default {
       await this.updateTokens();
       await this.updateTokenBalances(this.accountName);
       await this.updateSwapPool();
+      await this.updateToAndFromBalance();
     },
   },
   async mounted() {
