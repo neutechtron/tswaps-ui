@@ -21,17 +21,17 @@
               />
               {{ pool.reserve0.symbol + "/" + pool.reserve1.symbol }}
               <div>
-                <q-badge outline color="primary">{{
+                <q-badge class="q-mt-sm" outline color="secondary">{{
                   pool.lpBalance + " " + pool.lpSymbol
                 }}</q-badge>
               </div>
             </div>
 
             <div>
-              <q-badge outline color="accent">{{
+              <q-badge class="q-ml-sm" outline color="accent">{{
                 pool.lpCurrentCost0
               }}</q-badge>
-              <q-badge outline color="accent">{{
+              <q-badge class="q-ml-sm" outline color="accent">{{
                 pool.lpCurrentCost1
               }}</q-badge>
             </div>
