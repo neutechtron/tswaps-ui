@@ -224,7 +224,6 @@ export default {
   async mounted() {
     await this.updateConfig();
     await this.updateTokens();
-    await this.updateUsdValue();
     await this.updatePools();
   },
   computed: {

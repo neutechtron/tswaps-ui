@@ -122,10 +122,13 @@ export default {
     }
   },
   methods: {
-    ...mapActions("pools", ["updateConfig"])
+    ...mapActions("pools", ["updateConfig", "updatePools"]),
+    ...mapActions("tokens", ["updateTokens"])
   },
   async mounted() {
     await this.updateConfig();
+    await this.updateTokens();
+    await this.updatePools();
   }
 };
 </script>

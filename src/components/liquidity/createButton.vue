@@ -180,10 +180,6 @@ export default {
     },
   },
   async mounted() {
-    await this.updatePools();
-    await this.updateTokens();
-    await this.updateTokenBalances(this.accountName);
-    await this.updateActivePool();
   },
 
   watch: {

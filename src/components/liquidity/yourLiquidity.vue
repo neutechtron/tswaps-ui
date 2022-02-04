@@ -40,7 +40,7 @@
     </div>
     <q-dialog v-model="remove">
       <q-card style="min-width: 350px; max-width: 400px">
-        <q-card-section class="text-grey-9">
+        <q-card-section class="">
           <div class="row">
             <div class="text-h6">
               {{
@@ -77,7 +77,7 @@
             </div>
             <q-space />
             <div>
-              <q-btn outline color="primary" @click="removeLiquidity()">
+              <q-btn outline color="primary" @click="tryRemoveLiquidity()">
                 <div class="font-size: 1.5em">Remove</div>
               </q-btn>
             </div>
@@ -123,6 +123,21 @@ export default {
       this.liquidity = pool.lpBalance;
       this.remove = true;
     },
+
+    async tryRemoveLiquidity() {
+      try {
+        // await this.createMemo();
+        await this.removeLiquidity();
+        this.$q.notify({
+          color: "green-4",
+          textColor: "white",
+          message: "Liquidity removed",
+        });
+      } catch (error) {
+        this.$errorNotification(error);
+      }
+    },
+
     async removeLiquidity() {
       if (!this.accountName) {
         throw new Error(`Account does not exist`);
