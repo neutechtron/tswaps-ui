@@ -20,19 +20,30 @@
                 class="avatarOverlap"
               />
               {{ pool.reserve0.symbol + "/" + pool.reserve1.symbol }}
-            </div>
-            <q-space />
-            <div>
-              <q-btn outline color="accent" @click="removePopup(pool)">
-                <div class="text-body1">
-                  Remove
-                </div>
-              </q-btn>
               <div>
                 <q-badge outline color="primary">{{
                   pool.lpBalance + " " + pool.lpSymbol
                 }}</q-badge>
               </div>
+            </div>
+
+            <div>
+              <q-badge outline color="accent">{{
+                pool.lpCurrentCost0
+              }}</q-badge>
+              <q-badge outline color="accent">{{
+                pool.lpCurrentCost1
+              }}</q-badge>
+            </div>
+            <!-- TODO PNL, impermanent loss etc. -->
+            <!-- <div>{{ pool.lpDeltaCost0 }} {{ pool.lpDeltaCost1 }}</div> -->
+            <q-space />
+            <div>
+              <q-btn outline color="accent" @click="removePopup(pool)">
+                <div class="text-body">
+                  Remove
+                </div>
+              </q-btn>
             </div>
           </div>
         </q-card-section>
@@ -131,7 +142,7 @@ export default {
         this.$q.notify({
           color: "green-4",
           textColor: "white",
-          message: "Liquidity removed",
+          message: "Liquidity removed"
         });
       } catch (error) {
         this.$errorNotification(error);

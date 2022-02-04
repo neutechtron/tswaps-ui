@@ -23,8 +23,6 @@ export const formatPoolList = function ({ commit, rootGetters }, rows) {
                     precision: this.$exAssToPrecision(res1),
                     contract: res1.contract
                 },
-                contract0: res0.contract,
-                contract1: res1.contract,
                 lpSymbol: this.$exAssToSymbol(pool.liquidity),
                 lpPrecision: this.$exAssToPrecision(pool.liquidity),
                 lpContract: pool.liquidity.contract,
@@ -238,30 +236,74 @@ export const updateUserLiquidityPools = async function (
         if (accountName !== null) {
             // console.log("Account: " + accountName);
             let lpTokens = [];
-            const res = await this.$api.getTableRows({
+            // const res = await this.$api.getTableRows({
+            //     code: process.env.LPTOKEN_CONTRACT,
+            //     scope: accountName,
+            //     table: "accounts",
+            //     limit: 10000,
+            //     reverse: false,
+            //     show_payer: false
+            // });
+            // lpTokens.push(...res.rows);
+
+            // TODO calculate impermanent loss
+            const lpPositions = await this.$api.getTableRows({
                 code: process.env.LPTOKEN_CONTRACT,
                 scope: accountName,
-                table: "accounts",
+                table: "position",
                 limit: 10000,
                 reverse: false,
                 show_payer: false
             });
-            lpTokens.push(...res.rows);
+            lpTokens.push(...lpPositions.rows);
 
             const allpools = getters.getPools;
             const userPools = [];
             // console.log(allpools)
-            // console.log(lpTokens)
+            console.log(lpTokens)
 
             for (const token of lpTokens) {
                 // console.log(token)
-                let val = this.$exBalanceSymbol(token)
+                let balance_asset = token.balance
                 // console.log(val)
-                let temp = allpools.find(p =>
-                    p.lpSymbol == val[0]
+                let temp_pool = allpools.find(p =>
+                    p.lpSymbol == this.$assetToSymbol(balance_asset)
                 );
-                if (temp) {
-                    userPools.push({ ...temp, lpBalance: val[1] })
+
+                if (temp_pool) {
+                    // TODO add impermanent loss
+                    let currentCost0 = 0;
+                    let currentCost1 = 0;
+                    let lpBalance = this.$assetToAmount(balance_asset, this.$assetToPrecision(balance_asset));
+
+                    // Calculate current cost = LP * (Reserve0 / Reserve_total)
+                    if (temp_pool.liquidity) {
+                        console.log(temp_pool)
+                        if (temp_pool.protocol === 'uniswap') {
+                            currentCost0 = lpBalance * (temp_pool.reserve0.quantity / Math.sqrt(temp_pool.reserve0.quantity * temp_pool.reserve1.quantity));
+                            currentCost0 = this.$toAsset(currentCost0, temp_pool.reserve0.precision, temp_pool.reserve0.symbol);
+                            console.log("currentCost0: " + currentCost0)
+                            currentCost1 = lpBalance * (temp_pool.reserve1.quantity / Math.sqrt(temp_pool.reserve0.quantity * temp_pool.reserve1.quantity));
+                            currentCost1 = this.$toAsset(currentCost1, temp_pool.reserve1.precision, temp_pool.reserve1.symbol);
+                            console.log("currentCost1: " + currentCost1)
+                        } else if(temp_pool.protocol === 'curve') {
+                            currentCost0 = lpBalance * (temp_pool.reserve0.quantity / (temp_pool.reserve0.quantity + temp_pool.reserve1.quantity));
+                            currentCost0 = this.$toAsset(currentCost0, temp_pool.reserve0.precision, temp_pool.reserve0.symbol);
+                            console.log("currentCost0: " + currentCost0)
+                            currentCost1 = lpBalance * (temp_pool.reserve1.quantity / (temp_pool.reserve0.quantity + temp_pool.reserve1.quantity));
+                            currentCost1 = this.$toAsset(currentCost1, temp_pool.reserve1.precision, temp_pool.reserve1.symbol);
+                            console.log("currentCost1: " + currentCost1)
+                        }
+                        
+                    }
+                    userPools.push({
+                        ...temp_pool,
+                        lpBalance: lpBalance,
+                        lpDeltaCost0: token.cost0,
+                        lpDeltaCost1: token.cost1,
+                        lpCurrentCost0: currentCost0,
+                        lpCurrentCost1: currentCost1,
+                    });
                 }
             }
             // console.log(userPools)
@@ -270,6 +312,7 @@ export const updateUserLiquidityPools = async function (
             commit("setUserLiquidityPools", userPools);
         }
     } catch (error) {
+        console.error("updateUserLiquidityPools", error);
         commit("general/setErrorMsg", error.message || error, { root: true });
     }
 };
