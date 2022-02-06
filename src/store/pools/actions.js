@@ -258,7 +258,7 @@ export const updateUserLiquidityPools = async function (
                     let lpBalance = this.$assetToAmount(balance_asset, this.$assetToPrecision(balance_asset));
 
                     // Calculate current cost = LP * (Reserve0 / Reserve_total)
-                    if (temp_pool.liquidity && !lpBalance <= 0) {
+                    if (temp_pool.liquidity && lpBalance > 0) {
                         console.log(temp_pool)
                         if (temp_pool.protocol === 'uniswap') {
                             currentCost0 = lpBalance * (temp_pool.reserve0.quantity / Math.sqrt(temp_pool.reserve0.quantity * temp_pool.reserve1.quantity));
