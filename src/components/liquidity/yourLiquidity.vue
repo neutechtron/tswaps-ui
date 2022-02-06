@@ -33,10 +33,10 @@
                   <q-badge outline color="primary">
                     {{pool.lpBalance + " " + pool.lpSymbol}}
                     <q-tooltip anchor="bottom middle" self="center middle">
-                      <q-badge class=" " outline color="accent">
+                      <q-badge class=" " outline color="seccondary">
                         {{pool.lpCurrentCost0}}
                       </q-badge>
-                      <q-badge class="q-ml-sm " outline color="accent">
+                      <q-badge class="q-ml-sm " outline color="seccondary">
                         {{pool.lpCurrentCost1}}
                       </q-badge>
                     </q-tooltip>
