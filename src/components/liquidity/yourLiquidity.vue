@@ -30,7 +30,7 @@
                   {{ pool.reserve0.symbol + "/" + pool.reserve1.symbol }}
                 </div>
                 <div>
-                  <q-badge outline color="secondary">
+                  <q-badge outline color="primary">
                     {{pool.lpBalance + " " + pool.lpSymbol}}
                     <q-tooltip anchor="bottom middle" self="center middle">
                       <q-badge class=" " outline color="accent">
