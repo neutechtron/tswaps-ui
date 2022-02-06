@@ -27,22 +27,6 @@ export const updateActivePool = async function ({
     }
 };
 
-// export const createMemo = async function({
-//     commit,
-//     getters
-// }) {
-//     try {
-//         const estimate = getters.getToEstimate;
-//         const slippage= getters.getSlippage
-//         const minReturn = Number(estimate) - Number(estimate)*Number(slippage)
-//         const memo = `swap,${minReturn},${getters.getPool.id}`
-//         commit("setMemo", memo);
-//     } catch (error) {
-//       console.log("Error creating memo", error);
-//       commit("general/setErrorMsg", error.message || error, { root: true });
-//     }
-// };
-
 export const updateValue1 = async function ({ commit, getters }, amount) {
     try {
         commit("setValue1", amount);
@@ -89,6 +73,31 @@ export const updateValue2 = async function ({ commit, getters }, amount) {
         }
     } catch (error) {
         console.log("Error updating value", error);
+        commit("general/setErrorMsg", error.message || error, { root: true });
+    }
+};
+
+export const updateSelectedTokenBalance = async function ({ commit, getters, rootGetters }) {
+    try {
+        const fromToken = getters.getToken1;
+        const toToken = getters.getToken2;
+        const tokens = rootGetters["tokens/getTokens"];
+        let newToken = tokens?.find(
+            token =>
+                token.contract == toToken?.contract && token.symbol == toToken?.symbol
+        );
+        if(newToken){
+            commit("setToken2", newToken);
+        }
+        newToken = tokens?.find(
+            token =>
+                token.contract == fromToken?.contract && token.symbol == fromToken?.symbol
+        );
+        if(newToken){
+            commit("setToken1", newToken);
+        }
+    } catch (error) {
+        console.log("Error creating memo", error);
         commit("general/setErrorMsg", error.message || error, { root: true });
     }
 };

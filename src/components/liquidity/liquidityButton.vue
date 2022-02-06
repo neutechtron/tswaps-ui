@@ -53,13 +53,8 @@ export default {
   methods: {
     ...mapActions("account", ["accountExistsOnChain", "login"]),
     ...mapActions("pools", ["updatePools"]),
-    // ...mapActions("liquidity", ["createMemo"]),
-    ...mapActions("tokens", [
-      "updateTokens",
-      "updateTokenBalances",
-      "updateAllTokensBalances",
-    ]),
-    ...mapActions("liquidity", ["updateActivePool"]),
+    ...mapActions("tokens", ["updateTokens","updateTokenBalances","updateAllTokensBalances",]),
+    ...mapActions("liquidity", ["updateActivePool", "updateSelectedTokenBalance"]),
 
     async tryAddLiquidity() {
       try {
@@ -134,6 +129,7 @@ export default {
       await this.updateTokens();
       await this.updateTokenBalances(this.accountName);
       await this.updateActivePool();
+      await this.updateSelectedTokenBalance();
     },
 
     openUrl(url) {

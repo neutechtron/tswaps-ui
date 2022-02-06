@@ -71,7 +71,7 @@ export default {
     ...mapActions("account", ["accountExistsOnChain", "login"]),
     ...mapActions("pools", ["updatePools", "updateConfig"]),
     ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
-    ...mapActions("liquidity", ["updateActivePool"]),
+    ...mapActions("liquidity", ["updateActivePool", "updateSelectedTokenBalance"]),
 
     async tryCreatePool() {
       try {
@@ -173,6 +173,7 @@ export default {
       await this.updateTokens();
       await this.updateTokenBalances(this.accountName);
       await this.updateActivePool();
+      await this.updateSelectedTokenBalance();
     },
 
     openUrl(url) {
