@@ -16,10 +16,6 @@
     <template v-slot:header="props">
       <q-tr :props="props">
         <q-th auto-width />
-        <!-- <q-th auto-width> Name </q-th>
-        <q-th auto-width> Liquidity </q-th>
-        <q-th auto-width> Volume 24h </q-th>
-        <q-th auto-width> APR </q-th> -->
         <q-th
           auto-width
           v-for="col in props.cols"
@@ -28,7 +24,6 @@
         >
           {{ col.label }}
         </q-th>
-        <!-- <q-th auto-width /> -->
       </q-tr>
     </template>
 
@@ -62,53 +57,9 @@
         >
           {{ col.value }}
         </q-td>
-
-        <!-- <q-td auto-width>
-          <div class="text-body1">
-            {{ props.row }}
-          </div>
-        </q-td>
-
-        <q-td auto-width>
-          <div class="text-body1">
-            {{
-              parseFloat(props.row.reserve0.quantity).toFixed(
-                props.row.reserve0.precision
-              )
-            }}
-          </div>
-        </q-td>
-
-        <q-td auto-width>
-          <div class="text-body1">
-            {{
-              parseFloat(props.row.reserve1.quantity).toFixed(
-                props.row.reserve1.precision
-              )
-            }}
-          </div>
-        </q-td> -->
-
-        <!-- <q-td auto-width>
-          <q-btn
-            position="sticky"
-            size="sm"
-            color="primary"
-            round
-            dense
-            @click="props.expand = !props.expand"
-            :icon="props.expand ? 'remove' : 'add'"
-          />
-        </q-td> -->
       </q-tr>
 
-      <!-- <q-tr v-show="props.expand" :props="props">
-        <q-td colspan="100%">
-          <div class="text-left">
-            <expanding-row :pool="props.row" />
-          </div>
-        </q-td>
-      </q-tr> -->
+      
     </template>
   </q-table>
 </template>
@@ -127,7 +78,6 @@ const columns = [
     field: (row) => row.reserve0.symbol + "/" + row.reserve1.symbol,
     format: (val) => `${val}`,
   },
-  // { name: "price", label: "Price", field: (row) => row.virtual_price },
   {
     name: "liquidity",
     align: "center",
@@ -152,12 +102,6 @@ const columns = [
     format: (val) => `$${val !== -1 ? val.toFixed(2) : "-"}`,
     sortable: true,
   },
-  //   {
-  //     name: "volume7d",
-  //     label: "Volume 2",
-  //     field: (row) => row.volume1,
-  //     sortable: true,
-  //   },
   {
     name: "apr",
     label: "APR",
@@ -171,14 +115,6 @@ const columns = [
     sortable: true,
     sortOrder: "ad",
   },
-  //   {
-  //     name: "actions",
-  //     label: "Actions",
-  //     align: "center",
-  //     field: (row) => row.id,
-  //     format: (val) => `<expanding-row :pool="pools[${val}]"></expanding-row>`,
-  //   },
-  //   { name: "actions", label: "Actions", field: "actions" },
 ];
 
 export default {

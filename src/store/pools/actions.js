@@ -53,8 +53,6 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
         });
 
         const formatPoolList = await dispatch("formatPoolList", tableResults.rows);
-        // console.log(formatPoolList);
-
 
         // Get pool stats from stats.swaps
         const statsResults = await this.$api.getTableRows({
@@ -65,8 +63,6 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
             reverse: false,
             show_payer: false
         });
-
-        // console.log(statsResults.rows);
 
         // append pool stats to pools
         for (const pool of formatPoolList) {
@@ -92,15 +88,12 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
             }
         }
 
-        // console.log(temp_pools);
-
         // calculate USD liquidity and volume_24h
         await dispatch("tokens/updateUsdValue", {}, { root: true });
         const TlosToken = (rootGetters[
             "tokens/getTLOSToken"
         ]);
         const TlosUsdPrice = TlosToken.UsdPrice
-        // console.log("TlosUsdPrice", TlosUsdPrice);
 
         for (const [index, pool] of temp_pools.entries()) {
             // skip pool with don't include TLOS
@@ -236,15 +229,6 @@ export const updateUserLiquidityPools = async function (
         if (accountName !== null) {
             // console.log("Account: " + accountName);
             let lpTokens = [];
-            // const res = await this.$api.getTableRows({
-            //     code: process.env.LPTOKEN_CONTRACT,
-            //     scope: accountName,
-            //     table: "accounts",
-            //     limit: 10000,
-            //     reverse: false,
-            //     show_payer: false
-            // });
-            // lpTokens.push(...res.rows);
 
             // TODO calculate impermanent loss
             const lpPositions = await this.$api.getTableRows({
@@ -259,13 +243,10 @@ export const updateUserLiquidityPools = async function (
 
             const allpools = getters.getPools;
             const userPools = [];
-            // console.log(allpools)
             console.log(lpTokens)
 
             for (const token of lpTokens) {
-                // console.log(token)
                 let balance_asset = token.balance
-                // console.log(val)
                 let temp_pool = allpools.find(p =>
                     p.lpSymbol == this.$assetToSymbol(balance_asset)
                 );
@@ -277,7 +258,7 @@ export const updateUserLiquidityPools = async function (
                     let lpBalance = this.$assetToAmount(balance_asset, this.$assetToPrecision(balance_asset));
 
                     // Calculate current cost = LP * (Reserve0 / Reserve_total)
-                    if (temp_pool.liquidity) {
+                    if (temp_pool.liquidity && !lpBalance <= 0) {
                         console.log(temp_pool)
                         if (temp_pool.protocol === 'uniswap') {
                             currentCost0 = lpBalance * (temp_pool.reserve0.quantity / Math.sqrt(temp_pool.reserve0.quantity * temp_pool.reserve1.quantity));
@@ -294,21 +275,18 @@ export const updateUserLiquidityPools = async function (
                             currentCost1 = this.$toAsset(currentCost1, temp_pool.reserve1.precision, temp_pool.reserve1.symbol);
                             console.log("currentCost1: " + currentCost1)
                         }
+                        userPools.push({
+                            ...temp_pool,
+                            lpBalance: lpBalance,
+                            lpDeltaCost0: token.cost0,
+                            lpDeltaCost1: token.cost1,
+                            lpCurrentCost0: currentCost0,
+                            lpCurrentCost1: currentCost1,
+                        });
                         
                     }
-                    userPools.push({
-                        ...temp_pool,
-                        lpBalance: lpBalance,
-                        lpDeltaCost0: token.cost0,
-                        lpDeltaCost1: token.cost1,
-                        lpCurrentCost0: currentCost0,
-                        lpCurrentCost1: currentCost1,
-                    });
                 }
             }
-            // console.log(userPools)
-            // TODO show your liquidity pools
-            // const pools = await dispatch("formatPoolList", tableResults.rows);
             commit("setUserLiquidityPools", userPools);
         }
     } catch (error) {

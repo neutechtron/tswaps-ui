@@ -7,7 +7,7 @@
         </div>
       </div>
 
-      <div class="row justify-center q-mt-xs">
+      <div class="row justify-center q-mt-xs q-mb-lg">
         <div class="col-12 tableCol">
 
           <q-card class="tableCard">
