@@ -6,7 +6,7 @@
       class="sendBtn full-width"
       label="Create Pool"
       @click="tryCreatePool()"
-      :disable="!hasInput"
+      :disable="!hasInput || !canPayFee"
     />
     <q-btn
       v-else
@@ -15,6 +15,15 @@
       label="Login"
       @click="showLogin = true"
     />
+
+    <div
+      class="text-center text-red-7 q-pt-sm fit row wrap justify-center items-center content-center"
+      v-if="!canPayFee"
+    >
+      <q-icon name="fas fa-exclamation-triangle" class="q-pr-xs" />Not enough
+      SWAP tokens
+    </div>
+
     <ual-dialog :showLogin.sync="showLogin" />
   </div>
 </template>
@@ -71,7 +80,10 @@ export default {
     ...mapActions("account", ["accountExistsOnChain", "login"]),
     ...mapActions("pools", ["updatePools", "updateConfig"]),
     ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
-    ...mapActions("liquidity", ["updateActivePool", "updateSelectedTokenBalance"]),
+    ...mapActions("liquidity", [
+      "updateActivePool",
+      "updateSelectedTokenBalance",
+    ]),
 
     async tryCreatePool() {
       try {
@@ -180,8 +192,7 @@ export default {
       window.open(url);
     },
   },
-  async mounted() {
-  },
+  async mounted() {},
 
   watch: {
     async getFromChain() {
