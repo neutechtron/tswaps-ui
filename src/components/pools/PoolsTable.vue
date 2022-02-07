@@ -18,11 +18,33 @@
         <q-th auto-width />
         <q-th
           auto-width
-          v-for="col in props.cols"
+          v-for="col in props.cols.slice(0, props.cols.length - 1)"
           :key="col.name"
           :props="props"
         >
           {{ col.label }}
+        </q-th>
+
+        <!-- APR colum -->
+        <q-th
+          auto-width
+          v-for="col in props.cols.slice(-1)"
+          :key="col.name"
+          :props="props"
+        >
+          {{ col.label }}
+
+          <q-icon class="q-ml-xs q-mb-xs" name="far fa-question-circle">
+            <q-tooltip anchor="top middle" self="center middle">
+              <div>
+                LP rewards: distributed proportionally among LP token holders.
+              </div>
+              <div>
+                All figures are estimates provided for your convenience only,
+                and by no means represent guaranteed returns.
+              </div>
+            </q-tooltip></q-icon
+          >
         </q-th>
       </q-tr>
     </template>
@@ -50,16 +72,51 @@
           </div> -->
         </q-td>
 
+        <!-- Liquidity -->
         <q-td
           :props="props"
-          v-for="col in props.cols.slice(1, 5)"
+          v-for="col in props.cols.slice(1, 2)"
+          :key="col.name"
+        >
+          <q-tooltip anchor="bottom middle" self="center middle">
+            {{
+              `${props.row.reserve0.quantity} ${props.row.reserve0.symbol} / ${props.row.reserve1.quantity} ${props.row.reserve1.symbol}`
+            }}</q-tooltip
+          >
+          {{ col.value }}
+        </q-td>
+
+        <!-- Volume 24h -->
+        <q-td
+          :props="props"
+          v-for="col in props.cols.slice(2, 3)"
+          :key="col.name"
+        >
+          <q-tooltip anchor="bottom middle" self="center middle">
+            {{
+              `${
+                props.row.volume_24h !== undefined
+                  ? props.row.volume_24h[0].value
+                  : "-"
+              } / ${
+                props.row.volume_24h !== undefined
+                  ? props.row.volume_24h[1].value
+                  : "-"
+              } `
+            }}</q-tooltip
+          >
+          {{ col.value }}
+        </q-td>
+
+        <!-- APR -->
+        <q-td
+          :props="props"
+          v-for="col in props.cols.slice(3, 5)"
           :key="col.name"
         >
           {{ col.value }}
         </q-td>
       </q-tr>
-
-      
     </template>
   </q-table>
 </template>
@@ -114,6 +171,7 @@ const columns = [
     format: (val) => `${val !== -1 ? (val * 100).toFixed(2) : "-"}%`,
     sortable: true,
     sortOrder: "ad",
+    align: "center",
   },
 ];
 
@@ -174,3 +232,7 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+
+</style>
