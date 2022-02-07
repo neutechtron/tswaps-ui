@@ -18,7 +18,7 @@
 
     <div
       class="text-center text-red-7 q-pt-sm fit row wrap justify-center items-center content-center"
-      v-if="!canPayFee"
+      v-if="!canPayFee && hasInput"
     >
       <q-icon name="fas fa-exclamation-triangle" class="q-pr-xs" />Not enough
       SWAP tokens
@@ -64,16 +64,21 @@ export default {
     ...mapGetters("pools", ["getConfig"]),
     ...mapGetters("tokens", ["getSwapToken"]),
 
-    canPayFee() {
-      return (
-        this.getSwapToken.amount > this.$getQuantity(this.getConfig.listing_fee)
-      );
-    },
-
     hasInput() {
       return (
         this.getToken1 && this.getToken2 && this.getValue1 && this.getValue2
       );
+    },
+
+    canPayFee() {
+      if (this.getConfig && this.getSwapToken) {
+        return (
+          this.getSwapToken.amount >
+          this.$getQuantity(this.getConfig.listing_fee)
+        );
+      } else {
+        return false;
+      }
     },
   },
   methods: {
