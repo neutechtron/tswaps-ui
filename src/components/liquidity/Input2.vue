@@ -11,7 +11,7 @@
         Balance: {{ balance }}
       </div>
     </div>
-    <div class="row flex-wrap items-end">
+    <div class="row flex-wrap items-center">
       <input-amount
         class="col-xs-12 col-sm-6 col-md-6 q-mt-xs"
         :amount="getValue2"
@@ -38,16 +38,16 @@ export default {
     ...mapGetters("tokens", ["getTokens"]),
 
     balance() {
-      if (this.getTokens.find(token => token.id === this.getToken2.id)) {
+      if (this.getTokens.find((token) => token.id === this.getToken2.id)) {
         return this.getToken2.amount;
       } else {
         return 0;
       }
-    }
+    },
   },
   methods: {
-    ...mapActions("liquidity", ["updateValue1", "updateValue2"])
-  }
+    ...mapActions("liquidity", ["updateValue1", "updateValue2"]),
+  },
 };
 </script>
 
