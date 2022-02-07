@@ -4,7 +4,7 @@
       <q-toolbar class="testnet-banner" v-if="TESTNET">
         Running on Telos testnet
       </q-toolbar>
-      <q-toolbar class=" toolbar">
+      <q-toolbar class="toolbar">
         <div class="q-pa-sm">
           <router-link to="/" class="row items-center q-gutter-x-sm">
             <img
@@ -12,7 +12,7 @@
               src="~assets/images/swap.png"
               width="35"
             />
-            <div class="t-swaps-title text-h5 ">T-Swaps</div>
+            <div class="t-swaps-title text-h5">T-Swaps</div>
             <q-badge label="V3 Beta" class="q-my-sm" />
           </router-link>
         </div>
@@ -163,9 +163,23 @@
             Interface Version
           </q-tooltip> -->
         </div>
+        <div class="row justify-start">
+          <a
+            v-for="site in socialLinks"
+            :key="site.name"
+            :href="site.link"
+            class="social-link q-ma-sm"
+            target="_blank"
+          >
+            <q-icon size="24px" :name="site.icon" />
+          </a>
+        </div>
         <div>
           Made with ♥ by
-          <a :href="KNOT_HOME" style="text-decoration:underline" target="_blank"
+          <a
+            :href="KNOT_HOME"
+            style="text-decoration: underline"
+            target="_blank"
             >Yknot BCS</a
           >
           <!-- <q-tooltip
@@ -193,18 +207,42 @@ export default {
     return {
       darkMode: {
         text: "Dark Mode",
-        icon: "fas fa-moon"
+        icon: "fas fa-moon",
       },
       TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
       TSWAPS_DOCS: process.env.TSWAPS_DOCS,
       SITE_VERSION: process.env.SITE_VERSION,
       TESTNET: process.env.TESTNET?.toLowerCase() === "true",
       KNOT_HOME: process.env.KNOT_HOME,
-      tab: ""
+      tab: "",
+      socialLinks: [
+        // { name: "web", icon: "fas fa-globe", link: "https://tstarter.io/" },
+        {
+          name: "telegram",
+          icon: "fab fa-telegram-plane",
+          link: "https://t.me/tswaps",
+        },
+        {
+          name: "medium",
+          icon: "fab fa-medium-m",
+          link: "https://tswaps.medium.com/",
+        },
+        // {
+        //   name: "twitter",
+        //   icon: "fab fa-twitter",
+        //   link: "https://twitter.com/tswaps_com",
+        // },
+        {
+          name: "github",
+          icon: "fab fa-github",
+          link: "https://github.com/Telos-Swaps",
+        },
+        // { name: "docs", icon: "fa fa-book", link: "https://docs.tstarter.io/" },
+      ],
     };
   },
   computed: {
-    ...mapGetters("account", ["isAuthenticated"])
+    ...mapGetters("account", ["isAuthenticated"]),
   },
   methods: {
     ...mapActions("account", ["logout"]),
@@ -219,11 +257,11 @@ export default {
     },
     isSelectedTab(tab) {
       return this.$route.name == tab ? "selectedTab" : "";
-    }
+    },
   },
   created() {
     this.$q.dark.set(localStorage.getItem("darkModeEnabled") !== "false");
-  }
+  },
 };
 </script>
 
@@ -242,5 +280,15 @@ export default {
   background: $primary;
   min-height: 1.2rem;
   justify-content: center;
+}
+
+.social-link {
+  //   padding: 5px 20px 10px 0;
+  text-decoration: none;
+  transition: all 0.15s ease-in-out;
+  color: $secondary;
+  &:hover {
+    color: $accent;
+  }
 }
 </style>
