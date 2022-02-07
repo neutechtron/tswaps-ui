@@ -42,6 +42,51 @@
                 </div>
               </div>
 
+              <q-card v-if="getHasPool" class="q-mt-md impact-card">
+                <div class="q-ma-sm">Prices and pool share</div>
+                <div>
+                  <q-card
+                    class="impact-card fit row wrap justify-evenly items-center content-center"
+                  >
+                    <div>
+                      <div
+                        class="q-ma-sm fit column wrap justify-center items-center content-center"
+                      >
+                        <div>
+                          {{ pricePerToken(false) }}
+                        </div>
+                        <div>
+                          {{ getPool.reserve1.symbol }} per
+                          {{ getPool.reserve0.symbol }}
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        class="q-ma-sm fit column wrap justify-center items-center content-center"
+                      >
+                        <div>
+                          {{ pricePerToken(true) }}
+                        </div>
+                        <div>
+                          {{ getPool.reserve0.symbol }} per
+                          {{ getPool.reserve1.symbol }}
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div
+                        class="q-ma-sm fit column wrap justify-center items-center content-center"
+                      >
+                        <div v-if="shareOfPool * 100 < 0.01">&lt;0.01%</div>
+                        <div v-else>{{ (shareOfPool * 100).toFixed(2) }}%</div>
+                        <div>Share of pool</div>
+                      </div>
+                    </div>
+                  </q-card>
+                </div>
+              </q-card>
+
               <div class="row q-mt-md">
                 <div v-if="getHasPool" class="col-12">
                   <liquidity-button />
@@ -50,9 +95,6 @@
                   <create-button />
                 </div>
               </div>
-
-              <!-- TODO add initial prices and pool share info like pancake -->
-              <!-- TODO add percentage fee you gain from adding like pancake -->
             </q-card-section>
           </q-card>
 
@@ -93,14 +135,16 @@ export default {
     input2,
     liquidityButton,
     yourLiquidity,
-    createButton
+    createButton,
   },
   computed: {
     ...mapGetters("liquidity", [
       "getPool",
       "getHasPool",
       "getToken1",
-      "getToken2"
+      "getToken2",
+      "getValue1",
+      "getValue2",
     ]),
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
     ...mapGetters("pools", ["getConfig"]),
@@ -119,18 +163,61 @@ export default {
         this.getToken1.symbol == defaultMsg ||
         this.getToken2.symbol == defaultMsg
       );
-    }
+    },
+
+    shareOfPool() {
+      if (this.getHasPool) {
+        if (this.getPool.protocol === "uniswap") {
+          let currentShare = Math.sqrt(this.getValue1 * this.getValue2);
+          let totalLP = this.$getQuantity(this.getPool.liquidity);
+          return currentShare / (totalLP + currentShare);
+        } else if (this.getPool.protocol === "curve") {
+          let currentShare = this.getValue1 + this.getValue2;
+          let totalLP = this.$getQuantity(this.getPool.liquidity);
+          return currentShare / (totalLP + currentShare);
+        }
+      } else {
+        return 0;
+      }
+      return 0;
+    },
   },
   methods: {
     ...mapActions("pools", ["updateConfig", "updatePools"]),
-    ...mapActions("tokens", ["updateTokens"])
+    ...mapActions("tokens", ["updateTokens"]),
+
+    pricePerToken(selector) {
+      let token0 = this.getPool.reserve0;
+      let token1 = this.getPool.reserve1;
+      if (this.getHasPool) {
+        let price0 = parseFloat(this.getPool.price1_last).toFixed(
+          token0.precision
+        );
+        let price1 = parseFloat(this.getPool.price0_last).toFixed(
+          token1.precision
+        );
+        if (selector) {
+          return price0;
+        } else {
+          return price1;
+        }
+      } else {
+        return "";
+      }
+    },
   },
   async mounted() {
     await this.updateConfig();
     await this.updateTokens();
     await this.updatePools();
-  }
+  },
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.q-card {
+  &.impact-card {
+    border: 1px solid $accent;
+  }
+}
+</style>
