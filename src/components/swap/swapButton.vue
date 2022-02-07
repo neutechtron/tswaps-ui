@@ -6,7 +6,7 @@
       class="sendBtn full-width"
       label="Swap"
       @click="trySwap()"
-      :disable="!getIsValidPair"
+      :disable="!getIsValidPair || getAmount <= 0"
     />
     <q-btn
       v-else

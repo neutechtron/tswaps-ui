@@ -72,6 +72,7 @@
         </div>
       </div>
 
+      <!-- Additional swap info card -->
       <div v-if="getCanSwap" class="q-mt-md">
         <q-card flat class="q-pa-xs swapCard">
           <div class="q-ma-md">

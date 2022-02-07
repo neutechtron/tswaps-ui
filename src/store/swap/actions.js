@@ -14,6 +14,9 @@ export const calculateUniswapOut = function ({ commit, rootGetters, getters }, p
             let amountIn = (constantProduct / reserveToAfter) - reserveFrom;
             // console.log("amountIn", amountIn);
             amountIn = this.$truncate(amountIn, getters.getFromToken.precision);
+            if (amountIn < 0) {
+                amountIn = 0;                
+            }
             return amountIn;
 
         } else {
@@ -27,6 +30,9 @@ export const calculateUniswapOut = function ({ commit, rootGetters, getters }, p
             let amountOut = reserveTo - reserveToAfter;
             // console.log("amountOut", amountOut);
             amountOut = this.$truncate(amountOut, getters.getToToken.precision);
+            if (amountOut < 0) {
+                amountOut = 0;
+            }
             return amountOut;
         }
 
@@ -65,6 +71,9 @@ export const updateSwapPool = async function ({ commit, rootGetters, getters }) 
 
 export const updateAmount = async function ({ commit, getters, dispatch }, amount) {
     try {
+        if (amount <= 0) {
+            amount = 0;
+        }
         commit("setAmount", amount);
         if (getters.getCanSwap) {
             const pool = getters.getPool;
@@ -89,6 +98,9 @@ export const updateEstimate = async function (
     estimate
 ) {
     try {
+        if (estimate <= 0) {
+            estimate = 0;
+        }
         if (estimate === undefined) {
             dispatch("updateAmount", getters.getAmount);
         } else {

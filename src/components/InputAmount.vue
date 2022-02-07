@@ -14,6 +14,8 @@
       minlength="1"
       maxlength="79"
       spellcheck="false"
+      :error-message="errorMessage"
+      :error="error"
     />
   </div>
 </template>
@@ -22,15 +24,15 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  props: { amount: Number },
+  props: { amount: Number, error: Boolean, errorMessage: String },
   data() {
     return {};
   },
   methods: {
     updateAmount(val) {
       this.$emit("update:amount", isNaN(val) ? 0 : parseFloat(val));
-    }
-  }
+    },
+  },
 };
 </script>
 
