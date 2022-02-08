@@ -267,7 +267,7 @@ export const updateUserLiquidityPools = async function (
                             currentCost1 = lpBalance * (temp_pool.reserve1.quantity / Math.sqrt(temp_pool.reserve0.quantity * temp_pool.reserve1.quantity));
                             currentCost1 = this.$toAsset(currentCost1, temp_pool.reserve1.precision, temp_pool.reserve1.symbol);
                             // console.log("currentCost1: " + currentCost1)
-                        } else if(temp_pool.protocol === 'curve') {
+                        } else if (temp_pool.protocol === 'curve') {
                             currentCost0 = lpBalance * (temp_pool.reserve0.quantity / (temp_pool.reserve0.quantity + temp_pool.reserve1.quantity));
                             currentCost0 = this.$toAsset(currentCost0, temp_pool.reserve0.precision, temp_pool.reserve0.symbol);
                             // console.log("currentCost0: " + currentCost0)
@@ -283,7 +283,7 @@ export const updateUserLiquidityPools = async function (
                             lpCurrentCost0: currentCost0,
                             lpCurrentCost1: currentCost1,
                         });
-                        
+
                     }
                 }
             }
