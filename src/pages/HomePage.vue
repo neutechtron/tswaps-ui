@@ -9,13 +9,22 @@
         />
       </div> -->
       <div class="logo-img "></div>
-      <div class="logo-text q-mb-md">T-Swaps</div>
+      <div class="logo-text q-mb-sm">T-Swaps</div>
+      <q-card class="upgradeCard">v3 upgrade in progress</q-card>
       <div class="text-h2 q-mb-xs">Fast, Affordable Token Swaps</div>
       <div class="text-h3 q-mb-lg">
         An innovative trading platform on Telos native
       </div>
       <div class="row full-width  items-center justify-center">
-        <q-btn to="/swap" no-caps class=" sendBtn " label="Launch App" />
+        <q-btn
+          href="https://tswaps.medium.com/telos-swaps-v3-launch-7d863c46084"
+          no-caps
+          class="outlineBtn "
+          label="Learn More"
+          type="a"
+          target="_blank"
+          outline
+        />
       </div>
       <scroll-arrow class="scroll-arrow " />
       <!-- <div class="row q-gutter-md full-width  items-center justify-center">
@@ -175,6 +184,28 @@ export default {
     // Hide on small screens to prevent overlap with launch button
     @media only screen and (max-height: 650px) {
       display: none;
+    }
+  }
+
+  .upgradeCard {
+    padding: 0rem 1rem;
+    margin-bottom: 1.2rem;
+    font-size: large;
+
+    background: linear-gradient(to right, $purpleBright 30%, $blueLight 90%);
+    background-size: 150% 150%;
+    animation: gradient 5s ease infinite;
+  }
+
+  @keyframes gradient {
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
     }
   }
 }

@@ -36,9 +36,9 @@
         </div>
       </div>
     </div>
-    <div class="row justify-center">
+    <!-- <div class="row justify-center">
       <q-btn to="/swap" no-caps class=" sendBtn " label="Launch App" />
-    </div>
+    </div> -->
   </div>
 </template>
 
