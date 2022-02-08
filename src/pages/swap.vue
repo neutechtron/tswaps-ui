@@ -73,7 +73,7 @@
       </div>
 
       <!-- Additional swap info card -->
-      <div v-if="getCanSwap" class="q-mt-md">
+      <div v-if="getCanSwap && getAmount > 0" class="q-mt-md">
         <q-card flat class="q-pa-xs swapCard">
           <div class="q-ma-md">
             <div class="fit row justify-between q-pb-xs">

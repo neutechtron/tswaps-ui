@@ -45,7 +45,38 @@
             </div>
 
             <!-- TODO PNL, impermanent loss etc. -->
-            <!-- <div>{{ pool.lpDeltaCost0 }} {{ pool.lpDeltaCost1 }}</div> -->
+            <!-- <div>{{ pool.lpDeltaCost0 }} {{ pool.lpDeltaCost1 }}</div>
+
+            <div>
+              PNL0:
+              {{
+                (
+                  $assetToAmount(pool.lpCurrentCost0) -
+                  $assetToAmount(pool.lpDeltaCost0)
+                ).toFixed(4)
+              }}
+              PNL1:
+              {{
+                (
+                  $assetToAmount(pool.lpCurrentCost1) -
+                  $assetToAmount(pool.lpDeltaCost1)
+                ).toFixed(4)
+              }}
+            </div>
+            <div>
+              {{
+                (
+                  $assetToAmount(pool.lpCurrentCost0) -
+                  $assetToAmount(pool.lpDeltaCost0)
+                ).toFixed(4) / $assetToAmount(pool.lpCurrentCost0)
+              }}%
+              {{
+                (
+                  $assetToAmount(pool.lpCurrentCost1) -
+                  $assetToAmount(pool.lpDeltaCost1)
+                ).toFixed(4) / $assetToAmount(pool.lpCurrentCost1)
+              }}
+            </div> -->
             <q-space />
             <div class="q-pt-xs">
               <q-btn
