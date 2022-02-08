@@ -2,6 +2,19 @@ export const setTokens = (state, { tokens }) => {
     state.tokens = tokens;
 };
 
+// Set token precision
+export const setTokenLogo = (state, { token, logo }) => {
+    let new_token = state.tokens.find(
+        t =>
+            t.symbol === token.symbol &&
+            t.contract === token.contract &&
+            t.chain === token.chain
+    );
+    if (new_token !== undefined) {
+        new_token.logo = logo;
+    }
+};
+
 
 // Set token precision
 export const setTokenPrecision = (state, { token, precision }) => {

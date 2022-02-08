@@ -108,9 +108,10 @@ export const updateAddNewToken = async function ({ commit, getters, rootGetters,
         let contract = payload.contract
         let symbol = payload.symbol
         let accountName = payload.accountName
+        let logo = payload?.logo
         let tokens = JSON.parse(JSON.stringify(getters.getTokens))
 
-        console.log(contract, symbol)
+        // console.log(contract, symbol)
 
         // check duplicates
         let token = {
@@ -118,6 +119,7 @@ export const updateAddNewToken = async function ({ commit, getters, rootGetters,
             contract: contract,
             precision: 0,
             chain: getCurrentChain,
+            logo: logo,
             toTokens: []
         }
 
@@ -149,7 +151,7 @@ export const updateAddNewToken = async function ({ commit, getters, rootGetters,
         }
         let parsed = JSON.stringify(localTokens)
         localStorage.setItem("tokens", parsed)
-        console.log(parsed)
+        // console.log(parsed)
 
     } catch (error) {
         console.error("Error adding token:", error);
@@ -244,6 +246,47 @@ export const updateUsdValue = async function ({ commit, getters, rootGetters }) 
     const tlosPrice = tlosUsdDataPoints.rows[0].median / 10000;
 
     commit("setUsdPrice", { token: getters.getTLOSToken, price: tlosPrice });
+}
+
+// Get known tokens
+export const updateKnownTokens = async function ({ commit, getters, rootGetters, dispatch }) {
+    try {
+        // Get tokens list json from external url
+        let tokenURL =
+            "https://raw.githubusercontent.com/Telos-Swaps/Tokens/main/tokens.json";
+        let tokens = []
+
+        await this.$axios
+            .get(tokenURL)
+            .then((response) => {
+                tokens = response.data;
+            })
+            .catch((error) => console.log("Error", error.message));
+
+        // console.log(tokens)
+
+        for (const token of tokens) {
+            // commit("setTokenLogo", token.logo)
+
+            await dispatch("updateAddNewToken", {
+                symbol: token.symbol,
+                contract: token.account,
+                precision: 0,
+                chain: token.chain,
+                logo: token.logo,
+                toTokens: []
+            })
+
+        }
+
+        // TODO Or only update logo
+
+        commit("setTokens", { tokens });
+
+    } catch (error) {
+        console.error("updateKnownTokens", error);
+        commit("general/setErrorMsg", error.message || error, { root: true });
+    }
 }
 
 // Update all tokens balances

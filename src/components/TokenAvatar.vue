@@ -26,20 +26,20 @@ export default {
   props: {
     token: {
       type: String,
-      default: ""
+      default: "",
     },
     avatarSize: {
       type: Number,
-      default: 60
+      default: 60,
     },
     grayscale: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
     // TODO Use T-Starter pools.start for image urls
-    // ...mapGetters("pools", ["getPoolTokens"]),
+    ...mapGetters("tokens", ["getTokens"]),
     identicon() {
       return toSvg(this.token, this.avatarSize);
     },
@@ -82,10 +82,15 @@ export default {
             case "BTC": case "BITCOIN" : return "/tokens/bitcoin.svg";
             case "ETH": case "ETHEREUM": case "ROPSTEN" : return "/tokens/eth.svg";
             default:
-              // Search for the avatar link on the pools.start/pooltokens table
-              // Assumes the pools/setPoolTokens state action is called.
-              if (this.chainSrc[token]) return this.chainSrc[token]
-              else return ""
+              // Search logo in tokens
+                const tokenInfo = this.getTokens.find(
+                    (t) => t.symbol.toUpperCase() === token
+                );
+                if (tokenInfo) {
+                  return tokenInfo.logo;
+                } else {
+                  return "";
+                }
           }
         }
       }
@@ -101,8 +106,8 @@ export default {
       //     });
       //     return res;
       //   }
-    }
-  }
+    },
+  },
 };
 </script>
 

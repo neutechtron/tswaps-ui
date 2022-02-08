@@ -199,6 +199,7 @@
 <script>
 import LoginButton from "components/LoginButton.vue";
 import { mapGetters, mapActions } from "vuex";
+import axios from "axios";
 
 export default {
   name: "MainLayout",
@@ -246,6 +247,7 @@ export default {
   },
   methods: {
     ...mapActions("account", ["logout"]),
+    ...mapActions("tokens", ["updateKnownTokens"]),
     toggleDarkMode() {
       this.$q.dark.toggle();
       localStorage.setItem("darkModeEnabled", this.$q.dark.isActive);
@@ -261,6 +263,10 @@ export default {
   },
   created() {
     this.$q.dark.set(localStorage.getItem("darkModeEnabled") !== "false");
+  },
+
+  async mounted() {
+    await this.updateKnownTokens();
   },
 };
 </script>
