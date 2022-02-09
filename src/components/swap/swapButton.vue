@@ -23,7 +23,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import UalDialog from "src/components/UalDialog.vue";
-import { openURL } from 'quasar'
+import { openURL } from "quasar";
 
 export default {
   components: { UalDialog },
@@ -64,7 +64,11 @@ export default {
     ...mapActions("account", ["accountExistsOnChain", "logout"]),
     ...mapActions("pools", ["updatePools"]),
     ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
-    ...mapActions("swap", ["createMemo", "updateSwapPool", "updateToAndFromBalance"]),
+    ...mapActions("swap", [
+      "createMemo",
+      "updateSwapPool",
+      "updateToAndFromBalance",
+    ]),
 
     async trySwap() {
       try {
@@ -74,15 +78,23 @@ export default {
           color: "green-4",
           textColor: "white",
           icon: "cloud_done",
-          message: `Swap complete ${this.transaction}` ,
+          message: `Swap complete ${this.transaction.slice(0, 8)}...`,
+          timeout: 5000,
           actions: [
-            { label: 'View in Authority', color: 'white', 
-              handler: () => 
-              {
-                openURL(`https://eosauthority.com/transaction/${this.transaction}?network=${process.env.TESTNET == 'true' ? "telostest" : "telos"}`)
-              } 
-            }
-          ]
+            {
+              label: "View in Authority",
+              color: "white",
+              handler: () => {
+                openURL(
+                  `https://eosauthority.com/transaction/${
+                    this.transaction
+                  }?network=${
+                    process.env.TESTNET == "true" ? "telostest" : "telos"
+                  }`
+                );
+              },
+            },
+          ],
         });
       } catch (error) {
         this.$errorNotification(error);
@@ -126,11 +138,11 @@ export default {
         this.$store.commit("swap/setMemo", "");
         this.$store.commit("swap/setToEstimate", 0);
       }
-      await this.updatePools();
-      await this.updateTokens();
-      await this.updateTokenBalances(this.accountName);
-      await this.updateSwapPool();
-      await this.updateToAndFromBalance();
+      this.updatePools();
+      this.updateTokens();
+      this.updateTokenBalances(this.accountName);
+      this.updateSwapPool();
+      this.updateToAndFromBalance();
     },
   },
   async mounted() {
