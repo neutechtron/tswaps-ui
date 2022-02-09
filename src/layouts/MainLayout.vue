@@ -247,7 +247,6 @@ export default {
   },
   methods: {
     ...mapActions("account", ["logout"]),
-    ...mapActions("tokens", ["updateKnownTokens"]),
     toggleDarkMode() {
       this.$q.dark.toggle();
       localStorage.setItem("darkModeEnabled", this.$q.dark.isActive);
@@ -265,9 +264,7 @@ export default {
     this.$q.dark.set(localStorage.getItem("darkModeEnabled") !== "false");
   },
 
-  async mounted() {
-    await this.updateKnownTokens();
-  },
+  async mounted() {},
 };
 </script>
 

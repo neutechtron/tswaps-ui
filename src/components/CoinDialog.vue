@@ -214,7 +214,7 @@ export default {
     await this.updatePools();
     await this.updateTokens();
     await this.updateTokenBalances(this.accountName);
-    // await this.updateAllTokensBalances(this.accountName);
+    await this.updateAllTokensBalances(this.accountName);
   },
 };
 </script>

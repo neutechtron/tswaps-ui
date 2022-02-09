@@ -32,6 +32,7 @@ export const updateTokens = async function ({
                 contract: res0.contract,
                 precision: this.$exAssToPrecision(res0),
                 chain: getCurrentChain,
+                logo: "",
                 toTokens: []
             }
 
@@ -40,6 +41,7 @@ export const updateTokens = async function ({
                 contract: res1.contract,
                 precision: this.$exAssToPrecision(res1),
                 chain: getCurrentChain,
+                logo: "",
                 toTokens: []
             }
 
@@ -91,6 +93,8 @@ export const updateTokens = async function ({
         }
 
         commit("setTokens", { tokens });
+
+        await dispatch("updateKnownLogos");
 
     } catch (error) {
         console.error("Error getting tokens:", error);
@@ -249,42 +253,37 @@ export const updateUsdValue = async function ({ commit, getters, rootGetters }) 
 }
 
 // Get known tokens
-export const updateKnownTokens = async function ({ commit, getters, rootGetters, dispatch }) {
+export const updateKnownLogos = async function ({ commit, getters, rootGetters, dispatch }) {
     try {
+        let tokens = JSON.parse(JSON.stringify(getters.getTokens))
+
         // Get tokens list json from external url
         let tokenURL =
             "https://raw.githubusercontent.com/Telos-Swaps/Tokens/main/tokens.json";
-        let tokens = []
+        let tokensList = []
+        let new_tokens = []
 
         await this.$axios
             .get(tokenURL)
             .then((response) => {
-                tokens = response.data;
+                tokensList = response.data;
             })
             .catch((error) => console.log("Error", error.message));
 
-        // console.log(tokens)
 
         for (const token of tokens) {
-            // commit("setTokenLogo", token.logo)
-
-            await dispatch("updateAddNewToken", {
-                symbol: token.symbol,
-                contract: token.account,
-                precision: 0,
-                chain: token.chain,
-                logo: token.logo,
-                toTokens: []
-            })
-
+            let tokenInfo = tokensList.find(t => t.symbol === token.symbol && t.account === token.contract);
+            if (tokenInfo) {
+                token.logo = tokenInfo.logo
+                new_tokens.push(token)
+            }
         }
 
-        // TODO Or only update logo
+        commit("setTokens", { tokens: new_tokens });
 
-        commit("setTokens", { tokens });
 
     } catch (error) {
-        console.error("updateKnownTokens", error);
+        console.error("updateKnownLogos", error);
         commit("general/setErrorMsg", error.message || error, { root: true });
     }
 }
