@@ -1,5 +1,6 @@
 export const setTokens = (state, { tokens }) => {
     state.tokens = tokens;
+    state.tokens = state.tokens.sort((a, b) => (b.amount - a.amount))
 };
 
 // Set token precision

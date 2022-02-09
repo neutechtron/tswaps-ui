@@ -2,14 +2,15 @@
 export const updateTokens = async function ({
     commit,
     rootGetters,
-    dispatch
+    dispatch,
+    getters
 }) {
     try {
         const getCurrentChain = rootGetters[
             "blockchains/getCurrentChain"
         ].NETWORK_NAME.toLowerCase();
         let pools = [];
-        let tokens = [];
+        let tokens = JSON.parse(JSON.stringify(getters.getTokens)) || []
 
         const tableResults = await this.$api.getTableRows({
             code: process.env.SWAP_CONTRACT,
@@ -275,12 +276,11 @@ export const updateKnownLogos = async function ({ commit, getters, rootGetters, 
             let tokenInfo = tokensList.find(t => t.symbol === token.symbol && t.account === token.contract);
             if (tokenInfo) {
                 token.logo = tokenInfo.logo
-                new_tokens.push(token)
             }
+            new_tokens.push(token)
         }
 
         commit("setTokens", { tokens: new_tokens });
-
 
     } catch (error) {
         console.error("updateKnownLogos", error);
@@ -290,17 +290,31 @@ export const updateKnownLogos = async function ({ commit, getters, rootGetters, 
 
 // Update all tokens balances
 export const updateAllTokensBalances = async function (
-    { commit, dispatch },
+    { commit, dispatch, rootGetters },
     accountName
 ) {
     try {
-        let tokens = [];
+        const getCurrentChain = rootGetters[
+            "blockchains/getCurrentChain"
+        ].NETWORK_NAME.toLowerCase();
+
         if (accountName !== null) {
             const userCoins = await this.$hyperion.get(
                 `/v2/state/get_tokens?account=${accountName}&limit=1000`
             );
-            console.log("user token balances:", userCoins.data.tokens);
-            // commit("setTokenBalances", { tokens }); //TODO: set token balances
+            // console.log("user token balances:", userCoins.data.tokens);
+
+            let new_tokens = []
+
+            for (const token of userCoins.data.tokens) {
+                token.chain = getCurrentChain
+                token.toTokens = []
+                if (token.contract !== process.env.LPTOKEN_CONTRACT) {
+                    new_tokens.push(token)
+                }
+            }
+
+            commit("setTokens", { tokens: new_tokens });
         }
     } catch (error) {
         console.log("Error getting all tokens balances:", error);
