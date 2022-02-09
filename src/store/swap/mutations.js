@@ -41,3 +41,7 @@ export const setToEstimate = (state, estimate) => {
 export const setSlippage = (state, slippage) => {
     state.slippage = slippage;
 };
+
+export const setAddRecentTx = (state, tx) => {
+    state.recentTransactions.push(tx);
+};

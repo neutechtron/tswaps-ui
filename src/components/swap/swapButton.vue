@@ -16,6 +16,8 @@
       @click="showLogin = true"
     />
 
+    <!-- {{ getRecentTransactions }} -->
+
     <ual-dialog :showLogin.sync="showLogin" />
   </div>
 </template>
@@ -46,6 +48,7 @@ export default {
       "getAmount",
       "getMemo",
       "getIsValidPair",
+      "getRecentTransactions",
     ]),
     token_contract() {
       return this.getFromToken?.contract;
@@ -79,10 +82,10 @@ export default {
           textColor: "white",
           icon: "cloud_done",
           message: `Swap complete ${this.transaction.slice(0, 8)}...`,
-          timeout: 5000,
+          timeout: 7000,
           actions: [
             {
-              label: "View in Authority",
+              label: "View on Explorer",
               color: "white",
               handler: () => {
                 openURL(
@@ -134,6 +137,7 @@ export default {
       if (transaction) {
         this.showTransaction = true;
         this.transaction = transaction.transactionId;
+        this.$store.commit("swap/setAddRecentTx", transaction.transactionId);
         this.$store.commit("swap/setAmount", 0);
         this.$store.commit("swap/setMemo", "");
         this.$store.commit("swap/setToEstimate", 0);

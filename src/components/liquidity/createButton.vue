@@ -96,8 +96,30 @@ export default {
         this.$q.notify({
           color: "green-4",
           textColor: "white",
-          message: "Pool Created",
+          icon: "cloud_done",
+          message: `Pool created. ${this.transaction.slice(0, 8)}...`,
+          timeout: 7000,
+          actions: [
+            {
+              label: "View on Explorer",
+              color: "white",
+              handler: () => {
+                openURL(
+                  `https://eosauthority.com/transaction/${
+                    this.transaction
+                  }?network=${
+                    process.env.TESTNET == "true" ? "telostest" : "telos"
+                  }`
+                );
+              },
+            },
+          ],
         });
+        this.updatePools();
+        this.updateTokens();
+        await this.updateTokenBalances(this.accountName);
+        this.updateActivePool();
+        this.updateSelectedTokenBalance();
       } catch (error) {
         this.$errorNotification(error);
       }
@@ -186,11 +208,6 @@ export default {
         this.$store.commit("liquidity/setValue1", 0);
         this.$store.commit("liquidity/setValue2", 0);
       }
-      await this.updatePools();
-      await this.updateTokens();
-      await this.updateTokenBalances(this.accountName);
-      await this.updateActivePool();
-      await this.updateSelectedTokenBalance();
     },
 
     openUrl(url) {

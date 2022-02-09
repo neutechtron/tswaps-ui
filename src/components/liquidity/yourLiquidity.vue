@@ -147,6 +147,7 @@
 import { mapGetters, mapActions } from "vuex";
 import UalDialog from "src/components/UalDialog.vue";
 import TokenAvatar from "src/components/TokenAvatar";
+import { openURL } from "quasar";
 
 export default {
   name: "Index",
@@ -185,8 +186,29 @@ export default {
         this.$q.notify({
           color: "green-4",
           textColor: "white",
-          message: "Liquidity removed",
+          icon: "cloud_done",
+          message: `Liquidity removed. ${this.transaction.slice(0, 8)}...`,
+          timeout: 7000,
+          actions: [
+            {
+              label: "View on Explorer",
+              color: "white",
+              handler: () => {
+                openURL(
+                  `https://eosauthority.com/transaction/${
+                    this.transaction
+                  }?network=${
+                    process.env.TESTNET == "true" ? "telostest" : "telos"
+                  }`
+                );
+              },
+            },
+          ],
         });
+        await this.updatePools();
+        await this.updateTokens();
+        await this.updateTokenBalances(this.accountName);
+        await this.updateUserLiquidityPools(this.accountName);
       } catch (error) {
         this.$errorNotification(error);
       }
@@ -225,10 +247,6 @@ export default {
         this.showTransaction = true;
         this.transaction = transaction.transactionId;
       }
-      await this.updatePools();
-      await this.updateTokens();
-      await this.updateTokenBalances(this.accountName);
-      await this.updateUserLiquidityPools(this.accountName);
     },
   },
   async mounted() {

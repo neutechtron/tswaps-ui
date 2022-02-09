@@ -31,5 +31,6 @@ export default function () {
         slippage: 0.01,
         canSwap: false,
         errorMsg: "No pool found",
+        recentTransactions: [],
     };
 }

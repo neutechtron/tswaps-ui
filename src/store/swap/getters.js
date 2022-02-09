@@ -6,6 +6,7 @@ export const getToEstimate = ({ estimate }) => estimate;
 export const getCanSwap = ({ canSwap }) => canSwap;
 export const getPool = ({ pool }) => pool;
 export const getSlippage = ({ slippage }) => slippage;
+export const getRecentTransactions = ({ recentTransactions }) => recentTransactions;
 export const getIsValidPair = ({ fromToken, toToken }) => {
     return (
         fromToken.toTokens.filter(el => el.symbol == toToken.symbol && el.contract == toToken.contract).length > 0

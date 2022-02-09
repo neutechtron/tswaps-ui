@@ -21,6 +21,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import UalDialog from "src/components/UalDialog.vue";
+import { openURL } from "quasar";
 
 export default {
   components: { UalDialog },
@@ -52,7 +53,7 @@ export default {
   },
   methods: {
     ...mapActions("account", ["accountExistsOnChain", "login"]),
-    ...mapActions("pools", ["updatePools"]),
+    ...mapActions("pools", ["updatePools", "updateUserLiquidityPools"]),
     ...mapActions("tokens", [
       "updateTokens",
       "updateTokenBalances",
@@ -61,7 +62,6 @@ export default {
     ...mapActions("liquidity", [
       "updateActivePool",
       "updateSelectedTokenBalance",
-      "updateUserLiquidityPools",
     ]),
 
     async tryAddLiquidity() {
@@ -71,8 +71,31 @@ export default {
         this.$q.notify({
           color: "green-4",
           textColor: "white",
-          message: "Liquidity added",
+          icon: "cloud_done",
+          message: `Liquidity added. ${this.transaction.slice(0, 8)}...`,
+          timeout: 7000,
+          actions: [
+            {
+              label: "View on Explorer",
+              color: "white",
+              handler: () => {
+                openURL(
+                  `https://eosauthority.com/transaction/${
+                    this.transaction
+                  }?network=${
+                    process.env.TESTNET == "true" ? "telostest" : "telos"
+                  }`
+                );
+              },
+            },
+          ],
         });
+        this.updatePools();
+        this.updateTokens();
+        await this.updateTokenBalances(this.accountName);
+        this.updateActivePool();
+        this.updateSelectedTokenBalance();
+        this.updateUserLiquidityPools(this.accountName);
       } catch (error) {
         this.$errorNotification(error);
       }
@@ -120,7 +143,7 @@ export default {
             name: "deposit",
             data: {
               owner: this.accountName,
-              pair_id: this.getPool.id, // TODO include min_amount
+              pair_id: this.getPool.id,
             },
           },
         ];
@@ -133,16 +156,6 @@ export default {
         this.$store.commit("liquidity/setValue1", 0);
         this.$store.commit("liquidity/setValue2", 0);
       }
-      await this.updatePools();
-      await this.updateTokens();
-      await this.updateTokenBalances(this.accountName);
-      await this.updateActivePool();
-      await this.updateSelectedTokenBalance();
-      await this.updateUserLiquidityPools(this.accountName);
-    },
-
-    openUrl(url) {
-      window.open(url);
     },
   },
   async mounted() {
