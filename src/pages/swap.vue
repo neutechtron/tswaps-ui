@@ -200,6 +200,8 @@ export default {
     },
 
     pricePerToken() {
+      console.log(this.getPool);
+
       let token0 = this.getPool.reserve0;
       let token1 = this.getPool.reserve1;
       if (this.getCanSwap) {
@@ -298,6 +300,7 @@ export default {
     },
   },
   async mounted() {
+    await this.updateTokens();
     await this.updatePools();
     await this.updateAllTokensBalances(this.accountName);
     await this.updateTokens();

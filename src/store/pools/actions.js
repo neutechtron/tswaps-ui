@@ -93,46 +93,108 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
         const TlosToken = (rootGetters[
             "tokens/getTLOSToken"
         ]);
-        const TlosUsdPrice = TlosToken.UsdPrice
 
-        for (const [index, pool] of temp_pools.entries()) {
-            // skip pool with don't include TLOS
-            if ((pool.reserve0.contract === TlosToken.contract && pool.reserve0.symbol === TlosToken.symbol)
-                || (pool.reserve1.contract === TlosToken.contract && pool.reserve1.symbol === TlosToken.symbol)) {
+        if (TlosToken) {
+            const TlosUsdPrice = TlosToken.UsdPrice
 
-                // update token usd price, liquidity and volume_24h
-                if (pool.reserve0.contract === TlosToken.contract && pool.reserve0.symbol === TlosToken.symbol) {
-                    pool.reserve0.usdAmount = pool.reserve0.quantity * TlosUsdPrice;
-                    pool.reserve1.usdAmount = pool.reserve1.quantity * TlosUsdPrice * pool.price1_last;
-                    const otherToken = (rootGetters[
-                        "tokens/getToken"
-                    ](pool.reserve1.contract, pool.reserve1.symbol));
-                    commit("tokens/setUsdPrice", { token: otherToken, price: pool.price1_last * TlosUsdPrice }, { root: true });
+            for (const [index, pool] of temp_pools.entries()) {
+                // skip pool with don't include TLOS
+                if ((pool.reserve0.contract === TlosToken.contract && pool.reserve0.symbol === TlosToken.symbol)
+                    || (pool.reserve1.contract === TlosToken.contract && pool.reserve1.symbol === TlosToken.symbol)) {
 
-                    // volume_24h
-                    if (pool.volume_24h !== undefined) {
-                        let volume_24h_0 = pool.volume_24h.find(token => token.key === TlosToken.symbol).value.split(" ")[0] * TlosUsdPrice;
-                        let volume_24h_1 = pool.volume_24h.find(token => token.key === otherToken.symbol).value.split(" ")[0] * pool.price1_last * TlosUsdPrice;
+                    // update token usd price, liquidity and volume_24h
+                    if (pool.reserve0.contract === TlosToken.contract && pool.reserve0.symbol === TlosToken.symbol) {
+                        pool.reserve0.usdAmount = pool.reserve0.quantity * TlosUsdPrice;
+                        pool.reserve1.usdAmount = pool.reserve1.quantity * TlosUsdPrice * pool.price1_last;
+                        const otherToken = (rootGetters[
+                            "tokens/getToken"
+                        ](pool.reserve1.contract, pool.reserve1.symbol));
+                        commit("tokens/setUsdPrice", { token: otherToken, price: pool.price1_last * TlosUsdPrice }, { root: true });
 
-                        pool.volume_24h.find(token => token.key === TlosToken.symbol).usdAmount = volume_24h_0;
-                        pool.volume_24h.find(token => token.key === otherToken.symbol).usdAmount = volume_24h_1;
+                        // volume_24h
+                        if (pool.volume_24h !== undefined) {
+                            let volume_24h_0 = pool.volume_24h.find(token => token.key === TlosToken.symbol).value.split(" ")[0] * TlosUsdPrice;
+                            let volume_24h_1 = pool.volume_24h.find(token => token.key === otherToken.symbol).value.split(" ")[0] * pool.price1_last * TlosUsdPrice;
+
+                            pool.volume_24h.find(token => token.key === TlosToken.symbol).usdAmount = volume_24h_0;
+                            pool.volume_24h.find(token => token.key === otherToken.symbol).usdAmount = volume_24h_1;
+                        }
+
+                    } else {
+                        pool.reserve1.usdAmount = pool.reserve1.quantity * TlosUsdPrice;
+                        pool.reserve0.usdAmount = pool.reserve0.quantity * TlosUsdPrice * pool.price0_last;
+                        const otherToken = (rootGetters[
+                            "tokens/getToken"
+                        ](pool.reserve0.contract, pool.reserve0.symbol));
+                        commit("tokens/setUsdPrice", { token: otherToken, price: pool.price0_last * TlosUsdPrice }, { root: true });
+
+                        // volume_24h
+                        if (pool.volume_24h !== undefined) {
+                            let volume_24h_0 = pool.volume_24h.find(token => token.key === TlosToken.symbol).value.split(" ")[0] * TlosUsdPrice;
+                            let volume_24h_1 = pool.volume_24h.find(token => token.key === otherToken.symbol).value.split(" ")[0] * pool.price0_last * TlosUsdPrice;
+
+                            pool.volume_24h.find(token => token.key === TlosToken.symbol).usdAmount = volume_24h_0;
+                            pool.volume_24h.find(token => token.key === otherToken.symbol).usdAmount = volume_24h_1;
+                        }
                     }
 
-                } else {
-                    pool.reserve1.usdAmount = pool.reserve1.quantity * TlosUsdPrice;
-                    pool.reserve0.usdAmount = pool.reserve0.quantity * TlosUsdPrice * pool.price0_last;
-                    const otherToken = (rootGetters[
-                        "tokens/getToken"
-                    ](pool.reserve0.contract, pool.reserve0.symbol));
-                    commit("tokens/setUsdPrice", { token: otherToken, price: pool.price0_last * TlosUsdPrice }, { root: true });
+                    // calculate APR
+                    // https://docs.pancakeswap.finance/products/yield-farming#calculating-lp-reward-apr
+                    if (pool.volume_24h !== undefined) {
+                        let fee = pool.trade_fee / 10000
+                        // 24h volume * fee
+                        let feeShare = (pool.volume_24h[0].usdAmount + pool.volume_24h[1].usdAmount) * fee;
+                        // yearly fees = feeShare * 365
+                        let yearlyFees = feeShare * 365;
+                        // APR = yearlyFees / (liquidity)
+                        let LP_APR = yearlyFees / (pool.reserve0.usdAmount + pool.reserve1.usdAmount)
+                        pool.APR = { LP: LP_APR, total: LP_APR }
+                    }
 
+                    temp_pools[index] = pool;
+                }
+            }
+
+            // Non TLOS pools
+            for (const [index, pool] of temp_pools.entries()) {
+                // skip pool with don't include have usd value
+                let token0 = (rootGetters[
+                    "tokens/getToken"
+                ](pool.reserve0.contract, pool.reserve0.symbol));
+                let token1 = (rootGetters[
+                    "tokens/getToken"
+                ](pool.reserve1.contract, pool.reserve1.symbol));
+
+                // update token usd price, liquidity and volume_24h
+                if (token0?.UsdPrice !== undefined) {
+                    pool.reserve0.usdAmount = pool.reserve0.quantity * token0?.UsdPrice;
+                    pool.reserve1.usdAmount = pool.reserve1.quantity * token0?.UsdPrice * pool.price1_last;
+
+                    if (token1?.UsdPrice === undefined) {
+                        commit("tokens/setUsdPrice", { token: token1, price: pool.price1_last * token0?.UsdPrice }, { root: true });
+                    }
                     // volume_24h
                     if (pool.volume_24h !== undefined) {
-                        let volume_24h_0 = pool.volume_24h.find(token => token.key === TlosToken.symbol).value.split(" ")[0] * TlosUsdPrice;
-                        let volume_24h_1 = pool.volume_24h.find(token => token.key === otherToken.symbol).value.split(" ")[0] * pool.price0_last * TlosUsdPrice;
+                        let volume_24h_0 = pool.volume_24h.find(token => token.key === token0.symbol).value.split(" ")[0] * token0?.UsdPrice;
+                        let volume_24h_1 = pool.volume_24h.find(token => token.key === token1.symbol).value.split(" ")[0] * pool.price1_last * token0?.UsdPrice;
 
-                        pool.volume_24h.find(token => token.key === TlosToken.symbol).usdAmount = volume_24h_0;
-                        pool.volume_24h.find(token => token.key === otherToken.symbol).usdAmount = volume_24h_1;
+                        pool.volume_24h.find(token => token.key === token0.symbol).usdAmount = volume_24h_0;
+                        pool.volume_24h.find(token => token.key === token1.symbol).usdAmount = volume_24h_1;
+                    }
+
+                } else if (token1?.UsdPrice !== undefined) {
+                    pool.reserve1.usdAmount = pool.reserve1.quantity * token1?.UsdPrice;
+                    pool.reserve0.usdAmount = pool.reserve0.quantity * token1?.UsdPrice * pool.price0_last;
+                    if (token0?.UsdPrice === undefined) {
+                        commit("tokens/setUsdPrice", { token: token0, price: pool.price0_last * token1?.UsdPrice }, { root: true });
+                    }
+                    // volume_24h
+                    if (pool.volume_24h !== undefined) {
+                        let volume_24h_0 = pool.volume_24h.find(token => token.key === token1.symbol).value.split(" ")[0] * token1?.UsdPrice;
+                        let volume_24h_1 = pool.volume_24h.find(token => token.key === token0.symbol).value.split(" ")[0] * pool.price0_last * token1?.UsdPrice;
+
+                        pool.volume_24h.find(token => token.key === token1.symbol).usdAmount = volume_24h_0;
+                        pool.volume_24h.find(token => token.key === token0.symbol).usdAmount = volume_24h_1;
                     }
                 }
 
@@ -150,73 +212,17 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
                 }
 
                 temp_pools[index] = pool;
+
             }
-        }
-
-        // Non TLOS pools
-        for (const [index, pool] of temp_pools.entries()) {
-            // skip pool with don't include have usd value
-            let token0 = (rootGetters[
-                "tokens/getToken"
-            ](pool.reserve0.contract, pool.reserve0.symbol));
-            let token1 = (rootGetters[
-                "tokens/getToken"
-            ](pool.reserve1.contract, pool.reserve1.symbol));
-
-            // update token usd price, liquidity and volume_24h
-            if (token0?.UsdPrice !== undefined) {
-                pool.reserve0.usdAmount = pool.reserve0.quantity * token0?.UsdPrice;
-                pool.reserve1.usdAmount = pool.reserve1.quantity * token0?.UsdPrice * pool.price1_last;
-
-                if (token1?.UsdPrice === undefined) {
-                    commit("tokens/setUsdPrice", { token: token1, price: pool.price1_last * token0?.UsdPrice }, { root: true });
-                }
-                // volume_24h
-                if (pool.volume_24h !== undefined) {
-                    let volume_24h_0 = pool.volume_24h.find(token => token.key === token0.symbol).value.split(" ")[0] * token0?.UsdPrice;
-                    let volume_24h_1 = pool.volume_24h.find(token => token.key === token1.symbol).value.split(" ")[0] * pool.price1_last * token0?.UsdPrice;
-
-                    pool.volume_24h.find(token => token.key === token0.symbol).usdAmount = volume_24h_0;
-                    pool.volume_24h.find(token => token.key === token1.symbol).usdAmount = volume_24h_1;
-                }
-
-            } else if (token1?.UsdPrice !== undefined) {
-                pool.reserve1.usdAmount = pool.reserve1.quantity * token1?.UsdPrice;
-                pool.reserve0.usdAmount = pool.reserve0.quantity * token1?.UsdPrice * pool.price0_last;
-                if (token0?.UsdPrice === undefined) {
-                    commit("tokens/setUsdPrice", { token: token0, price: pool.price0_last * token1?.UsdPrice }, { root: true });
-                }
-                // volume_24h
-                if (pool.volume_24h !== undefined) {
-                    let volume_24h_0 = pool.volume_24h.find(token => token.key === token1.symbol).value.split(" ")[0] * token1?.UsdPrice;
-                    let volume_24h_1 = pool.volume_24h.find(token => token.key === token0.symbol).value.split(" ")[0] * pool.price0_last * token1?.UsdPrice;
-
-                    pool.volume_24h.find(token => token.key === token1.symbol).usdAmount = volume_24h_0;
-                    pool.volume_24h.find(token => token.key === token0.symbol).usdAmount = volume_24h_1;
-                }
-            }
-
-            // calculate APR
-            // https://docs.pancakeswap.finance/products/yield-farming#calculating-lp-reward-apr
-            if (pool.volume_24h !== undefined) {
-                let fee = pool.trade_fee / 10000
-                // 24h volume * fee
-                let feeShare = (pool.volume_24h[0].usdAmount + pool.volume_24h[1].usdAmount) * fee;
-                // yearly fees = feeShare * 365
-                let yearlyFees = feeShare * 365;
-                // APR = yearlyFees / (liquidity)
-                let LP_APR = yearlyFees / (pool.reserve0.usdAmount + pool.reserve1.usdAmount)
-                pool.APR = { LP: LP_APR, total: LP_APR }
-            }
-
-            temp_pools[index] = pool;
-
         }
 
         let pools = temp_pools;
 
+        console.log(pools)
+
         commit("setPools", pools);
     } catch (error) {
+        console.error(error);
         commit("general/setErrorMsg", error.message || error, { root: true });
     }
 };
