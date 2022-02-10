@@ -90,9 +90,10 @@ export default {
             },
           ],
         });
-        this.updatePools();
-        this.updateTokens();
-        await this.updateTokenBalances(this.accountName);
+        await this.updatePools();
+        await this.updateAllTokensBalances(this.accountName);
+        await this.updateTokens();
+        this.updateTokenBalances(this.accountName);
         this.updateActivePool();
         this.updateSelectedTokenBalance();
         this.updateUserLiquidityPools(this.accountName);
@@ -158,9 +159,7 @@ export default {
       }
     },
   },
-  async mounted() {
-    await this.updateActivePool();
-  },
+  async mounted() {},
   created() {},
   watch: {
     async getFromChain() {

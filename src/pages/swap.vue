@@ -176,6 +176,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters("account", ["isAuthenticated", "accountName"]),
     ...mapGetters("swap", [
       "getIsValidPair",
       "getToToken",
@@ -262,9 +263,19 @@ export default {
     },
   },
   methods: {
-    ...mapActions("swap", ["swapToAndFrom"]),
+    ...mapActions("swap", [
+      "swapToAndFrom",
+      "createMemo",
+      "updateSwapPool",
+      "updateToAndFromBalance",
+    ]),
     ...mapActions("pools", ["updatePools", "updateConfig"]),
-    ...mapActions("tokens", ["updateTokens"]),
+    ...mapActions("tokens", [
+      "updateTokens",
+      "updateTokenBalances",
+      "updateAllTokensBalances",
+    ]),
+
     findToken(tokenQuery) {
       // console.log("query:", tokenQuery);
       let res = null;
@@ -287,13 +298,15 @@ export default {
     },
   },
   async mounted() {
-    await this.updateTokens();
     await this.updatePools();
+    await this.updateAllTokensBalances(this.accountName);
+    await this.updateTokens();
+    this.updateTokenBalances(this.accountName);
+    this.updateSwapPool();
+    this.updateToAndFromBalance();
     const fromToken = this.findToken(this.$route.query.fromToken);
-    // console.log(fromToken);
     if (fromToken) this.$store.commit("swap/setFromToken", fromToken);
     const toToken = this.findToken(this.$route.query.toToken);
-    // console.log(toToken);
     if (toToken) this.$store.commit("swap/setToToken", toToken);
     await this.updateConfig();
   },

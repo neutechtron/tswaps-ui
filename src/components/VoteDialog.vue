@@ -137,9 +137,18 @@ export default {
   },
 
   async mounted() {
-    // console.log('Component mounted.');
+    console.log("Component mounted.");
     // Check if user has voted for us
-    await this.checkIfUserHasVoted();
+    if (this.isAuthenticated) {
+      this.checkIfUserHasVoted();
+    }
+  },
+  watch: {
+    isAuthenticated(newVal) {
+      if (newVal) {
+        this.checkIfUserHasVoted();
+      }
+    },
   },
 };
 </script>

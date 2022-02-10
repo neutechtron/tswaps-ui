@@ -66,7 +66,11 @@ export default {
   methods: {
     ...mapActions("account", ["accountExistsOnChain", "logout"]),
     ...mapActions("pools", ["updatePools"]),
-    ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
+    ...mapActions("tokens", [
+      "updateTokens",
+      "updateTokenBalances",
+      "updateAllTokensBalances",
+    ]),
     ...mapActions("swap", [
       "createMemo",
       "updateSwapPool",
@@ -99,6 +103,12 @@ export default {
             },
           ],
         });
+        await this.updatePools();
+        await this.updateAllTokensBalances(this.accountName);
+        await this.updateTokens();
+        this.updateTokenBalances(this.accountName);
+        this.updateSwapPool();
+        this.updateToAndFromBalance();
       } catch (error) {
         this.$errorNotification(error);
       }
@@ -142,19 +152,9 @@ export default {
         this.$store.commit("swap/setMemo", "");
         this.$store.commit("swap/setToEstimate", 0);
       }
-      this.updatePools();
-      this.updateTokens();
-      this.updateTokenBalances(this.accountName);
-      this.updateSwapPool();
-      this.updateToAndFromBalance();
     },
   },
-  async mounted() {
-    await this.updatePools();
-    await this.updateTokens();
-    await this.updateTokenBalances(this.accountName);
-    await this.updateSwapPool();
-  },
+  async mounted() {},
   watch: {
     async isAuthenticated() {
       await this.updatePools();

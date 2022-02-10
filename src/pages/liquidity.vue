@@ -183,8 +183,20 @@ export default {
     },
   },
   methods: {
-    ...mapActions("pools", ["updateConfig", "updatePools"]),
-    ...mapActions("tokens", ["updateTokens"]),
+    ...mapActions("pools", [
+      "updateConfig",
+      "updatePools",
+      "updateUserLiquidityPools",
+    ]),
+    ...mapActions("tokens", [
+      "updateTokens",
+      "updateAllTokensBalances",
+      "updateTokenBalances",
+    ]),
+    ...mapActions("liquidity", [
+      "updateActivePool",
+      "updateSelectedTokenBalance",
+    ]),
 
     pricePerToken(selector) {
       let token0 = this.getPool.reserve0;
@@ -208,8 +220,13 @@ export default {
   },
   async mounted() {
     await this.updateConfig();
+    this.updatePools();
+    await this.updateAllTokensBalances(this.accountName);
     await this.updateTokens();
-    await this.updatePools();
+    await this.updateTokenBalances(this.accountName);
+    this.updateActivePool();
+    this.updateSelectedTokenBalance();
+    this.updateUserLiquidityPools(this.accountName);
   },
 };
 </script>

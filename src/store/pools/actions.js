@@ -234,7 +234,7 @@ export const updateUserLiquidityPools = async function (
             const lpPositions = await this.$api.getTableRows({
                 code: process.env.LPTOKEN_CONTRACT,
                 scope: accountName,
-                table: "position",
+                table: "accounts",
                 limit: 10000,
                 reverse: false,
                 show_payer: false

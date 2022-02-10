@@ -172,7 +172,15 @@ export default {
   methods: {
     ...mapActions("account", ["accountExistsOnChain", "login"]),
     ...mapActions("pools", ["updateUserLiquidityPools", "updatePools"]),
-    ...mapActions("tokens", ["updateTokens", "updateTokenBalances"]),
+    ...mapActions("tokens", [
+      "updateTokens",
+      "updateTokenBalances",
+      "updateAllTokensBalances",
+    ]),
+    ...mapActions("liquidity", [
+      "updateActivePool",
+      "updateSelectedTokenBalance",
+    ]),
     removePopup(pool) {
       this.removePool = pool;
       this.liquidity = pool.lpBalance;
@@ -206,9 +214,12 @@ export default {
           ],
         });
         await this.updatePools();
+        await this.updateAllTokensBalances(this.accountName);
         await this.updateTokens();
-        await this.updateTokenBalances(this.accountName);
-        await this.updateUserLiquidityPools(this.accountName);
+        this.updateTokenBalances(this.accountName);
+        this.updateActivePool();
+        this.updateSelectedTokenBalance();
+        this.updateUserLiquidityPools(this.accountName);
       } catch (error) {
         this.$errorNotification(error);
       }
