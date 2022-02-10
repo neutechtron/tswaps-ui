@@ -40,7 +40,7 @@ jobs:
         with:
           server: tswaps.com
           username: dev@tswaps.com
-          password: ${{ secrets.TSWAPS_BRIDGE_FTP_PASS }}
+          password: ${{ secrets.TSWAPS_FTP_PASS }}
           port: 21
           protocol: ftp
           local-dir: ./dist/spa/
