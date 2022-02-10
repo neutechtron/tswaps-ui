@@ -231,7 +231,7 @@ export default {
       }
       if (Number(this.liquidity) > Number(this.removePool.lpBalance)) {
         throw new Error(
-          `Account ${this.accountName} does not have the required funds to preform swap`
+          `Account ${this.accountName} does not have the required funds to remove liquidity`
         );
       }
 
