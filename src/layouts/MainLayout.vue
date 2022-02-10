@@ -215,7 +215,7 @@ export default {
     return {
       darkMode: {
         text: "Dark Mode",
-        icon: "fas fa-moon",
+        icon: "fas fa-moon"
       },
       TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
       TSWAPS_DOCS: process.env.TSWAPS_DOCS,
@@ -228,12 +228,12 @@ export default {
         {
           name: "telegram",
           icon: "fab fa-telegram-plane",
-          link: "https://t.me/tswaps",
+          link: "https://t.me/tswaps"
         },
         {
           name: "medium",
           icon: "fab fa-medium-m",
-          link: "https://tswaps.medium.com/",
+          link: "https://tswaps.medium.com/"
         },
         // {
         //   name: "twitter",
@@ -243,14 +243,14 @@ export default {
         {
           name: "github",
           icon: "fab fa-github",
-          link: "https://github.com/Telos-Swaps",
-        },
+          link: "https://github.com/Telos-Swaps"
+        }
         // { name: "docs", icon: "fa fa-book", link: "https://docs.tstarter.io/" },
-      ],
+      ]
     };
   },
   computed: {
-    ...mapGetters("account", ["isAuthenticated"]),
+    ...mapGetters("account", ["isAuthenticated"])
   },
   methods: {
     ...mapActions("account", ["logout"]),
@@ -265,13 +265,13 @@ export default {
     },
     isSelectedTab(tab) {
       return this.$route.name == tab ? "selectedTab" : "";
-    },
+    }
   },
   created() {
     this.$q.dark.set(localStorage.getItem("darkModeEnabled") !== "false");
   },
 
-  async mounted() {},
+  async mounted() {}
 };
 </script>
 
@@ -296,7 +296,6 @@ export default {
   //   padding: 5px 20px 10px 0;
   text-decoration: none;
   transition: all 0.15s ease-in-out;
-  color: $secondary;
   &:hover {
     color: $accent;
   }
