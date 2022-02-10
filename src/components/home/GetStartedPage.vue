@@ -1,8 +1,6 @@
 <template>
   <div class="start-page-container">
-    <div class="text-h1 ">
-      Ready to get started?
-    </div>
+    <div class="text-h1">Ready to get started?</div>
     <div class="step-by-step q-mb-lg">STEP-BY-STEP GUIDE</div>
     <div class="steps-wrapper q-mb-xl">
       <div class="step-container">
@@ -12,7 +10,12 @@
         </div>
         <div class="step-text-container">
           <div class="step-title">Create a Telos Account</div>
-          <!-- <a class="step-subtitle" href="#">Access Guide</a> -->
+          <a
+            class="step-subtitle"
+            target="”_blank”"
+            href="https://www.telos.net/signup"
+            >How-to Guide</a
+          >
         </div>
       </div>
       <div class="step-container">
@@ -22,7 +25,12 @@
         </div>
         <div class="step-text-container">
           <div class="step-title">Connect your Wallet</div>
-          <!-- <a class="step-subtitle" href="#">Access Guide</a> -->
+          <a
+            class="step-subtitle"
+            target="”_blank”"
+            href="https://www.telos.net/#getting-started"
+            >How-to Guide</a
+          >
         </div>
       </div>
       <div class="step-container">
@@ -32,12 +40,17 @@
         </div>
         <div class="step-text-container">
           <div class="step-title">Get Telos native tokens</div>
-          <!-- <a class="step-subtitle" href="#">Access Guide</a> -->
+          <a
+            class="step-subtitle"
+            target="”_blank”"
+            href="https://help.telos.net/en_US/getting-started/how-to-buy-tlos"
+            >How-to Guide</a
+          >
         </div>
       </div>
     </div>
     <div class="row justify-center">
-      <q-btn to="/swap" no-caps class=" sendBtn " label="Launch App" />
+      <q-btn to="/swap" no-caps class="sendBtn" label="Launch App" />
     </div>
   </div>
 </template>
