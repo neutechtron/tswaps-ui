@@ -218,8 +218,6 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
 
         let pools = temp_pools;
 
-        console.log(pools)
-
         commit("setPools", pools);
     } catch (error) {
         console.error(error);
