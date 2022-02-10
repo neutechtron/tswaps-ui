@@ -149,6 +149,7 @@
         </q-card>
       </div>
     </div>
+    <vote-dialog />
   </q-page>
 </template>
 
@@ -157,6 +158,7 @@ import fromCard from "src/components/swap/FromCard.vue";
 import toCard from "src/components/swap/ToCard.vue";
 import headButtons from "src/components/swap/Head.vue";
 import swapButton from "src/components/swap/swapButton.vue";
+import voteDialog from "src/components/VoteDialog.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -166,6 +168,7 @@ export default {
     toCard,
     headButtons,
     swapButton,
+    voteDialog,
   },
   data() {
     return {
