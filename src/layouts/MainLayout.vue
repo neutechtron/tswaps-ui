@@ -182,6 +182,13 @@
             target="_blank"
             >Yknot BCS</a
           >
+          and
+          <a
+            :href="'https://eosza.io/'"
+            style="text-decoration: underline"
+            target="_blank"
+            >EOSZA</a
+          >
           <!-- <q-tooltip
             anchor="top left"
             :offset="[0, 5]"
