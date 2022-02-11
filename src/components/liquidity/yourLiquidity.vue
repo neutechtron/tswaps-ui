@@ -10,8 +10,8 @@
     <div v-for="pool in getUserPools" :key="pool.lpSymbol">
       <q-card class="liquidityCard q-mb-sm">
         <q-card-section>
-          <div class="row">
-            <div>
+          <div class="fit row wrap items-center justify-center">
+            <div class="col-shrink q-mb-sm">
               <token-avatar
                 class="q-pt-sm"
                 :token="pool.reserve0.symbol"
@@ -29,56 +29,62 @@
                   {{ pool.reserve0.symbol + "/" + pool.reserve1.symbol }}
                 </div>
                 <div>
-                  <q-badge outline color="primary">
+                  <q-badge outline color="accent">
                     {{ pool.lpBalance + " " + pool.lpSymbol }}
-                    <q-tooltip anchor="bottom middle" self="center middle">
-                      <q-badge class=" " outline color="seccondary">
-                        {{ pool.lpCurrentCost0 }}
-                      </q-badge>
-                      <q-badge class="q-ml-sm" outline color="seccondary">
-                        {{ pool.lpCurrentCost1 }}
-                      </q-badge>
-                    </q-tooltip>
                   </q-badge>
                 </div>
               </div>
             </div>
 
-            <!-- TODO PNL, impermanent loss etc. -->
-            <!-- <div>{{ pool.lpDeltaCost0 }} {{ pool.lpDeltaCost1 }}</div>
-
-            <div>
-              PNL0:
-              {{
-                (
-                  $assetToAmount(pool.lpCurrentCost0) -
-                  $assetToAmount(pool.lpDeltaCost0)
-                ).toFixed(4)
-              }}
-              PNL1:
-              {{
-                (
-                  $assetToAmount(pool.lpCurrentCost1) -
-                  $assetToAmount(pool.lpDeltaCost1)
-                ).toFixed(4)
-              }}
+            <!-- <div>{{ pool.lpDeltaCost0 }} {{ pool.lpDeltaCost1 }}</div> -->
+            <div class="col-shrink q-ml-md">
+              <div class="q-mb-xs">
+                Current Portion:
+                <div class="fit row items-center content-end">
+                  <div>
+                    <q-badge outline color="secondary">
+                      {{ pool.lpCurrentCost0 }}
+                    </q-badge>
+                  </div>
+                  <div class="q-ml-xs q-mr-xs">+</div>
+                  <div>
+                    <q-badge outline color="secondary">
+                      {{ pool.lpCurrentCost1 }}
+                    </q-badge>
+                  </div>
+                </div>
+              </div>
+              <div class="q-mb-xs">
+                Profit/Loss:
+                <div class="fit row items-center content-end">
+                  <div>
+                    <q-badge outline color="secondary">
+                      {{
+                        (
+                          $assetToAmount(pool.lpCurrentCost0) -
+                          $assetToAmount(pool.lpDeltaCost0)
+                        ).toFixed($assetToPrecision(pool.lpCurrentCost0))
+                      }}
+                      {{ $assetToSymbol(pool.lpCurrentCost0) }}
+                    </q-badge>
+                  </div>
+                  <div class="q-ml-xs q-mr-xs">+</div>
+                  <div>
+                    <q-badge outline color="secondary">
+                      {{
+                        (
+                          $assetToAmount(pool.lpCurrentCost1) -
+                          $assetToAmount(pool.lpDeltaCost1)
+                        ).toFixed($assetToPrecision(pool.lpCurrentCost1))
+                      }}
+                      {{ $assetToSymbol(pool.lpCurrentCost1) }}
+                    </q-badge>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div>
-              {{
-                (
-                  $assetToAmount(pool.lpCurrentCost0) -
-                  $assetToAmount(pool.lpDeltaCost0)
-                ).toFixed(4) / $assetToAmount(pool.lpCurrentCost0)
-              }}%
-              {{
-                (
-                  $assetToAmount(pool.lpCurrentCost1) -
-                  $assetToAmount(pool.lpDeltaCost1)
-                ).toFixed(4) / $assetToAmount(pool.lpCurrentCost1)
-              }}
-            </div> -->
-            <q-space />
-            <div class="q-pt-xs">
+            <!-- <q-space /> -->
+            <div class="q-pt-xs q-ml-lg col-shrink">
               <q-btn
                 outline
                 color="accent"
