@@ -140,10 +140,18 @@ const columns = [
     align: "center",
     label: "Liquidity",
     field: (row) =>
-      Number.isNaN(row.reserve0.usdAmount + row.reserve1.usdAmount)
+      Number.isNaN(row.reserve0.usdAmount * 2)
         ? -1
-        : row.reserve0.usdAmount + row.reserve1.usdAmount,
-    format: (val) => `$${val !== -1 ? val.toFixed(2) : "-"}`,
+        : row.reserve0.usdAmount * 2,
+    format: (val) =>
+      `$${
+        val !== -1
+          ? val.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          : "-"
+      }`,
     sortable: true,
   },
   {
@@ -156,7 +164,15 @@ const columns = [
       )
         ? -1
         : row?.volume_24h?.[0]?.usdAmount + row?.volume_24h?.[1]?.usdAmount,
-    format: (val) => `$${val !== -1 ? val.toFixed(2) : "-"}`,
+    format: (val) =>
+      `$${
+        val !== -1
+          ? val.toLocaleString(undefined, {
+              minimumFractionDigits: 2,
+              maximumFractionDigits: 2,
+            })
+          : "-"
+      }`,
     sortable: true,
   },
   {
@@ -233,6 +249,4 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>
