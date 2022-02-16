@@ -42,13 +42,13 @@
                 Current Portion:
                 <div class="fit row items-center content-end">
                   <div>
-                    <q-badge outline color="secondary">
+                    <q-badge outline color="accent">
                       {{ pool.lpCurrentCost0 }}
                     </q-badge>
                   </div>
                   <div class="q-ml-xs q-mr-xs">+</div>
                   <div>
-                    <q-badge outline color="secondary">
+                    <q-badge outline color="accent">
                       {{ pool.lpCurrentCost1 }}
                     </q-badge>
                   </div>
@@ -58,7 +58,7 @@
                 Profit/Loss:
                 <div class="fit row items-center content-end">
                   <div>
-                    <q-badge outline color="secondary">
+                    <q-badge outline color="accent">
                       {{
                         (
                           $assetToAmount(pool.lpCurrentCost0) -
@@ -70,7 +70,7 @@
                   </div>
                   <div class="q-ml-xs q-mr-xs">+</div>
                   <div>
-                    <q-badge outline color="secondary">
+                    <q-badge outline color="accent">
                       {{
                         (
                           $assetToAmount(pool.lpCurrentCost1) -

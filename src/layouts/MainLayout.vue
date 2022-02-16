@@ -175,7 +175,7 @@
           </a>
         </div>
         <div>
-          Made with ♥ by
+          Funded by the Telos community and made by
           <a
             :href="KNOT_HOME"
             style="text-decoration: underline"

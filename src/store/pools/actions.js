@@ -69,6 +69,9 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
             if (statsResults.rows.find(
                 t => t.pair_id === pool.id
             )) {
+                // console.log(statsResults.rows.find(
+                //     t => t.pair_id === pool.id
+                // ))
                 let volume_24h = statsResults.rows.find(
                     t => t.pair_id === pool.id
                 ).volume_24h;
@@ -77,10 +80,25 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
                     t => t.pair_id === pool.id
                 ).price_change_24h;
 
+                let fees_24h = statsResults.rows.find(
+                    t => t.pair_id === pool.id
+                ).fees_24h;
+
+                let fee_cumulative = statsResults.rows.find(
+                    t => t.pair_id === pool.id
+                ).fee_cumulative;
+
+                let liquidity_stats = statsResults.rows.find(
+                    t => t.pair_id === pool.id
+                ).liquidity;
+
                 temp_pools.push({
                     ...pool,
                     volume_24h,
-                    price_change_24h
+                    price_change_24h,
+                    fees_24h,
+                    fee_cumulative,
+                    liquidity_stats
                 });
 
             } else {
@@ -208,7 +226,16 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
                     let yearlyFees = feeShare * 365;
                     // APR = yearlyFees / (liquidity)
                     let LP_APR = yearlyFees / (pool.reserve0.usdAmount + pool.reserve1.usdAmount)
-                    pool.APR = { LP: LP_APR, total: LP_APR }
+                    // pool.APR = { LP: LP_APR, total: 0 }
+                }
+                // Calculate APR from fees and rex
+                if (pool.fees_24h !== undefined) {
+                    //APR = (24hr_fee_token_a / liquidity_token_a + 24hr_fee_token_b/ liquidity_token_b) / 2 x 365
+                    let feeShare0 = pool.fees_24h[0].value.split(" ")[0] / pool.liquidity_stats[0].value.split(" ")[0]
+                    let feeShare1 = pool.fees_24h[1].value.split(" ")[0] / pool.liquidity_stats[1].value.split(" ")[0]
+                    let feeAPR = (feeShare0 + feeShare1) / 2 * 365
+
+                    pool.APR = { LP: feeAPR, total: feeAPR }
                 }
 
                 temp_pools[index] = pool;
@@ -247,7 +274,7 @@ export const updateUserLiquidityPools = async function (
 
             const allpools = getters.getPools;
             const userPools = [];
-            console.log(lpTokens)
+            // console.log(lpTokens)
 
             for (const token of lpTokens) {
                 let balance_asset = token.balance
@@ -256,7 +283,6 @@ export const updateUserLiquidityPools = async function (
                 );
 
                 if (temp_pool) {
-                    // TODO add impermanent loss
                     let currentCost0 = 0;
                     let currentCost1 = 0;
                     let lpBalance = this.$assetToAmount(balance_asset, this.$assetToPrecision(balance_asset));

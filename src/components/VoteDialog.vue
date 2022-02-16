@@ -22,6 +22,9 @@
             @click="vote()"
           />
         </div>
+        <div>
+          <q-checkbox v-model="dontShowAgain" label="Don't show again" />
+        </div>
       </div>
     </q-card>
   </q-dialog>
@@ -38,6 +41,7 @@ export default {
       userHasVoted: true,
       userVoteInfo: [],
       bpList: ["bp.yknot", "southafrica1"],
+      dontShowAgain: false,
     };
   },
   computed: {
@@ -57,7 +61,7 @@ export default {
       });
       this.userVoteInfo = tableResults.rows[0];
       let producers = this.userVoteInfo.producers;
-      if (this.bpList.every((v) => producers.includes(v))) {
+      if (this.bpList.every((v) => producers.includes(v)) || localStorage.getItem("dontShowVote")) {
         this.userHasVoted = true;
       } else {
         this.userHasVoted = false;
@@ -137,7 +141,6 @@ export default {
   },
 
   async mounted() {
-    console.log("Component mounted.");
     // Check if user has voted for us
     if (this.isAuthenticated) {
       this.checkIfUserHasVoted();
@@ -147,6 +150,11 @@ export default {
     isAuthenticated(newVal) {
       if (newVal) {
         this.checkIfUserHasVoted();
+      }
+    },
+    dontShowAgain(newVal) {
+      if (newVal === true) {
+        localStorage.setItem("dontShowVote", true);
       }
     },
   },
