@@ -166,7 +166,16 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
                         let yearlyFees = feeShare * 365;
                         // APR = yearlyFees / (liquidity)
                         let LP_APR = yearlyFees / (pool.reserve0.usdAmount + pool.reserve1.usdAmount)
-                        pool.APR = { LP: LP_APR, total: LP_APR }
+                        // pool.APR = { LP: LP_APR, total: LP_APR }
+                    }
+                    // Calculate APR from fees and rex
+                    if (pool.fees_24h !== undefined) {
+                        //APR = (24hr_fee_token_a / liquidity_token_a + 24hr_fee_token_b/ liquidity_token_b) / 2 x 365
+                        let feeShare0 = pool.fees_24h[0].value.split(" ")[0] / pool.liquidity_stats[0].value.split(" ")[0]
+                        let feeShare1 = pool.fees_24h[1].value.split(" ")[0] / pool.liquidity_stats[1].value.split(" ")[0]
+                        let feeAPR = (feeShare0 + feeShare1) / 2 * 365
+
+                        pool.APR = { LP: feeAPR, total: feeAPR }
                     }
 
                     temp_pools[index] = pool;
