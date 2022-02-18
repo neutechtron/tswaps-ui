@@ -96,11 +96,19 @@
             {{
               `${
                 props.row.volume_24h !== undefined
-                  ? props.row.volume_24h[0].value
+                  ? `${(
+                      props.row.volume_24h[0].value.split(" ")[0] / 2
+                    ).toFixed(4)} ${
+                      props.row.volume_24h[0].value.split(" ")[1]
+                    }`
                   : "-"
               } / ${
                 props.row.volume_24h !== undefined
-                  ? props.row.volume_24h[1].value
+                  ? `${(
+                      props.row.volume_24h[1].value.split(" ")[0] / 2
+                    ).toFixed(4)} ${
+                      props.row.volume_24h[1].value.split(" ")[1]
+                    }`
                   : "-"
               } `
             }}</q-tooltip
@@ -163,7 +171,8 @@ const columns = [
         row?.volume_24h?.[0]?.usdAmount + row?.volume_24h?.[1]?.usdAmount
       )
         ? -1
-        : row?.volume_24h?.[0]?.usdAmount + row?.volume_24h?.[1]?.usdAmount,
+        : (row?.volume_24h?.[0]?.usdAmount + row?.volume_24h?.[1]?.usdAmount) /
+          2,
     format: (val) =>
       `$${
         val !== -1

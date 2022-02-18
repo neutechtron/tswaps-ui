@@ -82,6 +82,16 @@
                   </div>
                 </div>
               </div>
+              <div class="q-mb-xs">
+                Impermanent Loss:
+                <div class="fit row items-center content-end">
+                  <div>
+                    <q-badge outline color="accent">
+                      {{ (impermanentLoss(pool) * 100).toFixed(2) }}%
+                    </q-badge>
+                  </div>
+                </div>
+              </div>
             </div>
             <!-- <q-space /> -->
             <div class="q-pt-xs q-ml-lg col-shrink">
@@ -191,6 +201,29 @@ export default {
       this.removePool = pool;
       this.liquidity = pool.lpBalance;
       this.remove = true;
+    },
+
+    impermanentLoss(pool) {
+      let PL0 =
+        this.$assetToAmount(pool.lpCurrentCost0) -
+        this.$assetToAmount(pool.lpDeltaCost0);
+      let PL1 =
+        this.$assetToAmount(pool.lpCurrentCost1) -
+        this.$assetToAmount(pool.lpDeltaCost1);
+
+      let L0 = this.$assetToAmount(pool.lpCurrentCost0);
+      let L1 = this.$assetToAmount(pool.lpCurrentCost1);
+
+      let P0 = 1;
+      let P1 = pool.price1_last;
+
+      let totalDiff = PL0 * P0 + PL1 * P1;
+
+      let liquidityValue = L0 * P0 + L1 * P1;
+
+      let IL = totalDiff / liquidityValue;
+
+      return IL;
     },
 
     async tryRemoveLiquidity() {
