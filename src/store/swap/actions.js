@@ -49,59 +49,58 @@ export const calculateCurveOut = async function ({ commit, rootGetters, getters 
         const config = rootGetters["pools/getConfig"];
         const pool = getters.getPool
         let swappingFee = (pool.trade_fee + config.protocol_fee) / 10000;
-        let reserveFrom = parseFloat(getters.getFromReserve.quantity);
-        let reserveTo = parseFloat(getters.getToReserve.quantity);
+        let reserveTo = 0
+        let reserveFrom = 0
+        if (payload.reverse) {
+            reserveTo = parseFloat(getters.getFromReserve.quantity);
+            reserveFrom = parseFloat(getters.getToReserve.quantity);
+        } else {
+            reserveFrom = parseFloat(getters.getFromReserve.quantity);
+            reserveTo = parseFloat(getters.getToReserve.quantity);
+        }
+
         let amp = pool.amplifier
         let amount = payload.amount
-        if (payload.reverse) {
-            console.log("calculateCurveOut:", amount, reserveFrom, reserveTo);
 
-            if (amountIn < 0) {
-                amountIn = 0;
-            }
-            return amountIn;
+        console.log("calculateCurveOut:", amount, reserveFrom, reserveTo);
+        // calculate invariant D by solving quadratic equation:
+        // A * sum * n^n + D = A * D * n^n + D^(n+1) / (n^n * prod), where n==2
+        const sum = reserveFrom + reserveTo
+        let D = sum
+        let D_prev = 0
 
-        } else {
-            console.log("calculateCurveOut:", amount, reserveFrom, reserveTo);
-            // calculate invariant D by solving quadratic equation:
-            // A * sum * n^n + D = A * D * n^n + D^(n+1) / (n^n * prod), where n==2
-            const sum = reserveFrom + reserveTo
-            let D = sum
-            let D_prev = 0
-
-            let i = MAX_ITERATIONS
-            while (D !== D_prev && i > 0) {
-                let prod1 = D * D / (reserveFrom * 2) * D / (reserveTo * 2)
-                D_prev = D
-                D = 2 * D * (amp * sum + prod1) / ((2 * amp - 1) * D + 3 * prod1)
-                i--
-            }
-            console.log("D", D)
-
-            // calculate x - new value for reserve_out by solving quadratic equation iteratively:
-            // x^2 + x * (sum' - (An^n - 1) * D / (An^n)) = D ^ (n + 1) / (n^(2n) * prod' * A), where n==2
-            // x^2 + b*x = c
-            const b = ((reserveFrom + amount) + (D / (amp * 2))) - D
-            console.log("b", b)
-            const c = D * D / ((reserveFrom + amount) * 2) * D / (amp * 4)
-            console.log('c', c)
-            let x = D, x_prev = 0
-            i = MAX_ITERATIONS
-            while (x !== x_prev && i > 0) {
-                x_prev = x
-                x = (x * x + c) / (2 * x + b)
-                i--
-            }
-            console.log("x", x)
-
-            let amountOut = reserveTo - x
-            let amountOutWithFee = amountOut * (1 - swappingFee) || 0
-            console.log("amountOutWithFee", amountOutWithFee)
-            if (amountOutWithFee < 0) {
-                amountOutWithFee = 0;
-            }
-            return amountOutWithFee;
+        let i = MAX_ITERATIONS
+        while (D !== D_prev && i > 0) {
+            let prod1 = D * D / (reserveFrom * 2) * D / (reserveTo * 2)
+            D_prev = D
+            D = 2 * D * (amp * sum + prod1) / ((2 * amp - 1) * D + 3 * prod1)
+            i--
         }
+        // console.log("D", D)
+
+        // calculate x - new value for reserve_out by solving quadratic equation iteratively:
+        // x^2 + x * (sum' - (An^n - 1) * D / (An^n)) = D ^ (n + 1) / (n^(2n) * prod' * A), where n==2
+        // x^2 + b*x = c
+        const b = ((reserveFrom + amount) + (D / (amp * 2))) - D
+        // console.log("b", b)
+        const c = D * D / ((reserveFrom + amount) * 2) * D / (amp * 4)
+        // console.log('c', c)
+        let x = D, x_prev = 0
+        i = MAX_ITERATIONS
+        while (x !== x_prev && i > 0) {
+            x_prev = x
+            x = (x * x + c) / (2 * x + b)
+            i--
+        }
+        // console.log("x", x)
+
+        let amountOut = reserveTo - x
+        let amountOutWithFee = amountOut * (1 - swappingFee) || 0
+        // console.log("amountOutWithFee", amountOutWithFee)
+        if (amountOutWithFee < 0) {
+            amountOutWithFee = 0;
+        }
+        return amountOutWithFee;
 
     } catch (error) {
         console.log("calculateCurveOut", error);
@@ -175,7 +174,7 @@ export const updateEstimate = async function (
             // console.log("setting", estimate);
             commit("setToEstimate", estimate);
             if (getters.getCanSwap) {
-                const toToken = getters.getToToken;
+                const tokenPrecision = getters.getToToken.precision
                 const pool = getters.getPool;
                 let amount = getters.getAmount;
                 // TODO curve protocol estimate
@@ -185,7 +184,7 @@ export const updateEstimate = async function (
                 else {
                     amount = await dispatch("calculateUniswapOut", { amount: estimate, reverse: true })
                 }
-                commit("setAmount", amount);
+                commit("setAmount", parseFloat(amount.toFixed(tokenPrecision)));
             } else {
                 // commit("setToEstimate", 0);
             }
