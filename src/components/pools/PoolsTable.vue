@@ -78,7 +78,7 @@
           v-for="col in props.cols.slice(1, 2)"
           :key="col.name"
         >
-          <q-tooltip anchor="bottom middle" self="center middle">
+          <q-tooltip anchor="top middle" self="center middle">
             {{
               `${props.row.reserve0.quantity} ${props.row.reserve0.symbol} / ${props.row.reserve1.quantity} ${props.row.reserve1.symbol}`
             }}</q-tooltip
@@ -92,7 +92,7 @@
           v-for="col in props.cols.slice(2, 3)"
           :key="col.name"
         >
-          <q-tooltip anchor="bottom middle" self="center middle">
+          <q-tooltip anchor="top middle" self="center middle">
             {{
               `${
                 props.row.volume_24h !== undefined
