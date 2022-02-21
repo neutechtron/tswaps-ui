@@ -185,7 +185,6 @@ export const updatePools = async function ({ commit, rootGetters, dispatch, gett
                 if (token0?.UsdPrice !== undefined) {
                     pool.reserve0.usdAmount = pool.reserve0.quantity * token0?.UsdPrice;
                     pool.reserve1.usdAmount = pool.reserve1.quantity * token0?.UsdPrice * pool.price1_last;
-
                     if (token1?.UsdPrice === undefined) {
                         commit("tokens/setUsdPrice", { token: token1, price: pool.price1_last * token0?.UsdPrice }, { root: true });
                     }
