@@ -84,6 +84,16 @@
               </div>
               <div class="q-mb-xs">
                 Impermanent Loss:
+                <q-icon class="q-ml-xs q-mb-xs" name="far fa-question-circle">
+                  <q-tooltip anchor="top middle" self="center middle">
+                    <div>
+                      Impermanent loss is the difference between holding an
+                      asset versus providing liquidity. Positive percentage
+                      implies that providing liquidity is more profitable than
+                      simply holding both.
+                    </div>
+                  </q-tooltip></q-icon
+                >
                 <div class="fit row items-center content-end">
                   <div>
                     <q-badge outline color="accent">
