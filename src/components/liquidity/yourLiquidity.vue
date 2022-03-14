@@ -83,7 +83,7 @@
                 </div>
               </div>
               <div class="q-mb-xs">
-                Impermanent Loss:
+                Impermanent Gain/Loss:
                 <q-icon class="q-ml-xs q-mb-xs" name="far fa-question-circle">
                   <q-tooltip anchor="top middle" self="center middle">
                     <div>
