@@ -36,7 +36,7 @@
               </div>
             </div>
 
-            <!-- <div>{{ pool.lpDeltaCost0 }} {{ pool.lpDeltaCost1 }}</div> -->
+            <!-- <div>{{ pool.lpOldCost0 }} {{ pool.lpOldCost1 }}</div> -->
             <div class="col-shrink q-ml-md">
               <div class="q-mb-xs">
                 Current Portion:
@@ -62,7 +62,7 @@
                       {{
                         (
                           $assetToAmount(pool.lpCurrentCost0) -
-                          $assetToAmount(pool.lpDeltaCost0)
+                          $assetToAmount(pool.lpOldCost0)
                         ).toFixed($assetToPrecision(pool.lpCurrentCost0))
                       }}
                       {{ $assetToSymbol(pool.lpCurrentCost0) }}
@@ -74,7 +74,7 @@
                       {{
                         (
                           $assetToAmount(pool.lpCurrentCost1) -
-                          $assetToAmount(pool.lpDeltaCost1)
+                          $assetToAmount(pool.lpOldCost1)
                         ).toFixed($assetToPrecision(pool.lpCurrentCost1))
                       }}
                       {{ $assetToSymbol(pool.lpCurrentCost1) }}
@@ -206,10 +206,10 @@ export default {
     impermanentLoss(pool) {
       let PL0 =
         this.$assetToAmount(pool.lpCurrentCost0) -
-        this.$assetToAmount(pool.lpDeltaCost0);
+        this.$assetToAmount(pool.lpOldCost0);
       let PL1 =
         this.$assetToAmount(pool.lpCurrentCost1) -
-        this.$assetToAmount(pool.lpDeltaCost1);
+        this.$assetToAmount(pool.lpOldCost1);
 
       let L0 = this.$assetToAmount(pool.lpCurrentCost0);
       let L1 = this.$assetToAmount(pool.lpCurrentCost1);

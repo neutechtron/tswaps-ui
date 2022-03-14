@@ -275,26 +275,15 @@ export const updateUserLiquidityPools = async function (
                     // Calculate current cost = LP * (Reserve0 / Reserve_total)
                     if (temp_pool.liquidity && lpBalance > 0) {
                         // console.log(temp_pool)
-                        if (temp_pool.protocol === 'uniswap') {
-                            currentCost0 = lpBalance * (temp_pool.reserve0.quantity / Math.sqrt(temp_pool.reserve0.quantity * temp_pool.reserve1.quantity));
-                            currentCost0 = this.$toAsset(currentCost0, temp_pool.reserve0.precision, temp_pool.reserve0.symbol);
-                            // console.log("currentCost0: " + currentCost0)
-                            currentCost1 = lpBalance * (temp_pool.reserve1.quantity / Math.sqrt(temp_pool.reserve0.quantity * temp_pool.reserve1.quantity));
-                            currentCost1 = this.$toAsset(currentCost1, temp_pool.reserve1.precision, temp_pool.reserve1.symbol);
-                            // console.log("currentCost1: " + currentCost1)
-                        } else if (temp_pool.protocol === 'curve') {
-                            currentCost0 = lpBalance * (temp_pool.reserve0.quantity / (temp_pool.reserve0.quantity + temp_pool.reserve1.quantity));
-                            currentCost0 = this.$toAsset(currentCost0, temp_pool.reserve0.precision, temp_pool.reserve0.symbol);
-                            // console.log("currentCost0: " + currentCost0)
-                            currentCost1 = lpBalance * (temp_pool.reserve1.quantity / (temp_pool.reserve0.quantity + temp_pool.reserve1.quantity));
-                            currentCost1 = this.$toAsset(currentCost1, temp_pool.reserve1.precision, temp_pool.reserve1.symbol);
-                            // console.log("currentCost1: " + currentCost1)
-                        }
+                        currentCost0 = lpBalance / this.$assetToAmount(temp_pool.liquidity.quantity) * temp_pool.reserve0.quantity;
+                        currentCost0 = this.$toAsset(currentCost0, temp_pool.reserve0.precision, temp_pool.reserve0.symbol);
+                        currentCost1 = lpBalance / this.$assetToAmount(temp_pool.liquidity.quantity) * temp_pool.reserve1.quantity;
+                        currentCost1 = this.$toAsset(currentCost1, temp_pool.reserve1.precision, temp_pool.reserve1.symbol);
                         userPools.push({
                             ...temp_pool,
                             lpBalance: lpBalance,
-                            lpDeltaCost0: token.cost0,
-                            lpDeltaCost1: token.cost1,
+                            lpOldCost0: token.cost0,
+                            lpOldCost1: token.cost1,
                             lpCurrentCost0: currentCost0,
                             lpCurrentCost1: currentCost1,
                         });
