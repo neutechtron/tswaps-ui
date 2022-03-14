@@ -195,7 +195,8 @@ export default {
             name: "deposit",
             data: {
               owner: this.accountName,
-              pair_id: this.getConfig.last_pair_id + 1, // TODO include min_amount
+              pair_id: this.getConfig.last_pair_id + 1,
+              min_amount: 0, // TODO min_amount
             },
           },
         ];
