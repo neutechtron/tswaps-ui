@@ -140,6 +140,7 @@ export default {
             data: {
               owner: this.accountName,
               pair_id: this.getPool.id,
+              min_amount: 0,
             },
           },
         ];
