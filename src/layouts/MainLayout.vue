@@ -35,13 +35,8 @@
             Pools
           </q-btn>
 
-          <q-btn flat type="a" :href="TSWAPS_BRIDGE" target="_blank" no-caps>
+          <q-btn flat to="/bridge" no-caps :class="isSelectedTab('bridge')">
             Bridge
-            <q-icon
-              name="fas fa-external-link-alt"
-              size="0.8rem"
-              class="q-pl-xs"
-            />
           </q-btn>
         </div>
 
@@ -68,16 +63,9 @@
                   <router-link to="/pools">Pools</router-link>
                 </q-item-section>
               </q-item>
-              <q-item clickable @click="openUrl(TSWAPS_BRIDGE)" class="lt-md">
+              <q-item clickable :class="`lt-md ${isSelectedTab('bridge')}`">
                 <q-item-section>
-                  <div class="row items-center">
-                    Bridge
-                    <q-icon
-                      name="fas fa-external-link-alt"
-                      size="0.8rem"
-                      class="q-pl-xs"
-                    />
-                  </div>
+                  <router-link to="/bridge">Bridge</router-link>
                 </q-item-section>
               </q-item>
               <q-separator class="lt-md" />

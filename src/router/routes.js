@@ -1,6 +1,6 @@
 const routes = [
   {
-    path: "/",
+    path: "/home",
     component: () => import("pages/HomePage.vue")
   },
   {
@@ -26,6 +26,13 @@ const routes = [
     component: () => import("layouts/MainLayout.vue"),
     children: [
       { path: "", name: "pools", component: () => import("pages/pools.vue") }
+    ]
+  },
+  {
+    path: "/",
+    component: () => import("layouts/Bridgelayout.vue"),
+    children: [
+      { path: "", name: "bridge", component: () => import("pages/bridgeSend.vue") }
     ]
   },
 

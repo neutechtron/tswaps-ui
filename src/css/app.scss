@@ -94,11 +94,7 @@ body.body--light {
     // color: rgba($dark-0, 90%);
   }
 
-  background-image: linear-gradient(
-    to right bottom,
-    $purpleGrey 50%,
-    $white 100%
-  );
+  background-image: $plainWhite;
 
   .inputCard,
   .cardCircle,

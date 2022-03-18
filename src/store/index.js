@@ -9,6 +9,9 @@ import bridge from "./bridge";
 import pools from "./pools";
 import swap from "./swap";
 import liquidity from "./liquidity";
+import tport from "./tport";
+import bpools from "./bpools";
+import xchain from "./xchain";
 
 Vue.use(Vuex);
 
@@ -22,7 +25,10 @@ export default function() {
       bridge,
       pools,
       swap,
-      liquidity
+      liquidity,
+      tport,
+      bpools,
+      xchain
     },
 
     strict: process.env.DEV

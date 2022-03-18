@@ -6,3 +6,4 @@ export const getAllPossibleChains = ({ blockchainList }) =>
   blockchainList.filter(
     el => el.TEST_NETWORK === (process.env.TESTNET == "true")
   );
+  export const getBridgeTokens = ({ bridgeTokens }) => bridgeTokens;
