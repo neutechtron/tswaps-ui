@@ -28,7 +28,7 @@
             v-if="!addingToken"
             class="addToken"
             @click="addingToken = true"
-            >Not seeing your token? Add it</q-item-label
+            >Want to list your token? Do it here.</q-item-label
           >
           <div v-if="addingToken" class="fit row">
             <q-input
@@ -85,7 +85,7 @@
       <q-list class="dialogList">
         <q-item
           v-for="token in availableTokens"
-          :key="`${token.chain}-${token.contract}-${token.symbol}`"
+          :key="`${token.contract}-${token.symbol}`"
           clickable
           v-close-popup
           @click="updateSelectedCoin(token)"
@@ -101,7 +101,7 @@
             <q-item-label caption>{{ token.amount }}</q-item-label>
           </q-item-section>
         </q-item>
-        <q-item v-if="getTokens.length == 0">No tokens found</q-item>
+        <q-item v-if="getTPortTokens.length == 0">No tokens found</q-item>
       </q-list>
     </q-card>
   </q-dialog>
@@ -123,15 +123,14 @@ export default {
   },
   props: ["showCoinDialog", "isFrom", "isSwap"],
   computed: {
-    ...mapGetters("tokens", ["getTokens"]),
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
-    // ...mapGetters("swap", ["getFromToken", "getToToken"]),
+    ...mapGetters("tport", ["getTPortTokens"]),
     ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"]),
     availableTokens() {
       if (this.filteredTokens.length > 0) {
         return this.filteredTokens;
       } else {
-        return this.getTokens;
+        return this.getTPortTokens;
       }
     },
     // tokensForValidPair() {
@@ -147,41 +146,11 @@ export default {
     ...mapActions("swap", ["updateSwapPool", "updateEstimate"]),
     ...mapActions("liquidity", ["updateActivePool"]),
     ...mapActions("pools", ["updatePools"]),
-    ...mapActions("tokens", [
-      "updateTokens",
-      "updateTokenBalances",
-      "updateAllTokensBalances",
-      "updateAddNewToken",
-      "updateRemoveToken",
-    ]),
+    ...mapActions("tport", ["setTPortTokens", "updateTportTokenBalances"]),
+    ...mapActions("bridge",["updateBridgeToken"]),
+
     updateSelectedCoin(token) {
-      if (this.isSwap) {
-        if (this.isFrom) {
-          this.$store.commit("swap/setFromToken", token);
-        } else {
-          this.$store.commit("swap/setToToken", token);
-        }
-        this.updateSwapPool();
-        this.updateEstimate();
-      } else {
-        if (this.isFrom) {
-          this.$store.commit("liquidity/setToken1", token);
-        } else {
-          this.$store.commit("liquidity/setToken2", token);
-        }
-        this.updateActivePool();
-      }
-
-      let defaultToChain = {};
-      if (token.toChain !== undefined) {
-        defaultToChain = this.getAllPossibleChains.filter((el) =>
-          token.toChain.map((c) => c.toUpperCase()).includes(el.NETWORK_NAME)
-        )[0];
-      } else {
-        defaultToChain = this.getCurrentChain;
-      }
-
-      this.$store.commit("bridge/setToChain", defaultToChain);
+      this.updateBridgeToken(token);
     },
 
     filterTokens() {
@@ -189,8 +158,8 @@ export default {
       console.log("Len: ", this.search.length);
       if (this.search.length > 0) {
         console.log("text with filter");
-        this.filterByText(this.getTokens);
-      } else this.filteredTokens = this.getTokens;
+        this.filterByText(this.getTPortTokens);
+      } else this.filteredTokens = this.getTPortTokens;
     },
     filterByText(tokens) {
       this.filteredTokens = tokens.filter((token) => {
@@ -213,8 +182,8 @@ export default {
   async mounted() {
     // await this.updatePools();
     // await this.updateAllTokensBalances(this.accountName);
-     await this.updateTokens();
-     await this.updateTokenBalances(this.accountName);
+    await this.setTPortTokens();
+    await this.updateTportTokenBalances(this.accountName);
   },
 };
 </script>

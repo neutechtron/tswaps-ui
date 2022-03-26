@@ -113,7 +113,7 @@ export default {
     }
   },
   created() {
-    this.$q.dark.set(localStorage.getItem("darkModeEnabled") !== "false");
+    this.$q.dark.set(localStorage.getItem("darkModeEnabled") ||"false");
   },
 
   async mounted() {}

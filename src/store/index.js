@@ -10,7 +10,6 @@ import pools from "./pools";
 import swap from "./swap";
 import liquidity from "./liquidity";
 import tport from "./tport";
-import bpools from "./bpools";
 import xchain from "./xchain";
 
 Vue.use(Vuex);
@@ -27,7 +26,6 @@ export default function() {
       swap,
       liquidity,
       tport,
-      bpools,
       xchain
     },
 

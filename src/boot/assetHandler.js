@@ -36,6 +36,20 @@ const exSymToContract = extended_symbol => {
     return extended_symbol.contract;
 };
 
+// Gets symbol from base token extended_symbol { "sym": "4,START", "contract": "token.start" }
+const getSymFromAsset = extended_asset => {
+    let idx = extended_asset.sym.indexOf(",") + 1;
+    let sym = extended_asset.sym.slice(idx);
+    return sym
+};
+
+// Gets symbol from base token extended_symbol { "sym": "4,START", "contract": "token.start" }
+const getDecimalFromAsset = extended_asset => {
+    let idx = extended_asset.sym.indexOf(",");
+    let quantity = extended_asset.sym.slice(0, idx);
+    return parseFloat(quantity);
+};
+
 // Takes value to Telos asset format of "5.0000 TLOS"
 const toAsset = (number, decimals, symbol) => {
     return String(parseFloat(number).toFixed(decimals)) + String(" " + symbol);
@@ -79,6 +93,17 @@ const truncate = (n, digits) => {
     return temp / step;
 }
 
+const chainToQty = function (str, decimals = -1) {
+    try {
+      let qty = str.split(" ")[0];
+      qty = parseFloat(qty);
+      if (decimals > -1) qty = qty.toFixed(decimals);
+      return qty;
+    } catch (error) {
+      return str;
+    }
+};
+
 export default async ({ Vue, store }) => {
     Vue.prototype.$exAssToPrecision = exAssToPrecision;
     Vue.prototype.$exAssToSymbol = exAssToSymbol;
@@ -89,6 +114,9 @@ export default async ({ Vue, store }) => {
     Vue.prototype.$assetToSymbol = assetToSymbol;
     Vue.prototype.$getQuantity = getQuantity;
     Vue.prototype.$truncate = truncate;
+    Vue.prototype.$getSymFromAsset = getSymFromAsset;
+    Vue.prototype.$getDecimalFromAsset = getDecimalFromAsset;
+    Vue.prototype.$chainToQty = chainToQty;
     store["$exAssToPrecision"] = exAssToPrecision;
     store["$exAssToSymbol"] = exAssToSymbol;
     store["$exSymToContract"] = exSymToContract;
@@ -98,4 +126,7 @@ export default async ({ Vue, store }) => {
     store["$assetToSymbol"] = assetToSymbol;
     store["$getQuantity"] = getQuantity;
     store["$truncate"] = truncate;
+    store["$getSymFromAsset"] = getSymFromAsset;
+    store["$getDecimalFromAsset"] = getDecimalFromAsset;
+    store["$chainToQty"] = chainToQty;
 };

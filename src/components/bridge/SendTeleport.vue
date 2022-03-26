@@ -96,9 +96,9 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import netSelector from "src/components/NetSelector";
-import amountInput from "src/components/send/AmountInput";
-import sendTxDialog from "src/components/send/SendTxDialog";
-import sendWarnings from "src/components/send/SendWarnings";
+import amountInput from "src/components/bridge/AmountInput";
+import sendTxDialog from "src/components/bridge/SendTxDialog";
+import sendWarnings from "src/components/bridge/SendWarnings";
 import metamask from "src/components/Metamask";
 import { copyToClipboard } from "quasar";
 import { ethers } from "ethers";

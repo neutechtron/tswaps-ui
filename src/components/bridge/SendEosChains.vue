@@ -82,9 +82,9 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import netSelector from "src/components/NetSelector";
-import amountInput from "src/components/send/AmountInput";
-import sendTxDialog from "src/components/send/SendTxDialog";
-import sendWarnings from "src/components/send/SendWarnings";
+import amountInput from "src/components/bridge/AmountInput";
+import sendTxDialog from "src/components/bridge/SendTxDialog";
+import sendWarnings from "src/components/bridge/SendWarnings";
 
 import { Api, JsonRpc, Serialize } from "eosjs";
 

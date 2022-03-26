@@ -2,6 +2,7 @@
 export const setTPortTokens = async function({ commit, getters }) {
   try {
     let tokens = [];
+    console.log(process.env.TPORT_ADDRESS)
     const tableResults = await this.$api.getTableRows({
       code: process.env.TPORT_ADDRESS,
       scope: process.env.TPORT_ADDRESS,
@@ -10,12 +11,16 @@ export const setTPortTokens = async function({ commit, getters }) {
       reverse: false,
       show_payer: false
     });
+    console.log("here");
+    console.log(tableResults.rows);
     for (let asset of tableResults.rows) {
       // console.log("Asset: ", asset);
-      asset.token = {
-        sym: this.$getSymFromAsset(asset.token),
+      asset = {
+        ...asset,
+        symbol: this.$getSymFromAsset(asset.token),
         decimals: this.$getDecimalFromAsset(asset.token),
-        contract: asset.token.contract
+        contract: asset.token.contract,
+        amount: 0
       };
       tokens.push(asset);
     }
@@ -91,5 +96,50 @@ export const setTeleports = async function({ commit }, account) {
     commit("updateTeleports", { teleports });
   } catch (error) {
     commit("general/setErrorMsg", error.message || error, { root: true });
+  }
+};
+
+export const updateTportTokenBalances = async function (
+  { commit, getters },
+  accountName
+) {
+  try {
+      if (accountName !== null) {
+          let tokens = getters.getTPortTokens;
+          const rpc = this.$api.getRpc();
+          for (const token of tokens) {
+              try {
+                  let balance = (
+                      await rpc.get_currency_balance(
+                          token.contract,
+                          accountName,
+                          token.symbol
+                      )
+                  )[0];
+                  // console.log("balance:")
+                  // console.log(balance)
+                  if (balance !== undefined) {
+                      let precision = this.$assetToPrecision(balance)
+                      if (token.token.decimals === 0) {
+                          commit("setTokenPrecision", {
+                              token: token,
+                              precision: precision
+                          });
+                      }
+                      commit("setTokenAmount", {
+                          token: token,
+                          amount: this.$assetToAmount(balance)
+                      });
+                  } else {
+                      commit("setTokenAmount", { token: token, amount: 0 });
+                  }
+              } catch (error) {
+                  commit("setTokenAmount", { token: token, amount: 0 });
+              }
+          }
+      }
+  } catch (error) {
+      console.log("Error getting chain token balance:", error);
+      commit("general/setErrorMsg", error.message || error, { root: true });
   }
 };

@@ -18,7 +18,7 @@
 import { mapGetters, mapActions } from "vuex";
 import dropdownBtn from "src/components/DropdownBtn";
 import tokenAvatar from "src/components/TokenAvatar";
-import netDialog from "src/components/NetDialog";
+import netDialog from "./NetDialog";
 export default {
   components: { dropdownBtn, tokenAvatar, netDialog },
   props: {
@@ -35,9 +35,14 @@ export default {
     selectedNetwork() {
       let chain = this.getToChain;
       if (this.isFrom) chain = this.getFromChain;
+      if (!this.isFrom) chain = this.getToChain;
       if (chain.NETWORK_DISPLAY_NAME) return chain.NETWORK_DISPLAY_NAME;
       else return "";
     }
+  },
+  mounted() {
+    this.$store.commit("bridge/setFromChain", this.getAllPossibleChains[0]);
+    this.$store.commit("bridge/setToChain", this.getAllPossibleChains[1]);
   }
 };
 </script>

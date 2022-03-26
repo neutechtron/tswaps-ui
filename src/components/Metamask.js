@@ -71,6 +71,14 @@ export default {
           }
         }
       }
-    }
+    },
+    async disconnectWeb3() {
+      const { injectedWeb3, web3 } = await this.$web3();
+      if (injectedWeb3) {
+        const a = await web3.eth.currentProvider.disconnect();
+      } else {
+        console.error("Could not get injected web3");
+      }
+    },
   }
 };

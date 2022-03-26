@@ -1,6 +1,6 @@
 export default {
   accountName: "",
-  chainId: null,
+  chainId: 3,
   tportTokens: [],
   teleports: [],
   networkList: []

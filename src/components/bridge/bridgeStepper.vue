@@ -8,9 +8,9 @@
       active-color="deep-purple-13"
       inactive-color="deep-purple-3"
       animated
+      header-class="stepper-header"
     >
 
-      <!-- account datails tab -->
       <q-step
         :name="1"
         title="Connect wallet"
@@ -18,24 +18,31 @@
         :done="step > 1"
       >
         <div class="row">
-          <div class="col-12 q-mb-sm"
-          >
+          <div class="col-12 q-mb-sm">
             <div class="text-h5 q-mb-sm">
               Connect wallet
             </div>
           </div>
-          <div class="col-12" >
-            <connect/>
+
+          <div class="col-12 q-my-sm">
+           <q-separator />
           </div>
-          <div class="col-12 q-my-lg" >
-            <connect/>
+
+          <div class="col-12 q-my-md" >
+            <connect :isFrom="true" :isNative="this.isNative(true)" :selectedNetwork="this.getFromChain.NETWORK_NAME"/>
           </div>
-          
+
+          <div class="col-12 q-my-sm">
+           <q-separator />
+          </div>
+
+          <div class="col-12 q-my-md" >
+            <connect :isFrom="false" :isNative="this.isNative(false)" :selectedNetwork="this.getToChain.NETWORK_NAME"/>
+          </div>
         </div>
         
       </q-step>
 
-      <!-- personal info tab -->
       <q-step
         :name="2"
         title="Transaction details"
@@ -48,77 +55,83 @@
               Transaction details
             </div>
           </div>
+
           <div class="col-12" >
             <coin-selector/>
           </div>
+
           <div class="col-12">
-              <div class="row justify-between q-px-sm q-gutter-x-sm">
+            <div class="row justify-between q-px-sm q-gutter-x-sm" v-if="getToken.contract !== ''">
               <div>
-                {{ selectedNetwork }} balance: {{ remoteBalance }}
-                {{ selectedTokenSym }}
+                {{ selectedNetwork }} balance: {{ getToken.amount.toString() }}
+                {{ getToken.symbol }}
               </div>
-              <div>Minimum: {{ minSend }} {{ selectedTokenSym }}</div>
+              <div>Minimum: {{ getToken.min_quantity }}</div>
             </div>
             <amount-input
-              :selectedTokenSym="selectedTokenSym"
-              :selectedToken="selectedToken"
-              :amount.sync="amount"
-              :balance="balance"
+              :selectedTokenSym="getToken.symbol"
+              :selectedToken="getToken"
+              :amount="getAmount"
+              @update:amount="updateAmount($event)"
+              :balance="getToken.amount"
               :min="minSend"
             />
           </div>
-          
         </div>
       </q-step>
 
-      <!-- address -->
-      
-
-      <!-- social link -->
       <q-step
         :name="3"
         title="Confirm"
         icon="fas fa-clipboard-check"
       >
         <div class="row">
-          <div class="col-12 q-mb-sm"
-          >
+          <div class="col-12 q-mb-sm">
             <div class="text-h5 q-mb-sm">
-              Confirm
+              Confirm Transaction
+            </div>
+            <div class="text-body1">
+              Your transfer will start once you confirm the transaction.
+            </div>
+            <div class="text-body1">
+              Transfers can take up to 24 hours.
             </div>
           </div>
-          <div class="col-12" md="6">
-              <q-input
-                id="v-twitter"
-                placeholder=""
-              />
-          </div>
-          
         </div>
       </q-step>
+
       <template v-slot:navigation>
         <q-stepper-navigation >
-          <q-btn @click="$refs.stepper.next()"  :label="step === 3 ? 'Finish' : 'Continue'" class=" bridgeButton"/>
-          <q-btn v-if="step > 1" flat color="white" @click="$refs.stepper.previous()" label="Back" class="q-ml-sm bridgeButton" />
+        <div class="row">
+          <q-btn v-if="step > 1" flat color="white" @click="$refs.stepper.previous()" label="Previous" class="q-ml-sm bridgeButton nextButton" />
+          <q-space/>
+          <q-btn @click="handleNext()"  :label="step === 3 ? 'Confirm' : 'Next'" class=" bridgeButton"/>
+          </div>
         </q-stepper-navigation>
       </template>
     </q-stepper>
+
+    <send-tx-dialog
+      :transaction="transaction"
+      :showTransaction.sync="showTransaction"
+    />
 
   </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import 'vue-form-wizard/dist/vue-form-wizard.min.css';
-import coinSelector from "../CoinSelector.vue";
+import coinSelector from "./CoinSelector.vue";
 import connect from "./Connect.vue";
-import amountInput from "src/components/send/AmountInput";
+import amountInput from "./AmountInput";
+import sendTxDialog from "./SendTxDialog";
 
 export default {
   components: {
     connect,
     coinSelector,
-    amountInput
+    amountInput,
+    sendTxDialog
   },
   data() {
     return {
@@ -138,16 +151,23 @@ export default {
       "getEvmNetworkList",
       "getTPortTokensBySym",
       "getTPortTokens",
-      "getTeleports"
+      "getTeleports",
+      "getEvmAccountName"
     ]),
     ...mapGetters("blockchains", [
       "getCurrentChain",
       "getNetworkByName",
       "getBridgeTokens"
     ]),
+    ...mapGetters("bridge", [
+      "getToChain",
+      "getFromChain",
+      "getToken",
+      "getAmount"
+    ]),
 
     selectedToken() {
-      return this.wallet.find(a => a.token_sym === this.selectedTokenSym);
+      return this.getToken.symbol;
     },
 
     avatar() {
@@ -208,30 +228,73 @@ export default {
     },
 
     tportTokens() {
-      // let tportTokens = [];
-      // if (this.getTPortTokens.length > 0) {
-      //   tportTokens = this.getTPortTokens.map(el => el.token.sym);
-      // }
-      // return tportTokens
       if (this.getTPortTokens.length === 0) return [];
       else return this.getTPortTokens.map(el => el.token.sym);
     }
   },
   methods: {
     ...mapActions("account", ["reloadWallet", "setWalletBalances"]),
-    ...mapActions("blockchains", ["setBridgeTokens"]),
-    ...mapActions("tport", ["setTPortTokens"]),
+    ...mapActions("tport", ["setTPortTokens", "updateTportTokenBalances"]),
+    ...mapActions("bridge", ["updateAmount", "sendBridgeToken"]),
+
     formSubmitted() {
       console.log("submit")
     },
+    
+    isNative (isFrom) {
+      if (isFrom) return this.getFromChain.NETWORK_NAME == "TELOS"
+      else return this.getToChain.NETWORK_NAME == "TELOS"
+    },
+
+    isWalletsConnected () {
+      return ((this.getEvmAccountName) && ( this.getEvmAccountName !== '') && this.isAuthenticated );
+    },
+
+    isValidTransaction () {
+      return ((this.getToken.contract !== "") && (this.getAmount > 0) && (this.getAmount < this.getToken.amount));
+    },
+
+    handleNext () {
+      if ((this.step === 1) && this.isWalletsConnected()) {
+        this.$refs.stepper.next();
+      } else if ((this.step === 2) && this.isValidTransaction()) {
+        this.$refs.stepper.next();
+      } else if(this.step === 3) {
+        this.send();
+      } 
+    },
+
+    async send() {
+      try {
+        this.transaction = await this.sendBridgeToken();
+        if (this.transaction) {
+          this.showTransaction = true;
+          this.transaction = this.transaction.transactionId;
+          this.to = null;
+          this.amount = null;
+          this.memo = "";
+          this.updateTportTokenBalances(this.accountName);
+          this.$store.dispatch("tport/setTeleports", this.accountName);
+        }
+        this.$q.notify({
+          color: "green-4",
+          textColor: "white",
+          icon: "cloud_done",
+          message: "Sent",
+        });
+      } catch (error) {
+        this.$errorNotification(error);
+      }
+      
+    }
   },
   mounted() {
     if (this.$route.query.token_sym !== undefined)
       this.selectedTokenSym = this.$route.query.token_sym;
     this.selectedNetwork = this.getCurrentChain.NETWORK_NAME;
-    this.setBridgeTokens();
     this.reloadWallet(this.accountName);
     this.setTPortTokens();
+    this.updateTportTokenBalances(this.accountName);
     this.$store.dispatch("tport/setTeleports", this.accountName);
   },
 

@@ -1,51 +1,81 @@
 <template>
     <div class="q-gutter-y-sm self-stretch">
-      <div class="row justify-between q-px-sm q-gutter-x-sm">
-        <div>Transfer from:</div>
-      </div>
-      <div class="input-outline row justify-between items-center">
-        <q-btn
-          v-if="getEvmAccountName === ''"
-          label="CONNECT"
-          @click="connectWeb3()"
-          class="hover-accent"
-          color="positive"
-          outline
-          no-shadow
-          no-caps
-        />
-        <div
-          class="evm-account col ellipsis cursor-pointer"
-          style="max-width: 200px"
-          v-else
-          @click="copyEvmAccount"
-        >
-          {{ getEvmAccountName }}
+      
+      <div class="input-outline row items-center">
+
+        <div class="col-3 text-h6">{{this.isFrom ? "From " : "To " }}</div>
+       
+       <div class="col-4">
+          <net-selector
+            :selectedNetwork="selectedNetwork"
+            :networkOptions="networkOptions"
+            :isFrom="this.isFrom"
+            @changeNetwork="$emit('update:selectedNetwork', $event)"
+          />
         </div>
-        <net-selector
-          :selectedNetwork="selectedNetwork"
-          :networkOptions="networkOptions"
-          @changeNetwork="$emit('update:selectedNetwork', $event)"
-        />
+        <div class="col-5">
+          <div class="row justify-center">
+            <q-btn
+              v-if="((!getEvmAccountName || getEvmAccountName === '') && (!this.isNative))"
+              label="CONNECT WALLET"
+              @click="connectWeb3(); switchMetamaskNetwork(selectedNetwork);"
+              class="hover-accent"
+              color="positive"
+              outline
+              no-shadow
+              no-caps
+            />
+            <q-btn
+              v-else-if="(!this.isAuthenticated && (this.isNative))"
+              label="CONNECT WALLET"
+              @click="showLogin = !showLogin"
+              class="hover-accent"
+              color="positive"
+              outline
+              no-shadow
+              no-caps
+            />
+            <div
+              class="evm-account col ellipsis cursor-pointer bordered text-center"
+              style="max-width: 200px"
+              v-else-if="this.isAuthenticated && (this.isNative)"
+              @click="copyEvmAccount"
+            >
+              {{ accountName }}
+            </div>
+            <div
+              class="evm-account col ellipsis cursor-pointer bordered text-center"
+              style="max-width: 200px"
+              v-else-if="(getEvmAccountName != '') && (!this.isNative)"
+              @click="copyEvmAccount"
+            >
+              {{ getEvmAccountName }}
+            </div>
+          </div>
+        </div>
       </div>
+      <ual-dialog :showLogin.sync="showLogin" />
     </div>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import netSelector from "src/components/NetSelector";
+import netSelector from "./NetSelector";
 import metamask from "src/components/Metamask";
 import { copyToClipboard } from "quasar";
 import { ethers } from "ethers";
+import UalDialog from "src/components/UalDialog.vue";
 
 export default {
-  components: { netSelector },
+  components: { netSelector, UalDialog },
   mixins: [metamask],
   props: [
     "selectedTokenSym",
     "selectedNetwork",
     "networkOptions",
     "supportedEvmChains",
+    "isFrom",
+    "isNative",
   ],
   data() {
     return {
@@ -54,6 +84,7 @@ export default {
       transaction: null,
       remoteBalance: 0,
       remoteContractInstance: null,
+      showLogin: false
     };
   },
   computed: {
@@ -298,5 +329,11 @@ export default {
   &:hover {
     color: $accent;
   }
+}
+
+.bordered {
+  border: 2px solid $primary;
+  border-radius: 15px;
+  padding: 5px;
 }
 </style>

@@ -70,29 +70,11 @@ export default {
     ...mapActions("blockchains", ["updateCurrentChain"]),
 
     async updateSelectedNet(chain) {
-      if (this.isFrom) {
-        if (
-          chain.NETWORK_NAME.toUpperCase() !=
-          localStorage.getItem("selectedChain")
-        ) {
-          if (this.isAuthenticated) {
-            this.$q.notify({
-              color: "info",
-              textColor: "dark",
-              icon: "info",
-              message: "Log in to send"
-            });
-          }
-          await this.logout();
-          await this.updateCurrentChain(chain.NETWORK_NAME.toUpperCase());
-          // await this.setAPI();
-          // console.log(this.$store.$api)
-          await this.$store.$api.setAPI(this.$store);
-          await this.setUAL();
-          this.$store.commit("tokens/clearTokens");
-          this.$store.commit("bridge/setFromChain", chain);
-        }
-      } else {
+      if (this.isFrom && (this.getFromChain != chain)) {
+        this.$store.commit("bridge/setToChain", this.getFromChain);
+        this.$store.commit("bridge/setFromChain", chain);
+      } else if ( this.getToChain != chain) {
+        this.$store.commit("bridge/setFromChain", this.getToChain);
         this.$store.commit("bridge/setToChain", chain);
       }
       this.$emit("update:showNetDialog", false);

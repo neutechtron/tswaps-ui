@@ -19,7 +19,7 @@
       <q-card-section>
         Transaction ID:
         <a
-          :href="`${explorerUrl}/transaction/${transaction}`"
+          :href="`${explorerUrl}/transaction/${transaction}?network=${getTestnet()  ? 'telostest' : 'telos'}`"
           target="_blank"
           style="word-wrap: break-word;"
         >
@@ -36,11 +36,16 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  props: ["transaction", "showTransaction"],
+  props: ["transaction", "showTransaction","Testnet"],
   computed: {
     ...mapGetters("blockchains", ["getCurrentChain"]),
     explorerUrl() {
       return this.getCurrentChain.NETWORK_EXPLORER;
+    }
+  },
+  methods: {
+    getTestnet() {
+      return process.env.TESTNET;
     }
   }
 };

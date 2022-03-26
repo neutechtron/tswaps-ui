@@ -35,7 +35,7 @@ module.exports = function (/* ctx */) {
         ],
 
         // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
-        css: ["fonts/silka/silka.css", "app.scss", "vue-wizard.scss"],
+        css: ["fonts/silka/silka.css", "app.scss"],
 
         // https://github.com/quasarframework/quasar/tree/dev/extras
         extras: [
@@ -70,7 +70,11 @@ module.exports = function (/* ctx */) {
                 TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
                 TSWAPS_DOCS: process.env.TSWAPS_DOCS,
                 SITE_VERSION: siteVersion,
-                KNOT_HOME: process.env.KNOT_HOME
+                KNOT_HOME: process.env.KNOT_HOME,
+                BRIDGE_ADDRESS: process.env.BRIDGE_ADDRESS,
+                TPORT_ADDRESS: process.env.TPORT_ADDRESS,
+                TOKEN_ADDRESS: process.env.TOKEN_ADDRESS,
+                XCHAIN_ADDRESS: process.env.XCHAIN_ADDRESS
             },
 
             // transpile: false,
@@ -111,7 +115,9 @@ module.exports = function (/* ctx */) {
         framework: {
             iconSet: "material-icons", // Quasar icon set
             lang: "en-us", // Quasar language pack
-            config: {},
+            config: {
+                dark: false
+            },
 
             // Possible values for "importStrategy":
             // * 'auto' - (DEFAULT) Auto-import needed Quasar components & directives

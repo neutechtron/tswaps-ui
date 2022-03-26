@@ -43,8 +43,7 @@ export default {
       );
     },
     updateAmount(val) {
-      const res = isNaN(val) ? null : Number(val);
-      this.$emit("update:amount", res);
+      this.$emit("update:amount", isNaN(val) || val == '' ? 0 : parseFloat(val));
     }
   }
 };
