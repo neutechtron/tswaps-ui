@@ -1,7 +1,8 @@
 <template>
+<div class="bridgeDash">
   <q-card>
     <div class="row justify-center">
-      <div class="text-h6 text-center q-pr-sm">Teleports</div>
+      <div class="text-h6 text-center q-pr-sm">Transaction History</div>
       <q-btn
         padding="sm"
         class="hover-accent"
@@ -14,58 +15,70 @@
     </div>
     <div class="column">
       <div
-        class="row justify-center items-center q-py-xs"
+        class="row justify-center items-center q-px-lg"
         v-for="t in unclaimedTeleports"
         :key="t.id"
       >
-        <div class="col-4 text-right">
+        <div class="col-md-4 col-xs-12 text-h6 text-center text-bold q-py-sm">
+          <token-avatar
+            class="q-mx-sm q-mb-sm"
+            :token="getToken.symbol"
+            :avatarSize="30"
+          />
           {{ t.quantity }}
         </div>
-        <q-icon class="q-mx-sm fas fa-arrow-right"></q-icon>
-        <div class="col-sm row items-center justify-start">
-          <div>{{ ethAddressShort(t.eth_address) }}</div>
+        <div class="col-md-6 col-xs-12 text-center text-bold q-py-sm">
           <token-avatar
-            class="q-mx-sm"
-            :token="evmNetworkNameById(t.chain_id)"
-            :avatarSize="25"
+              class="q-mx-sm"
+              :token="getCurrentChain.NETWORK_NAME"
+              :avatarSize="30"
           />
+          <q-icon class="q-mx-sm fas fa-arrow-right"></q-icon>
+          <token-avatar
+              class="q-mx-sm"
+              :token="evmNetworkNameById(t.chain_id)"
+              :avatarSize="30"
+          />
+          {{t.displaydate}}
         </div>
-        <div side>
-          <q-btn
-            class="hover-accent"
-            v-if="t.processing || claiming === t.id"
-            color="grey"
-          >
-            Processing
-          </q-btn>
-          <q-btn
-            class="hover-accent"
-            v-else-if="
-              !t.claimed &&
-              correctNetwork(t.chain_id) &&
-              correctAccount(t.eth_address)
-            "
-            color="positive"
-            @click="claimEvm(t)"
-          >
-            Claim
-          </q-btn>
-          <q-btn
-            class="hover-accent"
-            v-else-if="!t.claimed && !correctNetwork(t.chain_id)"
-            color="primary"
-            @click="switchMetamaskNetwork(networkNameFromId(t.chain_id))"
-          >
-            Switch Chain
-          </q-btn>
-          <q-btn
-            class="hover-accent"
-            v-else-if="!t.claimed && !correctAccount(t.eth_address)"
-            color="grey"
-            @click="$q.notify({ color: 'green-4', message: 'TODO' })"
-          >
-            Switch Account
-          </q-btn>
+        <div class="col-md-2 col-xs-12 text-center q-px-sm q-py-sm">
+          <div side>
+            <q-btn
+              class="hover-accent full-width"
+              v-if="t.processing || claiming === t.id"
+              color="grey"
+            >
+              Processing
+            </q-btn>
+            <q-btn
+              class="hover-accent full-width"
+              v-else-if="
+                !t.claimed &&
+                correctNetwork(t.chain_id) &&
+                correctAccount(t.eth_address)
+              "
+              color="positive"
+              @click="claimEvm(t)"
+            >
+              Claim
+            </q-btn>
+            <q-btn
+              class="hover-accent full-width"
+              v-else-if="!t.claimed && !correctNetwork(t.chain_id)"
+              color="primary"
+              @click="switchMetamaskNetwork(networkNameFromId(t.chain_id))"
+            >
+              Switch Chain
+            </q-btn>
+            <q-btn
+              class="hover-accent full-width"
+              v-else-if="!t.claimed && !correctAccount(t.eth_address)"
+              color="grey"
+              @click="$q.notify({ color: 'green-4', message: 'TODO' })"
+            >
+              Switch Account
+            </q-btn>
+          </div>
         </div>
       </div>
     </div>
@@ -112,6 +125,7 @@
       </div>
     </q-slide-transition>
   </q-card>
+</div>
 </template>
 
 <script>
@@ -128,7 +142,6 @@ const toHexString = (bytes) =>
   bytes.reduce((str, byte) => str + byte.toString(16).padStart(2, "0"), "");
 
 export default {
-  props: ["selectedTokenSym"],
   components: {
     tokenAvatar,
   },
@@ -148,6 +161,8 @@ export default {
   },
   computed: {
     ...mapGetters("account", ["accountName"]),
+    ...mapGetters("blockchains", ["getCurrentChain"]),
+    ...mapGetters("bridge", ["getToken"]),
     ...mapGetters("tport", [
       "getEvmAccountName",
       "getEvmNetwork",
@@ -162,7 +177,7 @@ export default {
         return this.getTeleports.filter(
           (el) =>
             !el.claimed &&
-            this.$chainToSym(el.quantity) === this.selectedTokenSym &&
+            this.$chainToSym(el.quantity) === this.getToken.symbol &&
             this.correctAccount(el.eth_address)
         );
       } else {
@@ -174,7 +189,7 @@ export default {
         return this.getTeleports.filter(
           (el) =>
             el.claimed &&
-            this.$chainToSym(el.quantity) === this.selectedTokenSym &&
+            this.$chainToSym(el.quantity) === this.getToken.symbol &&
             this.correctAccount(el.eth_address)
         );
       } else {
@@ -262,6 +277,7 @@ export default {
       };
     },
     async claimEvm(teleport) {
+      console.log(teleport)
       this.claiming = teleport.id;
       console.log("Claiming teleport:", teleport);
       const { injectedWeb3, web3 } = await this.$web3();
@@ -279,7 +295,7 @@ export default {
             teleport.id,
             remoteContractAddress
           );
-          // console.log(JSON.stringify(signData));
+         console.log(JSON.stringify(signData));
 
           const remoteInstance = new web3.eth.Contract(
             this.$erc20Abi,
@@ -303,6 +319,11 @@ export default {
     async refreshTeleports() {
       this.$store.dispatch("tport/setTeleports", this.accountName);
     },
+    async getTokenFromQty(qty) {
+      const sym = this.$chainToSym(qty);
+      console.log(sym)
+      return sym;
+    }
   },
   mounted() {
     // Poll teleports
@@ -315,3 +336,14 @@ export default {
   },
 };
 </script>
+
+<style lang="scss" scoped>
+ .bridgeDash {
+   width: 700px;
+   max-width: 80vw;
+ }
+ .bridgeButton {
+   color: white;
+   background-color: rgb(85,42,248);
+ }
+</style>

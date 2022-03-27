@@ -11,6 +11,10 @@
     <div class="row justify-center q-mt-xs q-mb-lg">
       <bridge-stepper/>
     </div>
+
+    <div class="row justify-center q-mt-lg q-mb-lg">
+      <bridge-dashboard/>
+    </div>
     
   </section>
 
@@ -22,11 +26,13 @@
 import { mapGetters, mapActions } from "vuex";
 import metamask from "src/components/Metamask";
 import bridgeStepper from "../components/bridge/bridgeStepper.vue"
+import bridgeDashboard from "src/components/bridge/TeleportDash.vue"
 
 
 export default {
   components: {
-    bridgeStepper
+    bridgeStepper,
+    bridgeDashboard
   },
   mixins: [metamask],
   data() {

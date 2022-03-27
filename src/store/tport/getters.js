@@ -26,7 +26,7 @@ export function getTeleports(state) {
 export const getTPortTokens = ({ tportTokens }) => tportTokens;
 
 export const getTPortTokensBySym = ({ tportTokens }) => sym => {
-  return tportTokens.find(el => el.token.sym === sym);
+  return tportTokens.find(el => el.symbol === sym);
 };
 
 export const getEvmNetworkByName = ({ networkList }) => name => {

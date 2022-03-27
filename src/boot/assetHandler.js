@@ -77,6 +77,26 @@ const assetToPrecision = asset => {
     } else return 0;
 };
 
+// Gets symbol from chain string e.g. TLOS from "0.0000 TLOS"
+const chainToSym = function (str) {
+    try {
+      return str.split(" ")[1];
+    } catch (error) {
+      return str;
+    }
+};
+
+  
+// Gets amount of decimal from chain string e.g. 4 from "0.0000 TLOS"
+const chainToDecimals = function (str) {
+if (str.length > 0) {
+    let commaidx = str.indexOf(".") + 1;
+    let spaceidx = str.indexOf(" ");
+    const precision = str.slice(commaidx, spaceidx).length;
+    return precision;
+} else return 0;
+};
+
 // Asset "5.0000 TLOS" to symbol
 const assetToSymbol = asset => {
     try {
@@ -117,6 +137,8 @@ export default async ({ Vue, store }) => {
     Vue.prototype.$getSymFromAsset = getSymFromAsset;
     Vue.prototype.$getDecimalFromAsset = getDecimalFromAsset;
     Vue.prototype.$chainToQty = chainToQty;
+    Vue.prototype.$chainToSym = chainToSym;
+    Vue.prototype.$chainToDecimals = chainToDecimals;
     store["$exAssToPrecision"] = exAssToPrecision;
     store["$exAssToSymbol"] = exAssToSymbol;
     store["$exSymToContract"] = exSymToContract;
@@ -129,4 +151,6 @@ export default async ({ Vue, store }) => {
     store["$getSymFromAsset"] = getSymFromAsset;
     store["$getDecimalFromAsset"] = getDecimalFromAsset;
     store["$chainToQty"] = chainToQty;
+    store["$chainToSym"] = chainToSym;
+    store["$chainToDecimals"] = chainToDecimals;
 };

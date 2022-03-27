@@ -39,17 +39,17 @@
               class="evm-account col ellipsis cursor-pointer bordered text-center"
               style="max-width: 200px"
               v-else-if="this.isAuthenticated && (this.isNative)"
-              @click="copyEvmAccount"
+              @click="logout"
             >
-              {{ accountName }}
+              Disconnect
             </div>
             <div
               class="evm-account col ellipsis cursor-pointer bordered text-center"
               style="max-width: 200px"
               v-else-if="(getEvmAccountName != '') && (!this.isNative)"
-              @click="copyEvmAccount"
+              @click="setEthAccountName"
             >
-              {{ getEvmAccountName }}
+              Disconnect
             </div>
           </div>
         </div>
@@ -143,7 +143,8 @@ export default {
     // }
   },
   methods: {
-    ...mapActions("account", ["setWalletBalances"]),
+    ...mapActions("account", ["setWalletBalances", "logout"]),
+    ...mapActions("tport", ["setAccountName"]),
 
     // changeNetwork(network) {
     //   this.$emit("update:selectedNetwork", network);
@@ -305,6 +306,10 @@ export default {
         });
       });
     },
+
+    setEthAccountName() {
+      this.$store.commit("tport/setAccountName", { accountName: "" });
+    }
   },
   async mounted() {
     this.updateBalance();

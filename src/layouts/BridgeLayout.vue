@@ -13,23 +13,6 @@
           </router-link>
         </div>
         <q-space />
-
-        <login-button />
-
-        <q-btn icon="menu" flat>
-          <q-menu :offset="[0, 15]">
-            <q-list style="min-width: 180px" class="menu">
-              
-              <q-separator v-if="isAuthenticated" />
-              <q-item v-if="isAuthenticated" clickable @click="logout">
-                <q-item-section> Logout </q-item-section>
-                <q-item-section side>
-                  <q-icon name="fas fa-sign-out-alt" />
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </q-menu>
-        </q-btn>
       </q-toolbar>
     </q-header>
     <section >
@@ -49,13 +32,11 @@
 </template>
 
 <script>
-import LoginButton from "components/LoginButton.vue";
 import { mapGetters, mapActions } from "vuex";
 import axios from "axios";
 
 export default {
   name: "MainLayout",
-  components: { LoginButton },
   data() {
     return {
       darkMode: {

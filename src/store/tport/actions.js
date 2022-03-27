@@ -2,7 +2,6 @@
 export const setTPortTokens = async function({ commit, getters }) {
   try {
     let tokens = [];
-    console.log(process.env.TPORT_ADDRESS)
     const tableResults = await this.$api.getTableRows({
       code: process.env.TPORT_ADDRESS,
       scope: process.env.TPORT_ADDRESS,
@@ -11,10 +10,7 @@ export const setTPortTokens = async function({ commit, getters }) {
       reverse: false,
       show_payer: false
     });
-    console.log("here");
-    console.log(tableResults.rows);
     for (let asset of tableResults.rows) {
-      // console.log("Asset: ", asset);
       asset = {
         ...asset,
         symbol: this.$getSymFromAsset(asset.token),
@@ -24,7 +20,6 @@ export const setTPortTokens = async function({ commit, getters }) {
       };
       tokens.push(asset);
     }
-    // console.log("TPort Tokens:", tokens);
     commit("updateTPortTokens", { tokens });
   } catch (error) {
     commit("general/setErrorMsg", error.message || error, { root: true });
@@ -82,11 +77,14 @@ export const setTeleports = async function({ commit }, account) {
       ]
     }
     */
-
+    var options = { year: 'numeric', month: 'short', day: 'numeric' , hour: 'numeric', minute: 'numeric'};
     teleports = teleports
       .map(t => {
         if (t.date) {
           t.time = new Date(t.date + "Z").valueOf();
+          t.displaydate = new Date(t.date + "Z");
+        } else {
+          t.displaydate = new Date(t.time ).toLocaleDateString("en-US", options);
         }
         return t;
       })

@@ -49,6 +49,28 @@
         icon="fas fa-file-invoice-dollar"
         :done="step > 2"
       >
+        <div class="row q-px-lg q-pb-lg bordered">
+          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold small-padding">
+              {{"From "+getFromChain.NETWORK_NAME}}
+          </div>
+          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold ">
+            <token-avatar
+                class="q-mx-sm"
+                :token="getFromChain.NETWORK_NAME"
+                :avatarSize="35"
+            />
+            
+            <q-icon class="q-mx-sm fas fa-arrow-right"></q-icon>
+            <token-avatar
+                class="q-mx-sm"
+                :token="getToChain.NETWORK_NAME"
+                :avatarSize="35"
+            />
+          </div>
+          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold small-padding">
+              {{"To "+getToChain.NETWORK_NAME}}
+          </div>
+        </div>
         <div class="row">
           <div class="col-12 q-mb-sm">
             <div class="text-h5 q-mb-sm">
@@ -85,7 +107,45 @@
         title="Confirm"
         icon="fas fa-clipboard-check"
       >
-        <div class="row">
+        <div class="row q-px-lg q-pb-lg bordered q-pb-md">
+          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold small-padding">
+              {{"From "+getFromChain.NETWORK_NAME}}
+          </div>
+          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold ">
+            <token-avatar
+                class="q-mx-sm"
+                :token="getFromChain.NETWORK_NAME"
+                :avatarSize="35"
+            />
+            
+            <q-icon class="q-mx-sm fas fa-arrow-right"></q-icon>
+            <token-avatar
+                class="q-mx-sm"
+                :token="getToChain.NETWORK_NAME"
+                :avatarSize="35"
+            />
+          </div>
+          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold small-padding">
+              {{"To "+getToChain.NETWORK_NAME}}
+          </div>
+        </div>
+        <div class="q-py-sm"/>
+        <div class="row q-px-lg q-pb-lg bordered justify-center q-pt-md">
+          <div class="col-6 text-h6 text-center text-bold small-padding q-px-md">
+              {{getAmount}}
+          </div>
+          <div class="col-6 text-h6 text-bold q-px-md">
+            <div class="row items-center full-height justify-center">
+              <token-avatar
+                  class="q-mx-sm"
+                  :token="getToken.symbol"
+                  :avatarSize="35"
+              />
+                {{getToken.symbol}}
+            </div>
+          </div>
+        </div>
+        <div class="row q-pt-md">
           <div class="col-12 q-mb-sm">
             <div class="text-h5 q-mb-sm">
               Confirm Transaction
@@ -125,13 +185,15 @@ import coinSelector from "./CoinSelector.vue";
 import connect from "./Connect.vue";
 import amountInput from "./AmountInput";
 import sendTxDialog from "./SendTxDialog";
+import tokenAvatar from "src/components/TokenAvatar.vue";
 
 export default {
   components: {
     connect,
     coinSelector,
     amountInput,
-    sendTxDialog
+    sendTxDialog,
+    tokenAvatar
   },
   data() {
     return {
@@ -322,4 +384,13 @@ export default {
    color: white;
    background-color: rgb(85,42,248);
  }
+ .bordered {
+  border: 2px solid $primary;
+  border-radius: 15px;
+  padding: 5px;
+  //background: rgb(227,223,247) !important;
+}
+.small-padding {
+  padding-top: 4px;
+}
 </style>

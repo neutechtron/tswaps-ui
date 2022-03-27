@@ -21,7 +21,6 @@ export const login = async function (
             const account = users[0];
             const accountName = await account.getAccountName();
             this.$ualUser = account;
-            console.log("acc rpc", this.$ualUser.rpc);
             this.$type = "ual";
             commit("setAccountName", accountName);
             localStorage.setItem("autoLogin", authenticator.constructor.name);
