@@ -21,3 +21,7 @@ export const setAmount = (state, amount) => {
 export const setToAccount = (state, toAccount) => {
   state.toAccount = toAccount;
 }
+
+export const setToNative = (state, flag) => {
+  state.toNative = flag;
+};

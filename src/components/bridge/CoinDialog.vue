@@ -183,7 +183,8 @@ export default {
     // await this.updatePools();
     // await this.updateAllTokensBalances(this.accountName);
     await this.setTPortTokens();
-    await this.updateTportTokenBalances(this.accountName);
+    const { injectedWeb3, web3 } = await this.$web3();
+    await this.updateTportTokenBalances(this.accountName, injectedWeb3, web3, await this.$erc20Abi );
   },
 };
 </script>

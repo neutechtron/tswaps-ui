@@ -17,6 +17,7 @@ export default function() {
     fromAccount: "",
     fromChain: {},
     toAccount: "",
-    toChain: {}
+    toChain: {},
+    toNative : false
   };
 }

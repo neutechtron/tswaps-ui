@@ -30,7 +30,7 @@ const routes = [
   },
   {
     path: "/",
-    component: () => import("layouts/Bridgelayout.vue"),
+    component: () => import("layouts/BridgeLayout.vue"),
     children: [
       { path: "", name: "bridge", component: () => import("pages/bridge.vue") }
     ]

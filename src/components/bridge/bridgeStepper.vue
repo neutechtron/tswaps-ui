@@ -214,18 +214,24 @@ export default {
       "getTPortTokensBySym",
       "getTPortTokens",
       "getTeleports",
-      "getEvmAccountName"
+      "getEvmAccountName",
+      "getEvmChainId",
+      "getEvmNetwork",
+      "getEvmRemoteId"
+
     ]),
     ...mapGetters("blockchains", [
       "getCurrentChain",
       "getNetworkByName",
-      "getBridgeTokens"
+      "getBridgeTokens",
+      "getAllPossibleChains"
     ]),
     ...mapGetters("bridge", [
       "getToChain",
       "getFromChain",
       "getToken",
-      "getAmount"
+      "getAmount",
+      "getToNative"
     ]),
 
     selectedToken() {
@@ -296,7 +302,7 @@ export default {
   },
   methods: {
     ...mapActions("account", ["reloadWallet", "setWalletBalances"]),
-    ...mapActions("tport", ["setTPortTokens", "updateTportTokenBalances"]),
+    ...mapActions("tport", ["setTPortTokens", "updateTportTokenBalances", "updateWeb3"]),
     ...mapActions("bridge", ["updateAmount", "sendBridgeToken"]),
 
     formSubmitted() {
@@ -318,6 +324,7 @@ export default {
 
     handleNext () {
       if ((this.step === 1) && this.isWalletsConnected()) {
+        this.getToNative ? this.updateTportTokenBalancesEvm() : this.updateTportTokenBalances()
         this.$refs.stepper.next();
       } else if ((this.step === 2) && this.isValidTransaction()) {
         this.$refs.stepper.next();
@@ -335,7 +342,8 @@ export default {
           this.to = null;
           this.amount = null;
           this.memo = "";
-          this.updateTportTokenBalances(this.accountName);
+          const { injectedWeb3, web3 } = await this.$web3();
+          this.updateTportTokenBalances(this.accountName, injectedWeb3, web3, this.$erc20Abi );
           this.$store.dispatch("tport/setTeleports", this.accountName);
         }
         this.$q.notify({
@@ -348,6 +356,90 @@ export default {
         this.$errorNotification(error);
       }
       
+    },
+    async updateTportTokenBalancesEvm () {
+      try {
+        if (this.getEvmChainId && this.getEvmAccountName) {
+          console.log("here")
+          let tokens = this.getTPortTokens;
+          let remoteContractAddress = undefined;
+          let balance = 0;
+          for (const token of tokens) {
+            try {
+              const { injectedWeb3, web3 } = await this.$web3();
+              if (injectedWeb3) {
+                console.log(this.wrongNetwork(this.getEvmNetwork, this.getFromChain))
+                if (this.wrongNetwork(this.getEvmNetwork, this.getFromChain)) balance = 0;
+                else {
+                  console.log("TPort token:", token);
+                  if (token == undefined) {
+                    console.error("TPort Token not found");
+                  } else {
+                    console.log(this.getEvmRemoteId);
+                    remoteContractAddress = token.remote_contracts.find(
+                      (el) => el.key === this.getEvmRemoteId
+                    );
+                  if(remoteContractAddress !== undefined) {
+                    console.log(remoteContractAddress)
+                    remoteContractAddress = remoteContractAddress.value
+                    console.log("remoteContractAddress:", remoteContractAddress);
+                    const remoteInstance = new web3.eth.Contract(
+                      this.erc20Abi,
+                      remoteContractAddress
+                    ); // TODO Add check to validate abi
+                    console.log("remoteInstance:", remoteInstance);
+                    const remotebalance = await remoteInstance.methods
+                      .balanceOf(this.getEvmAccountName)
+                      .call();
+                    console.log("Balance is:", balance);
+                    balance = Number(
+                      parseFloat(
+                        ethers.utils
+                          .formatUnits(
+                            remotebalance,
+                            await remoteInstance.methods.decimals().call()
+                          )
+                          .toString()
+                      ).toFixed(token.token.decimals)
+                    );
+                  } 
+                }
+                }
+              }
+              console.log("balance:")
+              console.log(balance)
+              if (balance !== undefined) {
+                let precision = this.$assetToPrecision(balance)
+                if (token.token.decimals === 0) {
+                  this.$store.commit("tport/setTokenPrecision", {
+                    token: token,
+                    precision: precision
+                  });
+                }
+                this.$store.commit("tport/setTokenAmount", {
+                  token: token,
+                  amount: this.$assetToAmount(balance)
+                });
+              } else {
+                this.$store.commit("tport/setTokenAmount", { token: token, amount: 0 });
+              }
+            } catch (error) {
+              this.$store.commit("tport/setTokenAmount", { token: token, amount: 0 });
+            }
+          }
+        }
+      } catch (error) {
+          console.log("Error getting chain token balance:", error);
+          this.$store.commit("general/setErrorMsg", error.message || error, { root: true });
+      }
+    },
+    wrongNetwork(evmNetwork, selectedNetwork) {
+      if (evmNetwork) {
+        return (
+          evmNetwork.name.toUpperCase() !==
+          selectedNetwork.NETWORK_NAME.toUpperCase()
+        );
+      } else return true;
     }
   },
   mounted() {
@@ -356,8 +448,10 @@ export default {
     this.selectedNetwork = this.getCurrentChain.NETWORK_NAME;
     this.reloadWallet(this.accountName);
     this.setTPortTokens();
-    this.updateTportTokenBalances(this.accountName);
     this.$store.dispatch("tport/setTeleports", this.accountName);
+    this.getToNative ? this.updateTportTokenBalancesEvm() : this.updateTportTokenBalances()
+    this.$store.commit("bridge/setFromChain", this.getAllPossibleChains[0]);
+    this.$store.commit("bridge/setToChain", this.getAllPossibleChains[1]);
   },
 
   watch: {
@@ -378,7 +472,7 @@ export default {
 <style lang="scss" scoped>
  .bridgeStepper {
    width: 700px;
-   max-width: 80vw;
+   max-width: 95vw;
  }
  .bridgeButton {
    color: white;

@@ -68,21 +68,19 @@ export default {
   methods: {
     ...mapActions("account", ["login", "logout", "autoLogin"]),
     ...mapActions("blockchains", ["updateCurrentChain"]),
+    ...mapActions("bridge", ["updateFromChain", "updateToChain"]),
 
     async updateSelectedNet(chain) {
-      if (this.isFrom && (this.getFromChain != chain)) {
-        this.$store.commit("bridge/setToChain", this.getFromChain);
-        this.$store.commit("bridge/setFromChain", chain);
-      } else if ( this.getToChain != chain) {
-        this.$store.commit("bridge/setFromChain", this.getToChain);
-        this.$store.commit("bridge/setToChain", chain);
+      console.log(this.getFromChain.NETWORK_NAME !== chain.NETWORK_NAME)
+      if (this.isFrom && (this.getFromChain.NETWORK_NAME !== chain.NETWORK_NAME)) {
+        this.updateToChain(this.getFromChain);
+        this.updateFromChain(chain);
+      } else if ( !this.isFrom && (this.getToChain.NETWORK_NAME !== chain.NETWORK_NAME)) {
+        this.updateFromChain(this.getToChain);
+        this.updateToChain(chain);
       }
       this.$emit("update:showNetDialog", false);
     }
-  },
-
-  beforeMount() {
-    this.$store.commit("bridge/setFromChain", this.getCurrentChain);
   },
   watch: {}
 };

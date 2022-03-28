@@ -5,4 +5,5 @@ export const getFromAccount = ({ fromAccount }) => fromAccount;
 export const getToAccount = ({ toAccount}) => toAccount;
 export const getAmount = ({ amount }) => amount;
 export const getMemo = ({ memo }) => memo;
+export const getToNative = ({ toNative }) => toNative;
 

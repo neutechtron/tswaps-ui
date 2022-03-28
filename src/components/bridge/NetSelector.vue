@@ -56,10 +56,6 @@ export default {
       else return "";
     }
   },
-  mounted() {
-    this.$store.commit("bridge/setFromChain", this.getAllPossibleChains[0]);
-    this.$store.commit("bridge/setToChain", this.getAllPossibleChains[1]);
-  }
 };
 </script>
 

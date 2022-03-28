@@ -144,49 +144,15 @@ export default {
   },
   methods: {
     ...mapActions("account", ["setWalletBalances", "logout"]),
-    ...mapActions("tport", ["setAccountName"]),
+    ...mapActions("tport", ["setAccountName", "updateTportTokenBalances"]),
 
     // changeNetwork(network) {
     //   this.$emit("update:selectedNetwork", network);
     // },
 
     async updateBalance() {
-      if (this.getEvmChainId && this.getEvmAccountName) {
-        const { injectedWeb3, web3 } = await this.$web3();
-
-        if (injectedWeb3) {
-          if (this.wrongNetwork) this.remoteBalance = 0;
-          else {
-            // console.log("ERC20 ABI:", this.$erc20Abi, "Chain data:", chainData);
-            const token = this.getTPortTokensBySym(this.selectedTokenSym);
-            // console.log("TPort token:", token);
-            if (typeof token === "undefined") {
-              console.error("TPort Token not found");
-            } else {
-              const remoteContractAddress = token.remote_contracts.find(
-                (el) => el.key === this.getEvmRemoteId
-              ).value;
-              // console.log("remoteContractAddress:", remoteContractAddress);
-              this.remoteContractInstance = new web3.eth.Contract(
-                this.$erc20Abi,
-                remoteContractAddress
-              ); // TODO Add check to validate abi
-              //   console.log("remoteInstance:", remoteInstance);
-              const balance = await this.remoteContractInstance.methods
-                .balanceOf(this.getEvmAccountName)
-                .call();
-              this.remoteBalance = Number(
-                ethers.utils
-                  .formatUnits(
-                    balance,
-                    await this.remoteContractInstance.methods.decimals().call()
-                  )
-                  .toString()
-              );
-            }
-          }
-        }
-      }
+      const { injectedWeb3, web3 } = await this.$web3();
+      this.updateTportTokenBalances(injectedWeb3, web3, this.$erc20Abi );
     },
 
     async trySend() {

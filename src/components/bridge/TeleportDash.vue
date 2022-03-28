@@ -340,7 +340,7 @@ export default {
 <style lang="scss" scoped>
  .bridgeDash {
    width: 700px;
-   max-width: 80vw;
+   max-width: 95vw;
  }
  .bridgeButton {
    color: white;
