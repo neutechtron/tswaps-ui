@@ -71,7 +71,6 @@ export default {
     ...mapActions("bridge", ["updateFromChain", "updateToChain"]),
 
     async updateSelectedNet(chain) {
-      console.log(this.getFromChain.NETWORK_NAME !== chain.NETWORK_NAME)
       if (this.isFrom && (this.getFromChain.NETWORK_NAME !== chain.NETWORK_NAME)) {
         this.updateToChain(this.getFromChain);
         this.updateFromChain(chain);

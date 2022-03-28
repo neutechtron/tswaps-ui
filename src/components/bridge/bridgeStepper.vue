@@ -186,6 +186,7 @@ import connect from "./Connect.vue";
 import amountInput from "./AmountInput";
 import sendTxDialog from "./SendTxDialog";
 import tokenAvatar from "src/components/TokenAvatar.vue";
+import { ethers } from "ethers";
 
 export default {
   components: {
@@ -360,7 +361,6 @@ export default {
     async updateTportTokenBalancesEvm () {
       try {
         if (this.getEvmChainId && this.getEvmAccountName) {
-          console.log("here")
           let tokens = this.getTPortTokens;
           let remoteContractAddress = undefined;
           let balance = 0;
@@ -368,30 +368,22 @@ export default {
             try {
               const { injectedWeb3, web3 } = await this.$web3();
               if (injectedWeb3) {
-                console.log(this.wrongNetwork(this.getEvmNetwork, this.getFromChain))
                 if (this.wrongNetwork(this.getEvmNetwork, this.getFromChain)) balance = 0;
                 else {
-                  console.log("TPort token:", token);
                   if (token == undefined) {
-                    console.error("TPort Token not found");
                   } else {
-                    console.log(this.getEvmRemoteId);
                     remoteContractAddress = token.remote_contracts.find(
                       (el) => el.key === this.getEvmRemoteId
                     );
                   if(remoteContractAddress !== undefined) {
-                    console.log(remoteContractAddress)
                     remoteContractAddress = remoteContractAddress.value
-                    console.log("remoteContractAddress:", remoteContractAddress);
                     const remoteInstance = new web3.eth.Contract(
-                      this.erc20Abi,
+                      this.$erc20Abi,
                       remoteContractAddress
                     ); // TODO Add check to validate abi
-                    console.log("remoteInstance:", remoteInstance);
                     const remotebalance = await remoteInstance.methods
                       .balanceOf(this.getEvmAccountName)
                       .call();
-                    console.log("Balance is:", balance);
                     balance = Number(
                       parseFloat(
                         ethers.utils
@@ -400,17 +392,15 @@ export default {
                             await remoteInstance.methods.decimals().call()
                           )
                           .toString()
-                      ).toFixed(token.token.decimals)
+                      ).toFixed(token.decimals)
                     );
                   } 
                 }
                 }
               }
-              console.log("balance:")
-              console.log(balance)
-              if (balance !== undefined) {
+              if (balance !== undefined && balance !== 0) {
                 let precision = this.$assetToPrecision(balance)
-                if (token.token.decimals === 0) {
+                if (token.decimals === 0) {
                   this.$store.commit("tport/setTokenPrecision", {
                     token: token,
                     precision: precision

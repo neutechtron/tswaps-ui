@@ -38,7 +38,6 @@ export default {
       let chain = this.getToChain;
       let fromAccount = this.getFromChain.NETWORK_DISPLAY_NAME === "Telos" ? this.accountName : this.getEvmAccountName
       let toAccount = this.getToChain.NETWORK_DISPLAY_NAME === "Telos" ? this.accountName : this.getEvmAccountName
-      console.log(fromAccount, toAccount)
       if (!toAccount) toAccount = "";
       if (!fromAccount) fromAccount = "";
       if (this.isFrom) chain = this.getFromChain;
