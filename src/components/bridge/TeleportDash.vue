@@ -1,131 +1,146 @@
 <template>
-<div class="bridgeDash">
-  <q-card>
-    <div class="row justify-center">
-      <div class="text-h6 text-center q-pr-sm">Transaction History</div>
-      <q-btn
-        padding="sm"
-        class="hover-accent"
-        color="black"
-        icon="fas fa-sync-alt"
-        flat
-        size="sm"
-        @click="refreshTeleports()"
-      />
-    </div>
-    <div class="column">
-      <div
-        class="row justify-center items-center q-px-lg"
-        v-for="t in unclaimedTeleports"
-        :key="t.id"
-      >
-        <div class="col-md-4 col-xs-12 text-h6 text-center text-bold q-py-sm">
-          <token-avatar
-            class="q-mx-sm q-mb-sm"
-            :token="getToken.symbol"
-            :avatarSize="30"
-          />
-          {{ t.quantity }}
-        </div>
-        <div class="col-md-6 col-xs-12 text-center text-bold q-py-sm">
-          <token-avatar
+  <div class="bridgeDash">
+    <q-card>
+      <div class="row justify-center">
+        <div class="text-h6 text-center q-pr-sm">Transaction History</div>
+        <q-btn
+          padding="sm"
+          class="hover-accent"
+          color="black"
+          icon="fas fa-sync-alt"
+          flat
+          size="sm"
+          @click="refreshTeleports()"
+        />
+      </div>
+      <div class="column">
+        <div
+          class="row justify-center items-center q-px-lg"
+          v-for="t in unclaimedTeleports"
+          :key="t.id"
+        >
+          <div class="col-md-4 col-xs-12 text-h6 text-center text-bold q-py-sm">
+            <token-avatar
+              class="q-mx-sm q-mb-sm"
+              :token="getToken.symbol"
+              :avatarSize="30"
+            />
+            {{ t.quantity }}
+          </div>
+          <div class="col-md-6 col-xs-12 text-center text-bold q-py-sm">
+            <token-avatar
               class="q-mx-sm"
               :token="getCurrentChain.NETWORK_NAME"
               :avatarSize="30"
-          />
-          <q-icon class="q-mx-sm fas fa-arrow-right"></q-icon>
-          <token-avatar
+            />
+            <q-icon class="q-mx-sm fas fa-arrow-right"></q-icon>
+            <token-avatar
               class="q-mx-sm"
               :token="evmNetworkNameById(t.chain_id)"
               :avatarSize="30"
-          />
-          {{t.displaydate}}
-        </div>
-        <div class="col-md-2 col-xs-12 text-center q-px-sm q-py-sm">
-          <div side>
-            <q-btn
-              class="hover-accent full-width"
-              v-if="t.processing || claiming === t.id"
-              color="grey"
-            >
-              Processing
-            </q-btn>
-            <q-btn
-              class="hover-accent full-width"
-              v-else-if="
-                !t.claimed &&
-                correctNetwork(t.chain_id) &&
-                correctAccount(t.eth_address)
-              "
-              color="positive"
-              @click="claimEvm(t)"
-            >
-              Claim
-            </q-btn>
-            <q-btn
-              class="hover-accent full-width"
-              v-else-if="!t.claimed && !correctNetwork(t.chain_id)"
-              color="primary"
-              @click="switchMetamaskNetwork(networkNameFromId(t.chain_id))"
-            >
-              Switch Chain
-            </q-btn>
-            <q-btn
-              class="hover-accent full-width"
-              v-else-if="!t.claimed && !correctAccount(t.eth_address)"
-              color="grey"
-              @click="$q.notify({ color: 'green-4', message: 'TODO' })"
-            >
-              Switch Account
-            </q-btn>
+            />
+            {{ t.displaydate }}
           </div>
-        </div>
-      </div>
-    </div>
-    <q-card-actions class="row justify-center">
-      <div>{{ expanded ? "Hide" : "Show" }} Claimed</div>
-      <q-btn
-        color="grey"
-        round
-        flat
-        dense
-        :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
-        @click="expanded = !expanded"
-      />
-    </q-card-actions>
-
-    <q-slide-transition>
-      <div v-show="expanded">
-        <q-separator />
-        <div class="text-subitle2">
-          <div class="column">
+          <div class="col-md-2 col-xs-12 text-center q-px-sm q-py-sm">
             <div
-              class="row justify-center items-center q-py-xs"
-              v-for="t in claimedTeleports"
-              :key="t.id"
+              side
+              class="column row wrap justify-center items-center content-center"
             >
-              <div class="col text-right">
-                {{ t.quantity }}
-              </div>
-              <q-icon class="q-mx-sm fas fa-arrow-right"></q-icon>
-              <div class="col row items-center justify-start">
-                <div>{{ ethAddressShort(t.eth_address) }}</div>
-                <token-avatar
-                  class="q-mx-sm"
-                  :token="evmNetworkNameById(t.chain_id)"
-                  :avatarSize="25"
-                />
-              </div>
-              <!-- <div side>
-                <div v-if="t.claimed" class="text-emphasis">Claimed</div>
-              </div> -->
+              <q-btn
+                class="hover-accent full-width"
+                v-if="t.processing || claiming === t.id"
+                color="grey"
+              >
+                Processing
+              </q-btn>
+              <q-btn
+                class="hover-accent"
+                v-else-if="
+                  !t.claimed &&
+                  correctNetwork(t.chain_id) &&
+                  correctAccount(t.eth_address)
+                "
+                color="positive"
+                @click="claimEvm(t)"
+              >
+                Claim
+              </q-btn>
+              <q-btn
+                class="hover-accent full-width"
+                v-else-if="!t.claimed && !correctNetwork(t.chain_id)"
+                color="primary"
+                @click="switchMetamaskNetwork(networkNameFromId(t.chain_id))"
+              >
+                Switch Chain
+              </q-btn>
+              <q-btn
+                class="hover-accent full-width"
+                v-else-if="!t.claimed && !correctAccount(t.eth_address)"
+                color="grey"
+                @click="$q.notify({ color: 'green-4', message: 'TODO' })"
+              >
+                Switch Account
+              </q-btn>
+              <q-btn
+                class="hover-accent q-mt-xs"
+                size="sm"
+                icon="fa fa-trash"
+                color="negative"
+                v-if="
+                  Math.round(Date.now() / 1000) - t.time > 32 * 24 * 60 * 60
+                "
+                @click="tryCancelTP(t)"
+              >
+                <q-tooltip>Cancel and refund teleport</q-tooltip>
+              </q-btn>
             </div>
           </div>
         </div>
       </div>
-    </q-slide-transition>
-  </q-card>
-</div>
+      <q-card-actions class="row justify-center">
+        <div>{{ expanded ? "Hide" : "Show" }} Claimed</div>
+        <q-btn
+          color="grey"
+          round
+          flat
+          dense
+          :icon="expanded ? 'keyboard_arrow_up' : 'keyboard_arrow_down'"
+          @click="expanded = !expanded"
+        />
+      </q-card-actions>
+
+      <q-slide-transition>
+        <div v-show="expanded">
+          <q-separator />
+          <div class="text-subitle2">
+            <div class="column">
+              <div
+                class="row justify-center items-center q-py-xs"
+                v-for="t in claimedTeleports"
+                :key="t.id"
+              >
+                <div class="col text-right">
+                  {{ t.quantity }}
+                </div>
+                <q-icon class="q-mx-sm fas fa-arrow-right"></q-icon>
+                <div class="col row items-center justify-start">
+                  <div>{{ ethAddressShort(t.eth_address) }}</div>
+                  <token-avatar
+                    class="q-mx-sm"
+                    :token="evmNetworkNameById(t.chain_id)"
+                    :avatarSize="25"
+                  />
+                </div>
+                <!-- <div side>
+                <div v-if="t.claimed" class="text-emphasis">Claimed</div>
+              </div> -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </q-slide-transition>
+    </q-card>
+  </div>
 </template>
 
 <script>
@@ -265,11 +280,12 @@ export default {
         data = "0x" + toHexString(sb.array.slice(0, 69));
         console.log("Old Teleport Contract");
       } else {
+        sb.pushArray(fromHexString(remoteContractAddress));
         sb.push(this.$chainToDecimals(teleportData.quantity));
-        data = "0x" + toHexString(sb.array.slice(0, 71));
+        data = "0x" + toHexString(sb.array.slice(0, 91));
       }
 
-      console.log("signData:", "0x" + toHexString(sb.array.slice(0, 71)));
+      //   console.log("signData:", "0x" + toHexString(sb.array.slice(0, 91)));
       return {
         claimAccount: "0x" + teleportData.eth_address,
         data: data,
@@ -277,7 +293,7 @@ export default {
       };
     },
     async claimEvm(teleport) {
-      console.log(teleport)
+      console.log(teleport);
       this.claiming = teleport.id;
       console.log("Claiming teleport:", teleport);
       const { injectedWeb3, web3 } = await this.$web3();
@@ -295,7 +311,7 @@ export default {
             teleport.id,
             remoteContractAddress
           );
-         console.log(JSON.stringify(signData));
+          console.log(JSON.stringify(signData));
 
           const remoteInstance = new web3.eth.Contract(
             this.$erc20Abi,
@@ -316,14 +332,44 @@ export default {
         }
       }
     },
+
+    async tryCancelTP(teleport) {
+      try {
+        await this.cancelTP(teleport);
+        this.$q.notify({
+          color: "green-4",
+          textColor: "white",
+          icon: "cloud_done",
+          message: "Refunded",
+        });
+        this.refreshTeleports();
+      } catch (error) {
+        this.$errorNotification(error);
+      }
+    },
+
+    async cancelTP(teleport) {
+      let transaction;
+      const actions = [
+        {
+          account: process.env.TPORT_ADDRESS,
+          name: "cancel",
+          data: {
+            id: teleport.id,
+          },
+        },
+      ];
+      transaction = await this.$store.$api.signTransaction(actions);
+    },
+
     async refreshTeleports() {
       this.$store.dispatch("tport/setTeleports", this.accountName);
     },
     async getTokenFromQty(qty) {
       const sym = this.$chainToSym(qty);
-      console.log(sym)
+      console.log(sym);
       return sym;
-    }
+    },
   },
   mounted() {
     // Poll teleports
