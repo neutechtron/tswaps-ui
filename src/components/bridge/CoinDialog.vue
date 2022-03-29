@@ -146,7 +146,7 @@ export default {
     ...mapActions("swap", ["updateSwapPool", "updateEstimate"]),
     ...mapActions("liquidity", ["updateActivePool"]),
     ...mapActions("pools", ["updatePools"]),
-    ...mapActions("tport", ["setTPortTokens", "updateTportTokenBalances"]),
+    ...mapActions("tport", ["updateTPortTokens", "updateTportTokenBalances"]),
     ...mapActions("bridge", ["updateBridgeToken"]),
 
     updateSelectedCoin(token) {
@@ -182,7 +182,7 @@ export default {
   async mounted() {
     // await this.updatePools();
     // await this.updateAllTokensBalances(this.accountName);
-    await this.setTPortTokens();
+    await this.updateTPortTokens();
     const { injectedWeb3, web3 } = await this.$web3();
     await this.updateTportTokenBalances(
       this.accountName,

@@ -320,9 +320,10 @@ export default {
   methods: {
     ...mapActions("account", ["reloadWallet", "setWalletBalances"]),
     ...mapActions("tport", [
-      "setTPortTokens",
+      "updateTPortTokens",
       "updateTportTokenBalances",
       "updateWeb3",
+      "updateTeleports",
     ]),
     ...mapActions("bridge", ["updateAmount", "sendBridgeToken"]),
 
@@ -380,7 +381,7 @@ export default {
             web3,
             this.$erc20Abi
           );
-          this.$store.dispatch("tport/setTeleports", this.accountName);
+          this.updateTeleports(this.accountName);
         }
         this.$q.notify({
           color: "green-4",
@@ -480,8 +481,8 @@ export default {
       this.selectedTokenSym = this.$route.query.token_sym;
     this.selectedNetwork = this.getCurrentChain.NETWORK_NAME;
     this.reloadWallet(this.accountName);
-    this.setTPortTokens();
-    this.$store.dispatch("tport/setTeleports", this.accountName);
+    this.updateTPortTokens();
+    this.updateTeleports(this.accountName);
     this.getToNative
       ? this.updateTportTokenBalancesEvm()
       : this.updateTportTokenBalances();
@@ -492,7 +493,7 @@ export default {
   watch: {
     async accountName() {
       this.reloadWallet(this.accountName);
-      this.$store.dispatch("tport/setTeleports", this.accountName);
+      this.updateTeleports(this.accountName);
     },
     async selectedNetwork() {
       if (this.supportedEvmChains.includes(this.selectedNetwork)) {

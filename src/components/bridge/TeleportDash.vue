@@ -213,6 +213,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions("tport", ["updateTeleports"]),
     correctNetwork(remoteId) {
       if (this.getEvmNetwork) {
         return this.getEvmNetwork.remoteId === remoteId;
@@ -323,7 +324,7 @@ export default {
             .send({ from: this.getEvmAccountName });
           // console.log(resp);
 
-          this.$store.dispatch("tport/setTeleports", this.accountName);
+          await this.updateTeleports(this.accountName);
           this.claiming = -1;
           // TODO Do a proper refresh
         } catch (error) {
@@ -363,19 +364,14 @@ export default {
     },
 
     async refreshTeleports() {
-      this.$store.dispatch("tport/setTeleports", this.accountName);
-    },
-    async getTokenFromQty(qty) {
-      const sym = this.$chainToSym(qty);
-      console.log(sym);
-      return sym;
+      await this.updateTeleports(this.accountName);
     },
   },
   mounted() {
     // Poll teleports
-    this.pollTeleport = setInterval(async () => {
-      this.refreshTeleports();
-    }, 10000);
+    // this.pollTeleport = setInterval(async () => {
+    //   this.refreshTeleports();
+    // }, 10000);
   },
   destroyed() {
     clearInterval(this.pollTeleport);
