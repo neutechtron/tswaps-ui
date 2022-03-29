@@ -38,47 +38,16 @@ export const updateTeleports = async function ({ commit }, account) {
                 lower_bound: account,
                 upper_bound: account,
                 limit: 10000,
-                reverse: false,
+                reverse: true,
                 show_payer: false,
             });
-            console.log(res)
 
             let teleports = [];
             res.rows.forEach((r) => {
                 r.processing = r.oracles.length <= 1;
                 teleports.push(r);
             });
-            // res = await this.$api.getTableRows({
-            //   code: process.env.TPORT_ADDRESS,
-            //   scope: process.env.TPORT_ADDRESS,
-            //   table: "receipts",
-            //   index_position: 3,
-            //   key_type: "i64",
-            //   lower_bound: account,
-            //   upper_bound: account,
-            //   reverse: true
-            // });
-            // console.log("resEth", res);
-            // res.rows.forEach(r => {
-            //   r.class = "fromevm";
-            //   teleports.push(r);
-            // });
 
-            /*
-                {
-                "code": 3040007,
-                "name": "invalid_ref_block_exception",
-                "what": "Invalid Reference Block",
-                "details": [
-                    {
-                        "message": "Transaction's reference block did not match. Is this transaction from a different fork?",
-                        "file": "controller.cpp",
-                        "line_number": 3167,
-                        "method": "validate_tapos"
-                    }
-                  ]
-                }
-                */
             var options = {
                 year: "numeric",
                 month: "short",
@@ -101,7 +70,7 @@ export const updateTeleports = async function ({ commit }, account) {
                 })
                 .sort((a, b) => (a.time < b.time ? 1 : -1));
 
-            console.log("Teleports:", teleports);
+            // console.log("Teleports:", teleports);
             commit("setTeleports", { teleports });
         }
     } catch (error) {

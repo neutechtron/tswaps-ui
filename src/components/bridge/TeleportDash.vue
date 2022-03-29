@@ -369,9 +369,9 @@ export default {
   },
   mounted() {
     // Poll teleports
-    // this.pollTeleport = setInterval(async () => {
-    //   this.refreshTeleports();
-    // }, 10000);
+    this.pollTeleport = setInterval(async () => {
+      this.refreshTeleports();
+    }, 10000);
   },
   destroyed() {
     clearInterval(this.pollTeleport);
