@@ -1,4 +1,4 @@
-export default function() {
+export default function () {
   return {
     currentChain: {
       NAITIVE_TOKEN: "TLOS",
@@ -7,15 +7,15 @@ export default function() {
       TEST_NETWORK: true,
       NETWORK_CHAIN_ID:
         "1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f",
-      //NETWORK_HOST: "testnet.telos.caleos.io",
-      NETWORK_HOST: "testnet.telos.africa",
+      NETWORK_HOST: "testnet.telos.caleos.io",
+      // NETWORK_HOST: "testnet.telos.africa",
       NETWORK_PORT: 443,
       NETWORK_PROTOCOL: "https",
       NETWORK_EXPLORER: "https://eosauthority.com",
       HYPERION_ENDPOINT: "https://testnet.telos.caleos.io",
       CREATE_ACCOUNT: "https://app.telos.net/testnet/developers",
       BUY_START_URL:
-        "https://www.tswaps.com/tlos?base=eosio.token-TLOS&quote=token.start-START"
+        "https://www.tswaps.com/tlos?base=eosio.token-TLOS&quote=token.start-START",
     },
     blockchainList: [
       {
@@ -25,15 +25,15 @@ export default function() {
         TEST_NETWORK: true,
         NETWORK_CHAIN_ID:
           "1eaa0824707c8c16bd25145493bf062aecddfeb56c736f6ba6397f3195f33c9f",
-        //NETWORK_HOST: "testnet.telos.caleos.io",
-        NETWORK_HOST: "testnet.telos.africa",
+        NETWORK_HOST: "testnet.telos.caleos.io",
+        // NETWORK_HOST: "testnet.telos.africa",
         NETWORK_PORT: 443,
         NETWORK_PROTOCOL: "https",
         NETWORK_EXPLORER: "https://eosauthority.com",
         HYPERION_ENDPOINT: "https://testnet.telos.caleos.io",
         CREATE_ACCOUNT: "https://app.telos.net/testnet/developers",
         BUY_START_URL:
-          "https://www.tswaps.com/tlos?base=eosio.token-TLOS&quote=token.start-START"
+          "https://www.tswaps.com/tlos?base=eosio.token-TLOS&quote=token.start-START",
       },
       {
         NAITIVE_TOKEN: "TLOS",
@@ -49,7 +49,7 @@ export default function() {
         HYPERION_ENDPOINT: "https://telos.caleos.io",
         CREATE_ACCOUNT: "https://telos.net/create-account/",
         BUY_START_URL:
-          "https://www.tswaps.com/tlos?base=eosio.token-TLOS&quote=token.start-START"
+          "https://www.tswaps.com/tlos?base=eosio.token-TLOS&quote=token.start-START",
       },
       // {
       //   NAITIVE_TOKEN: "EOS",
@@ -127,7 +127,7 @@ export default function() {
         HYPERION_ENDPOINT: "https://testnet.waxsweden.org:443",
         CREATE_ACCOUNT: "https://waxsweden.org/create-testnet-account/",
         BUY_START_URL:
-          "https://wax.alcor.exchange/swap?output=START-token.start&input=WAX-eosio.token"
+          "https://wax.alcor.exchange/swap?output=START-token.start&input=WAX-eosio.token",
       },
       {
         NAITIVE_TOKEN: "TLOS",
@@ -143,8 +143,8 @@ export default function() {
         HYPERION_ENDPOINT: "https://wax.greymass.com:443",
         CREATE_ACCOUNT: "https://all-access.wax.io/",
         BUY_START_URL:
-          "https://wax.alcor.exchange/swap?output=START-token.start&input=WAX-eosio.token"
-      }
-    ]
+          "https://wax.alcor.exchange/swap?output=START-token.start&input=WAX-eosio.token",
+      },
+    ],
   };
 }
