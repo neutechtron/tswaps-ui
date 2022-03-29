@@ -8,7 +8,7 @@ export default async ({ Vue }) => {
       if (typeof web3js !== "undefined") {
         var web3 = new Web3(window.ethereum);
         await window.ethereum.enable();
-        console.log(web3);
+        // console.log(web3);
         return {
           injectedWeb3: await web3.eth.net.isListening(),
           web3,

@@ -1,3 +1,5 @@
+import { ethers } from "ethers";
+
 export const updateBridgeToken = async function ({ commit }, token) {
   try {
     commit("setToken", token);
@@ -45,7 +47,7 @@ export const sendBridgeToken = async function ({
   rootGetters,
   dispatch,
 }) {
-  if (getters.getToNAtive) {
+  if (getters.getToNative) {
     return dispatch("sendToNative");
   } else {
     return dispatch("sendToEvm");
@@ -120,7 +122,7 @@ export const sendToNative = async function ({ commit, getters, rootGetters }) {
   let evmAccountName = rootGetters["tport/getEvmAccountName"];
   let evmChainId = rootGetters["tport/getEvmChainId"];
   if (evmChainId && evmAccountName) {
-    const { injectedWeb3, web3 } = await this.$web3();
+    const { injectedWeb3, web3 } = await this._vm.$web3();
 
     if (injectedWeb3) {
       if (typeof token === "undefined") {
@@ -130,7 +132,7 @@ export const sendToNative = async function ({ commit, getters, rootGetters }) {
           (el) => el.key === evmRemoteId
         ).value;
         const remoteInstance = new web3.eth.Contract(
-          this.$erc20Abi,
+          this._vm.$erc20Abi,
           remoteContractAddress
         );
         let weiAmount = ethers.utils
@@ -145,7 +147,7 @@ export const sendToNative = async function ({ commit, getters, rootGetters }) {
             .teleport(accountName, weiAmount, 0)
             .send({ from: evmAccountName });
         } catch (error) {
-          this.$errorNotification(error);
+          console.log(error);
         }
       }
     }
