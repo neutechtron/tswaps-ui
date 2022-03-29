@@ -66,7 +66,7 @@
       <send-warnings
         :crossChain="
           selectedNetwork.toUpperCase() !==
-            getCurrentChain.NETWORK_NAME.toUpperCase()
+          getCurrentChain.NETWORK_NAME.toUpperCase()
         "
         :tokenNotFound="selectedToken === undefined"
       />
@@ -97,7 +97,7 @@ export default {
       amount: null,
       memo: "",
       showTransaction: false,
-      transaction: null
+      transaction: null,
       // explorerUrl: process.env.NETWORK_EXPLORER,
     };
   },
@@ -106,7 +106,7 @@ export default {
     ...mapGetters("blockchains", [
       "getCurrentChain",
       "getNetworkByName",
-      "getBridgeTokens"
+      "getBridgeTokens",
     ]),
     explorerUrl() {
       return this.getCurrentChain.NETWORK_EXPLORER;
@@ -114,7 +114,7 @@ export default {
 
     //TODO get this info from chain?
     selectedToken() {
-      return this.wallet.find(a => a.token_sym === this.selectedTokenSym);
+      return this.wallet.find((a) => a.token_sym === this.selectedTokenSym);
     },
 
     token_contract() {
@@ -131,7 +131,7 @@ export default {
 
     balance() {
       return this.selectedToken ? this.selectedToken.balance : 0;
-    }
+    },
   },
   methods: {
     ...mapActions("account", ["setWalletBalances"]),
@@ -144,9 +144,9 @@ export default {
 
       // check if testnet or not
       if (process.env.TESTNET == "true") {
-        newChain = blockchains.find(el => el.TEST_NETWORK === true);
+        newChain = blockchains.find((el) => el.TEST_NETWORK === true);
       } else {
-        newChain = blockchains.find(el => el.TEST_NETWORK === false);
+        newChain = blockchains.find((el) => el.TEST_NETWORK === false);
       }
       // console.log(newChain)
 
@@ -166,7 +166,7 @@ export default {
           color: "green-4",
           textColor: "white",
           icon: "cloud_done",
-          message: "Sent"
+          message: "Sent",
         });
       } catch (error) {
         this.$errorNotification(error);
@@ -177,7 +177,7 @@ export default {
       if (!(await this.accountExistsOnChain(this.to))) {
         this.$q.notify({
           type: "negative",
-          message: `Account ${this.to} does not exist`
+          message: `Account ${this.to} does not exist`,
         });
         return;
       }
@@ -197,9 +197,9 @@ export default {
               quantity: `${parseFloat(this.amount).toFixed(
                 this.token_decimals
               )} ${this.selectedTokenSym}`,
-              memo: this.memo
-            }
-          }
+              memo: this.memo,
+            },
+          },
         ];
         transaction = await this.$store.$api.signTransaction(actions);
       } else {
@@ -216,9 +216,9 @@ export default {
               )} ${this.selectedTokenSym}`,
               memo: `${this.to}@${this.selectedNetwork.toLowerCase()}|${
                 this.memo
-              }`
-            }
-          }
+              }`,
+            },
+          },
         ];
         transaction = await this.$store.$api.signTransaction(actions);
       }
@@ -232,7 +232,7 @@ export default {
         this.$refs.sendForm.resetValidation();
         this.setWalletBalances(this.accountName);
       }
-    }
-  }
+    },
+  },
 };
 </script>

@@ -6,7 +6,7 @@
     class="dialogContainer"
   >
     <q-card class="dialogCard">
-      <div class="dialogHeader ">
+      <div class="dialogHeader">
         <div class="row justify-between items-center q-py-sm">
           <div header class="text-h6 q-pl-md">Select a network</div>
           <div class="q-pr-sm">
@@ -54,16 +54,16 @@ export default {
     chainOptions() {
       if (this.getToken.toChain !== undefined && !this.isFrom) {
         return this.getAllPossibleChains.filter(
-          el =>
+          (el) =>
             this.getToken.toChain
-              .map(c => c.toUpperCase())
+              .map((c) => c.toUpperCase())
               .includes(el.NETWORK_NAME) ||
             el.NETWORK_NAME === this.getCurrentChain.NETWORK_NAME
         );
       } else {
         return this.getAllPossibleChains;
       }
-    }
+    },
   },
   methods: {
     ...mapActions("account", ["login", "logout", "autoLogin"]),
@@ -71,17 +71,23 @@ export default {
     ...mapActions("bridge", ["updateFromChain", "updateToChain"]),
 
     async updateSelectedNet(chain) {
-      if (this.isFrom && (this.getFromChain.NETWORK_NAME !== chain.NETWORK_NAME)) {
+      if (
+        this.isFrom &&
+        this.getFromChain.NETWORK_NAME !== chain.NETWORK_NAME
+      ) {
         this.updateToChain(this.getFromChain);
         this.updateFromChain(chain);
-      } else if ( !this.isFrom && (this.getToChain.NETWORK_NAME !== chain.NETWORK_NAME)) {
+      } else if (
+        !this.isFrom &&
+        this.getToChain.NETWORK_NAME !== chain.NETWORK_NAME
+      ) {
         this.updateFromChain(this.getToChain);
         this.updateToChain(chain);
       }
       this.$emit("update:showNetDialog", false);
-    }
+    },
   },
-  watch: {}
+  watch: {},
 };
 </script>
 

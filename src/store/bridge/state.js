@@ -1,4 +1,4 @@
-export default function() {
+export default function () {
   return {
     token: {
       contract: "",
@@ -10,7 +10,7 @@ export default function() {
       tportstart: true,
       telosdio: false,
       bridgestart: true,
-      amount: null
+      amount: null,
     },
     amount: 0,
     memo: "",
@@ -18,6 +18,6 @@ export default function() {
     fromChain: {},
     toAccount: "",
     toChain: {},
-    toNative : false
+    toNative: false,
   };
 }

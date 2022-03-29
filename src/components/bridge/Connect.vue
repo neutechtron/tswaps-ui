@@ -1,61 +1,64 @@
 <template>
-    <div class="q-gutter-y-sm self-stretch">
-      
-      <div class="input-outline row items-center">
+  <div class="q-gutter-y-sm self-stretch">
+    <div class="input-outline row items-center">
+      <div class="col-3 text-h6">{{ this.isFrom ? "From " : "To " }}</div>
 
-        <div class="col-3 text-h6">{{this.isFrom ? "From " : "To " }}</div>
-       
-       <div class="col-4">
-          <net-selector
-            :selectedNetwork="selectedNetwork"
-            :networkOptions="networkOptions"
-            :isFrom="this.isFrom"
-            @changeNetwork="$emit('update:selectedNetwork', $event)"
+      <div class="col-4">
+        <net-selector
+          :selectedNetwork="selectedNetwork"
+          :networkOptions="networkOptions"
+          :isFrom="this.isFrom"
+          @changeNetwork="$emit('update:selectedNetwork', $event)"
+        />
+      </div>
+      <div class="col-5">
+        <div class="row justify-center">
+          <q-btn
+            v-if="
+              (!getEvmAccountName || getEvmAccountName === '') && !this.isNative
+            "
+            label="CONNECT WALLET"
+            @click="
+              connectWeb3();
+              switchMetamaskNetwork(selectedNetwork);
+            "
+            class="hover-accent"
+            color="positive"
+            outline
+            no-shadow
+            no-caps
           />
-        </div>
-        <div class="col-5">
-          <div class="row justify-center">
-            <q-btn
-              v-if="((!getEvmAccountName || getEvmAccountName === '') && (!this.isNative))"
-              label="CONNECT WALLET"
-              @click="connectWeb3(); switchMetamaskNetwork(selectedNetwork);"
-              class="hover-accent"
-              color="positive"
-              outline
-              no-shadow
-              no-caps
-            />
-            <q-btn
-              v-else-if="(!this.isAuthenticated && (this.isNative))"
-              label="CONNECT WALLET"
-              @click="showLogin = !showLogin"
-              class="hover-accent"
-              color="positive"
-              outline
-              no-shadow
-              no-caps
-            />
-            <div
-              class="evm-account col ellipsis cursor-pointer bordered text-center"
-              style="max-width: 200px"
-              v-else-if="this.isAuthenticated && (this.isNative)"
-              @click="logout"
-            >
-              Disconnect
-            </div>
-            <div
-              class="evm-account col ellipsis cursor-pointer bordered text-center"
-              style="max-width: 200px"
-              v-else-if="(getEvmAccountName != '') && (!this.isNative)"
-              @click="setEthAccountName"
-            >
-              Disconnect
-            </div>
+          <q-btn
+            v-else-if="!this.isAuthenticated && this.isNative"
+            label="CONNECT WALLET"
+            @click="showLogin = !showLogin"
+            class="hover-accent"
+            color="positive"
+            outline
+            no-shadow
+            no-caps
+          />
+          <div
+            class="evm-account col ellipsis cursor-pointer bordered text-center"
+            style="max-width: 200px"
+            v-else-if="this.isAuthenticated && this.isNative"
+            @click="logout"
+          >
+            Disconnect
+          </div>
+          <div
+            class="evm-account col ellipsis cursor-pointer bordered text-center"
+            style="max-width: 200px"
+            v-else-if="getEvmAccountName != '' && !this.isNative"
+            @click="setEthAccountName"
+          >
+            Disconnect
           </div>
         </div>
       </div>
-      <ual-dialog :showLogin.sync="showLogin" />
     </div>
+    <ual-dialog :showLogin.sync="showLogin" />
+  </div>
 </template>
 
 <script>
@@ -84,7 +87,7 @@ export default {
       transaction: null,
       remoteBalance: 0,
       remoteContractInstance: null,
-      showLogin: false
+      showLogin: false,
     };
   },
   computed: {
@@ -152,7 +155,7 @@ export default {
 
     async updateBalance() {
       const { injectedWeb3, web3 } = await this.$web3();
-      this.updateTportTokenBalances(injectedWeb3, web3, this.$erc20Abi );
+      this.updateTportTokenBalances(injectedWeb3, web3, this.$erc20Abi);
     },
 
     async trySend() {
@@ -275,7 +278,7 @@ export default {
 
     setEthAccountName() {
       this.$store.commit("tport/setAccountName", { accountName: "" });
-    }
+    },
   },
   async mounted() {
     this.updateBalance();

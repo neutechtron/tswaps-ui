@@ -20,7 +20,7 @@ export default {
   props: {
     crossChain: { type: Boolean, default: false },
     tokenNotFound: { type: Boolean, default: false },
-    wrongNetwork: { type: Boolean, default: false }
-  }
+    wrongNetwork: { type: Boolean, default: false },
+  },
 };
 </script>

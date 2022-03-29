@@ -11,7 +11,7 @@ export default async ({ Vue }) => {
         console.log(web3);
         return {
           injectedWeb3: await web3.eth.net.isListening(),
-          web3
+          web3,
         };
       } else {
         // web3 = new Web3(new Web3.providers.HttpProvider('http://localhost:7545')) GANACHE FALLBACK

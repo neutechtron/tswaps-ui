@@ -30,7 +30,7 @@ export default {
     selectedTokenSym: String,
     amount: Number,
     balance: Number,
-    min: { type: Number, default: 0 }
+    min: { type: Number, default: 0 },
   },
   data() {
     return {};
@@ -43,8 +43,11 @@ export default {
       );
     },
     updateAmount(val) {
-      this.$emit("update:amount", isNaN(val) || val == '' ? 0 : parseFloat(val));
-    }
-  }
+      this.$emit(
+        "update:amount",
+        isNaN(val) || val == "" ? 0 : parseFloat(val)
+      );
+    },
+  },
 };
 </script>

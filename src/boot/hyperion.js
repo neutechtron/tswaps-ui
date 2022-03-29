@@ -3,25 +3,25 @@ import axios from "axios";
 let hyperion = null;
 
 export default async ({ Vue, store }) => {
-    if (localStorage.getItem("selectedChain") != null) {
-        await store.dispatch(
-            "blockchains/updateCurrentChain",
-            localStorage.getItem("selectedChain")
-        );
-    } else {
-        await store.dispatch("blockchains/updateCurrentChain", "TELOS");
-    }
-    let currentChain = store.getters["blockchains/getCurrentChain"];
-    console.log(currentChain)
+  if (localStorage.getItem("selectedChain") != null) {
+    await store.dispatch(
+      "blockchains/updateCurrentChain",
+      localStorage.getItem("selectedChain")
+    );
+  } else {
+    await store.dispatch("blockchains/updateCurrentChain", "TELOS");
+  }
+  let currentChain = store.getters["blockchains/getCurrentChain"];
+  console.log(currentChain);
 
-    hyperion = axios.create({
-        baseURL: currentChain.HYPERION_ENDPOINT
-    });
+  hyperion = axios.create({
+    baseURL: currentChain.HYPERION_ENDPOINT,
+  });
 
-    Vue.prototype.$hyperion = hyperion;
-    Vue.prototype.$axios = axios;
-    store["$hyperion"] = hyperion;
-    store["$axios"] = axios;
+  Vue.prototype.$hyperion = hyperion;
+  Vue.prototype.$axios = axios;
+  store["$hyperion"] = hyperion;
+  store["$axios"] = axios;
 };
 
 export { hyperion, axios };

@@ -8,16 +8,16 @@
           src="~assets/home/home-swap-icon-glow.png"
         />
       </div> -->
-      <div class="logo-img "></div>
+      <div class="logo-img"></div>
       <div class="logo-text q-mb-md">T-Swaps</div>
       <div class="text-h2 q-mb-xs">Fast, Affordable Token Swaps</div>
       <div class="text-h3 q-mb-lg">
         An innovative trading platform on Telos native
       </div>
-      <div class="row full-width  items-center justify-center">
-        <q-btn to="/swap" no-caps class=" sendBtn " label="Launch App" />
+      <div class="row full-width items-center justify-center">
+        <q-btn to="/swap" no-caps class="sendBtn" label="Launch App" />
       </div>
-      <scroll-arrow class="scroll-arrow " />
+      <scroll-arrow class="scroll-arrow" />
       <!-- <div class="row q-gutter-md full-width  items-center justify-center">
         <q-btn to="/swap" no-caps class=" sendBtn " label="Launch App" />
         <q-btn to="#" no-caps class="outlineBtn " label="Learn More" outline />
@@ -42,12 +42,12 @@ export default {
     return {
       darkMode: {
         text: "Dark Mode",
-        icon: "fas fa-moon"
-      }
+        icon: "fas fa-moon",
+      },
     };
   },
   computed: {
-    ...mapGetters("account", ["isAuthenticated"])
+    ...mapGetters("account", ["isAuthenticated"]),
   },
   methods: {
     ...mapActions("account", ["logout"]),
@@ -59,11 +59,11 @@ export default {
     },
     openUrl(url) {
       window.open(url, "_blank");
-    }
+    },
   },
   created() {
     this.$q.dark.set(localStorage.getItem("darkModeEnabled") !== "false");
-  }
+  },
 };
 </script>
 

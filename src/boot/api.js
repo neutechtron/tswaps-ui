@@ -1,13 +1,13 @@
 import { Api, JsonRpc } from "eosjs";
 
-const signTransaction = async function(actions) {
-  actions.forEach(action => {
+const signTransaction = async function (actions) {
+  actions.forEach((action) => {
     if (!action.authorization || !action.authorization.length) {
       action.authorization = [
         {
           actor: this.state.account.accountName,
-          permission: "active"
-        }
+          permission: "active",
+        },
       ];
     }
   });
@@ -16,11 +16,11 @@ const signTransaction = async function(actions) {
     if (this.$type === "ual") {
       transaction = await this.$ualUser.signTransaction(
         {
-          actions
+          actions,
         },
         {
           blocksBehind: 3,
-          expireSeconds: 30
+          expireSeconds: 30,
         }
       );
     }
@@ -31,24 +31,24 @@ const signTransaction = async function(actions) {
   return transaction;
 };
 
-const getRpc = function() {
+const getRpc = function () {
   return this.$type === "ual" ? this.$ualUser.rpc : this.$defaultApi.rpc;
 };
 
-const getTableRows = async function(options) {
+const getTableRows = async function (options) {
   const rpc = this.$api.getRpc();
   return await rpc.get_table_rows({
     json: true,
-    ...options
+    ...options,
   });
 };
 
-const getAccount = async function(accountName) {
+const getAccount = async function (accountName) {
   const rpc = this.$api.getRpc();
   return await rpc.get_account(accountName);
 };
 
-const setAPI = async function(store) {
+const setAPI = async function (store) {
   // TODO really slower than mixin, but so much cleaner
   console.log("setAPI");
   if (localStorage.getItem("selectedChain") != null) {
@@ -66,7 +66,7 @@ const setAPI = async function(store) {
   store["$defaultApi"] = new Api({
     rpc,
     textDecoder: new TextDecoder(),
-    textEncoder: new TextEncoder()
+    textEncoder: new TextEncoder(),
   });
 
   store["$api"] = {
@@ -74,7 +74,7 @@ const setAPI = async function(store) {
     getTableRows: getTableRows.bind(store),
     getAccount: getAccount.bind(store),
     getRpc: getRpc.bind(store),
-    setAPI: setAPI.bind(store)
+    setAPI: setAPI.bind(store),
   };
 };
 

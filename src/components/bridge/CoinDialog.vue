@@ -147,7 +147,7 @@ export default {
     ...mapActions("liquidity", ["updateActivePool"]),
     ...mapActions("pools", ["updatePools"]),
     ...mapActions("tport", ["setTPortTokens", "updateTportTokenBalances"]),
-    ...mapActions("bridge",["updateBridgeToken"]),
+    ...mapActions("bridge", ["updateBridgeToken"]),
 
     updateSelectedCoin(token) {
       this.updateBridgeToken(token);
@@ -184,7 +184,12 @@ export default {
     // await this.updateAllTokensBalances(this.accountName);
     await this.setTPortTokens();
     const { injectedWeb3, web3 } = await this.$web3();
-    await this.updateTportTokenBalances(this.accountName, injectedWeb3, web3, await this.$erc20Abi );
+    await this.updateTportTokenBalances(
+      this.accountName,
+      injectedWeb3,
+      web3,
+      await this.$erc20Abi
+    );
   },
 };
 </script>

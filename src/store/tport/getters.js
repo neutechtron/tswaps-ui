@@ -3,7 +3,7 @@ export function getEvmAccountName(state) {
 }
 
 export function getEvmNetwork(state) {
-  return state.networkList.find(el => el.chainId === state.chainId);
+  return state.networkList.find((el) => el.chainId === state.chainId);
 }
 
 export function getEvmChainId(state) {
@@ -11,7 +11,7 @@ export function getEvmChainId(state) {
 }
 
 export function getEvmRemoteId(state) {
-  const chain = state.networkList.find(el => el.chainId === state.chainId);
+  const chain = state.networkList.find((el) => el.chainId === state.chainId);
   return chain ? chain.remoteId : null;
 }
 
@@ -25,10 +25,16 @@ export function getTeleports(state) {
 
 export const getTPortTokens = ({ tportTokens }) => tportTokens;
 
-export const getTPortTokensBySym = ({ tportTokens }) => sym => {
-  return tportTokens.find(el => el.symbol === sym);
-};
+export const getTPortTokensBySym =
+  ({ tportTokens }) =>
+  (sym) => {
+    return tportTokens.find((el) => el.symbol === sym);
+  };
 
-export const getEvmNetworkByName = ({ networkList }) => name => {
-  return networkList.find(el => el.name.toUpperCase() === name.toUpperCase());
-};
+export const getEvmNetworkByName =
+  ({ networkList }) =>
+  (name) => {
+    return networkList.find(
+      (el) => el.name.toUpperCase() === name.toUpperCase()
+    );
+  };

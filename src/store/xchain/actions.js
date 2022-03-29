@@ -64,7 +64,10 @@ export const updateTeleports = async function ({ commit }, account) {
 };
 
 // Get reclaimable tokens from xchain.start wallets table by scope
-export const updateReclaimableTokens = async function ({ commit, getters }, account) {
+export const updateReclaimableTokens = async function (
+  { commit, getters },
+  account
+) {
   try {
     let res = await this.$api.getTableRows({
       code: process.env.XCHAIN_ADDRESS,
@@ -75,7 +78,7 @@ export const updateReclaimableTokens = async function ({ commit, getters }, acco
 
     commit("setReclaimableTokens", { reclaimableTokens: res.rows });
   } catch (error) {
-    console.error("updateReclaimableTokens")
+    console.error("updateReclaimableTokens");
     commit("general/setErrorMsg", error.message || error, { root: true });
   }
 };

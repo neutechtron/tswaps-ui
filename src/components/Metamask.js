@@ -14,8 +14,8 @@ export default {
       "getEvmNetworkList",
       "getTPortTokensBySym",
       "getEvmNetworkByName",
-      "getTeleports"
-    ])
+      "getTeleports",
+    ]),
   },
   methods: {
     async connectWeb3() {
@@ -31,11 +31,11 @@ export default {
         this.$store.commit("tport/setChainId", { chainId });
         this.$store.commit("xchain/setChainId", { chainId });
 
-        window.ethereum.on("accountsChanged", a => {
+        window.ethereum.on("accountsChanged", (a) => {
           this.$store.commit("tport/setAccountName", { accountName: a[0] });
           this.$store.commit("xchain/setAccountName", { accountName: a[0] });
         });
-        window.ethereum.on("chainChanged", chainId => {
+        window.ethereum.on("chainChanged", (chainId) => {
           this.$store.commit("tport/setChainId", { chainId });
           this.$store.commit("xchain/setChainId", { chainId });
         });
@@ -50,7 +50,7 @@ export default {
       try {
         await ethereum.request({
           method: "wallet_switchEthereumChain",
-          params: [{ chainId: chainId }]
+          params: [{ chainId: chainId }],
         });
       } catch (err) {
         const net = this.getEvmNetworkByName(networkName);
@@ -64,9 +64,9 @@ export default {
                   chainId: chainId,
                   chainName: net.chainName,
                   nativeCurrency: net.nativeCurrency,
-                  rpcUrls: net.rpcUrls
-                }
-              ]
+                  rpcUrls: net.rpcUrls,
+                },
+              ],
             });
           }
         }
@@ -80,5 +80,5 @@ export default {
         console.error("Could not get injected web3");
       }
     },
-  }
+  },
 };

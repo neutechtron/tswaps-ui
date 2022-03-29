@@ -22,11 +22,11 @@ import netDialog from "./NetDialog";
 export default {
   components: { dropdownBtn, tokenAvatar, netDialog },
   props: {
-    isFrom: Boolean
+    isFrom: Boolean,
   },
   data() {
     return {
-      showNetDialog: false
+      showNetDialog: false,
     };
   },
   computed: {
@@ -36,8 +36,14 @@ export default {
     ...mapGetters("tport", ["getEvmAccountName"]),
     selectedAccount() {
       let chain = this.getToChain;
-      let fromAccount = this.getFromChain.NETWORK_DISPLAY_NAME === "Telos" ? this.accountName : this.getEvmAccountName
-      let toAccount = this.getToChain.NETWORK_DISPLAY_NAME === "Telos" ? this.accountName : this.getEvmAccountName
+      let fromAccount =
+        this.getFromChain.NETWORK_DISPLAY_NAME === "Telos"
+          ? this.accountName
+          : this.getEvmAccountName;
+      let toAccount =
+        this.getToChain.NETWORK_DISPLAY_NAME === "Telos"
+          ? this.accountName
+          : this.getEvmAccountName;
       if (!toAccount) toAccount = "";
       if (!fromAccount) fromAccount = "";
       if (this.isFrom) chain = this.getFromChain;
@@ -53,7 +59,7 @@ export default {
       if (!this.isFrom) chain = this.getToChain;
       if (chain.NETWORK_DISPLAY_NAME) return chain.NETWORK_DISPLAY_NAME;
       else return "";
-    }
+    },
   },
 };
 </script>

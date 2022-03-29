@@ -16,7 +16,7 @@
       <div>c 2022 T-Swaps • Version {{ SITE_VERSION }}</div>
       <div>
         Made with ♥ by
-        <a :href="KNOT_HOME" style="text-decoration:underline" target="_blank"
+        <a :href="KNOT_HOME" style="text-decoration: underline" target="_blank"
           >Yknot BCS</a
         >
       </div>
@@ -30,9 +30,9 @@ export default {
     return {
       tgLink: "https://t.me/tswaps",
       SITE_VERSION: process.env.SITE_VERSION,
-      KNOT_HOME: process.env.KNOT_HOME
+      KNOT_HOME: process.env.KNOT_HOME,
     };
-  }
+  },
 };
 </script>
 

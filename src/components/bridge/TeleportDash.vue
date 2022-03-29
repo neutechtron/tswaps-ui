@@ -384,12 +384,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- .bridgeDash {
-   width: 700px;
-   max-width: 95vw;
- }
- .bridgeButton {
-   color: white;
-   background-color: rgb(85,42,248);
- }
+.bridgeDash {
+  width: 700px;
+  max-width: 95vw;
+}
+.bridgeButton {
+  color: white;
+  background-color: rgb(85, 42, 248);
+}
 </style>
