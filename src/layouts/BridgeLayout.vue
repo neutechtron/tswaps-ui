@@ -9,7 +9,7 @@
               src="~assets/images/swap.png"
               width="35"
             /> -->
-            <div class="t-swaps-title text-h5">Telos EVM Bridge</div>
+            <div class="t-swaps-title text-h5">Telos Spark Bridge</div>
           </router-link>
         </div>
         <q-space />
