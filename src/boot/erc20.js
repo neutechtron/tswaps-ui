@@ -5,69 +5,69 @@ export default async ({ Vue }) => {
         {
           internalType: "string",
           name: "to",
-          type: "string"
+          type: "string",
         },
         {
           internalType: "uint256",
           name: "tokens",
-          type: "uint256"
+          type: "uint256",
         },
         {
           internalType: "uint256",
           name: "chainid",
-          type: "uint256"
-        }
+          type: "uint256",
+        },
       ],
       name: "teleport",
       outputs: [
         {
           internalType: "bool",
           name: "success",
-          type: "bool"
-        }
+          type: "bool",
+        },
       ],
       stateMutability: "nonpayable",
-      type: "function"
+      type: "function",
     },
     {
       inputs: [
         {
           internalType: "bytes",
           name: "sigData",
-          type: "bytes"
+          type: "bytes",
         },
         {
           internalType: "bytes[]",
           name: "signatures",
-          type: "bytes[]"
-        }
+          type: "bytes[]",
+        },
       ],
       name: "claim",
       outputs: [
         {
           internalType: "address",
           name: "toAddress",
-          type: "address"
-        }
+          type: "address",
+        },
       ],
       stateMutability: "nonpayable",
-      type: "function"
+      type: "function",
     },
     {
       inputs: [
         {
           internalType: "string",
           name: "name",
-          type: "string"
+          type: "string",
         },
         {
           internalType: "string",
           name: "symbol",
-          type: "string"
-        }
+          type: "string",
+        },
       ],
       stateMutability: "nonpayable",
-      type: "constructor"
+      type: "constructor",
     },
     {
       anonymous: false,
@@ -76,23 +76,23 @@ export default async ({ Vue }) => {
           indexed: true,
           internalType: "address",
           name: "owner",
-          type: "address"
+          type: "address",
         },
         {
           indexed: true,
           internalType: "address",
           name: "spender",
-          type: "address"
+          type: "address",
         },
         {
           indexed: false,
           internalType: "uint256",
           name: "value",
-          type: "uint256"
-        }
+          type: "uint256",
+        },
       ],
       name: "Approval",
-      type: "event"
+      type: "event",
     },
     {
       anonymous: false,
@@ -101,23 +101,23 @@ export default async ({ Vue }) => {
           indexed: true,
           internalType: "address",
           name: "from",
-          type: "address"
+          type: "address",
         },
         {
           indexed: true,
           internalType: "address",
           name: "to",
-          type: "address"
+          type: "address",
         },
         {
           indexed: false,
           internalType: "uint256",
           name: "value",
-          type: "uint256"
-        }
+          type: "uint256",
+        },
       ],
       name: "Transfer",
-      type: "event"
+      type: "event",
     },
     {
       inputs: [],
@@ -126,11 +126,11 @@ export default async ({ Vue }) => {
         {
           internalType: "string",
           name: "",
-          type: "string"
-        }
+          type: "string",
+        },
       ],
       stateMutability: "view",
-      type: "function"
+      type: "function",
     },
     {
       inputs: [],
@@ -139,11 +139,11 @@ export default async ({ Vue }) => {
         {
           internalType: "string",
           name: "",
-          type: "string"
-        }
+          type: "string",
+        },
       ],
       stateMutability: "view",
-      type: "function"
+      type: "function",
     },
     {
       inputs: [],
@@ -152,11 +152,11 @@ export default async ({ Vue }) => {
         {
           internalType: "uint8",
           name: "",
-          type: "uint8"
-        }
+          type: "uint8",
+        },
       ],
       stateMutability: "view",
-      type: "function"
+      type: "function",
     },
     {
       inputs: [],
@@ -165,180 +165,180 @@ export default async ({ Vue }) => {
         {
           internalType: "uint256",
           name: "",
-          type: "uint256"
-        }
+          type: "uint256",
+        },
       ],
       stateMutability: "view",
-      type: "function"
+      type: "function",
     },
     {
       inputs: [
         {
           internalType: "address",
           name: "account",
-          type: "address"
-        }
+          type: "address",
+        },
       ],
       name: "balanceOf",
       outputs: [
         {
           internalType: "uint256",
           name: "",
-          type: "uint256"
-        }
+          type: "uint256",
+        },
       ],
       stateMutability: "view",
-      type: "function"
+      type: "function",
     },
     {
       inputs: [
         {
           internalType: "address",
           name: "recipient",
-          type: "address"
+          type: "address",
         },
         {
           internalType: "uint256",
           name: "amount",
-          type: "uint256"
-        }
+          type: "uint256",
+        },
       ],
       name: "transfer",
       outputs: [
         {
           internalType: "bool",
           name: "",
-          type: "bool"
-        }
+          type: "bool",
+        },
       ],
       stateMutability: "nonpayable",
-      type: "function"
+      type: "function",
     },
     {
       inputs: [
         {
           internalType: "address",
           name: "owner",
-          type: "address"
+          type: "address",
         },
         {
           internalType: "address",
           name: "spender",
-          type: "address"
-        }
+          type: "address",
+        },
       ],
       name: "allowance",
       outputs: [
         {
           internalType: "uint256",
           name: "",
-          type: "uint256"
-        }
+          type: "uint256",
+        },
       ],
       stateMutability: "view",
-      type: "function"
+      type: "function",
     },
     {
       inputs: [
         {
           internalType: "address",
           name: "spender",
-          type: "address"
+          type: "address",
         },
         {
           internalType: "uint256",
           name: "amount",
-          type: "uint256"
-        }
+          type: "uint256",
+        },
       ],
       name: "approve",
       outputs: [
         {
           internalType: "bool",
           name: "",
-          type: "bool"
-        }
+          type: "bool",
+        },
       ],
       stateMutability: "nonpayable",
-      type: "function"
+      type: "function",
     },
     {
       inputs: [
         {
           internalType: "address",
           name: "sender",
-          type: "address"
+          type: "address",
         },
         {
           internalType: "address",
           name: "recipient",
-          type: "address"
+          type: "address",
         },
         {
           internalType: "uint256",
           name: "amount",
-          type: "uint256"
-        }
+          type: "uint256",
+        },
       ],
       name: "transferFrom",
       outputs: [
         {
           internalType: "bool",
           name: "",
-          type: "bool"
-        }
+          type: "bool",
+        },
       ],
       stateMutability: "nonpayable",
-      type: "function"
+      type: "function",
     },
     {
       inputs: [
         {
           internalType: "address",
           name: "spender",
-          type: "address"
+          type: "address",
         },
         {
           internalType: "uint256",
           name: "addedValue",
-          type: "uint256"
-        }
+          type: "uint256",
+        },
       ],
       name: "increaseAllowance",
       outputs: [
         {
           internalType: "bool",
           name: "",
-          type: "bool"
-        }
+          type: "bool",
+        },
       ],
       stateMutability: "nonpayable",
-      type: "function"
+      type: "function",
     },
     {
       inputs: [
         {
           internalType: "address",
           name: "spender",
-          type: "address"
+          type: "address",
         },
         {
           internalType: "uint256",
           name: "subtractedValue",
-          type: "uint256"
-        }
+          type: "uint256",
+        },
       ],
       name: "decreaseAllowance",
       outputs: [
         {
           internalType: "bool",
           name: "",
-          type: "bool"
-        }
+          type: "bool",
+        },
       ],
       stateMutability: "nonpayable",
-      type: "function"
-    }
+      type: "function",
+    },
   ];
 
   //   Vue.prototype.$erc20Abi = [

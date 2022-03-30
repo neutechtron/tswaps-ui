@@ -1,5 +1,5 @@
 // set new chain
-export const updateCurrentChain = async function(
+export const updateCurrentChain = async function (
   { commit, getters, dispatch },
   selectedChain
 ) {
@@ -8,22 +8,22 @@ export const updateCurrentChain = async function(
 
   // check if testnet or not
   if (process.env.TESTNET == "true") {
-    newChain = blockchains.find(el => el.TEST_NETWORK === true);
+    newChain = blockchains.find((el) => el.TEST_NETWORK === true);
   } else {
-    newChain = blockchains.find(el => el.TEST_NETWORK === false);
+    newChain = blockchains.find((el) => el.TEST_NETWORK === false);
   }
 
   // console.log(blockchains)
   // console.log(newChain)
 
   commit("setCurrentChain", {
-    newChain: newChain
+    newChain: newChain,
   });
 
   localStorage.setItem("selectedChain", newChain.NETWORK_NAME);
 };
 
-export const setNewChain = async function(
+export const setNewChain = async function (
   { commit, getters, dispatch },
   selectedChain
 ) {
@@ -32,16 +32,16 @@ export const setNewChain = async function(
 
   // check if testnet or not
   if (process.env.TESTNET == "true") {
-    newChain = blockchains.find(el => el.TEST_NETWORK === true);
+    newChain = blockchains.find((el) => el.TEST_NETWORK === true);
   } else {
-    newChain = blockchains.find(el => el.TEST_NETWORK === false);
+    newChain = blockchains.find((el) => el.TEST_NETWORK === false);
   }
 
   // console.log(blockchains)
   // console.log(newChain)
 
   commit("setCurrentChain", {
-    newChain: newChain
+    newChain: newChain,
   });
 
   localStorage.setItem("selectedChain", newChain.NETWORK_NAME);
@@ -73,4 +73,3 @@ export const setNewChain = async function(
 //     commit("general/setErrorMsg", error.message || error, { root: true });
 //   }
 // };
-

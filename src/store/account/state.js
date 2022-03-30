@@ -1,4 +1,4 @@
-export default function() {
+export default function () {
   return {
     accountName: null,
     hasProfile: false,
@@ -17,8 +17,8 @@ export default function() {
         claimable: 0,
         avatar:
           "https://raw.githubusercontent.com/T-Starter/T-Starter-images/master/icons/STAR.png",
-        stake_maturities: []
-      }
+        stake_maturities: [],
+      },
     ],
   };
 }

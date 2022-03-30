@@ -1,8 +1,7 @@
 <template>
   <div class="headButtons q-mx-md">
-
-    <div class="row ">
-      <div class="col-6 relative-position ">
+    <div class="row">
+      <div class="col-6 relative-position">
         <div class="text-h5 text-weight-bold">Pools</div>
       </div>
       <!-- <div class="col-2">
@@ -42,32 +41,28 @@
           <q-card-section class="q-pt-none">
             <div class="row justify-evenly">
               <div class="col-2">
-                <q-btn flat class="float-right">0.1%
-                </q-btn>
+                <q-btn flat class="float-right">0.1% </q-btn>
               </div>
               <div class="col-2">
-                <q-btn flat class="float-right">0.5%
-                </q-btn>
-                </div>
+                <q-btn flat class="float-right">0.5% </q-btn>
+              </div>
               <div class="col-2">
-                <q-btn flat class="float-right">1%
-                </q-btn>
-                </div>
+                <q-btn flat class="float-right">1% </q-btn>
+              </div>
               <div class="col-2">
-                <q-input 
-                placeholder="0.0"
-                pattern="^[0-9]*[.,]?[0-9]*$"
-                inputmode="decimal"
-                autocomplete="off"
-                autocorrect="off"
-                dense 
-                type="number" 
-                autofocus 
-                @keyup.enter="prompt = false" 
+                <q-input
+                  placeholder="0.0"
+                  pattern="^[0-9]*[.,]?[0-9]*$"
+                  inputmode="decimal"
+                  autocomplete="off"
+                  autocorrect="off"
+                  dense
+                  type="number"
+                  autofocus
+                  @keyup.enter="prompt = false"
                 />
               </div>
             </div>
-            
           </q-card-section>
 
           <q-card-actions align="right" class="text-primary">
@@ -75,25 +70,23 @@
             <q-btn flat label="Accept" v-close-popup />
           </q-card-actions>
         </q-card>
-    </q-dialog>
+      </q-dialog>
     </div>
   </div>
 </template>
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-  components: {  },
- 
+  components: {},
+
   data() {
-    return {tolerance:false,
-    address:""};
+    return { tolerance: false, address: "" };
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
     ...mapGetters("bridge", ["getToken"]),
     ...mapGetters("tokens", ["getTokens"]),
-
-  }
+  },
 };
 </script>
 
@@ -106,10 +99,9 @@ body.body--light {
 }
 
 body.body--dark {
-  .headButtons  {
+  .headButtons {
     background: "transparent";
     color: $white;
   }
 }
-
 </style>

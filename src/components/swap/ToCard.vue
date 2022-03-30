@@ -31,7 +31,12 @@ export default {
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
-    ...mapGetters("swap", ["getToEstimate", "getToToken", "getPool", "getCanSwap"]),
+    ...mapGetters("swap", [
+      "getToEstimate",
+      "getToToken",
+      "getPool",
+      "getCanSwap",
+    ]),
     ...mapGetters("tokens", ["getTokens"]),
 
     balance() {

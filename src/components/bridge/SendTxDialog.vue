@@ -12,16 +12,16 @@
           text-color="white"
           class="q-mr-sm"
         />
-        <div class="text-h6 q-pa-sm">
-          Transaction Sent
-        </div>
+        <div class="text-h6 q-pa-sm">Transaction Sent</div>
       </q-card-section>
       <q-card-section>
         Transaction ID:
         <a
-          :href="`${explorerUrl}/transaction/${transaction}?network=${getTestnet()  ? 'telostest' : 'telos'}`"
+          :href="`${explorerUrl}/transaction/${transaction}?network=${
+            getTestnet() ? 'telostest' : 'telos'
+          }`"
           target="_blank"
-          style="word-wrap: break-word;"
+          style="word-wrap: break-word"
         >
           {{ transaction }}
         </a>
@@ -36,17 +36,17 @@
 <script>
 import { mapGetters } from "vuex";
 export default {
-  props: ["transaction", "showTransaction","Testnet"],
+  props: ["transaction", "showTransaction", "Testnet"],
   computed: {
     ...mapGetters("blockchains", ["getCurrentChain"]),
     explorerUrl() {
       return this.getCurrentChain.NETWORK_EXPLORER;
-    }
+    },
   },
   methods: {
     getTestnet() {
       return process.env.TESTNET;
-    }
-  }
+    },
+  },
 };
 </script>

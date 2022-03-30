@@ -213,6 +213,7 @@ export default {
     },
   },
   methods: {
+    ...mapActions("tport", ["updateTeleports"]),
     correctNetwork(remoteId) {
       if (this.getEvmNetwork) {
         return this.getEvmNetwork.remoteId === remoteId;
@@ -323,7 +324,7 @@ export default {
             .send({ from: this.getEvmAccountName });
           // console.log(resp);
 
-          this.$store.dispatch("tport/setTeleports", this.accountName);
+          await this.updateTeleports(this.accountName);
           this.claiming = -1;
           // TODO Do a proper refresh
         } catch (error) {
@@ -363,12 +364,7 @@ export default {
     },
 
     async refreshTeleports() {
-      this.$store.dispatch("tport/setTeleports", this.accountName);
-    },
-    async getTokenFromQty(qty) {
-      const sym = this.$chainToSym(qty);
-      console.log(sym);
-      return sym;
+      await this.updateTeleports(this.accountName);
     },
   },
   mounted() {
@@ -384,12 +380,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
- .bridgeDash {
-   width: 700px;
-   max-width: 95vw;
- }
- .bridgeButton {
-   color: white;
-   background-color: rgb(85,42,248);
- }
+.bridgeDash {
+  width: 700px;
+  max-width: 95vw;
+}
+.bridgeButton {
+  color: white;
+  background-color: rgb(85, 42, 248);
+}
 </style>

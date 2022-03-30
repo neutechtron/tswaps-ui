@@ -10,7 +10,6 @@
       animated
       header-class="stepper-header"
     >
-
       <q-step
         :name="1"
         title="Connect wallet"
@@ -19,28 +18,33 @@
       >
         <div class="row">
           <div class="col-12 q-mb-sm">
-            <div class="text-h5 q-mb-sm">
-              Connect wallet
-            </div>
+            <div class="text-h5 q-mb-sm">Connect wallet</div>
           </div>
 
           <div class="col-12 q-my-sm">
-           <q-separator />
+            <q-separator />
           </div>
 
-          <div class="col-12 q-my-md" >
-            <connect :isFrom="true" :isNative="this.isNative(true)" :selectedNetwork="this.getFromChain.NETWORK_NAME"/>
+          <div class="col-12 q-my-md">
+            <connect
+              :isFrom="true"
+              :isNative="this.isNative(true)"
+              :selectedNetwork="this.getFromChain.NETWORK_NAME"
+            />
           </div>
 
           <div class="col-12 q-my-sm">
-           <q-separator />
+            <q-separator />
           </div>
 
-          <div class="col-12 q-my-md" >
-            <connect :isFrom="false" :isNative="this.isNative(false)" :selectedNetwork="this.getToChain.NETWORK_NAME"/>
+          <div class="col-12 q-my-md">
+            <connect
+              :isFrom="false"
+              :isNative="this.isNative(false)"
+              :selectedNetwork="this.getToChain.NETWORK_NAME"
+            />
           </div>
         </div>
-        
       </q-step>
 
       <q-step
@@ -49,41 +53,45 @@
         icon="fas fa-file-invoice-dollar"
         :done="step > 2"
       >
-        <div class="row q-px-lg q-pb-lg bordered">
-          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold small-padding">
-              {{"From "+getFromChain.NETWORK_NAME}}
+        <div class="col-12 q-mb-sm">
+          <div class="text-h5 q-mb-sm">Transaction details</div>
+        </div>
+        <div class="row q-px-lg q-pb-lg q-mb-sm bordered">
+          <div
+            class="col-sm-4 col-xs-12 text-h6 text-center text-bold small-padding"
+          >
+            {{ "From " + getFromChain.NETWORK_NAME }}
           </div>
-          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold ">
+          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold">
             <token-avatar
-                class="q-mx-sm"
-                :token="getFromChain.NETWORK_NAME"
-                :avatarSize="35"
+              class="q-mx-sm"
+              :token="getFromChain.NETWORK_NAME"
+              :avatarSize="35"
             />
-            
+
             <q-icon class="q-mx-sm fas fa-arrow-right"></q-icon>
             <token-avatar
-                class="q-mx-sm"
-                :token="getToChain.NETWORK_NAME"
-                :avatarSize="35"
+              class="q-mx-sm"
+              :token="getToChain.NETWORK_NAME"
+              :avatarSize="35"
             />
           </div>
-          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold small-padding">
-              {{"To "+getToChain.NETWORK_NAME}}
+          <div
+            class="col-sm-4 col-xs-12 text-h6 text-center text-bold small-padding"
+          >
+            {{ "To " + getToChain.NETWORK_NAME }}
           </div>
         </div>
         <div class="row">
           <div class="col-12 q-mb-sm">
-            <div class="text-h5 q-mb-sm">
-              Transaction details
-            </div>
-          </div>
-
-          <div class="col-12" >
-            <coin-selector/>
+            <coin-selector />
           </div>
 
           <div class="col-12">
-            <div class="row justify-between q-px-sm q-gutter-x-sm" v-if="getToken.contract !== ''">
+            <div
+              class="row justify-between q-px-sm q-gutter-x-sm"
+              v-if="getToken.contract !== ''"
+            >
               <div>
                 {{ selectedNetwork }} balance: {{ getToken.amount.toString() }}
                 {{ getToken.symbol }}
@@ -102,70 +110,71 @@
         </div>
       </q-step>
 
-      <q-step
-        :name="3"
-        title="Confirm"
-        icon="fas fa-clipboard-check"
-      >
+      <q-step :name="3" title="Confirm" icon="fas fa-clipboard-check">
+        <div class="text-h5 q-mb-sm">Confirm Transaction</div>
         <div class="row q-px-lg q-pb-lg bordered q-pb-md">
-          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold small-padding">
-              {{"From "+getFromChain.NETWORK_NAME}}
+          <div
+            class="col-sm-4 col-xs-12 text-h6 text-center text-bold small-padding"
+          >
+            {{ "From " + getFromChain.NETWORK_NAME }}
           </div>
-          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold ">
+          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold">
             <token-avatar
-                class="q-mx-sm"
-                :token="getFromChain.NETWORK_NAME"
-                :avatarSize="35"
+              class="q-mx-sm"
+              :token="getFromChain.NETWORK_NAME"
+              :avatarSize="35"
             />
-            
+
             <q-icon class="q-mx-sm fas fa-arrow-right"></q-icon>
             <token-avatar
-                class="q-mx-sm"
-                :token="getToChain.NETWORK_NAME"
-                :avatarSize="35"
+              class="q-mx-sm"
+              :token="getToChain.NETWORK_NAME"
+              :avatarSize="35"
             />
           </div>
-          <div class="col-sm-4 col-xs-12 text-h6 text-center text-bold small-padding">
-              {{"To "+getToChain.NETWORK_NAME}}
+          <div
+            class="col-sm-4 col-xs-12 text-h6 text-center text-bold small-padding"
+          >
+            {{ "To " + getToChain.NETWORK_NAME }}
           </div>
-        </div>
-        <div class="q-py-sm"/>
-        <div class="row q-px-lg q-pb-lg bordered justify-center q-pt-md">
-          <div class="col-6 text-h6 text-center text-bold small-padding q-px-md">
-              {{getAmount}}
-          </div>
-          <div class="col-6 text-h6 text-bold q-px-md">
-            <div class="row items-center full-height justify-center">
-              <token-avatar
-                  class="q-mx-sm"
-                  :token="getToken.symbol"
-                  :avatarSize="35"
-              />
-                {{getToken.symbol}}
-            </div>
+          <div
+            class="col-12 row items-center justify-center text-h6 text-bold q-mt-md"
+          >
+            <token-avatar
+              class="q-mx-sm"
+              :token="getToken.symbol"
+              :avatarSize="35"
+            />
+            {{ getAmount }} {{ getToken.symbol }}
           </div>
         </div>
         <div class="row q-pt-md">
           <div class="col-12 q-mb-sm">
-            <div class="text-h5 q-mb-sm">
-              Confirm Transaction
-            </div>
             <div class="text-body1">
               Your transfer will start once you confirm the transaction.
             </div>
-            <div class="text-body1">
-              Transfers can take up to 24 hours.
-            </div>
+            <div class="text-body1">Transfers can take up to 24 hours.</div>
           </div>
         </div>
       </q-step>
 
       <template v-slot:navigation>
-        <q-stepper-navigation >
-        <div class="row">
-          <q-btn v-if="step > 1" flat color="white" @click="$refs.stepper.previous()" label="Previous" class="q-ml-sm bridgeButton nextButton" />
-          <q-space/>
-          <q-btn @click="handleNext()"  :label="step === 3 ? 'Confirm' : 'Next'" class=" bridgeButton"/>
+        <q-stepper-navigation>
+          <div class="row">
+            <q-btn
+              v-if="step > 1"
+              flat
+              color="white"
+              @click="$refs.stepper.previous()"
+              label="Previous"
+              class="q-ml-sm bridgeButton nextButton"
+            />
+            <q-space />
+            <q-btn
+              @click="handleNext()"
+              :label="step === 3 ? 'Confirm' : 'Next'"
+              class="bridgeButton"
+            />
           </div>
         </q-stepper-navigation>
       </template>
@@ -175,7 +184,6 @@
       :transaction="transaction"
       :showTransaction.sync="showTransaction"
     />
-
   </div>
 </template>
 
@@ -194,7 +202,7 @@ export default {
     coinSelector,
     amountInput,
     sendTxDialog,
-    tokenAvatar
+    tokenAvatar,
   },
   data() {
     return {
@@ -206,7 +214,7 @@ export default {
       remoteContractInstance: null,
       selectedTokenSym: "START",
       selectedNetwork: "ETHEREUM",
-    }
+    };
   },
   computed: {
     ...mapGetters("account", ["isAuthenticated", "accountName", "wallet"]),
@@ -218,21 +226,20 @@ export default {
       "getEvmAccountName",
       "getEvmChainId",
       "getEvmNetwork",
-      "getEvmRemoteId"
-
+      "getEvmRemoteId",
     ]),
     ...mapGetters("blockchains", [
       "getCurrentChain",
       "getNetworkByName",
       "getBridgeTokens",
-      "getAllPossibleChains"
+      "getAllPossibleChains",
     ]),
     ...mapGetters("bridge", [
       "getToChain",
       "getFromChain",
       "getToken",
       "getAmount",
-      "getToNative"
+      "getToNative",
     ]),
 
     selectedToken() {
@@ -284,7 +291,7 @@ export default {
         let res = [];
         for (let r of token.remote_contracts) {
           const network = this.getEvmNetworkList.find(
-            el => el.remoteId === r.key
+            (el) => el.remoteId === r.key
           );
           if (network) res.push(network.name.toUpperCase());
         }
@@ -298,40 +305,56 @@ export default {
 
     tportTokens() {
       if (this.getTPortTokens.length === 0) return [];
-      else return this.getTPortTokens.map(el => el.token.sym);
-    }
+      else return this.getTPortTokens.map((el) => el.token.sym);
+    },
   },
   methods: {
     ...mapActions("account", ["reloadWallet", "setWalletBalances"]),
-    ...mapActions("tport", ["setTPortTokens", "updateTportTokenBalances", "updateWeb3"]),
+    ...mapActions("tport", [
+      "updateTPortTokens",
+      "updateTportTokenBalances",
+      "updateWeb3",
+      "updateTeleports",
+      "updateTportTokenBalancesEvm",
+    ]),
     ...mapActions("bridge", ["updateAmount", "sendBridgeToken"]),
 
     formSubmitted() {
-      console.log("submit")
-    },
-    
-    isNative (isFrom) {
-      if (isFrom) return this.getFromChain.NETWORK_NAME == "TELOS"
-      else return this.getToChain.NETWORK_NAME == "TELOS"
+      console.log("submit");
     },
 
-    isWalletsConnected () {
-      return ((this.getEvmAccountName) && ( this.getEvmAccountName !== '') && this.isAuthenticated );
+    isNative(isFrom) {
+      if (isFrom) return this.getFromChain.NETWORK_NAME == "TELOS";
+      else return this.getToChain.NETWORK_NAME == "TELOS";
     },
 
-    isValidTransaction () {
-      return ((this.getToken.contract !== "") && (this.getAmount > 0) && (this.getAmount < this.getToken.amount));
+    isWalletsConnected() {
+      return (
+        this.getEvmAccountName &&
+        this.getEvmAccountName !== "" &&
+        this.isAuthenticated
+      );
     },
 
-    handleNext () {
-      if ((this.step === 1) && this.isWalletsConnected()) {
-        this.getToNative ? this.updateTportTokenBalancesEvm() : this.updateTportTokenBalances()
+    isValidTransaction() {
+      return (
+        this.getToken.contract !== "" &&
+        this.getAmount > 0 &&
+        this.getAmount < this.getToken.amount
+      );
+    },
+
+    handleNext() {
+      if (this.step === 1 && this.isWalletsConnected()) {
+        this.getToNative
+          ? this.updateTportTokenBalancesEvm()
+          : this.updateTportTokenBalances();
         this.$refs.stepper.next();
-      } else if ((this.step === 2) && this.isValidTransaction()) {
+      } else if (this.step === 2 && this.isValidTransaction()) {
         this.$refs.stepper.next();
-      } else if(this.step === 3) {
+      } else if (this.step === 3) {
         this.send();
-      } 
+      }
     },
 
     async send() {
@@ -343,9 +366,7 @@ export default {
           this.to = null;
           this.amount = null;
           this.memo = "";
-          const { injectedWeb3, web3 } = await this.$web3();
-          this.updateTportTokenBalances(this.accountName, injectedWeb3, web3, this.$erc20Abi );
-          this.$store.dispatch("tport/setTeleports", this.accountName);
+          this.updateTeleports(this.accountName);
         }
         this.$q.notify({
           color: "green-4",
@@ -356,73 +377,81 @@ export default {
       } catch (error) {
         this.$errorNotification(error);
       }
-      
     },
-    async updateTportTokenBalancesEvm () {
-      try {
-        if (this.getEvmChainId && this.getEvmAccountName) {
-          let tokens = this.getTPortTokens;
-          let remoteContractAddress = undefined;
-          let balance = 0;
-          for (const token of tokens) {
-            try {
-              const { injectedWeb3, web3 } = await this.$web3();
-              if (injectedWeb3) {
-                if (this.wrongNetwork(this.getEvmNetwork, this.getFromChain)) balance = 0;
-                else {
-                  if (token == undefined) {
-                  } else {
-                    remoteContractAddress = token.remote_contracts.find(
-                      (el) => el.key === this.getEvmRemoteId
-                    );
-                  if(remoteContractAddress !== undefined) {
-                    remoteContractAddress = remoteContractAddress.value
-                    const remoteInstance = new web3.eth.Contract(
-                      this.$erc20Abi,
-                      remoteContractAddress
-                    ); // TODO Add check to validate abi
-                    const remotebalance = await remoteInstance.methods
-                      .balanceOf(this.getEvmAccountName)
-                      .call();
-                    balance = Number(
-                      parseFloat(
-                        ethers.utils
-                          .formatUnits(
-                            remotebalance,
-                            await remoteInstance.methods.decimals().call()
-                          )
-                          .toString()
-                      ).toFixed(token.decimals)
-                    );
-                  } 
-                }
-                }
-              }
-              if (balance !== undefined && balance !== 0) {
-                let precision = this.$assetToPrecision(balance)
-                if (token.decimals === 0) {
-                  this.$store.commit("tport/setTokenPrecision", {
-                    token: token,
-                    precision: precision
-                  });
-                }
-                this.$store.commit("tport/setTokenAmount", {
-                  token: token,
-                  amount: this.$assetToAmount(balance)
-                });
-              } else {
-                this.$store.commit("tport/setTokenAmount", { token: token, amount: 0 });
-              }
-            } catch (error) {
-              this.$store.commit("tport/setTokenAmount", { token: token, amount: 0 });
-            }
-          }
-        }
-      } catch (error) {
-          console.log("Error getting chain token balance:", error);
-          this.$store.commit("general/setErrorMsg", error.message || error, { root: true });
-      }
-    },
+    // async updateTportTokenBalancesEvm() {
+    //   try {
+    //     if (this.getEvmChainId && this.getEvmAccountName) {
+    //       let tokens = this.getTPortTokens;
+    //       let remoteContractAddress = undefined;
+    //       let balance = 0;
+    //       for (const token of tokens) {
+    //         try {
+    //           const { injectedWeb3, web3 } = await this.$web3();
+    //           if (injectedWeb3) {
+    //             if (this.wrongNetwork(this.getEvmNetwork, this.getFromChain))
+    //               balance = 0;
+    //             else {
+    //               if (token == undefined) {
+    //               } else {
+    //                 remoteContractAddress = token.remote_contracts.find(
+    //                   (el) => el.key === this.getEvmRemoteId
+    //                 );
+    //                 if (remoteContractAddress !== undefined) {
+    //                   remoteContractAddress = remoteContractAddress.value;
+    //                   const remoteInstance = new web3.eth.Contract(
+    //                     this.$erc20Abi,
+    //                     remoteContractAddress
+    //                   ); // TODO Add check to validate abi
+    //                   const remotebalance = await remoteInstance.methods
+    //                     .balanceOf(this.getEvmAccountName)
+    //                     .call();
+    //                   balance = Number(
+    //                     parseFloat(
+    //                       ethers.utils
+    //                         .formatUnits(
+    //                           remotebalance,
+    //                           await remoteInstance.methods.decimals().call()
+    //                         )
+    //                         .toString()
+    //                     ).toFixed(token.decimals)
+    //                   );
+    //                 }
+    //               }
+    //             }
+    //           }
+    //           if (balance !== undefined && balance !== 0) {
+    //             let precision = this.$assetToPrecision(balance);
+    //             if (token.decimals === 0) {
+    //               this.$store.commit("tport/setTokenPrecision", {
+    //                 token: token,
+    //                 precision: precision,
+    //               });
+    //             }
+    //             this.$store.commit("tport/setTokenAmount", {
+    //               token: token,
+    //               amount: this.$assetToAmount(balance),
+    //             });
+    //           } else {
+    //             this.$store.commit("tport/setTokenAmount", {
+    //               token: token,
+    //               amount: 0,
+    //             });
+    //           }
+    //         } catch (error) {
+    //           this.$store.commit("tport/setTokenAmount", {
+    //             token: token,
+    //             amount: 0,
+    //           });
+    //         }
+    //       }
+    //     }
+    //   } catch (error) {
+    //     console.log("Error getting chain token balance:", error);
+    //     this.$store.commit("general/setErrorMsg", error.message || error, {
+    //       root: true,
+    //     });
+    //   }
+    // },
     wrongNetwork(evmNetwork, selectedNetwork) {
       if (evmNetwork) {
         return (
@@ -430,16 +459,18 @@ export default {
           selectedNetwork.NETWORK_NAME.toUpperCase()
         );
       } else return true;
-    }
+    },
   },
   mounted() {
     if (this.$route.query.token_sym !== undefined)
       this.selectedTokenSym = this.$route.query.token_sym;
     this.selectedNetwork = this.getCurrentChain.NETWORK_NAME;
     this.reloadWallet(this.accountName);
-    this.setTPortTokens();
-    this.$store.dispatch("tport/setTeleports", this.accountName);
-    this.getToNative ? this.updateTportTokenBalancesEvm() : this.updateTportTokenBalances()
+    this.updateTPortTokens();
+    this.updateTeleports(this.accountName);
+    this.getToNative
+      ? this.updateTportTokenBalancesEvm()
+      : this.updateTportTokenBalances();
     this.$store.commit("bridge/setFromChain", this.getAllPossibleChains[0]);
     this.$store.commit("bridge/setToChain", this.getAllPossibleChains[1]);
   },
@@ -447,7 +478,7 @@ export default {
   watch: {
     async accountName() {
       this.reloadWallet(this.accountName);
-      this.$store.dispatch("tport/setTeleports", this.accountName);
+      this.updateTeleports(this.accountName);
     },
     async selectedNetwork() {
       if (this.supportedEvmChains.includes(this.selectedNetwork)) {
@@ -455,20 +486,20 @@ export default {
         this.switchMetamaskNetwork(this.selectedNetwork);
       }
     },
-  }
-}
+  },
+};
 </script>
 
 <style lang="scss" scoped>
- .bridgeStepper {
-   width: 700px;
-   max-width: 95vw;
- }
- .bridgeButton {
-   color: white;
-   background-color: rgb(85,42,248);
- }
- .bordered {
+.bridgeStepper {
+  width: 700px;
+  max-width: 95vw;
+}
+.bridgeButton {
+  color: white;
+  background-color: rgb(85, 42, 248);
+}
+.bordered {
   border: 2px solid $primary;
   border-radius: 15px;
   padding: 5px;

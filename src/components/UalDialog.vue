@@ -11,7 +11,7 @@
         v-ripple
         :style="{
           background: wallet.getStyle().background,
-          color: wallet.getStyle().textColor
+          color: wallet.getStyle().textColor,
         }"
       >
         <q-item-section class="cursor-pointer" avatar @click="onLogin(idx)">
@@ -36,9 +36,7 @@
             flat
             size="12px"
           >
-            <q-tooltip>
-              Get app
-            </q-tooltip>
+            <q-tooltip> Get app </q-tooltip>
           </q-btn>
         </q-item-section>
       </q-item>
@@ -68,8 +66,8 @@ export default {
       "isAuthenticated",
       "accountName",
       "loading",
-      "isAutoLoading"
-    ])
+      "isAutoLoading",
+    ]),
   },
   methods: {
     ...mapActions("account", ["login", "logout", "autoLogin"]),
@@ -84,8 +82,8 @@ export default {
     },
     openUrl(url) {
       window.open(url);
-    }
-  }
+    },
+  },
 };
 </script>
 

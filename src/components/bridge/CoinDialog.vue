@@ -126,6 +126,13 @@ export default {
     ...mapGetters("account", ["isAuthenticated", "accountName"]),
     ...mapGetters("tport", ["getTPortTokens"]),
     ...mapGetters("blockchains", ["getAllPossibleChains", "getCurrentChain"]),
+    ...mapGetters("bridge", [
+      "getToChain",
+      "getFromChain",
+      "getToken",
+      "getAmount",
+      "getToNative",
+    ]),
     availableTokens() {
       if (this.filteredTokens.length > 0) {
         return this.filteredTokens;
@@ -146,8 +153,12 @@ export default {
     ...mapActions("swap", ["updateSwapPool", "updateEstimate"]),
     ...mapActions("liquidity", ["updateActivePool"]),
     ...mapActions("pools", ["updatePools"]),
-    ...mapActions("tport", ["setTPortTokens", "updateTportTokenBalances"]),
-    ...mapActions("bridge",["updateBridgeToken"]),
+    ...mapActions("tport", [
+      "updateTPortTokens",
+      "updateTportTokenBalances",
+      "updateTportTokenBalancesEvm",
+    ]),
+    ...mapActions("bridge", ["updateBridgeToken"]),
 
     updateSelectedCoin(token) {
       this.updateBridgeToken(token);
@@ -182,9 +193,10 @@ export default {
   async mounted() {
     // await this.updatePools();
     // await this.updateAllTokensBalances(this.accountName);
-    await this.setTPortTokens();
-    const { injectedWeb3, web3 } = await this.$web3();
-    await this.updateTportTokenBalances(this.accountName, injectedWeb3, web3, await this.$erc20Abi );
+    await this.updateTPortTokens();
+    this.getToNative
+      ? this.updateTportTokenBalancesEvm()
+      : this.updateTportTokenBalances();
   },
 };
 </script>

@@ -5,4 +5,4 @@ export default {
   teleports: [],
   networkList: [],
   reclaimableTokens: [],
-}
+};

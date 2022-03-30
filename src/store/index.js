@@ -14,7 +14,7 @@ import xchain from "./xchain";
 
 Vue.use(Vuex);
 
-export default function() {
+export default function () {
   const Store = new Vuex.Store({
     modules: {
       general,
@@ -26,10 +26,10 @@ export default function() {
       swap,
       liquidity,
       tport,
-      xchain
+      xchain,
     },
 
-    strict: process.env.DEV
+    strict: process.env.DEV,
   });
 
   return Store;

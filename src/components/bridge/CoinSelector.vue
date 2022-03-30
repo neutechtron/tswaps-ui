@@ -3,19 +3,14 @@
     class="selectorContainer row items-center no-wrap"
     @click="showCoinDialog = !showCoinDialog"
   >
-    <token-avatar
-      :token="getToken.symbol.toString()"
-      :avatarSize="40"
-    />
+    <token-avatar :token="getToken.symbol.toString()" :avatarSize="40" />
     <div class="text-h6 q-mx-sm">
       {{ getToken.symbol.toString() }}
     </div>
     <div class="col row justify-end">
       <dropdown-btn />
     </div>
-    <coin-dialog
-      :showCoinDialog.sync="showCoinDialog"
-    />
+    <coin-dialog :showCoinDialog.sync="showCoinDialog" />
   </div>
 </template>
 
@@ -28,12 +23,12 @@ export default {
   components: { dropdownBtn, tokenAvatar, coinDialog },
   data() {
     return {
-      showCoinDialog: false
+      showCoinDialog: false,
     };
   },
   computed: {
-    ...mapGetters("bridge", ["getToken"])
-  }
+    ...mapGetters("bridge", ["getToken"]),
+  },
 };
 </script>
 
