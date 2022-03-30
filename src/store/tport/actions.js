@@ -163,29 +163,22 @@ export const updateTportTokenBalancesEvm = async function (
                         )
                             balance = 0;
                         else {
-                            console.log("TPort token:", token);
+                            // console.log("TPort token:", token);
                             if (typeof token === "undefined") {
                                 console.error("TPort Token not found");
                             } else {
                                 const remoteContractAddress = token.remote_contracts.find(
                                     (el) => el.key === getters.getEvmRemoteId
                                 ).value;
-                                console.log("remoteContractAddress:", remoteContractAddress);
+                                // console.log("remoteContractAddress:", remoteContractAddress);
                                 const remoteInstance = new web3.eth.Contract(
                                     this._vm.$erc20Abi,
                                     remoteContractAddress
                                 ); // TODO Add check to validate abi
-                                console.log("remoteInstance:", remoteInstance);
+                                // console.log("remoteInstance:", remoteInstance);
                                 const remotebalance = await remoteInstance.methods
                                     .balanceOf(getters.getEvmAccountName)
                                     .call();
-                                console.log("remotebalance:", remotebalance);
-                                console.log("test balance:", ethers.utils
-                                    .formatUnits(
-                                        remotebalance,
-                                        await remoteInstance.methods.decimals().call()
-                                    )
-                                    .toString())
                                 balance = Number(
                                     parseFloat(
                                         ethers.utils
@@ -196,7 +189,7 @@ export const updateTportTokenBalancesEvm = async function (
                                             .toString()
                                     ).toFixed(token.decimals)
                                 );
-                                console.log("Balance is:", balance);
+                                // console.log("Balance is:", balance);
 
                             }
                         }
@@ -218,10 +211,9 @@ export const updateTportTokenBalancesEvm = async function (
                         commit("setTokenAmount", { token: token, amount: 0 });
                     }
                 } catch (error) {
-                    console.log('oi')
                     commit("setTokenAmount", { token: token, amount: 0 });
                 }
-                console.log("balance:", balance);
+                // console.log("balance:", balance);
             }
         }
     } catch (error) {
