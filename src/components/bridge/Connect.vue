@@ -155,7 +155,7 @@ export default {
 
     async updateBalance() {
       const { injectedWeb3, web3 } = await this.$web3();
-      this.updateTportTokenBalances(injectedWeb3, web3, this.$erc20Abi);
+      this.updateTportTokenBalances();
     },
 
     async trySend() {

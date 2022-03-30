@@ -1,3 +1,5 @@
+import { ethers } from "ethers";
+
 // Get evm bridge tokens from tokens table of tport.start
 export const updateTPortTokens = async function ({ commit, getters }) {
     try {
@@ -143,25 +145,16 @@ export const updateTportTokenBalances = async function ({
 };
 
 export const updateTportTokenBalancesEvm = async function (
-    { commit, getters, rootGetters },
-    injectedWeb3,
-    web3,
-    erc20abi
+    { commit, getters, rootGetters }
 ) {
     try {
         if (getters.getEvmChainId && getters.getEvmAccountName) {
-            console.log("here");
+            const { injectedWeb3, web3 } = await this._vm.$web3();
             let tokens = getters.getTPortTokens;
-            const balance = 0;
+            let balance = 0;
             for (const token of tokens) {
                 try {
                     if (injectedWeb3) {
-                        console.log(
-                            wrongNetwork(
-                                getters.getEvmNetwork,
-                                rootGetters["bridge/getFromChain"]
-                            )
-                        );
                         if (
                             wrongNetwork(
                                 getters.getEvmNetwork,
@@ -179,14 +172,20 @@ export const updateTportTokenBalancesEvm = async function (
                                 ).value;
                                 console.log("remoteContractAddress:", remoteContractAddress);
                                 const remoteInstance = new web3.eth.Contract(
-                                    erc20abi,
+                                    this._vm.$erc20Abi,
                                     remoteContractAddress
                                 ); // TODO Add check to validate abi
                                 console.log("remoteInstance:", remoteInstance);
                                 const remotebalance = await remoteInstance.methods
                                     .balanceOf(getters.getEvmAccountName)
                                     .call();
-                                console.log("Balance is:", balance);
+                                console.log("remotebalance:", remotebalance);
+                                console.log("test balance:", ethers.utils
+                                    .formatUnits(
+                                        remotebalance,
+                                        await remoteInstance.methods.decimals().call()
+                                    )
+                                    .toString())
                                 balance = Number(
                                     parseFloat(
                                         ethers.utils
@@ -195,13 +194,14 @@ export const updateTportTokenBalancesEvm = async function (
                                                 await remoteInstance.methods.decimals().call()
                                             )
                                             .toString()
-                                    ).toFixed(token.token.decimals)
+                                    ).toFixed(token.decimals)
                                 );
+                                console.log("Balance is:", balance);
+
                             }
                         }
                     }
-                    console.log("balance:");
-                    console.log(balance);
+
                     if (balance !== undefined) {
                         let precision = this.$assetToPrecision(balance);
                         if (token.token.decimals === 0) {
@@ -218,8 +218,10 @@ export const updateTportTokenBalancesEvm = async function (
                         commit("setTokenAmount", { token: token, amount: 0 });
                     }
                 } catch (error) {
+                    console.log('oi')
                     commit("setTokenAmount", { token: token, amount: 0 });
                 }
+                console.log("balance:", balance);
             }
         }
     } catch (error) {
