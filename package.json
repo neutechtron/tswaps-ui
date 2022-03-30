@@ -1,8 +1,8 @@
 {
   "name": "tswaps-bridge",
   "version": "0.1.0",
-  "description": "T-Swaps Interface",
-  "productName": "T-Swaps",
+  "description": "Telos-EVM-Bridge",
+  "productName": "Telos-EVM-Bridge",
   "author": "Jacques Beukes <jacques@y-knot.io>, Dewald Krynauw <dewald@y-knot.io>",
   "private": true,
   "scripts": {
