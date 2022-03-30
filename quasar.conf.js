@@ -150,36 +150,36 @@ module.exports = function (/* ctx */) {
       workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
-        name: `Telos-EVM-Bridge`,
+        name: `Telos Spark Bridge`,
         short_name: `EVM-Bridge`,
-        description: `Telos-EVM-Bridge`,
+        description: `Telos Spark Bridge`,
         display: "standalone",
         orientation: "portrait",
         background_color: "#ffffff",
         theme_color: "#027be3",
         icons: [
           {
-            src: "tokens/telos_evm.jpg",
+            src: "tokens/telos_evm.png",
             sizes: "128x128",
             type: "image/png",
           },
           {
-            src: "tokens/telos_evm.jpg",
+            src: "tokens/telos_evm.png",
             sizes: "192x192",
             type: "image/png",
           },
           {
-            src: "tokens/telos_evm.jpg",
+            src: "tokens/telos_evm.png",
             sizes: "256x256",
             type: "image/png",
           },
           {
-            src: "tokens/telos_evm.jpg",
+            src: "tokens/telos_evm.png",
             sizes: "384x384",
             type: "image/png",
           },
           {
-            src: "tokens/telos_evm.jpg",
+            src: "tokens/telos_evm.png",
             sizes: "512x512",
             type: "image/png",
           },
