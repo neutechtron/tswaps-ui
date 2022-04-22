@@ -202,10 +202,10 @@ export default {
       let token0 = this.getPool.reserve0;
       let token1 = this.getPool.reserve1;
       if (this.getHasPool) {
-        let price0 = parseFloat(this.getPool.price1_last).toFixed(
+        let price0 = parseFloat(token0.quantity / token1.quantity).toFixed(
           token0.precision
         );
-        let price1 = parseFloat(this.getPool.price0_last).toFixed(
+        let price1 = parseFloat(token1.quantity / token0.quantity).toFixed(
           token1.precision
         );
         if (selector) {

@@ -36,9 +36,9 @@ export const updateValue1 = async function ({ commit, getters }, amount) {
             let pool = getters.getPool;
             if (Number(pool?.price0_last) !== 0) {
                 if (token1.symbol == pool?.reserve0?.symbol) {
-                    estimate = Number(amount) * Number(pool?.price0_last);
+                    estimate = Number(amount) * Number(pool.reserve1.quantity / pool.reserve0.quantity);
                 } else {
-                    estimate = Number(amount) * Number(pool?.price1_last);
+                    estimate = Number(amount) * Number(pool.reserve0.quantity / pool.reserve1.quantity);
                 }
                 estimate = this.$truncate(estimate, getters.getToken2.precision);
                 commit("setValue2", estimate);
@@ -61,9 +61,9 @@ export const updateValue2 = async function ({ commit, getters }, amount) {
             let pool = getters.getPool;
             if (Number(pool?.price0_last) !== 0) {
                 if (token2.symbol == pool?.reserve0?.symbol) {
-                    estimate = Number(amount) * Number(pool?.price0_last);
+                    estimate = Number(amount) * Number(pool.reserve1.quantity / pool.reserve0.quantity);
                 } else {
-                    estimate = Number(amount) * Number(pool?.price1_last);
+                    estimate = Number(amount) * Number(pool.reserve0.quantity / pool.reserve1.quantity);
                 }
                 estimate = this.$truncate(estimate, getters.getToken1.precision);
                 commit("setValue1", estimate);
@@ -86,14 +86,14 @@ export const updateSelectedTokenBalance = async function ({ commit, getters, roo
             token =>
                 token.contract == toToken?.contract && token.symbol == toToken?.symbol
         );
-        if(newToken){
+        if (newToken) {
             commit("setToken2", newToken);
         }
         newToken = tokens?.find(
             token =>
                 token.contract == fromToken?.contract && token.symbol == fromToken?.symbol
         );
-        if(newToken){
+        if (newToken) {
             commit("setToken1", newToken);
         }
     } catch (error) {
