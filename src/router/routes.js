@@ -1,6 +1,6 @@
 const routes = [
   {
-    path: "/home",
+    path: "/",
     component: () => import("pages/HomePage.vue"),
   },
   {
@@ -29,8 +29,8 @@ const routes = [
     ],
   },
   {
-    path: "/",
-    component: () => import("layouts/BridgeLayout.vue"),
+    path: "/bridge",
+    component: () => import("layouts/MainLayout.vue"),
     children: [
       { path: "", name: "bridge", component: () => import("pages/Bridge.vue") },
     ],
