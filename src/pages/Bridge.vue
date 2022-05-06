@@ -12,7 +12,7 @@
         <bridge-stepper />
       </div>
 
-      <div class="row justify-center q-mt-lg q-mb-lg">
+      <div class="row justify-center q-mt-lg q-mb-lg padding-xxl">
         <bridge-dashboard />
       </div>
     </section>
