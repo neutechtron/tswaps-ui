@@ -1,6 +1,10 @@
 <template>
   <q-page>
     <section>
+      <div class="row justify-center q-mt-lg q-mb-lg">
+        <bridge-external />
+      </div>
+
       <div class="row justify-center q-mt-xs q-mb-lg padding-xxl">
         <div class="col-7">
           <div class="text-h4 text-center">
@@ -24,11 +28,13 @@ import { mapGetters, mapActions } from "vuex";
 import metamask from "src/components/Metamask";
 import bridgeStepper from "../components/bridge/bridgeStepper.vue";
 import bridgeDashboard from "src/components/bridge/TeleportDash.vue";
+import bridgeExternal from "src/components/bridge/ExternalBridge.vue";
 
 export default {
   components: {
     bridgeStepper,
     bridgeDashboard,
+    bridgeExternal,
   },
   mixins: [metamask],
   data() {
