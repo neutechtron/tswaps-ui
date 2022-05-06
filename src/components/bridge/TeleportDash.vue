@@ -6,12 +6,12 @@
         <q-btn
           padding="sm"
           class="hover-accent"
-          color="black"
           icon="fas fa-sync-alt"
           flat
           size="sm"
           @click="refreshTeleports()"
-        />
+        /> 
+        <!-- removing color="black" fixes isseues with dark/light mode -->
       </div>
       <div class="column">
         <div
