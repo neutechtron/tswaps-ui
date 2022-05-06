@@ -82,9 +82,9 @@ h2 {
   font-size: 35px;
 }
 
-.text-h4 {
-  color: white;
-}
+// .text-h4 {
+//   color: white;
+// } //commenting out fixes issues with dark/light mode
 .padding-xxl {
   padding-bottom: 40px;
   padding-top: 70px;
