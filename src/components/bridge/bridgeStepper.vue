@@ -4,11 +4,14 @@
       v-model="step"
       ref="stepper"
       alternative-labels
+      flat
+      bordered
       done-color="deep-purple-13"
       active-color="deep-purple-13"
       inactive-color="deep-purple-3"
       animated
       header-class="stepper-header"
+      class="stepper-border"
     >
       <q-step
         :name="1"
@@ -194,7 +197,6 @@ import connect from "./Connect.vue";
 import amountInput from "./AmountInput";
 import sendTxDialog from "./SendTxDialog";
 import tokenAvatar from "src/components/TokenAvatar.vue";
-import { ethers } from "ethers";
 
 export default {
   components: {
@@ -378,80 +380,6 @@ export default {
         this.$errorNotification(error);
       }
     },
-    // async updateTportTokenBalancesEvm() {
-    //   try {
-    //     if (this.getEvmChainId && this.getEvmAccountName) {
-    //       let tokens = this.getTPortTokens;
-    //       let remoteContractAddress = undefined;
-    //       let balance = 0;
-    //       for (const token of tokens) {
-    //         try {
-    //           const { injectedWeb3, web3 } = await this.$web3();
-    //           if (injectedWeb3) {
-    //             if (this.wrongNetwork(this.getEvmNetwork, this.getFromChain))
-    //               balance = 0;
-    //             else {
-    //               if (token == undefined) {
-    //               } else {
-    //                 remoteContractAddress = token.remote_contracts.find(
-    //                   (el) => el.key === this.getEvmRemoteId
-    //                 );
-    //                 if (remoteContractAddress !== undefined) {
-    //                   remoteContractAddress = remoteContractAddress.value;
-    //                   const remoteInstance = new web3.eth.Contract(
-    //                     this.$erc20Abi,
-    //                     remoteContractAddress
-    //                   ); // TODO Add check to validate abi
-    //                   const remotebalance = await remoteInstance.methods
-    //                     .balanceOf(this.getEvmAccountName)
-    //                     .call();
-    //                   balance = Number(
-    //                     parseFloat(
-    //                       ethers.utils
-    //                         .formatUnits(
-    //                           remotebalance,
-    //                           await remoteInstance.methods.decimals().call()
-    //                         )
-    //                         .toString()
-    //                     ).toFixed(token.decimals)
-    //                   );
-    //                 }
-    //               }
-    //             }
-    //           }
-    //           if (balance !== undefined && balance !== 0) {
-    //             let precision = this.$assetToPrecision(balance);
-    //             if (token.decimals === 0) {
-    //               this.$store.commit("tport/setTokenPrecision", {
-    //                 token: token,
-    //                 precision: precision,
-    //               });
-    //             }
-    //             this.$store.commit("tport/setTokenAmount", {
-    //               token: token,
-    //               amount: this.$assetToAmount(balance),
-    //             });
-    //           } else {
-    //             this.$store.commit("tport/setTokenAmount", {
-    //               token: token,
-    //               amount: 0,
-    //             });
-    //           }
-    //         } catch (error) {
-    //           this.$store.commit("tport/setTokenAmount", {
-    //             token: token,
-    //             amount: 0,
-    //           });
-    //         }
-    //       }
-    //     }
-    //   } catch (error) {
-    //     console.log("Error getting chain token balance:", error);
-    //     this.$store.commit("general/setErrorMsg", error.message || error, {
-    //       root: true,
-    //     });
-    //   }
-    // },
     wrongNetwork(evmNetwork, selectedNetwork) {
       if (evmNetwork) {
         return (
@@ -494,6 +422,7 @@ export default {
 .bridgeStepper {
   width: 700px;
   max-width: 95vw;
+  border-radius: 50px !important; 
 }
 .bridgeButton {
   color: white;
@@ -507,5 +436,8 @@ export default {
 }
 .small-padding {
   padding-top: 4px;
+}
+.stepper-border {
+  border-radius: 30px;
 }
 </style>

@@ -156,6 +156,10 @@ body.body--light {
     border-radius: 30px;
     max-width: 100vw;
   }
+
+  .stepper-header {
+    background: rgb(227,223,247) !important; 
+  }
 }
 
 body.body--dark,
@@ -255,9 +259,13 @@ body.body--dark,
   }
 
   .tableCard {
-    background: $dark-0;
+    background: $mainCardDarkMode;
     border-radius: 30px;
     max-width: 100vw;
+  }
+
+  .stepper-header {
+    background: $purpleDarkAccent;
   }
 }
 
@@ -392,6 +400,6 @@ a:-webkit-any-link {
   left: -12px;
 }
 
-.stepper-header {
-  background: rgb(227,223,247) !important; 
+.standardBorder {
+  border-radius: 30px;
 }
