@@ -68,6 +68,7 @@ module.exports = function (/* ctx */) {
         LIQUIDITY_CONTRACT: process.env.LIQUIDITY_CONTRACT,
         LPTOKEN_CONTRACT: process.env.LPTOKEN_CONTRACT,
         STATS_CONTRACT: process.env.STATS_CONTRACT,
+        TSWAPS_BRIDGE_TEST: process.env.TSWAPS_BRIDGE_TEST,
         TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
         TSWAPS_DOCS: process.env.TSWAPS_DOCS,
         SITE_VERSION: siteVersion,

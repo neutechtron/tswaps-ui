@@ -42,6 +42,7 @@ export default {
         icon: "fas fa-moon",
       },
       TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
+      TSWAPS_BRIDGE_TEST: process.env.TSWAPS_BRIDGE_TEST,
       TSWAPS_DOCS: process.env.TSWAPS_DOCS,
       SITE_VERSION: process.env.SITE_VERSION,
       TESTNET: process.env.TESTNET?.toLowerCase() === "true",
