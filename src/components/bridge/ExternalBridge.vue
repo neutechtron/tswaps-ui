@@ -2,16 +2,17 @@
   <div class="bridgeDash">
     <q-card class="swapCard">
       <div class="row justify-center">
-        <div class="text-h6 text-center q-pr-sm">
+        <div class="text-h6 text-center q-pa-sm">
             <div>
                 Attention
             </div>
-          <div class="text-p row justify-center" style="font-size: 15px">
-            If you wish to bridge between Wax Telos and EOS, click the link below.
+          <div class="row justify-center text-body2">
+            If you wish to bridge between Wax, Telos and EOS, click the link below.
           </div>
-          <div style="padding-bottom: 10px">
-            <q-btn :href="checkTestNet()" class="q-ml-sm bridgeButton" style="font-size: 15px">
-              Bridge <i role="presentation" class="fas fa-external-link-alt"/>
+          <div class="q-pb-sm">
+            <q-btn :href="checkTestNet()" type="a" class="q-ml-sm bridgeButton text-body">
+              Bridge 
+              <i role="presentation" class="fas fa-external-link-alt q-pl-sm"/>
             </q-btn>
           </div>
         </div>
@@ -24,7 +25,7 @@
   export default {
     methods: {
       checkTestNet(){
-        if (process.env.TESTNET === "truee"){
+        if (process.env.TESTNET === "true"){
           return process.env.TSWAPS_BRIDGE_TEST;
         } else{
           return process.env.TSWAPS_BRIDGE;
