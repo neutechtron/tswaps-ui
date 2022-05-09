@@ -1,8 +1,8 @@
 <template>
   <q-page>
     <section>
-      <div class="row justify-center q-mt-lg q-mb-lg">
-        <bridge-external />
+      <div class="row justify-center q-mt-lg q-mb-lg" style="padding-top: 60px">
+        <bridge-external/>
       </div>
 
       <div class="row justify-center q-mt-xs q-mb-lg padding-xxl">
@@ -86,7 +86,7 @@ h2 {
 //   color: white;
 // } //commenting out fixes issues with dark/light mode
 .padding-xxl {
-  padding-bottom: 40px;
-  padding-top: 70px;
+  padding-bottom: 60px;
+  padding-top: 60px;
 }
 </style>
