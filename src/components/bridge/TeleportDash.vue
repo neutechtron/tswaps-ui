@@ -1,8 +1,8 @@
 <template>
   <div class="bridgeDash">
-    <q-card>
-      <div class="row justify-center">
-        <div class="text-h6 text-center q-pr-sm">Transaction History</div>
+    <q-card flat class="swapCard">
+      <div class="row justify-center q-pt-lg">
+        <div class="text-h6 text-center q-pr-sm ">Transaction History</div>
         <q-btn
           padding="sm"
           class="hover-accent"
@@ -97,7 +97,7 @@
           </div>
         </div>
       </div>
-      <q-card-actions class="row justify-center">
+      <q-card-actions class="row justify-center q-pb-md">
         <div>{{ expanded ? "Hide" : "Show" }} Claimed</div>
         <q-btn
           color="grey"
@@ -145,10 +145,9 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import { Api, JsonRpc, Serialize } from "eosjs";
+import { Serialize } from "eosjs";
 import tokenAvatar from "src/components/TokenAvatar";
 import metamask from "src/components/Metamask";
-import { ethers } from "ethers";
 
 const fromHexString = (hexString) =>
   new Uint8Array(hexString.match(/.{1,2}/g).map((byte) => parseInt(byte, 16)));
@@ -383,6 +382,7 @@ export default {
 .bridgeDash {
   width: 700px;
   max-width: 95vw;
+  border-radius: 30px;
 }
 .bridgeButton {
   color: white;
