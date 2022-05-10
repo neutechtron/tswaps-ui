@@ -1,17 +1,17 @@
 <template>
   <div class="bridgeDash">
-    <q-card class="swapCard">
+    <q-card class="swapCard" flat>
       <div class="row justify-center">
-        <div class="text-h6 text-center q-pa-sm">
+        <div class="text-h6 text-left q-pa-sm">
             <div>
                 Attention
             </div>
-          <div class="row justify-center text-body2">
-            If you wish to bridge between Wax, Telos and EOS, click the link below.
+          <div class="row justify-left text-body2 q-py-sm">
+            If you wish to bridge between Telos, EOS and WAX, click the link below.
           </div>
           <div class="q-pb-sm">
-            <q-btn :href="checkTestNet()" type="a" class="q-ml-sm bridgeButton text-body">
-              Bridge 
+            <q-btn :href="checkTestNet()" type="a" target="_blank" class="q-ml-sm bridgeButton text-body">
+              EOSIO Bridge 
               <i role="presentation" class="fas fa-external-link-alt q-pl-sm"/>
             </q-btn>
           </div>

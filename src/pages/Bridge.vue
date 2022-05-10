@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <section>
-      <div class="row justify-center q-mt-lg q-mb-lg" style="padding-top: 60px">
+      <div class="row justify-center q-my-md" style="padding-top: 60px">
         <bridge-external/>
       </div>
 
