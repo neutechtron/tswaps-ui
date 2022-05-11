@@ -146,6 +146,7 @@ export const sendToNative = async function ({ commit, getters, rootGetters }) {
           const resp = await remoteInstance.methods
             .teleport(accountName, weiAmount, 0)
             .send({ from: evmAccountName });
+            return {transactionId: resp.transactionHash}
         } catch (error) {
           console.log(error);
         }

@@ -42,9 +42,9 @@ export default {
     ...mapGetters("blockchains", ["getCurrentChain"]),
     explorerUrl() {
       if (this.getFromChain.NETWORK_NAME == 'TELOS'){
-        return process.env.NETWORK_EXPLORER;
+        return (process.env.NETWORK_EXPLORER + 'transaction/');
       } else {
-        return process.env.NETWORK_EVM_EXPLORER;
+        return (process.env.NETWORK_EVM_EXPLORER + 'tx/');
       };
     },
     ...mapGetters("bridge", [
