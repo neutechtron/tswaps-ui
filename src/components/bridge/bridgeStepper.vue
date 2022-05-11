@@ -368,6 +368,7 @@ export default {
           this.to = null;
           this.amount = null;
           this.memo = "";
+          this.step = 1;
           this.updateTeleports(this.accountName);
         }
         this.$q.notify({

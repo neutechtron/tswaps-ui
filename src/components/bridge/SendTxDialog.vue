@@ -3,6 +3,7 @@
     :value="showTransaction"
     @input="$emit('update:showTransaction', $event)"
     confirm
+    persistent
   >
     <q-card>
       <q-card-section class="row items-center">

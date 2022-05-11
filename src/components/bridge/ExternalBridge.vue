@@ -24,14 +24,10 @@
 export default {
   methods: {
     checkTestNet() {
-      if (process.env.TESTNET === "true") {
-        return process.env.TSWAPS_BRIDGE_TEST;
-      } else {
         return process.env.TSWAPS_BRIDGE;
       }
     },
-  },
-};
+  };
 </script>
 
 <style lang="scss" scoped>
