@@ -6,8 +6,13 @@
     <div class="imgWrapper row justify-center items-center">
       <token-avatar :token="selectedNetwork" :avatarSize="40" />
     </div>
-    <div class="text-h6 q-mx-xs ellipsis">{{ selectedAccount }}</div>
-    <div class="col row justify-end">
+    <div class="col ">
+      <div v-if="selectedAccount != selectedNetwork" class="row text-subtitle2 q-mx-xs smallRow ellipsis"> {{ selectedNetwork }}</div>
+      <div class="text-h6 q-mx-xs smallRow ellipsis">
+        {{ selectedAccount }}
+      </div>
+    </div>
+    <div class="col-md-auto row justify-end">
       <dropdown-btn />
     </div>
     <net-dialog :showNetDialog.sync="showNetDialog" :isFrom="isFrom" />
@@ -69,5 +74,8 @@ export default {
   border-radius: 100%;
   max-width: 3rem;
   max-height: 3rem;
+}
+.smallRow {
+  line-height: 20px;
 }
 </style>
