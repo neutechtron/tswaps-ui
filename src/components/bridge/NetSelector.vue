@@ -7,7 +7,9 @@
       <token-avatar :token="selectedNetwork" :avatarSize="40" />
     </div>
     <div class="col ">
-      <div v-if="selectedAccount != selectedNetwork" class="row text-subtitle2 q-mx-xs smallRow ellipsis"> {{ selectedNetwork }}</div>
+      <div v-if="selectedAccount != selectedNetwork" class="row text-subtitle2 q-mx-xs smallRow ellipsis">
+        {{ selectedNetwork }}
+      </div>
       <div class="text-h6 q-mx-xs smallRow ellipsis">
         {{ selectedAccount }}
       </div>

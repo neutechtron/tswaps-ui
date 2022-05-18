@@ -40,6 +40,16 @@
             <q-separator />
           </div>
 
+          <q-btn class="q-ml-sm q-mx-auto bridgeButton" @click="switchNetworks">
+            Switch 
+            <q-icon class="fas fa-arrow-up"/>
+            <q-icon class="fas fa-arrow-down"/>
+          </q-btn>
+
+          <div class="col-12 q-my-sm">
+            <q-separator />
+          </div>
+
           <div class="col-12 q-my-md">
             <connect
               :isFrom="false"
@@ -47,6 +57,11 @@
               :selectedNetwork="this.getToChain.NETWORK_NAME"
             />
           </div>
+
+          <div class="col-12 q-my-sm">
+            <q-separator />
+          </div>
+
         </div>
       </q-step>
 
@@ -216,6 +231,7 @@ export default {
       remoteContractInstance: null,
       selectedTokenSym: "START",
       selectedNetwork: "ETHEREUM",
+      networkChange: "",
     };
   },
   computed: {
@@ -320,6 +336,15 @@ export default {
       "updateTportTokenBalancesEvm",
     ]),
     ...mapActions("bridge", ["updateAmount", "sendBridgeToken"]),
+
+    switchNetworks(){
+      const tempHolder = this.getFromChain;
+      this.$store.commit("bridge/setFromChain", this.getToChain);
+      this.$store.commit("bridge/setToChain", tempHolder);
+      console.log(this.getFromChain);
+      console.log(this.getToChain);
+      console.log(tempHolder);
+    },
 
     formSubmitted() {
       console.log("submit");
