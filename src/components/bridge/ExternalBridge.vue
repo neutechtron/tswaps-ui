@@ -13,7 +13,7 @@
           class="q-ml-sm bridgeButton text-body"
         >
           EOSIO Bridge
-          <i role="presentation" class="fas fa-external-link-alt q-pl-sm" />
+          <i role="presentation" target="_blank" class="fas fa-external-link-alt q-pl-sm" />
         </q-btn>
       </div>
     </q-card>

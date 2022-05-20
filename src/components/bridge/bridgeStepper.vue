@@ -40,8 +40,7 @@
             <q-separator />
           </div>
 
-          <q-btn class="q-ml-sm q-mx-auto bridgeButton" @click="switchNetworks">
-            Switch 
+          <q-btn round class="q-ml-sm q-mx-auto bridgeButton" @click="switchNetworks">
             <q-icon class="fas fa-arrow-up"/>
             <q-icon class="fas fa-arrow-down"/>
           </q-btn>
