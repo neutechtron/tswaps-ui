@@ -394,13 +394,14 @@ export default {
           this.memo = "";
           this.step = 1;
           this.updateTeleports(this.accountName);
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "cloud_done",
+            message: "Sent",
+          });
         }
-        this.$q.notify({
-          color: "green-4",
-          textColor: "white",
-          icon: "cloud_done",
-          message: "Sent",
-        });
+        
       } catch (error) {
         this.$errorNotification(error);
       }
