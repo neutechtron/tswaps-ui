@@ -400,6 +400,13 @@ export default {
             icon: "cloud_done",
             message: "Sent",
           });
+        } else {
+          this.$q.notify({
+            color: "red",
+            textColor: "white",
+            icon: "error",
+            message: "Error: Cancelled by user",
+          });
         }
         
       } catch (error) {
