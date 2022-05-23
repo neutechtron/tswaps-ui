@@ -28,7 +28,7 @@
             <q-separator />
           </div>
 
-          <div class="col-12 q-my-md">
+          <div class="inputCard col-12 q-my-md">
             <connect
               :isFrom="true"
               :isNative="this.isNative(true)"
@@ -36,21 +36,19 @@
             />
           </div>
 
-          <div class="col-12 q-my-sm">
-            <q-separator />
-          </div>
-          
-          <div class="justify-center q-mx-auto">
-            <q-btn round class="bridgeButton" @click="switchNetworks">
-              <q-icon class="fas fa-arrow-down"/>
-            </q-btn>
-          </div>
-
-          <div class="col-12 q-my-sm">
-            <q-separator />
+          <div class="row justify-center fit">
+            <q-separator class="col q-my-lg vertical-middle"></q-separator>
+            
+            <div class="col-auto">
+              <div class="cursor-pointer cardCircle" @click="switchNetworks">
+                <i class="fas fa-arrow-down"/>
+              </div>
+            </div>
+            
+            <q-separator class="col q-my-lg vertical-middle"></q-separator>
           </div>
 
-          <div class="col-12 q-my-md">
+          <div class="inputCard col-12 q-my-md">
             <connect
               :isFrom="false"
               :isNative="this.isNative(false)"
