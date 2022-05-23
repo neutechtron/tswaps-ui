@@ -39,11 +39,12 @@
           <div class="col-12 q-my-sm">
             <q-separator />
           </div>
-
-          <q-btn round class="q-ml-sm q-mx-auto bridgeButton" @click="switchNetworks">
-            <q-icon class="fas fa-arrow-up"/>
-            <q-icon class="fas fa-arrow-down"/>
-          </q-btn>
+          
+          <div class="justify-center q-mx-auto">
+            <q-btn round class="bridgeButton" @click="switchNetworks">
+              <q-icon class="fas fa-arrow-down"/>
+            </q-btn>
+          </div>
 
           <div class="col-12 q-my-sm">
             <q-separator />
@@ -334,15 +335,14 @@ export default {
       "updateTeleports",
       "updateTportTokenBalancesEvm",
     ]),
-    ...mapActions("bridge", ["updateAmount", "sendBridgeToken"]),
+    ...mapActions("bridge", ["updateAmount", "sendBridgeToken", "updateToChain", "updateFromChain"]),
 
     switchNetworks(){
       const tempHolder = this.getFromChain;
       this.$store.commit("bridge/setFromChain", this.getToChain);
+      this.updateFromChain(this.getToChain);
       this.$store.commit("bridge/setToChain", tempHolder);
-      console.log(this.getFromChain);
-      console.log(this.getToChain);
-      console.log(tempHolder);
+      this.updateToChain(tempHolder);
     },
 
     formSubmitted() {
