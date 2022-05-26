@@ -191,7 +191,8 @@ export default {
         return this.getTeleports.filter(
           (el) =>
             !el.claimed &&
-            this.$chainToSym(el.quantity) === this.getToken.symbol &&
+            (this.getToken.symbol === "Select a token" ||
+                this.$chainToSym(el.quantity) === this.getToken.symbol) &&
             this.correctAccount(el.eth_address)
         );
       } else {
@@ -203,7 +204,8 @@ export default {
         return this.getTeleports.filter(
           (el) =>
             el.claimed &&
-            this.$chainToSym(el.quantity) === this.getToken.symbol &&
+            (this.getToken.symbol === "Select a token" ||
+                this.$chainToSym(el.quantity) === this.getToken.symbol) &&
             this.correctAccount(el.eth_address)
         );
       } else {
