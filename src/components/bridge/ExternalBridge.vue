@@ -7,7 +7,7 @@
       </div>
       <div class="">
         <q-btn
-          :href="checkTestNet()"
+          :href="TSWAPS_BRIDGE"
           type="a"
           target="_blank"
           class="q-ml-sm bridgeButton text-body"
@@ -22,12 +22,12 @@
 
 <script>
 export default {
-  methods: {
-    checkTestNet() {
-        return process.env.TSWAPS_BRIDGE;
-      }
-    },
-  };
+  data() {
+    return {
+      TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
+    }
+  },
+};
 </script>
 
 <style lang="scss" scoped>

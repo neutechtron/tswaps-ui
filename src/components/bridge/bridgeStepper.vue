@@ -24,19 +24,8 @@
             <div class="text-h5 q-mb-sm">Connect wallet</div>
           </div>
 
-          <!-- <div class="col-12 q-my-sm">
-            <q-separator />
-          </div> -->
-
-          <div class="inputCard col-12 gt-xs">
+          <div class="inputCard col-12">
             <connect
-              :isFrom="true"
-              :isNative="this.isNative(true)"
-              :selectedNetwork="this.getFromChain.NETWORK_NAME"
-            />
-          </div>
-          <div class="inputCard col-12 lt-sm">
-            <connectSmall
               :isFrom="true"
               :isNative="this.isNative(true)"
               :selectedNetwork="this.getFromChain.NETWORK_NAME"
@@ -49,25 +38,13 @@
               </div>
           </div>
 
-          <div class="inputCard col-12 gt-xs">
+          <div class="inputCard col-12">
             <connect
               :isFrom="false"
               :isNative="this.isNative(false)"
               :selectedNetwork="this.getToChain.NETWORK_NAME"
             />
           </div>
-          <div class="inputCard col-12 lt-sm">
-            <ConnectSmall
-              :isFrom="false"
-              :isNative="this.isNative(false)"
-              :selectedNetwork="this.getToChain.NETWORK_NAME"
-            />
-          </div>
-
-          <!-- <div class="col-12 q-my-sm">
-            <q-separator />
-          </div> -->
-
         </div>
       </q-step>
 
@@ -215,7 +192,6 @@
 import { mapGetters, mapActions } from "vuex";
 import coinSelector from "./CoinSelector.vue";
 import connect from "./Connect.vue";
-import ConnectSmall from "./ConnectSmall.vue";
 import amountInput from "./AmountInput";
 import sendTxDialog from "./SendTxDialog";
 import tokenAvatar from "src/components/TokenAvatar.vue";
@@ -227,8 +203,6 @@ export default {
     amountInput,
     sendTxDialog,
     tokenAvatar,
-    ConnectSmall,
-    ConnectSmall
 },
   data() {
     return {
@@ -240,7 +214,6 @@ export default {
       remoteContractInstance: null,
       selectedTokenSym: "START",
       selectedNetwork: "ETHEREUM",
-      networkChange: "",
     };
   },
   computed: {
