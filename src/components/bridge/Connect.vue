@@ -1,9 +1,9 @@
 <template>
   <div class="q-gutter-y-sm self-stretch">
     <div class="input-outline row items-center">
-      <div class="col-3 text-h6">{{ this.isFrom ? "From " : "To " }}</div>
+      <div class="col-2 text-h6">{{ this.isFrom ? "From " : "To " }}</div>
 
-      <div class="col-4">
+      <div class="col-sm-6 col-xs-10">
         <net-selector
           :selectedNetwork="selectedNetwork"
           :networkOptions="networkOptions"
@@ -11,7 +11,7 @@
           @changeNetwork="$emit('update:selectedNetwork', $event)"
         />
       </div>
-      <div class="col-5">
+      <div class="col-sm-4 col-xs-12">
         <div class="row justify-center">
           <q-btn
             v-if="

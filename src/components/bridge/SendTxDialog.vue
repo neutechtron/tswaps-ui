@@ -3,6 +3,7 @@
     :value="showTransaction"
     @input="$emit('update:showTransaction', $event)"
     confirm
+    persistent
   >
     <q-card>
       <q-card-section class="row items-center">
@@ -17,8 +18,8 @@
       <q-card-section>
         Transaction ID:
         <a
-          :href="`${explorerUrl}/transaction/${transaction}?network=${
-            getTestnet() ? 'telostest' : 'telos'
+          :href="`${explorerUrl}${transaction}${
+            !checkEVM() ? (getTestnet() ? '?network=telostest' : '?network=telos') : ''
           }`"
           target="_blank"
           style="word-wrap: break-word"
@@ -40,13 +41,27 @@ export default {
   computed: {
     ...mapGetters("blockchains", ["getCurrentChain"]),
     explorerUrl() {
-      return this.getCurrentChain.NETWORK_EXPLORER;
+      if (this.getFromChain.NETWORK_NAME == 'TELOS'){
+        return (process.env.NETWORK_EXPLORER + 'transaction/');
+      } else {
+        return (process.env.NETWORK_EVM_EXPLORER + 'tx/');
+      };
     },
+    ...mapGetters("bridge", [
+      "getFromChain",
+    ]),
   },
   methods: {
     getTestnet() {
       return process.env.TESTNET;
     },
+    checkEVM() {
+      if (this.getFromChain.NETWORK_NAME == 'TELOS') {
+        return false;
+      } else {
+        return true;
+      }
+    }
   },
 };
 </script>

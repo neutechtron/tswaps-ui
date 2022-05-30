@@ -146,6 +146,9 @@ body.body--light {
     .text-h6 {
       color: $dark-0;
     }
+    .text-subtitle2 {
+      color: $dark-0;
+    }
     .arrowButton {
       color: $dark-1;
     }
@@ -250,6 +253,10 @@ body.body--dark,
     }
 
     .text-h6 {
+      color: $white;
+    }
+
+    .text-subtitle2 {
       color: $white;
     }
 

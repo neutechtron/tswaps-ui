@@ -1,22 +1,23 @@
 <template>
   <q-page>
     <section>
-      <div class="row justify-center q-mt-lg q-mb-lg" style="padding-top: 60px">
-        <bridge-external/>
-      </div>
-
-      <div class="row justify-center q-mt-xs q-mb-lg padding-xxl">
+      <div class="row justify-center q-mt-xs padding-xxl">
         <div class="col-7">
           <div class="text-h4 text-center">
             Effortlessly bridge your tokens between telos EVM and Native.
           </div>
         </div>
       </div>
+
+      <div class="row justify-center q-mb-md">
+        <bridge-external />
+      </div>
+
       <div class="row justify-center q-mt-xs q-mb-lg">
         <bridge-stepper />
       </div>
 
-      <div class="row justify-center q-mt-lg q-mb-lg padding-xxl">
+      <div class="row justify-center q-mt-lg q-mb-lg">
         <bridge-dashboard />
       </div>
     </section>

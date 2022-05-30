@@ -24,11 +24,7 @@
             <div class="text-h5 q-mb-sm">Connect wallet</div>
           </div>
 
-          <div class="col-12 q-my-sm">
-            <q-separator />
-          </div>
-
-          <div class="col-12 q-my-md">
+          <div class="inputCard col-12">
             <connect
               :isFrom="true"
               :isNative="this.isNative(true)"
@@ -36,11 +32,13 @@
             />
           </div>
 
-          <div class="col-12 q-my-sm">
-            <q-separator />
+          <div class="row justify-center fit q-my-xs">
+              <div class="cursor-pointer cardCircle" @click="switchNetworks">
+                <i class="fas fa-arrow-down"/>
+              </div>
           </div>
 
-          <div class="col-12 q-my-md">
+          <div class="inputCard col-12">
             <connect
               :isFrom="false"
               :isNative="this.isNative(false)"
@@ -205,7 +203,7 @@ export default {
     amountInput,
     sendTxDialog,
     tokenAvatar,
-  },
+},
   data() {
     return {
       amount: null,
@@ -319,7 +317,15 @@ export default {
       "updateTeleports",
       "updateTportTokenBalancesEvm",
     ]),
-    ...mapActions("bridge", ["updateAmount", "sendBridgeToken"]),
+    ...mapActions("bridge", ["updateAmount", "sendBridgeToken", "updateToChain", "updateFromChain"]),
+
+    switchNetworks(){
+      const tempHolder = this.getFromChain;
+      this.$store.commit("bridge/setFromChain", this.getToChain);
+      this.updateFromChain(this.getToChain);
+      this.$store.commit("bridge/setToChain", tempHolder);
+      this.updateToChain(tempHolder);
+    },
 
     formSubmitted() {
       console.log("submit");
@@ -368,14 +374,23 @@ export default {
           this.to = null;
           this.amount = null;
           this.memo = "";
+          this.step = 1;
           this.updateTeleports(this.accountName);
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "cloud_done",
+            message: "Sent",
+          });
+        } else {
+          this.$q.notify({
+            color: "red",
+            textColor: "white",
+            icon: "error",
+            message: "Error: Cancelled by user",
+          });
         }
-        this.$q.notify({
-          color: "green-4",
-          textColor: "white",
-          icon: "cloud_done",
-          message: "Sent",
-        });
+        
       } catch (error) {
         this.$errorNotification(error);
       }
