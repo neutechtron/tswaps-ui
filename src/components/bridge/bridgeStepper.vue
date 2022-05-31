@@ -361,7 +361,7 @@ export default {
 
     handlePrevious() {
       if (this.step === 2){
-        this.resetToken();
+        this.$store.commit("bridge/resetToken");
         this.$refs.stepper.previous();
       }
       else {

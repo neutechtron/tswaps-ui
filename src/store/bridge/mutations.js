@@ -26,7 +26,7 @@ export const setToNative = (state, flag) => {
   state.toNative = flag;
 };
 
-export const zeroToken = (state) => {
+export const resetToken = (state) => {
   state.token = {
     contract: "",
     symbol: "Select a token",

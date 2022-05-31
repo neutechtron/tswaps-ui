@@ -153,12 +153,3 @@ export const sendToNative = async function ({ commit, getters, rootGetters }) {
     }
   }
 };
-
-export const resetToken = async function ({ commit }) {
-  try {
-    commit("zeroToken");
-  } catch (error) {
-    console.log("Error resetting token", error);
-    commit("general/setErrorMsg", error.message || error, { root: true });
-  }
-};
