@@ -319,7 +319,7 @@ export default {
       "updateTeleports",
       "updateTportTokenBalancesEvm",
     ]),
-    ...mapActions("bridge", ["updateAmount", "sendBridgeToken", "resetToken"]),
+    ...mapActions("bridge", ["updateAmount", "sendBridgeToken"]),
 
     formSubmitted() {
       console.log("submit");
