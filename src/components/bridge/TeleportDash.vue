@@ -11,10 +11,14 @@
           size="sm"
           @click="refreshTeleports()"
         /> 
-        <div class="text-h6 text-center q-pr-sm ">Filter: {{this.getToken.symbol === "Select a token" ? "ALL" : this.getToken.symbol}}</div>
         <!-- removing color="black" fixes isseues with dark/light mode -->
       </div>
-      <div class="column" v-if="unclaimedTeleports.length == 0">
+      <div class="column" v-if="!getEvmAccountName || getEvmAccountName === ''">
+        <div class="row justify-center items-center q-px-lg q-py-lg">
+          Connect EVM Wallet
+        </div>
+      </div>
+      <div class="column" v-else-if="unclaimedTeleports.length == 0">
         <div class="row justify-center items-center q-px-lg q-py-lg">
           No pending transactions
         </div>
@@ -28,7 +32,7 @@
           <div class="col-md-4 col-xs-12 text-h6 text-center text-bold q-py-sm">
             <token-avatar
               class="q-mx-sm q-mb-sm"
-              :token="getToken.symbol"
+              :token="$exAssToSymbol(t)"
               :avatarSize="30"
             />
             {{ t.quantity }}
@@ -197,8 +201,6 @@ export default {
         return this.getTeleports.filter(
           (el) =>
             !el.claimed &&
-            (this.getToken.symbol === "Select a token" ||
-                this.$chainToSym(el.quantity) === this.getToken.symbol) &&
             this.correctAccount(el.eth_address)
         );
       } else {
@@ -210,8 +212,6 @@ export default {
         return this.getTeleports.filter(
           (el) =>
             el.claimed &&
-            (this.getToken.symbol === "Select a token" ||
-                this.$chainToSym(el.quantity) === this.getToken.symbol) &&
             this.correctAccount(el.eth_address)
         );
       } else {
