@@ -77,8 +77,8 @@ export const logout = async function ({ commit }) {
   localStorage.removeItem("autoLogin");
 
   if (this.$router.currentRoute.path !== "/") {
-    this.$router.push({ path: "/" });
-    this.$router.go();
+    //this.$router.push({ path: "/bridge" });
+    this.$router.go(0);
   }
 };
 
