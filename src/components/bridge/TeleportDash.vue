@@ -2,7 +2,7 @@
   <div class="bridgeDash">
     <q-card flat class="swapCard">
       <div class="row justify-center q-pt-lg">
-        <div class="text-h6 text-center q-pr-sm ">Transaction History</div>
+        <div class="text-h6 text-center q-pr-sm ">Pending Transactions</div>
         <q-btn
           padding="sm"
           class="hover-accent"
@@ -13,7 +13,17 @@
         /> 
         <!-- removing color="black" fixes isseues with dark/light mode -->
       </div>
-      <div class="column">
+      <div class="column" v-if="!getEvmAccountName || getEvmAccountName === ''">
+        <div class="row justify-center items-center q-px-lg q-py-lg">
+          Connect EVM Wallet
+        </div>
+      </div>
+      <div class="column" v-else-if="unclaimedTeleports.length == 0">
+        <div class="row justify-center items-center q-px-lg q-py-lg">
+          No pending transactions
+        </div>
+      </div>
+      <div class="column" v-else-if="unclaimedTeleports.length > 0">
         <div
           class="row justify-center items-center q-px-lg"
           v-for="t in unclaimedTeleports"
@@ -22,7 +32,7 @@
           <div class="col-md-4 col-xs-12 text-h6 text-center text-bold q-py-sm">
             <token-avatar
               class="q-mx-sm q-mb-sm"
-              :token="getToken.symbol"
+              :token="$exAssToSymbol(t)"
               :avatarSize="30"
             />
             {{ t.quantity }}
@@ -97,8 +107,8 @@
           </div>
         </div>
       </div>
-      <q-card-actions class="row justify-center q-pb-md">
-        <div>{{ expanded ? "Hide" : "Show" }} Claimed</div>
+      <q-card-actions class="row justify-center q-pb-md" v-if="claimedTeleports.length > 0">
+        <div>{{ expanded ? "Hide" : "Show" }} Transaction History</div>
         <q-btn
           color="grey"
           round
@@ -191,7 +201,6 @@ export default {
         return this.getTeleports.filter(
           (el) =>
             !el.claimed &&
-            this.$chainToSym(el.quantity) === this.getToken.symbol &&
             this.correctAccount(el.eth_address)
         );
       } else {
@@ -203,7 +212,6 @@ export default {
         return this.getTeleports.filter(
           (el) =>
             el.claimed &&
-            this.$chainToSym(el.quantity) === this.getToken.symbol &&
             this.correctAccount(el.eth_address)
         );
       } else {

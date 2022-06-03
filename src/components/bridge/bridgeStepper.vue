@@ -166,7 +166,7 @@
               v-if="step > 1"
               flat
               color="white"
-              @click="$refs.stepper.previous()"
+              @click="handlePrevious()"
               label="Previous"
               class="q-ml-sm bridgeButton nextButton"
             />
@@ -362,6 +362,16 @@ export default {
         this.$refs.stepper.next();
       } else if (this.step === 3) {
         this.send();
+      }
+    },
+
+    handlePrevious() {
+      if (this.step === 2){
+        this.$store.commit("bridge/resetToken");
+        this.$refs.stepper.previous();
+      }
+      else {
+        this.$refs.stepper.previous();
       }
     },
 
