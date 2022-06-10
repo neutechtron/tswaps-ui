@@ -3,5 +3,6 @@ export default {
   chainId: 3,
   tportTokens: [],
   teleports: [],
+  evmTransactions: [],
   networkList: [],
 };

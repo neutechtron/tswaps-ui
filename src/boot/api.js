@@ -1,4 +1,5 @@
 import { Api, JsonRpc } from "eosjs";
+import axios from 'axios';
 
 const signTransaction = async function (actions) {
   actions.forEach((action) => {
@@ -63,6 +64,9 @@ const setAPI = async function (store) {
   const rpc = new JsonRpc(
     `${getCurrentChain.NETWORK_PROTOCOL}://${getCurrentChain.NETWORK_HOST}:${getCurrentChain.NETWORK_PORT}`
   );
+  const hyperion = axios.create({
+    baseURL: getCurrentChain.HYPERION_ENDPOINT,
+  });
   store["$defaultApi"] = new Api({
     rpc,
     textDecoder: new TextDecoder(),
@@ -75,6 +79,7 @@ const setAPI = async function (store) {
     getAccount: getAccount.bind(store),
     getRpc: getRpc.bind(store),
     setAPI: setAPI.bind(store),
+    hyperion: hyperion,
   };
 };
 

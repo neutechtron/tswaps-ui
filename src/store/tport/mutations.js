@@ -22,6 +22,10 @@ export function setTeleports(state, { teleports }) {
     state.teleports = teleports;
 }
 
+export function setEvmTransactions(state, { transactions }) {
+    state.evmTransactions = transactions;
+}
+
 export const setTokenAmount = (state, { token, amount }) => {
     let new_token = state.tportTokens.find(
         (t) => t.symbol === token.symbol && t.contract === token.contract

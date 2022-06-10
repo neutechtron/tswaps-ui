@@ -132,7 +132,8 @@
                 <div class="col text-right">
                   {{ t.quantity }}
                 </div>
-                <q-icon class="q-mx-sm fas fa-arrow-right"></q-icon>
+                <q-icon v-if="t.arrowR" class="q-mx-sm fas fa-arrow-right"></q-icon>
+                <q-icon v-else-if="!t.arrowR" class="q-mx-sm fas fa-arrow-left"></q-icon>
                 <div class="col row items-center justify-start">
                   <div>{{ ethAddressShort(t.eth_address) }}</div>
                   <token-avatar
@@ -195,6 +196,7 @@ export default {
       "getEvmNetworkList",
       "getTPortTokensBySym",
       "getTeleports",
+      "getEvmTransactions",
     ]),
     unclaimedTeleports() {
       if (this.getEvmAccountName !== undefined) {
@@ -209,18 +211,43 @@ export default {
     },
     claimedTeleports() {
       if (this.getEvmAccountName !== undefined) {
-        return this.getTeleports.filter(
+        var evmTrxs = this.getEvmTransactions;
+        var teleports =  this.getTeleports.filter(
           (el) =>
             el.claimed &&
             this.correctAccount(el.eth_address)
         );
+        var telePorts = teleports.map((tel)=>{
+          return {
+            ...tel,
+            arrowR: true,
+          };
+        });
+        var evmPorts = evmTrxs.map((trx)=>{
+          // console.log(trx);
+          return {
+            quantity: trx.quantity,
+            eth_address: trx.to,
+            // chain_id: trx.chain_id,
+            chain_id: 1,
+            arrowR: false,
+            time: new Date(trx.date).getTime()/1000
+          };
+        });
+        var sorted = [...telePorts, ...evmPorts];
+        sorted.sort((a,b) => {
+          return a.time - b.time;
+        });
+        return sorted;
       } else {
         return [];
       }
     },
   },
   methods: {
-    ...mapActions("tport", ["updateTeleports"]),
+    ...mapActions("tport", [
+      "updateTeleports",
+      "updateNativeTransactions"]),
     correctNetwork(remoteId) {
       if (this.getEvmNetwork) {
         return this.getEvmNetwork.remoteId === remoteId;
@@ -332,6 +359,7 @@ export default {
           // console.log(resp);
 
           await this.updateTeleports(this.accountName);
+          await this.updateNativeTransactions();
           this.claiming = -1;
           // TODO Do a proper refresh
         } catch (error) {
@@ -372,6 +400,7 @@ export default {
 
     async refreshTeleports() {
       await this.updateTeleports(this.accountName);
+      await this.updateNativeTransactions();
     },
   },
   mounted() {

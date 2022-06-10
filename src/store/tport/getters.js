@@ -23,6 +23,10 @@ export function getTeleports(state) {
   return state.teleports;
 }
 
+export function getEvmTransactions(state) {
+  return state.evmTransactions;
+}
+
 export const getTPortTokens = ({ tportTokens }) => tportTokens;
 
 export const getTPortTokensBySym =
