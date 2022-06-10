@@ -19,6 +19,7 @@
             "
             label="CONNECT WALLET"
             @click="
+              checkMetaMask();
               connectWeb3();
               switchMetamaskNetwork(selectedNetwork);
             "
@@ -152,6 +153,15 @@ export default {
     // changeNetwork(network) {
     //   this.$emit("update:selectedNetwork", network);
     // },
+
+    checkMetaMask(){
+      if ( typeof web3 === 'undefined' ){
+        if (confirm("MetaMask is not installed, would you like to install MetaMask now?")){
+          open("https://metamask.io/");
+        }
+      }
+      
+    },
 
     async updateBalance() {
       const { injectedWeb3, web3 } = await this.$web3();
