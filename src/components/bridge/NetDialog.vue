@@ -6,7 +6,7 @@
     class="dialogContainer"
   >
     <q-card class="dialogCard">
-      <div class="dialogHeader ">
+      <div class="dialogHeader">
         <div class="row justify-between items-center q-py-sm">
           <div header class="text-h6 q-pl-md">Select a network</div>
           <div class="q-pr-sm">
@@ -54,55 +54,40 @@ export default {
     chainOptions() {
       if (this.getToken.toChain !== undefined && !this.isFrom) {
         return this.getAllPossibleChains.filter(
-          el =>
+          (el) =>
             this.getToken.toChain
-              .map(c => c.toUpperCase())
+              .map((c) => c.toUpperCase())
               .includes(el.NETWORK_NAME) ||
             el.NETWORK_NAME === this.getCurrentChain.NETWORK_NAME
         );
       } else {
         return this.getAllPossibleChains;
       }
-    }
+    },
   },
   methods: {
     ...mapActions("account", ["login", "logout", "autoLogin"]),
     ...mapActions("blockchains", ["updateCurrentChain"]),
+    ...mapActions("bridge", ["updateFromChain", "updateToChain"]),
 
     async updateSelectedNet(chain) {
-      if (this.isFrom) {
-        if (
-          chain.NETWORK_NAME.toUpperCase() !=
-          localStorage.getItem("selectedChain")
-        ) {
-          if (this.isAuthenticated) {
-            this.$q.notify({
-              color: "info",
-              textColor: "dark",
-              icon: "info",
-              message: "Log in to send"
-            });
-          }
-          await this.logout();
-          await this.updateCurrentChain(chain.NETWORK_NAME.toUpperCase());
-          // await this.setAPI();
-          // console.log(this.$store.$api)
-          await this.$store.$api.setAPI(this.$store);
-          await this.setUAL();
-          this.$store.commit("tokens/clearTokens");
-          this.$store.commit("bridge/setFromChain", chain);
-        }
-      } else {
-        this.$store.commit("bridge/setToChain", chain);
+      if (
+        this.isFrom &&
+        this.getFromChain.NETWORK_NAME !== chain.NETWORK_NAME
+      ) {
+        this.updateToChain(this.getFromChain);
+        this.updateFromChain(chain);
+      } else if (
+        !this.isFrom &&
+        this.getToChain.NETWORK_NAME !== chain.NETWORK_NAME
+      ) {
+        this.updateFromChain(this.getToChain);
+        this.updateToChain(chain);
       }
       this.$emit("update:showNetDialog", false);
-    }
+    },
   },
-
-  beforeMount() {
-    this.$store.commit("bridge/setFromChain", this.getCurrentChain);
-  },
-  watch: {}
+  watch: {},
 };
 </script>
 

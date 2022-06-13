@@ -46,13 +46,13 @@ export default {
   props: ["isFrom", "isSwap"],
   data() {
     return {
-      showCoinDialog: false
+      showCoinDialog: false,
     };
   },
   computed: {
     ...mapGetters("swap", ["getFromToken", "getToToken"]),
-    ...mapGetters("liquidity", ["getToken1", "getToken2"])
-  }
+    ...mapGetters("liquidity", ["getToken1", "getToken2"]),
+  },
 };
 </script>
 

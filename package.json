@@ -1,9 +1,9 @@
 {
-  "name": "tswaps-bridge",
-  "version": "0.1.8",
+  "name": "tswaps",
+  "version": "0.2.0",
   "description": "T-Swaps Interface",
   "productName": "T-Swaps",
-  "author": "Jacques Beukes <jacques@y-knot.io>, Dewald Krynauw <dewald@y-knot.io>",
+  "author": "Jacques Beukes <jacques@y-knot.io>, Dewald Krynauw <dewald@y-knot.io>, Wikus Kriek",
   "private": true,
   "scripts": {
     "lint": "eslint --ext .js,.vue ./",
@@ -23,15 +23,19 @@
     "dotenv": "^8.2.0",
     "eosjs": "^21.0.3",
     "eosjs-ecc": "^4.0.7",
+    "ethers": "^5.5.4",
     "jdenticon": "^3.1.1",
-    "moment": "^2.27.0",
+    "moment": "^2.29.2",
     "quasar": "^1.16.3",
     "ual-anchor": "^1.0.0",
     "ual-ledger": "^0.3.0",
     "ual-scatter": "^0.3.0",
     "ual-wombat": "^0.3.3",
     "universal-authenticator-library": "^0.3.0",
-    "vue-apexcharts": "^1.6.2"
+    "vue-apexcharts": "^1.6.2",
+    "vue-form-wizard": "^0.8.4",
+    "vue-select": "^3.18.3",
+    "web3": "^1.7.0"
   },
   "devDependencies": {
     "@quasar/app": "^2.2.11",

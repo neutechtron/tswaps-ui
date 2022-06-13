@@ -35,13 +35,8 @@
             Pools
           </q-btn>
 
-          <q-btn flat type="a" :href="TSWAPS_BRIDGE" target="_blank" no-caps>
+          <q-btn flat to="/bridge" no-caps :class="isSelectedTab('bridge')">
             Bridge
-            <q-icon
-              name="fas fa-external-link-alt"
-              size="0.8rem"
-              class="q-pl-xs"
-            />
           </q-btn>
         </div>
 
@@ -68,16 +63,9 @@
                   <router-link to="/pools">Pools</router-link>
                 </q-item-section>
               </q-item>
-              <q-item clickable @click="openUrl(TSWAPS_BRIDGE)" class="lt-md">
+              <q-item clickable :class="`lt-md ${isSelectedTab('bridge')}`">
                 <q-item-section>
-                  <div class="row items-center">
-                    Bridge
-                    <q-icon
-                      name="fas fa-external-link-alt"
-                      size="0.8rem"
-                      class="q-pl-xs"
-                    />
-                  </div>
+                  <router-link to="/bridge">Bridge</router-link>
                 </q-item-section>
               </q-item>
               <q-separator class="lt-md" />
@@ -215,7 +203,7 @@ export default {
     return {
       darkMode: {
         text: "Dark Mode",
-        icon: "fas fa-moon"
+        icon: "fas fa-moon",
       },
       TSWAPS_BRIDGE: process.env.TSWAPS_BRIDGE,
       TSWAPS_DOCS: process.env.TSWAPS_DOCS,
@@ -228,12 +216,12 @@ export default {
         {
           name: "telegram",
           icon: "fab fa-telegram-plane",
-          link: "https://t.me/tswaps"
+          link: "https://t.me/tswaps",
         },
         {
           name: "medium",
           icon: "fab fa-medium-m",
-          link: "https://tswaps.medium.com/"
+          link: "https://tswaps.medium.com/",
         },
         // {
         //   name: "twitter",
@@ -243,14 +231,14 @@ export default {
         {
           name: "github",
           icon: "fab fa-github",
-          link: "https://github.com/Telos-Swaps"
-        }
+          link: "https://github.com/Telos-Swaps",
+        },
         // { name: "docs", icon: "fa fa-book", link: "https://docs.tstarter.io/" },
-      ]
+      ],
     };
   },
   computed: {
-    ...mapGetters("account", ["isAuthenticated"])
+    ...mapGetters("account", ["isAuthenticated"]),
   },
   methods: {
     ...mapActions("account", ["logout"]),
@@ -265,13 +253,13 @@ export default {
     },
     isSelectedTab(tab) {
       return this.$route.name == tab ? "selectedTab" : "";
-    }
+    },
   },
   created() {
     this.$q.dark.set(localStorage.getItem("darkModeEnabled") !== "false");
   },
 
-  async mounted() {}
+  async mounted() {},
 };
 </script>
 
