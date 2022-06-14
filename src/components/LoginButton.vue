@@ -39,8 +39,8 @@ export default {
       "isAuthenticated",
       "accountName",
       "loading",
-      "isAutoLoading"
-    ])
+      "isAutoLoading",
+    ]),
   },
   methods: {
     ...mapActions("account", ["login", "logout", "autoLogin"]),
@@ -48,14 +48,14 @@ export default {
       copyToClipboard(this.accountName).then(() => {
         this.$q.notify({
           color: "positive",
-          message: "Copied address to clipboard"
+          message: "Copied address to clipboard",
         });
       });
-    }
+    },
   },
   async mounted() {
     await this.autoLogin(this.$route.query.returnUrl);
-  }
+  },
 };
 </script>
 

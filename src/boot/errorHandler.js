@@ -1,11 +1,11 @@
 // import something here
 
-const errorNotification = function(error) {
+const errorNotification = function (error) {
   let errorStr;
   console.log(error);
   try {
     if (error !== undefined) {
-      if (typeof(error) != "object") {
+      if (typeof error != "object") {
         if (error.startsWith("assertion failure with message:")) {
           errorStr = error.split("assertion failure with message:")[1];
         } else {
@@ -14,7 +14,6 @@ const errorNotification = function(error) {
       } else {
         errorStr = error;
       }
-      
     } else {
       errorStr = "Cancelled transaction";
     }
@@ -22,13 +21,13 @@ const errorNotification = function(error) {
     this.$q.notify({
       type: "negative",
       icon: "warning",
-      message: `${errorStr}`
+      message: `${errorStr}`,
     });
   } catch (error) {
     this.$q.notify({
       type: "negative",
       icon: "warning",
-      message: `${error}`
+      message: `${error}`,
     });
   }
 };

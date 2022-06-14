@@ -94,11 +94,7 @@ body.body--light {
     // color: rgba($dark-0, 90%);
   }
 
-  background-image: linear-gradient(
-    to right bottom,
-    $purpleGrey 50%,
-    $white 100%
-  );
+  background-image: $plainWhite;
 
   .inputCard,
   .cardCircle,
@@ -150,6 +146,9 @@ body.body--light {
     .text-h6 {
       color: $dark-0;
     }
+    .text-subtitle2 {
+      color: $dark-0;
+    }
     .arrowButton {
       color: $dark-1;
     }
@@ -159,6 +158,10 @@ body.body--light {
     background: $white;
     border-radius: 30px;
     max-width: 100vw;
+  }
+
+  .stepper-header {
+    background: rgb(227,223,247) !important; 
   }
 }
 
@@ -253,15 +256,23 @@ body.body--dark,
       color: $white;
     }
 
+    .text-subtitle2 {
+      color: $white;
+    }
+
     .arrowButton {
       color: $white;
     }
   }
 
   .tableCard {
-    background: $dark-0;
+    background: $mainCardDarkMode;
     border-radius: 30px;
     max-width: 100vw;
+  }
+
+  .stepper-header {
+    background: $purpleDarkAccent;
   }
 }
 
@@ -394,4 +405,8 @@ a:-webkit-any-link {
 
 .avatarOverlap {
   left: -12px;
+}
+
+.standardBorder {
+  border-radius: 30px;
 }

@@ -1,10 +1,8 @@
 <template>
   <div class="benefits-page-container">
-    <div class="text-h1 ">
-      Your preferred swaps tool
-    </div>
+    <div class="text-h1">Your preferred swaps tool</div>
     <div class="benefits-wrapper">
-      <div class="benefits-container ">
+      <div class="benefits-container">
         <div class="benefit-item">
           <div class="benefits-icon">
             <img src="~assets/home/home-bolt.svg" />

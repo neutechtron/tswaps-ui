@@ -20,12 +20,16 @@ $white          : #e3def7;
 $red            : #bd2677;
 $green          : #55c3b3;
 $yellow         : #F2C037;
+$black          : #000000;
 
 $dark-0         : #1c075e;
 $dark-1         : #23195e;
 $dark-2         : #191b1f;
 
 $grey-0         : #d4ceeb;
+$gray-200       : #b8b8b8;
+$gray-400       : #6e6e6e;
+$gray-600       : #414141;
 
 // Presets
 $primary   : #814cdc;
@@ -42,3 +46,6 @@ $warning   : #F2C037;
 // Corner radius
 $button-border-radius   : 15px !default;
 $generic-border-radius  : 10px !default;
+$gradient-2 : linear-gradient(180deg, #071A5F 0%, #571AFF 147.34%);
+$bridgeButton : rgb(85,42,248);
+$purpleDarkAccent    : #1c1951f5;

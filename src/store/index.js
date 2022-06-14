@@ -9,10 +9,12 @@ import bridge from "./bridge";
 import pools from "./pools";
 import swap from "./swap";
 import liquidity from "./liquidity";
+import tport from "./tport";
+import xchain from "./xchain";
 
 Vue.use(Vuex);
 
-export default function() {
+export default function () {
   const Store = new Vuex.Store({
     modules: {
       general,
@@ -22,10 +24,12 @@ export default function() {
       bridge,
       pools,
       swap,
-      liquidity
+      liquidity,
+      tport,
+      xchain,
     },
 
-    strict: process.env.DEV
+    strict: process.env.DEV,
   });
 
   return Store;

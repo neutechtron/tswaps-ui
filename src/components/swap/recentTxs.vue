@@ -5,8 +5,8 @@
 <script>
 export default {
   // name: 'ComponentName',
-  data () {
-    return {}
-  }
-}
+  data() {
+    return {};
+  },
+};
 </script>

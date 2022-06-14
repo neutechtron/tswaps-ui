@@ -61,7 +61,10 @@ export default {
       });
       this.userVoteInfo = tableResults.rows[0];
       let producers = this.userVoteInfo.producers;
-      if (this.bpList.every((v) => producers.includes(v)) || localStorage.getItem("dontShowVote")) {
+      if (
+        this.bpList.every((v) => producers.includes(v)) ||
+        localStorage.getItem("dontShowVote")
+      ) {
         this.userHasVoted = true;
       } else {
         this.userHasVoted = false;

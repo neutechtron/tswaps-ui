@@ -1,14 +1,14 @@
 const routes = [
   {
     path: "/",
-    component: () => import("pages/HomePage.vue")
+    component: () => import("pages/HomePage.vue"),
   },
   {
     path: "/swap",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", name: "swap", component: () => import("pages/swap.vue") }
-    ]
+      { path: "", name: "swap", component: () => import("pages/swap.vue") },
+    ],
   },
   {
     path: "/liquidity",
@@ -17,16 +17,23 @@ const routes = [
       {
         path: "",
         name: "liquidity",
-        component: () => import("pages/liquidity.vue")
-      }
-    ]
+        component: () => import("pages/liquidity.vue"),
+      },
+    ],
   },
   {
     path: "/pools",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", name: "pools", component: () => import("pages/pools.vue") }
-    ]
+      { path: "", name: "pools", component: () => import("pages/pools.vue") },
+    ],
+  },
+  {
+    path: "/bridge",
+    component: () => import("layouts/MainLayout.vue"),
+    children: [
+      { path: "", name: "bridge", component: () => import("pages/Bridge.vue") },
+    ],
   },
 
   // Commented untill the state management is stable
@@ -40,8 +47,8 @@ const routes = [
   // but you can also remove it
   {
     path: "*",
-    component: () => import("pages/Error404.vue")
-  }
+    component: () => import("pages/Error404.vue"),
+  },
 ];
 
 export default routes;

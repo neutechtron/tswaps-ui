@@ -213,8 +213,8 @@ export default {
   async mounted() {
     // await this.updatePools();
     // await this.updateAllTokensBalances(this.accountName);
-    // await this.updateTokens();
-    // await this.updateTokenBalances(this.accountName);
+    await this.updateTokens();
+    await this.updateTokenBalances(this.accountName);
   },
 };
 </script>
