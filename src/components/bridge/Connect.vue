@@ -15,13 +15,26 @@
         <div class="row justify-center">
           <q-btn
             v-if="
-              (!getEvmAccountName || getEvmAccountName === '') && !this.isNative
+              (!getEvmAccountName || getEvmAccountName === '') && !this.isNative && metaMaskPresent() == true
             "
             label="CONNECT WALLET"
             @click="
-              checkMetaMask();
               connectWeb3();
               switchMetamaskNetwork(selectedNetwork);
+            "
+            class="hover-accent"
+            color="positive"
+            outline
+            no-shadow
+            no-caps
+          />
+          <q-btn
+            v-else-if="
+              (!getEvmAccountName || getEvmAccountName === '') && !this.isNative && metaMaskPresent() == false
+            "
+            label="CONNECT WALLET"
+            @click="
+              showMeta
             "
             class="hover-accent"
             color="positive"
@@ -59,6 +72,10 @@
       </div>
     </div>
     <ual-dialog :showLogin.sync="showLogin" />
+    <no-meta-mask-dialog
+      :showNoMeta.sync="showNoMeta"
+      @changeShowNoMeta="showNoMeta = false"
+    />
   </div>
 </template>
 
@@ -69,9 +86,10 @@ import metamask from "src/components/Metamask";
 import { copyToClipboard } from "quasar";
 import { ethers } from "ethers";
 import UalDialog from "src/components/UalDialog.vue";
+import NoMetaMaskDialog from "./NoMetaMaskDialog.vue";
 
 export default {
-  components: { netSelector, UalDialog },
+  components: { netSelector, UalDialog, NoMetaMaskDialog },
   mixins: [metamask],
   props: [
     "selectedTokenSym",
@@ -89,6 +107,7 @@ export default {
       remoteBalance: 0,
       remoteContractInstance: null,
       showLogin: false,
+      showNoMeta: false,
     };
   },
   computed: {
@@ -154,13 +173,18 @@ export default {
     //   this.$emit("update:selectedNetwork", network);
     // },
 
-    checkMetaMask(){
+    showMeta(){
+      console.log(this.showNoMeta);
+      this.showNoMeta = true; 
+    },
+    
+    metaMaskPresent(){
       if ( typeof web3 === 'undefined' ){
-        if (confirm("MetaMask is not installed, would you like to install MetaMask now?")){
-          open("https://metamask.io/");
-        }
+        return false;
       }
-      
+      else {
+        return true;
+      }
     },
 
     async updateBalance() {
