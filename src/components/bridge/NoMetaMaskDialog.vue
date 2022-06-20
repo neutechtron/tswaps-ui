@@ -13,7 +13,7 @@
       </q-card-section>
       <q-card-actions align="center">
         <q-btn class="hover-accent" href="https://metamask.io/" target="_blank" label="Download" color="primary"/>
-        <q-btn class="hover-accent" label="Close" color="primary" @click="$emit('changeShowNoMeta')" v-close-popup/>
+        <q-btn class="hover-accent" label="Cancel" color="primary" @click="$emit('changeShowNoMeta')" v-close-popup/>
       </q-card-actions>
     </q-card>
   </q-dialog>
