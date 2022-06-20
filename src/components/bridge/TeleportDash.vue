@@ -25,13 +25,13 @@
       </div>
       <div class="column" v-else-if="unclaimedTeleports.length > 0">
         <div
-          class="row justify-center items-center q-px-lg"
+          class="row justify-center items-center q-px-lg q-my-sm"
           v-for="t in unclaimedTeleports"
           :key="t.id"
         >
-          <div class="col-md-4 col-xs-12 text-h6 text-center text-bold q-py-sm">
+          <div class="col-md-3 col-xs-12 text-center text-bold q-py-sm">
             <token-avatar
-              class="q-mx-sm q-mb-sm"
+              class="q-mx-sm"
               :token="$exAssToSymbol(t)"
               :avatarSize="30"
             />
@@ -51,10 +51,10 @@
             />
             {{ t.displaydate }}
           </div>
-          <div class="col-md-2 col-xs-12 text-center q-px-sm q-py-sm">
+          <div class="col-md-3 col-xs-12 text-center q-px-sm q-py-sm">
             <div
               side
-              class="column row wrap justify-center items-center content-center"
+              class="col-2 row wrap justify-center items-center content-center"
             >
               <q-btn
                 class="hover-accent full-width"
@@ -70,6 +70,7 @@
                   correctNetwork(t.chain_id) &&
                   correctAccount(t.eth_address)
                 "
+                size="sm"
                 color="positive"
                 @click="claimEvm(t)"
               >
@@ -92,15 +93,15 @@
                 Switch Account
               </q-btn>
               <q-btn
-                class="hover-accent q-mt-xs"
+                class="hover-accent"
                 size="sm"
-                icon="fa fa-trash"
                 color="negative"
                 v-if="
                   Math.round(Date.now() / 1000) - t.time > 32 * 24 * 60 * 60
                 "
                 @click="tryCancelTP(t)"
               >
+              Refund
                 <q-tooltip>Cancel and refund teleport</q-tooltip>
               </q-btn>
             </div>
