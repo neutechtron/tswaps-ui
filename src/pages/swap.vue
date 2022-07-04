@@ -1,6 +1,9 @@
 <template>
   <q-page class="pageContainer medium">
+    
     <div class="q-pa-sm">
+      <div> Test </div>
+      <stockGraph><div> Test </div></stockGraph>
       <div class="row justify-between q-my-md q-mx-md">
         <div class="text-h5">Swap</div>
         <head-buttons />
@@ -159,6 +162,7 @@ import toCard from "src/components/swap/ToCard.vue";
 import headButtons from "src/components/swap/Head.vue";
 import swapButton from "src/components/swap/swapButton.vue";
 import voteDialog from "src/components/VoteDialog.vue";
+import stockGraph from "src/components/swap/stockGraph.vue";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
@@ -169,7 +173,8 @@ export default {
     headButtons,
     swapButton,
     voteDialog,
-  },
+    stockGraph
+},
   data() {
     return {
       swapPrice: false,
