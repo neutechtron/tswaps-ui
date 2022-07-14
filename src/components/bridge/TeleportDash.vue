@@ -123,24 +123,53 @@
         <div v-show="expanded">
           <q-separator />
           <div class="text-subitle2">
-            <div class="column">
+            <div v-if="isEvmTransactionsUpdating" class="column">
+              <div class="row justify-center items-center q-py-xs">
+                <q-spinner-puff
+                  color="primary"
+                  size="2em"
+                />Loading Transactions
+              </div>
+            </div>
+            <div v-else-if="!isEvmTransactionsUpdating" class="column">
               <div
                 class="row justify-center items-center q-py-xs"
+                style="height:60px"
                 v-for="t in claimedTeleports"
                 :key="t.id"
               >
-                <div class="col text-right">
-                  {{ t.quantity }}
+                <div class="col">
+                  <div class="row">
+                    <div class="col">
+                      {{ new Date(t.time).toLocaleDateString("en-US",{
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                        }) }}
+                    </div>
+                    <div class="col">
+                      {{ t.quantity }} {{t.from}}
+                    </div>
+                  </div>
                 </div>
                 <q-icon v-if="t.arrowR" class="q-mx-sm fas fa-arrow-right"></q-icon>
                 <q-icon v-else-if="!t.arrowR" class="q-mx-sm fas fa-arrow-left"></q-icon>
                 <div class="col row items-center justify-start">
-                  <div>{{ ethAddressShort(t.eth_address) }}</div>
                   <token-avatar
-                    class="q-mx-sm"
+                    v-if="t.arrowR"
+                    class="q-mx-sm col"
                     :token="evmNetworkNameById(t.chain_id)"
                     :avatarSize="25"
                   />
+                  <token-avatar
+                    v-else-if="!t.arrowR"
+                    class="q-mx-sm col"
+                    :token="getCurrentChain.NETWORK_NAME"
+                    :avatarSize="25"
+                  />
+                  <div class="col">{{ ethAddressShort(t.eth_address) }}</div>
                 </div>
                 <!-- <div side>
                 <div v-if="t.claimed" class="text-emphasis">Claimed</div>
@@ -182,6 +211,7 @@ export default {
         "0xA4ba34334b6De2fe6C6F3c9d4b1765d92C96d859",
         "0xA4ba34334b6De2fe6C6F3c9d4b1765d92C96d859",
       ],
+      getEvmTrxBusy: false
     };
   },
   computed: {
@@ -197,6 +227,7 @@ export default {
       "getTPortTokensBySym",
       "getTeleports",
       "getEvmTransactions",
+      "isEvmTransactionsUpdating"
     ]),
     unclaimedTeleports() {
       if (this.getEvmAccountName !== undefined) {
@@ -236,7 +267,7 @@ export default {
         });
         var sorted = [...telePorts, ...evmPorts];
         sorted.sort((a,b) => {
-          return a.time - b.time;
+          return b.time - a.time;
         });
         return sorted;
       } else {

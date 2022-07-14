@@ -4,5 +4,6 @@ export default {
   tportTokens: [],
   teleports: [],
   evmTransactions: [],
+  evmTransactionsUpdating: true,
   networkList: [],
 };

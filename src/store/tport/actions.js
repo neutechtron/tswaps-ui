@@ -87,6 +87,7 @@ export const updateNativeTransactions = async function ({
  }) {
     try {
         if (getters.getEvmAccountName) {
+            commit("setEvmTransactionsUpdating",true);
             const hyperion = this.$api.hyperion;
             let path = `/v2/evm/get_transactions?address=${getters.getEvmAccountName}`;
             let res = await hyperion.get(path);
@@ -150,6 +151,7 @@ export const updateNativeTransactions = async function ({
                 };
             });
             commit("setEvmTransactions",{transactions:tokenTransfersInfoFinal});
+            commit("setEvmTransactionsUpdating",false);
         }
     }
     catch (error) {

@@ -27,6 +27,10 @@ export function getEvmTransactions(state) {
   return state.evmTransactions;
 }
 
+export function isEvmTransactionsUpdating(state) {
+  return state.evmTransactionsUpdating;
+}
+
 export const getTPortTokens = ({ tportTokens }) => tportTokens;
 
 export const getTPortTokensBySym =
