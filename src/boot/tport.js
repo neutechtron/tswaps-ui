@@ -27,6 +27,20 @@ const mainnetList = [
     blockExplorerUrls: ["https://bscscan.com"],
     vaultContract: "0x60f20815aa24B07b3Ec7B64624B65e338aaA85e5",
   },
+    {
+        name: "Telos EVM",
+        remoteId: 3,
+        chainName: "Telos EVM Mainnet",
+        chainId: 40,
+        rpcUrls: ["https://mainnet.telos.net/evm"],
+        nativeCurrency: {
+            name: "TLOS",
+            symbol: "TLOS",
+            decimals: 18,
+        },
+        blockExplorerUrls: ["https://teloscan.io"],
+        vaultContract: "",
+    },
 ];
 
 const testnetList = [
@@ -69,7 +83,7 @@ const testnetList = [
       symbol: "TLOS",
       decimals: 18,
     },
-    blockExplorerUrls: ["https://testnet.telos.net/v2/explore/evm/"],
+    blockExplorerUrls: ["https://testnet.teloscan.io/"],
     vaultContract: "",
   },
 ];
