@@ -2,8 +2,7 @@
   <q-page class="pageContainer medium">
     
     <div class="q-pa-sm">
-      <div> Test </div>
-      <stockGraph><div> Test </div></stockGraph>
+      
       <div class="row justify-between q-my-md q-mx-md">
         <div class="text-h5">Swap</div>
         <head-buttons />
@@ -151,6 +150,8 @@
           </div>
         </q-card>
       </div>
+      <div class="text-h5 row q-my-md">Price of swap</div>
+        <stockGraph class="row justify-center swapCard q-my-md inputCard"></stockGraph>
     </div>
     <vote-dialog />
   </q-page>
@@ -319,4 +320,12 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+#app {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}</style>
