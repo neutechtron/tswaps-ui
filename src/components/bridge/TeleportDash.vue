@@ -140,7 +140,7 @@
               >
                 <div class="col">
                   <div class="row">
-                    <div class="col">
+                    <div class="col q-px-md">
                       {{ new Date(t.time).toLocaleDateString("en-US",{
                             year: "numeric",
                             month: "short",
