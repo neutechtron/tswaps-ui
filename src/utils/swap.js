@@ -3,6 +3,8 @@ const currentServerTime = new Date(
   '2022-07-29T06:31:00.000Z'.substring(0, 13) + ':00:00.000Z'
 ); // Get the start of the hour
 
+const goBackNumberOfDays = 3;
+
 Date.prototype.addDays = function (days) {
   var date = new Date(this.valueOf());
   date.setDate(date.getDate() + days);
@@ -43,11 +45,11 @@ function getValueFromObjectAtDate(valueObjectAtDate, prevValue, token1Name) {
 function extrapolateStartValueFromPreviousValues(token1Name) {
   let prevValue = 0;
   const previousDateArray = [];
-  const startTime = currentServerTime.addDays(-2);
+  const startTime = currentServerTime.addDays(-1 * goBackNumberOfDays);
 
   console.log('Preparing to extrapolateStartValueFromPreviousValues');
 
-  for (let i = 0; i < 24; i++) {
+  for (let i = 0; i < 24 * (goBackNumberOfDays - 1); i++) {
     previousDateArray.push(startTime.addHours(i));
   }
 
