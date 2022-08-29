@@ -16,18 +16,64 @@ Date.prototype.addHours = function (hours) {
 };
 
 function getInvertedTokenOrder(token1Name) {
-  // Test only for the first record
+  // Test only for the first record as per the functional requirement
   if (data.length > 0) {
     return data[0].token_1 !== token1Name;
   }
   return false;
 }
 
+function getValueFromObjectAtDate(valueObjectAtDate, prevValue, token1Name) {
+  const invertedTokenOrder = getInvertedTokenOrder(token1Name);
+
+  if (!valueObjectAtDate) {
+    // if the current valueObjectAtDate is not found, then use previous value
+    return prevValue;
+  }
+
+  return invertedTokenOrder
+    ? valueObjectAtDate.price_1 !== 0 // prevent division by zero errors
+      ? valueObjectAtDate.price_2 / valueObjectAtDate.price_1
+      : prevValue
+    : valueObjectAtDate.price_2 !== 0
+    ? valueObjectAtDate.price_1 / valueObjectAtDate.price_2
+    : prevValue;
+}
+
+function extrapolateStartValueFromPreviousValues(token1Name) {
+  let prevValue = 0;
+  const previousDateArray = [];
+  const startTime = currentServerTime.addDays(-2);
+
+  console.log('Preparing to extrapolateStartValueFromPreviousValues');
+
+  for (let i = 0; i < 24; i++) {
+    previousDateArray.push(startTime.addHours(i));
+  }
+
+  console.log('previousDateArray', previousDateArray);
+
+  previousDateArray.forEach((date) => {
+    const valueObjectAtDate = data.find(
+      (dataOne) =>
+        new Date(dataOne.representative_time).getTime() === date.getTime()
+    );
+    const valueAtDate = getValueFromObjectAtDate(
+      valueObjectAtDate,
+      prevValue,
+      token1Name
+    );
+    console.log('valueAtDate', valueAtDate);
+    prevValue = valueAtDate;
+  });
+  return prevValue;
+}
+
 function processData(token1Name = 'EOS', currentBlockchainRate = 2) {
   const graphDateArray = [];
-  const invertedTokenOrder = getInvertedTokenOrder(token1Name);
   let graphData = [];
-  let prevValue;
+  let prevValue = 0;
+  let valueAtDate;
 
   const startTime = currentServerTime.addDays(-1);
 
@@ -41,20 +87,22 @@ function processData(token1Name = 'EOS', currentBlockchainRate = 2) {
     return graphData;
   }
 
-  graphData = graphDateArray.map((date) => {
+  graphData = graphDateArray.map((date, idx) => {
     const valueObjectAtDate = data.find(
       (dataOne) =>
         new Date(dataOne.representative_time).getTime() === date.getTime()
     );
-    const valueAtDate = valueObjectAtDate
-      ? invertedTokenOrder
-        ? valueObjectAtDate.price_1 !== 0 // prevent division by zero errors
-          ? valueObjectAtDate.price_2 / valueObjectAtDate.price_1
-          : prevValue
-        : valueObjectAtDate.price_2 !== 0
-        ? valueObjectAtDate.price_1 / valueObjectAtDate.price_2
-        : prevValue
-      : prevValue; // if the current valueObjectAtDate is not found, then use previous value
+    valueAtDate = getValueFromObjectAtDate(
+      valueObjectAtDate,
+      prevValue,
+      token1Name
+    );
+
+    // Special case
+    if (idx === 0 && !valueAtDate) {
+      valueAtDate = extrapolateStartValueFromPreviousValues(token1Name);
+    }
+
     prevValue = valueAtDate;
     return [date, valueAtDate];
   });
