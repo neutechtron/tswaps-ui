@@ -7,9 +7,9 @@
 // https://quasar.dev/quasar-cli/quasar-conf-js
 /* eslint-env node */
 
-require("dotenv").config();
-const fs = require("fs");
-const packageJson = fs.readFileSync("./package.json");
+require('dotenv').config();
+const fs = require('fs');
+const packageJson = fs.readFileSync('./package.json');
 const siteVersion = JSON.parse(packageJson).version || 0;
 
 module.exports = function (/* ctx */) {
@@ -24,37 +24,37 @@ module.exports = function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/boot-files
     boot: [
-      "ual",
-      "hyperion",
-      "api",
-      "assetHandler",
-      "errorHandler",
-      "notifyDefaults",
-      "tport",
-      "web3",
-      "erc20",
+      'ual',
+      'hyperion',
+      'api',
+      'assetHandler',
+      'errorHandler',
+      'notifyDefaults',
+      'tport',
+      'web3',
+      'erc20',
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
-    css: ["fonts/silka/silka.css", "app.scss"],
+    css: ['fonts/silka/silka.css', 'app.scss'],
 
     // https://github.com/quasarframework/quasar/tree/dev/extras
     extras: [
       // 'ionicons-v4',
       // 'mdi-v5',
-      "fontawesome-v5",
+      'fontawesome-v5',
       // 'eva-icons',
       // 'themify',
       // 'line-awesome',
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
-      "roboto-font", // optional, you are not bound to it
-      "material-icons", // optional, you are not bound to it
+      'roboto-font', // optional, you are not bound to it
+      'material-icons', // optional, you are not bound to it
     ],
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
     build: {
-      vueRouterMode: "history", // available values: 'hash', 'history'
+      vueRouterMode: 'history', // available values: 'hash', 'history'
       env: {
         APP_NAME: process.env.APP_NAME,
         TESTNET: process.env.TESTNET,
@@ -78,6 +78,7 @@ module.exports = function (/* ctx */) {
         TOKEN_ADDRESS: process.env.TOKEN_ADDRESS,
         XCHAIN_ADDRESS: process.env.XCHAIN_ADDRESS,
         POOL_BLACKLIST: process.env.POOL_BLACKLIST,
+        BACKEND_ENDPOINT: process.env.BACKEND_ENDPOINT,
       },
 
       // transpile: false,
@@ -99,9 +100,9 @@ module.exports = function (/* ctx */) {
       // https://quasar.dev/quasar-cli/handling-webpack
       extendWebpack(cfg) {
         cfg.module.rules.push({
-          enforce: "pre",
+          enforce: 'pre',
           test: /\.(js|vue)$/,
-          loader: "eslint-loader",
+          loader: 'eslint-loader',
           exclude: /node_modules/,
         });
       },
@@ -116,8 +117,8 @@ module.exports = function (/* ctx */) {
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-framework
     framework: {
-      iconSet: "material-icons", // Quasar icon set
-      lang: "en-us", // Quasar language pack
+      iconSet: 'material-icons', // Quasar icon set
+      lang: 'en-us', // Quasar language pack
       config: {
         dark: false,
       },
@@ -125,7 +126,7 @@ module.exports = function (/* ctx */) {
       // Possible values for "importStrategy":
       // * 'auto' - (DEFAULT) Auto-import needed Quasar components & directives
       // * 'all'  - Manually specify what to import
-      importStrategy: "auto",
+      importStrategy: 'auto',
 
       // For special cases outside of where "auto" importStrategy can have an impact
       // (like functional components as one of the examples),
@@ -135,7 +136,7 @@ module.exports = function (/* ctx */) {
       // directives: [],
 
       // Quasar plugins
-      plugins: ["Notify"],
+      plugins: ['Notify'],
     },
 
     // animations: 'all', // --- includes all animations
@@ -149,41 +150,41 @@ module.exports = function (/* ctx */) {
 
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
-      workboxPluginMode: "GenerateSW", // 'GenerateSW' or 'InjectManifest'
+      workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
       workboxOptions: {}, // only for GenerateSW
       manifest: {
         name: `Telos Spark Bridge`,
         short_name: `EVM-Bridge`,
         description: `Telos Spark Bridge`,
-        display: "standalone",
-        orientation: "portrait",
-        background_color: "#ffffff",
-        theme_color: "#027be3",
+        display: 'standalone',
+        orientation: 'portrait',
+        background_color: '#ffffff',
+        theme_color: '#027be3',
         icons: [
           {
-            src: "tokens/telos_evm.png",
-            sizes: "128x128",
-            type: "image/png",
+            src: 'tokens/telos_evm.png',
+            sizes: '128x128',
+            type: 'image/png',
           },
           {
-            src: "tokens/telos_evm.png",
-            sizes: "192x192",
-            type: "image/png",
+            src: 'tokens/telos_evm.png',
+            sizes: '192x192',
+            type: 'image/png',
           },
           {
-            src: "tokens/telos_evm.png",
-            sizes: "256x256",
-            type: "image/png",
+            src: 'tokens/telos_evm.png',
+            sizes: '256x256',
+            type: 'image/png',
           },
           {
-            src: "tokens/telos_evm.png",
-            sizes: "384x384",
-            type: "image/png",
+            src: 'tokens/telos_evm.png',
+            sizes: '384x384',
+            type: 'image/png',
           },
           {
-            src: "tokens/telos_evm.png",
-            sizes: "512x512",
-            type: "image/png",
+            src: 'tokens/telos_evm.png',
+            sizes: '512x512',
+            type: 'image/png',
           },
         ],
       },
@@ -201,7 +202,7 @@ module.exports = function (/* ctx */) {
 
     // Full list of options: https://quasar.dev/quasar-cli/developing-electron-apps/configuring-electron
     electron: {
-      bundler: "packager", // 'packager' or 'builder'
+      bundler: 'packager', // 'packager' or 'builder'
 
       packager: {
         // https://github.com/electron-userland/electron-packager/blob/master/docs/api.md#options
@@ -217,8 +218,8 @@ module.exports = function (/* ctx */) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: "T-swaps",
-        devtool: "source-map",
+        appId: 'T-swaps',
+        devtool: 'source-map',
       },
 
       // More info: https://quasar.dev/quasar-cli/developing-electron-apps/node-integration

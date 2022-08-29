@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Daily-Weekly-Monthly Options radio buttons cntainer starts here -->
-    <div class="options q-my-md justify-center row ">
+    <div class="options q-my-md justify-center row">
       <input
         v-model="timeSeries"
         type="radio"
@@ -31,38 +31,33 @@
       <label class="option-label" for="month">Monthly</label>
     </div>
     <!-- Daily-Weekly-Monthly Options radio buttons cntainer ends here -->
-    <GChart
-    
-      type="AreaChart"
-      :options="options"
-      :data="graphData(timeSeries)"
-    />  
+    <GChart type="AreaChart" :options="options" :data="graphData(timeSeries)" />
     <!-- <div v-if="!loaded" class="lds-dual-ring"></div>   -->
   </div>
-   
 </template>
- 
+
 <script>
-import { GChart } from "vue-google-charts/legacy";
-import { day } from "./stock-data";
-import { week } from "./stock-data";
-import { month } from "./stock-data";
-import { Dark } from "quasar";
+import { GChart } from 'vue-google-charts/legacy';
+import { day } from './stock-data';
+import { week } from './stock-data';
+import { month } from './stock-data';
+import axios from 'axios';
+
 export default {
-  name: "stockChart",
+  name: 'stockChart',
   components: {
-    GChart
+    GChart,
   },
   data() {
     return {
-      timeSeries: "day",
+      timeSeries: 'day',
       dayData: day.map((val) => [val.x, val.close]),
       weekData: week.map((val) => [val.x, val.close]),
       monthData: month.map((val) => [val.x, val.close]),
       options: {
         chart: {
-          title: "Price chart",
-          subtitle: ""
+          title: 'Price chart',
+          subtitle: '',
         },
         width: 600,
         height: 500,
@@ -77,66 +72,70 @@ export default {
         animation: {
           startup: 'true',
           duration: 500,
-          easing: 'inAndOut'
+          easing: 'inAndOut',
         },
         focusTarget: 'category',
         color: 'red',
         is3D: true,
-        colors:['#2fd7fe'],
-        vAxis:{
-          gridlines:{
-            count: 0
+        colors: ['#2fd7fe'],
+        vAxis: {
+          gridlines: {
+            count: 0,
           },
-          textStyle:{
-            color: '#e3def7'
+          textStyle: {
+            color: '#e3def7',
           },
-            format: 'currency',
-          
+          format: 'currency',
         },
-        hAxis:{
-          gridlines:{
-            count: 0
+        hAxis: {
+          gridlines: {
+            count: 0,
           },
-          textStyle:{
-            color: '#e3def7'
+          textStyle: {
+            color: '#e3def7',
           },
-          viewWindowMode: 'maximized'
+          viewWindowMode: 'maximized',
         },
         legend: 'none',
         explorer: {
           axis: 'horizontal',
           keepInBounds: 'true',
-          maxZoomOut: 1
+          maxZoomOut: 1,
         },
         dataOpacity: 0.3,
         title: 'Comparison',
         titleTextStyle: {
-          color: "white",
-        }
-      }
+          color: 'white',
+        },
+      },
     };
   },
-  methods:{
-    graphData(timeSeries){
-      if (timeSeries == "day"){
-        console.log('day data'),
-        this.options.hAxis.showTextEvery = 4;
-      return this.dayData
+  methods: {
+    graphData(timeSeries) {
+      if (timeSeries == 'day') {
+        console.log('day data'), (this.options.hAxis.showTextEvery = 4);
+        return this.dayData;
       }
-      if (timeSeries == "week"){
-        console.log('week data')
+      if (timeSeries == 'week') {
+        console.log('week data');
         this.options.hAxis.format = 'MMM d, y';
         this.options.hAxis.showTextEvery = 2;
-      return  this.weekData
+        return this.weekData;
       }
-      if (timeSeries == "month"){
-        console.log('month data')
+      if (timeSeries == 'month') {
+        console.log('month data');
         this.options.hAxis.format = 'MMM d, y';
         this.options.hAxis.showTextEvery = 3;
-      return  this.monthData
+        return this.monthData;
       }
-    }
-  }
+    },
+  },
+  async mounted() {
+    const response = await axios.get(
+      `${process.env.BACKEND_ENDPOINT}/?action=fetch-all&timespan=daily`
+    );
+    console.log(response.data);
+  },
 };
 </script>
 
