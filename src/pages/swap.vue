@@ -1,8 +1,6 @@
 <template>
   <q-page class="pageContainer medium">
-    
     <div class="q-pa-sm">
-      
       <div class="row justify-between q-my-md q-mx-md">
         <div class="text-h5">Swap</div>
         <head-buttons />
@@ -150,58 +148,70 @@
           </div>
         </q-card>
       </div>
-      <div class="text-h5 row q-my-md">Price of swap</div>
-        <stockGraph class="row justify-center swapCard q-my-md inputCard"></stockGraph>
+      <div v-if="showGraph">
+        <div class="text-h5 row q-my-md">Price of swap</div>
+        <stockGraph
+          class="row justify-center swapCard q-my-md inputCard"
+        ></stockGraph>
+      </div>
     </div>
     <vote-dialog />
   </q-page>
 </template>
 
 <script>
-import fromCard from "src/components/swap/FromCard.vue";
-import toCard from "src/components/swap/ToCard.vue";
-import headButtons from "src/components/swap/Head.vue";
-import swapButton from "src/components/swap/swapButton.vue";
-import voteDialog from "src/components/VoteDialog.vue";
-import stockGraph from "src/components/swap/stockGraph.vue";
-import { mapGetters, mapActions } from "vuex";
+import fromCard from 'src/components/swap/FromCard.vue';
+import toCard from 'src/components/swap/ToCard.vue';
+import headButtons from 'src/components/swap/Head.vue';
+import swapButton from 'src/components/swap/swapButton.vue';
+import voteDialog from 'src/components/VoteDialog.vue';
+import stockGraph from 'src/components/swap/stockGraph.vue';
+import { mapGetters, mapActions } from 'vuex';
+import { defaultMsg } from 'src/constants/constants';
 
 export default {
-  name: "swap",
+  name: 'swap',
   components: {
     fromCard,
     toCard,
     headButtons,
     swapButton,
     voteDialog,
-    stockGraph
-},
+    stockGraph,
+  },
   data() {
     return {
       swapPrice: false,
     };
   },
   computed: {
-    ...mapGetters("account", ["isAuthenticated", "accountName"]),
-    ...mapGetters("swap", [
-      "getIsValidPair",
-      "getToToken",
-      "getFromToken",
-      "getSlippage",
-      "getPool",
-      "getCanSwap",
-      "getAmount",
-      "getToEstimate",
+    ...mapGetters('account', ['isAuthenticated', 'accountName']),
+    ...mapGetters('swap', [
+      'getIsValidPair',
+      'getToToken',
+      'getFromToken',
+      'getSlippage',
+      'getPool',
+      'getCanSwap',
+      'getAmount',
+      'getToEstimate',
     ]),
-    ...mapGetters("tokens", ["getTokens"]),
-    ...mapGetters("pools", ["getConfig"]),
+    ...mapGetters('tokens', ['getTokens']),
+    ...mapGetters('pools', ['getConfig']),
 
     showPoolExistsWarning() {
-      const defaultMsg = "Select a token";
       return (
         this.getIsValidPair ||
         this.getToToken.symbol == defaultMsg ||
         this.getFromToken.symbol == defaultMsg
+      );
+    },
+
+    showGraph() {
+      return (
+        (this.getToToken.symbol !== defaultMsg ||
+          this.getFromToken.symbol !== defaultMsg) &&
+        this.getIsValidPair
       );
     },
 
@@ -221,7 +231,7 @@ export default {
           return `${price1} ${token1.symbol} per ${token0.symbol}`;
         }
       } else {
-        return "";
+        return '';
       }
     },
 
@@ -269,24 +279,24 @@ export default {
     },
   },
   methods: {
-    ...mapActions("swap", [
-      "swapToAndFrom",
-      "createMemo",
-      "updateSwapPool",
-      "updateToAndFromBalance",
+    ...mapActions('swap', [
+      'swapToAndFrom',
+      'createMemo',
+      'updateSwapPool',
+      'updateToAndFromBalance',
     ]),
-    ...mapActions("pools", ["updatePools", "updateConfig"]),
-    ...mapActions("tokens", [
-      "updateTokens",
-      "updateTokenBalances",
-      "updateAllTokensBalances",
+    ...mapActions('pools', ['updatePools', 'updateConfig']),
+    ...mapActions('tokens', [
+      'updateTokens',
+      'updateTokenBalances',
+      'updateAllTokensBalances',
     ]),
 
     findToken(tokenQuery) {
       // console.log("query:", tokenQuery);
       let res = null;
       if (tokenQuery) {
-        const arr = tokenQuery.split("-");
+        const arr = tokenQuery.split('-');
         // console.log("arr:", arr);
         if (arr.length > 1) {
           const token_contract = arr[0];
@@ -312,9 +322,9 @@ export default {
     this.updateSwapPool();
     this.updateToAndFromBalance();
     const fromToken = this.findToken(this.$route.query.fromToken);
-    if (fromToken) this.$store.commit("swap/setFromToken", fromToken);
+    if (fromToken) this.$store.commit('swap/setFromToken', fromToken);
     const toToken = this.findToken(this.$route.query.toToken);
-    if (toToken) this.$store.commit("swap/setToToken", toToken);
+    if (toToken) this.$store.commit('swap/setToToken', toToken);
     await this.updateConfig();
   },
 };
@@ -328,4 +338,5 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
-}</style>
+}
+</style>

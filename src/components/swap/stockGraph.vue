@@ -37,11 +37,13 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import axios from 'axios';
 import { GChart } from 'vue-google-charts/legacy';
 import { day } from './stock-data';
 import { week } from './stock-data';
 import { month } from './stock-data';
-import axios from 'axios';
+import { processData } from 'src/utils/swap';
 
 export default {
   name: 'stockChart',
@@ -110,6 +112,15 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters('swap', ['getFromToken', 'getToToken', 'getIsValidPair']),
+    fromTokenSymbol() {
+      return this.getFromToken?.symbol;
+    },
+    toTokenSymbol() {
+      return this.getToToken?.symbol;
+    },
+  },
   methods: {
     graphData(timeSeries) {
       if (timeSeries == 'day') {
@@ -129,12 +140,18 @@ export default {
         return this.monthData;
       }
     },
+    async fetchAndProcessGraphData() {
+      const response = await axios.get(
+        `${process.env.BACKEND_ENDPOINT}/?action=fetch-all&timespan=daily`
+      );
+      console.log('response', response.data);
+      const processedData = processData(response.data);
+      console.log('processedData', processedData);
+      console.log('fromTokenSymbol', this.fromTokenSymbol);
+    },
   },
-  async mounted() {
-    const response = await axios.get(
-      `${process.env.BACKEND_ENDPOINT}/?action=fetch-all&timespan=daily`
-    );
-    console.log(response.data);
+  mounted() {
+    this.fetchAndProcessGraphData();
   },
 };
 </script>

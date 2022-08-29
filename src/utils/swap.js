@@ -71,7 +71,7 @@ function extrapolateStartValueFromPreviousValues(token1Name) {
   return prevValue;
 }
 
-function processData(token1Name = 'EOS', currentBlockchainRate = 2) {
+export function processData(token1Name = 'EOS', currentBlockchainRate = 2) {
   const graphDateArray = [];
   let graphData = [];
   let prevValue = 0;
@@ -110,25 +110,3 @@ function processData(token1Name = 'EOS', currentBlockchainRate = 2) {
   });
   return graphData;
 }
-
-function main() {
-  const graphData = processData();
-  console.log('graphData', graphData);
-}
-
-function startProcess() {
-  try {
-    main();
-    console.log('All Tasks Done!');
-    process.exit();
-  } catch (error) {
-    console.log(`There's an error with the process: `, error);
-  }
-}
-
-startProcess();
-
-process.on('unhandledRejection', (err) => {
-  console.error(err);
-  process.exit(1);
-});

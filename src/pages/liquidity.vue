@@ -121,15 +121,16 @@
 </template>
 
 <script>
-import input1 from "src/components/liquidity/Input1.vue";
-import input2 from "src/components/liquidity/Input2.vue";
-import liquidityButton from "src/components/liquidity/liquidityButton.vue";
-import createButton from "src/components/liquidity/createButton.vue";
-import yourLiquidity from "src/components/liquidity/yourLiquidity.vue";
-import { mapGetters, mapActions } from "vuex";
+import input1 from 'src/components/liquidity/Input1.vue';
+import input2 from 'src/components/liquidity/Input2.vue';
+import liquidityButton from 'src/components/liquidity/liquidityButton.vue';
+import createButton from 'src/components/liquidity/createButton.vue';
+import yourLiquidity from 'src/components/liquidity/yourLiquidity.vue';
+import { defaultMsg } from 'src/constants/constants';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
-  name: "Index",
+  name: 'Index',
   components: {
     input1,
     input2,
@@ -138,26 +139,25 @@ export default {
     createButton,
   },
   computed: {
-    ...mapGetters("liquidity", [
-      "getPool",
-      "getHasPool",
-      "getToken1",
-      "getToken2",
-      "getValue1",
-      "getValue2",
+    ...mapGetters('liquidity', [
+      'getPool',
+      'getHasPool',
+      'getToken1',
+      'getToken2',
+      'getValue1',
+      'getValue2',
     ]),
-    ...mapGetters("account", ["isAuthenticated", "accountName"]),
-    ...mapGetters("pools", ["getConfig"]),
+    ...mapGetters('account', ['isAuthenticated', 'accountName']),
+    ...mapGetters('pools', ['getConfig']),
 
     listingFee() {
       if (this.getConfig?.listing_fee !== undefined) {
         return this.getConfig?.listing_fee;
       } else {
-        return { quantity: "error SWAP" };
+        return { quantity: 'error SWAP' };
       }
     },
     showPoolExistsWarning() {
-      const defaultMsg = "Select a token";
       return (
         this.getHasPool ||
         this.getToken1.symbol == defaultMsg ||
@@ -167,11 +167,11 @@ export default {
 
     shareOfPool() {
       if (this.getHasPool) {
-        if (this.getPool.protocol === "uniswap") {
+        if (this.getPool.protocol === 'uniswap') {
           let currentShare = Math.sqrt(this.getValue1 * this.getValue2);
           let totalLP = this.$getQuantity(this.getPool.liquidity);
           return currentShare / (totalLP + currentShare);
-        } else if (this.getPool.protocol === "curve") {
+        } else if (this.getPool.protocol === 'curve') {
           let currentShare = this.getValue1 + this.getValue2;
           let totalLP = this.$getQuantity(this.getPool.liquidity);
           return currentShare / (totalLP + currentShare);
@@ -183,19 +183,19 @@ export default {
     },
   },
   methods: {
-    ...mapActions("pools", [
-      "updateConfig",
-      "updatePools",
-      "updateUserLiquidityPools",
+    ...mapActions('pools', [
+      'updateConfig',
+      'updatePools',
+      'updateUserLiquidityPools',
     ]),
-    ...mapActions("tokens", [
-      "updateTokens",
-      "updateAllTokensBalances",
-      "updateTokenBalances",
+    ...mapActions('tokens', [
+      'updateTokens',
+      'updateAllTokensBalances',
+      'updateTokenBalances',
     ]),
-    ...mapActions("liquidity", [
-      "updateActivePool",
-      "updateSelectedTokenBalance",
+    ...mapActions('liquidity', [
+      'updateActivePool',
+      'updateSelectedTokenBalance',
     ]),
 
     pricePerToken(selector) {
@@ -214,7 +214,7 @@ export default {
           return price1;
         }
       } else {
-        return "";
+        return '';
       }
     },
   },
