@@ -47,7 +47,6 @@ import moment from 'moment';
 import axios from 'axios';
 import { GChart } from 'vue-google-charts/legacy';
 import { processData } from 'src/utils/swap';
-import { GRAPH_NUMBER_PRECISION } from 'src/constants/constants';
 
 export default {
   name: 'stockChart',
@@ -85,7 +84,6 @@ export default {
           textStyle: {
             color: '#e3def7',
           },
-          format: 'currency',
         },
         hAxis: {
           gridlines: {
@@ -160,7 +158,7 @@ export default {
       this.graphData.push(
         ...processedData.map((data) => [
           moment.utc(data[0]).format('MM-DD HH:mm A'),
-          parseFloat(data[1].toPrecision(GRAPH_NUMBER_PRECISION)),
+          parseFloat(data[1].toPrecision(this.getPool.reserve0.precision)),
         ])
       );
     },
