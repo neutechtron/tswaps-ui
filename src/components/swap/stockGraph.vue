@@ -31,7 +31,12 @@
       <label class="option-label" for="month">Monthly</label>
     </div>
     <!-- Daily-Weekly-Monthly Options radio buttons cntainer ends here -->
-    <GChart type="AreaChart" :options="options" :data="graphData" />
+    <GChart
+      v-if="graphData.length > 0"
+      type="AreaChart"
+      :options="options"
+      :data="graphData"
+    />
     <!-- <div v-if="!loaded" class="lds-dual-ring"></div>   -->
   </div>
 </template>
@@ -41,9 +46,6 @@ import { mapGetters } from 'vuex';
 import moment from 'moment';
 import axios from 'axios';
 import { GChart } from 'vue-google-charts/legacy';
-import { day } from './stock-data';
-import { week } from './stock-data';
-import { month } from './stock-data';
 import { processData } from 'src/utils/swap';
 import { GRAPH_NUMBER_PRECISION } from 'src/constants/constants';
 
