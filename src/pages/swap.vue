@@ -167,7 +167,7 @@ import swapButton from 'src/components/swap/swapButton.vue';
 import voteDialog from 'src/components/VoteDialog.vue';
 import stockGraph from 'src/components/swap/stockGraph.vue';
 import { mapGetters, mapActions } from 'vuex';
-import { defaultMsg } from 'src/constants/constants';
+import { DEFAULT_MSG } from 'src/constants/constants';
 
 export default {
   name: 'swap',
@@ -202,15 +202,15 @@ export default {
     showPoolExistsWarning() {
       return (
         this.getIsValidPair ||
-        this.getToToken.symbol == defaultMsg ||
-        this.getFromToken.symbol == defaultMsg
+        this.getToToken.symbol == DEFAULT_MSG ||
+        this.getFromToken.symbol == DEFAULT_MSG
       );
     },
 
     showGraph() {
       return (
-        (this.getToToken.symbol !== defaultMsg ||
-          this.getFromToken.symbol !== defaultMsg) &&
+        (this.getToToken.symbol !== DEFAULT_MSG ||
+          this.getFromToken.symbol !== DEFAULT_MSG) &&
         this.getIsValidPair
       );
     },

@@ -7,7 +7,7 @@
         type="radio"
         name="option"
         id="day"
-        value="day"
+        value="daily"
         checked="true"
       />
       <label class="option-label" for="day" checked>Daily</label>
@@ -17,7 +17,7 @@
         type="radio"
         name="option"
         id="week"
-        value="week"
+        value="weekly"
       />
       <label class="option-label" for="week">Weekly</label>
       <span>|</span>
@@ -26,24 +26,26 @@
         type="radio"
         name="option"
         id="month"
-        value="month"
+        value="monthly"
       />
       <label class="option-label" for="month">Monthly</label>
     </div>
     <!-- Daily-Weekly-Monthly Options radio buttons cntainer ends here -->
-    <GChart type="AreaChart" :options="options" :data="graphData(timeSeries)" />
+    <GChart type="AreaChart" :options="options" :data="graphData" />
     <!-- <div v-if="!loaded" class="lds-dual-ring"></div>   -->
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import moment from 'moment';
 import axios from 'axios';
 import { GChart } from 'vue-google-charts/legacy';
 import { day } from './stock-data';
 import { week } from './stock-data';
 import { month } from './stock-data';
 import { processData } from 'src/utils/swap';
+import { GRAPH_NUMBER_PRECISION } from 'src/constants/constants';
 
 export default {
   name: 'stockChart',
@@ -52,10 +54,8 @@ export default {
   },
   data() {
     return {
-      timeSeries: 'day',
-      dayData: day.map((val) => [val.x, val.close]),
-      weekData: week.map((val) => [val.x, val.close]),
-      monthData: month.map((val) => [val.x, val.close]),
+      timeSeries: 'daily',
+      graphData: [],
       options: {
         chart: {
           title: 'Price chart',
@@ -97,6 +97,7 @@ export default {
             color: '#e3def7',
           },
           viewWindowMode: 'maximized',
+          showTextEvery: 4,
         },
         legend: 'none',
         explorer: {
@@ -128,30 +129,15 @@ export default {
     fromAndToToken() {
       return `${this.getFromToken?.symbol}|${this.getToToken?.symbol}`;
     },
+    graphHeaders() {
+      return ['Time', `${this.fromTokenSymbol}\\${this.toTokenSymbol}`];
+    },
   },
   methods: {
-    graphData(timeSeries) {
-      if (timeSeries == 'day') {
-        console.log('day data'), (this.options.hAxis.showTextEvery = 4);
-        return this.dayData;
-      }
-      if (timeSeries == 'week') {
-        console.log('week data');
-        this.options.hAxis.format = 'MMM d, y';
-        this.options.hAxis.showTextEvery = 2;
-        return this.weekData;
-      }
-      if (timeSeries == 'month') {
-        console.log('month data');
-        this.options.hAxis.format = 'MMM d, y';
-        this.options.hAxis.showTextEvery = 3;
-        return this.monthData;
-      }
-    },
     async fetchAndProcessGraphData() {
       const currentDate = this.currentServerTime.toISOString().split('T')[0];
       const response = await axios.get(
-        `${process.env.BACKEND_ENDPOINT}/?token1=${this.fromTokenSymbol}&token2=${this.toTokenSymbol}&timespan=daily&currentDate=${currentDate}`
+        `${process.env.BACKEND_ENDPOINT}/?token1=${this.fromTokenSymbol}&token2=${this.toTokenSymbol}&timespan=${this.timeSeries}&currentDate=${currentDate}`
       );
       console.log('response', response.data);
       const processedData = processData(
@@ -160,11 +146,31 @@ export default {
         this.fromTokenSymbol
       );
       console.log('processedData', processedData);
+      this.graphData = [this.graphHeaders];
+      this.graphData.push(
+        ...processedData.map((data) => [
+          moment.utc(data[0]).format('MM-DD HH:mm A'),
+          parseFloat(data[1].toPrecision(GRAPH_NUMBER_PRECISION)),
+        ])
+      );
     },
   },
   watch: {
     fromAndToToken() {
       this.fetchAndProcessGraphData();
+    },
+    options() {
+      if (timeSeries == 'daily') {
+        console.log('day data');
+        this.options.hAxis.showTextEvery = 4;
+      } else if (timeSeries == 'weekly') {
+        console.log('week data');
+        this.options.hAxis.showTextEvery = 2;
+      } else if (timeSeries == 'monthly') {
+        console.log('month data');
+        this.options.hAxis.format = 'MMM d, y';
+        this.options.hAxis.showTextEvery = 3;
+      }
     },
   },
   mounted() {

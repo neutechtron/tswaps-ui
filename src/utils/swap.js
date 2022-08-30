@@ -101,6 +101,7 @@ export function processData(
         new Date(dataOne.representative_time).getTime() === date.getTime()
     );
     valueAtDate = getValueFromObjectAtDate(
+      data,
       valueObjectAtDate,
       prevValue,
       token1Name
