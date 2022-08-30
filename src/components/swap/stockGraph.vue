@@ -57,10 +57,6 @@ export default {
       timeSeries: 'daily',
       graphData: [],
       options: {
-        chart: {
-          title: 'Price chart',
-          subtitle: '',
-        },
         width: 600,
         height: 500,
         backgroundColor: '#23195e',
@@ -68,7 +64,7 @@ export default {
           backgroundColor: '#23195e',
           left: 60,
           right: 20,
-          top: 50,
+          top: 65,
           bottom: 55,
         },
         animation: {
@@ -99,7 +95,11 @@ export default {
           viewWindowMode: 'maximized',
           showTextEvery: 4,
         },
-        legend: 'none',
+        legend: {
+          maxLines: 2,
+          position: 'top',
+          textStyle: { color: 'white', fontSize: 16 },
+        },
         explorer: {
           axis: 'horizontal',
           keepInBounds: 'true',
