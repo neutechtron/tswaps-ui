@@ -116,7 +116,12 @@ export default {
     };
   },
   computed: {
-    ...mapGetters('swap', ['getFromToken', 'getToToken', 'getIsValidPair']),
+    ...mapGetters('swap', [
+      'getFromToken',
+      'getToToken',
+      'getIsValidPair',
+      'getPool',
+    ]),
     fromTokenSymbol() {
       return this.getFromToken?.symbol;
     },
@@ -145,7 +150,10 @@ export default {
       const processedData = processData(
         response.data,
         this.currentServerTime,
-        this.fromTokenSymbol
+        this.fromTokenSymbol,
+        parseFloat(
+          this.getPool.reserve0.quantity / this.getPool.reserve1.quantity
+        )
       );
       console.log('processedData', processedData);
       this.graphData = [this.graphHeaders];

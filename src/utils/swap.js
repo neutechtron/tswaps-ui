@@ -76,7 +76,7 @@ export function processData(
   data,
   currentServerTime,
   token1Name,
-  currentBlockchainRate = 2
+  currentBlockchainRate
 ) {
   const graphDateArray = [];
   let graphData = [];
