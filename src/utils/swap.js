@@ -1,8 +1,3 @@
-const data = require('./daily.json');
-const currentServerTime = new Date(
-  '2022-07-29T06:31:00.000Z'.substring(0, 13) + ':00:00.000Z'
-); // Get the start of the hour
-
 const goBackNumberOfDays = 3;
 
 Date.prototype.addDays = function (days) {
@@ -17,7 +12,7 @@ Date.prototype.addHours = function (hours) {
   return date;
 };
 
-function getInvertedTokenOrder(token1Name) {
+function getInvertedTokenOrder(data, token1Name) {
   // Test only for the first record as per the functional requirement
   if (data.length > 0) {
     return data[0].token_1 !== token1Name;
@@ -25,8 +20,13 @@ function getInvertedTokenOrder(token1Name) {
   return false;
 }
 
-function getValueFromObjectAtDate(valueObjectAtDate, prevValue, token1Name) {
-  const invertedTokenOrder = getInvertedTokenOrder(token1Name);
+function getValueFromObjectAtDate(
+  data,
+  valueObjectAtDate,
+  prevValue,
+  token1Name
+) {
+  const invertedTokenOrder = getInvertedTokenOrder(data, token1Name);
 
   if (!valueObjectAtDate) {
     // if the current valueObjectAtDate is not found, then use previous value
@@ -42,7 +42,7 @@ function getValueFromObjectAtDate(valueObjectAtDate, prevValue, token1Name) {
     : prevValue;
 }
 
-function extrapolateStartValueFromPreviousValues(token1Name) {
+function extrapolateStartValueFromPreviousValues(data, token1Name) {
   let prevValue = 0;
   const previousDateArray = [];
   const startTime = currentServerTime.addDays(-1 * goBackNumberOfDays);
@@ -61,6 +61,7 @@ function extrapolateStartValueFromPreviousValues(token1Name) {
         new Date(dataOne.representative_time).getTime() === date.getTime()
     );
     const valueAtDate = getValueFromObjectAtDate(
+      data,
       valueObjectAtDate,
       prevValue,
       token1Name
@@ -71,7 +72,12 @@ function extrapolateStartValueFromPreviousValues(token1Name) {
   return prevValue;
 }
 
-export function processData(token1Name = 'EOS', currentBlockchainRate = 2) {
+export function processData(
+  data,
+  currentServerTime,
+  token1Name,
+  currentBlockchainRate = 2
+) {
   const graphDateArray = [];
   let graphData = [];
   let prevValue = 0;
@@ -102,7 +108,7 @@ export function processData(token1Name = 'EOS', currentBlockchainRate = 2) {
 
     // Special case
     if (idx === 0 && !valueAtDate) {
-      valueAtDate = extrapolateStartValueFromPreviousValues(token1Name);
+      valueAtDate = extrapolateStartValueFromPreviousValues(data, token1Name);
     }
 
     prevValue = valueAtDate;

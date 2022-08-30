@@ -120,6 +120,14 @@ export default {
     toTokenSymbol() {
       return this.getToToken?.symbol;
     },
+    currentServerTime() {
+      return new Date(
+        '2022-07-29T06:31:00.000Z'.substring(0, 13) + ':00:00.000Z'
+      ); // Get the start of the hour
+    },
+    fromAndToToken() {
+      return `${this.getFromToken?.symbol}|${this.getToToken?.symbol}`;
+    },
   },
   methods: {
     graphData(timeSeries) {
@@ -141,13 +149,22 @@ export default {
       }
     },
     async fetchAndProcessGraphData() {
+      const currentDate = this.currentServerTime.toISOString().split('T')[0];
       const response = await axios.get(
-        `${process.env.BACKEND_ENDPOINT}/?action=fetch-all&timespan=daily`
+        `${process.env.BACKEND_ENDPOINT}/?token1=${this.fromTokenSymbol}&token2=${this.toTokenSymbol}&timespan=daily&currentDate=${currentDate}`
       );
       console.log('response', response.data);
-      const processedData = processData(response.data);
+      const processedData = processData(
+        response.data,
+        this.currentServerTime,
+        this.fromTokenSymbol
+      );
       console.log('processedData', processedData);
-      console.log('fromTokenSymbol', this.fromTokenSymbol);
+    },
+  },
+  watch: {
+    fromAndToToken() {
+      this.fetchAndProcessGraphData();
     },
   },
   mounted() {
