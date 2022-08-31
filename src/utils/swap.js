@@ -83,9 +83,9 @@ function extrapolateStartValueFromPreviousValues(
       prevValue,
       token1Name
     );
-    debugModeOn && console.log('valueAtDate', valueAtDate);
     prevValue = valueAtDate;
   });
+  debugModeOn && console.log('extrapolated Start Value', prevValue);
   return prevValue;
 }
 

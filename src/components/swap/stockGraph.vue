@@ -59,6 +59,7 @@ export default {
     return {
       timeSeries: 'daily',
       graphData: [],
+      currentServerTime: null,
       options: {
         width: 600,
         height: 500,
@@ -128,9 +129,6 @@ export default {
     toTokenSymbol() {
       return this.getToToken?.symbol;
     },
-    currentServerTime() {
-      return new Date('2022-07-29T06:31:00.000Z');
-    },
     fromAndToToken() {
       return `${this.getFromToken?.symbol}|${this.getToToken?.symbol}`;
     },
@@ -147,10 +145,24 @@ export default {
           return moment.utc(date).format('MM-DD, YYYY');
       }
     },
+    async getServerTime() {
+      const response = await axios.get(
+        `${process.env.BACKEND_ENDPOINT}/?action=getCurrentTime`
+      );
+      const serverTime = response.data && response.data[0];
+      if (serverTime) {
+        debugModeOn && console.log('getServerTime', serverTime.CURRENTTIME);
+        this.currentServerTime = new Date(serverTime.CURRENTTIME);
+      }
+    },
     async fetchAndProcessGraphData() {
+      if (!this.currentServerTime) {
+        return;
+      }
+
       const currentDate = this.currentServerTime.toISOString().split('T')[0];
       const response = await axios.get(
-        `${process.env.BACKEND_ENDPOINT}/?token1=${this.fromTokenSymbol}&token2=${this.toTokenSymbol}&timespan=${this.timeSeries}&currentDate=${currentDate}`
+        `${process.env.BACKEND_ENDPOINT}/?action=getData&token1=${this.fromTokenSymbol}&token2=${this.toTokenSymbol}&timespan=${this.timeSeries}&currentDate=${currentDate}`
       );
       debugModeOn && console.log('response', response.data);
       const processedData = processData(
@@ -187,8 +199,9 @@ export default {
       this.fetchAndProcessGraphData();
     },
   },
-  mounted() {
-    this.fetchAndProcessGraphData();
+  async mounted() {
+    await this.getServerTime();
+    await this.fetchAndProcessGraphData();
   },
 };
 </script>
