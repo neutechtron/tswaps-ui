@@ -3,6 +3,8 @@ const goBackNumberOfDaysExtrapolation = 2;
 const daysPerWeek = 7;
 const daysPerMonth = 31;
 
+const debugModeOn = true;
+
 Date.prototype.addDays = function (days) {
   var date = new Date(this.valueOf());
   date.setDate(date.getDate() + days);
@@ -55,7 +57,8 @@ function extrapolateStartValueFromPreviousValues(
   const previousDateArray = [];
   const startTime = getStartTimeExtrapolation(currentServerTime, timeSeries);
 
-  console.log('Preparing to extrapolateStartValueFromPreviousValues');
+  debugModeOn &&
+    console.log('Preparing to extrapolateStartValueFromPreviousValues');
 
   if (timeSeries === 'daily') {
     for (let i = 0; i < 24 * goBackNumberOfDaysExtrapolation; i++) {
@@ -67,7 +70,7 @@ function extrapolateStartValueFromPreviousValues(
     }
   }
 
-  console.log('previousDateArray', previousDateArray);
+  debugModeOn && console.log('previousDateArray', previousDateArray);
 
   previousDateArray.forEach((date) => {
     const valueObjectAtDate = data.find(
@@ -80,7 +83,7 @@ function extrapolateStartValueFromPreviousValues(
       prevValue,
       token1Name
     );
-    console.log('valueAtDate', valueAtDate);
+    debugModeOn && console.log('valueAtDate', valueAtDate);
     prevValue = valueAtDate;
   });
   return prevValue;

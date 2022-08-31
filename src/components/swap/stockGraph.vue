@@ -48,6 +48,8 @@ import axios from 'axios';
 import { GChart } from 'vue-google-charts/legacy';
 import { processData } from 'src/utils/swap';
 
+const debugModeOn = true;
+
 export default {
   name: 'stockChart',
   components: {
@@ -150,7 +152,7 @@ export default {
       const response = await axios.get(
         `${process.env.BACKEND_ENDPOINT}/?token1=${this.fromTokenSymbol}&token2=${this.toTokenSymbol}&timespan=${this.timeSeries}&currentDate=${currentDate}`
       );
-      console.log('response', response.data);
+      debugModeOn && console.log('response', response.data);
       const processedData = processData(
         response.data,
         this.currentServerTime,
@@ -160,7 +162,7 @@ export default {
         ),
         this.timeSeries
       );
-      console.log('processedData', processedData);
+      debugModeOn && console.log('processedData', processedData);
       this.graphData = [this.graphHeaders];
       this.graphData.push(
         ...processedData.map((data) => [
@@ -176,13 +178,10 @@ export default {
     },
     timeSeries(timeSeries) {
       if (timeSeries == 'daily') {
-        console.log('day data');
         this.options.hAxis.showTextEvery = 4;
       } else if (timeSeries == 'weekly') {
-        console.log('week data');
         this.options.hAxis.showTextEvery = 2;
       } else if (timeSeries == 'monthly') {
-        console.log('month data');
         this.options.hAxis.showTextEvery = 3;
       }
       this.fetchAndProcessGraphData();
