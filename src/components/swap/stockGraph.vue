@@ -127,9 +127,7 @@ export default {
       return this.getToToken?.symbol;
     },
     currentServerTime() {
-      return new Date(
-        '2022-07-29T06:31:00.000Z'.substring(0, 13) + ':00:00.000Z'
-      ); // Get the start of the hour
+      return new Date('2022-07-29T06:31:00.000Z');
     },
     fromAndToToken() {
       return `${this.getFromToken?.symbol}|${this.getToToken?.symbol}`;
@@ -139,6 +137,14 @@ export default {
     },
   },
   methods: {
+    getDateFormatGraph(date) {
+      switch (this.timeSeries) {
+        case 'daily':
+          return moment.utc(date).format('MM-DD HH:mm A');
+        default:
+          return moment.utc(date).format('MM-DD, YYYY');
+      }
+    },
     async fetchAndProcessGraphData() {
       const currentDate = this.currentServerTime.toISOString().split('T')[0];
       const response = await axios.get(
@@ -151,13 +157,14 @@ export default {
         this.fromTokenSymbol,
         parseFloat(
           this.getPool.reserve0.quantity / this.getPool.reserve1.quantity
-        )
+        ),
+        this.timeSeries
       );
       console.log('processedData', processedData);
       this.graphData = [this.graphHeaders];
       this.graphData.push(
         ...processedData.map((data) => [
-          moment.utc(data[0]).format('MM-DD HH:mm A'),
+          this.getDateFormatGraph(data[0]),
           parseFloat(data[1].toPrecision(this.getPool.reserve0.precision)),
         ])
       );
@@ -167,7 +174,7 @@ export default {
     fromAndToToken() {
       this.fetchAndProcessGraphData();
     },
-    options() {
+    timeSeries(timeSeries) {
       if (timeSeries == 'daily') {
         console.log('day data');
         this.options.hAxis.showTextEvery = 4;
@@ -176,9 +183,9 @@ export default {
         this.options.hAxis.showTextEvery = 2;
       } else if (timeSeries == 'monthly') {
         console.log('month data');
-        this.options.hAxis.format = 'MMM d, y';
         this.options.hAxis.showTextEvery = 3;
       }
+      this.fetchAndProcessGraphData();
     },
   },
   mounted() {

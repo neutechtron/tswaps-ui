@@ -1,4 +1,7 @@
-const goBackNumberOfDays = 3;
+import moment from 'moment';
+const goBackNumberOfDaysExtrapolation = 2;
+const daysPerWeek = 7;
+const daysPerMonth = 31;
 
 Date.prototype.addDays = function (days) {
   var date = new Date(this.valueOf());
@@ -42,15 +45,26 @@ function getValueFromObjectAtDate(
     : prevValue;
 }
 
-function extrapolateStartValueFromPreviousValues(data, token1Name) {
+function extrapolateStartValueFromPreviousValues(
+  data,
+  token1Name,
+  currentServerTime,
+  timeSeries
+) {
   let prevValue = 0;
   const previousDateArray = [];
-  const startTime = currentServerTime.addDays(-1 * goBackNumberOfDays);
+  const startTime = getStartTimeExtrapolation(currentServerTime, timeSeries);
 
   console.log('Preparing to extrapolateStartValueFromPreviousValues');
 
-  for (let i = 0; i < 24 * (goBackNumberOfDays - 1); i++) {
-    previousDateArray.push(startTime.addHours(i));
+  if (timeSeries === 'daily') {
+    for (let i = 0; i < 24 * goBackNumberOfDaysExtrapolation; i++) {
+      previousDateArray.push(startTime.addHours(i));
+    }
+  } else {
+    for (let i = 0; i < goBackNumberOfDaysExtrapolation; i++) {
+      previousDateArray.push(startTime.addDays(i));
+    }
   }
 
   console.log('previousDateArray', previousDateArray);
@@ -72,21 +86,82 @@ function extrapolateStartValueFromPreviousValues(data, token1Name) {
   return prevValue;
 }
 
+function getStartTimeExtrapolation(currentServerTime, timeSeries) {
+  switch (timeSeries) {
+    case 'daily':
+      return moment
+        .utc(currentServerTime)
+        .startOf('hour')
+        .add(-(goBackNumberOfDaysExtrapolation + 1), 'days')
+        .toDate();
+    case 'weekly':
+      return moment
+        .utc(currentServerTime)
+        .startOf('day')
+        .add(-(goBackNumberOfDaysExtrapolation + daysPerWeek), 'days')
+        .toDate();
+    case 'monthly':
+      return moment
+        .utc(currentServerTime)
+        .startOf('day')
+        .add(-(goBackNumberOfDaysExtrapolation + daysPerMonth), 'days')
+        .toDate();
+    default:
+      throw new Error('Unknown timeSeries');
+  }
+}
+
+function getStartTime(currentServerTime, timeSeries) {
+  switch (timeSeries) {
+    case 'daily':
+      return moment
+        .utc(currentServerTime)
+        .startOf('hour')
+        .add(-1, 'days')
+        .toDate();
+    case 'weekly':
+      return moment
+        .utc(currentServerTime)
+        .startOf('day')
+        .add(-daysPerWeek, 'days')
+        .toDate();
+    case 'monthly':
+      return moment
+        .utc(currentServerTime)
+        .startOf('day')
+        .add(-daysPerMonth, 'days')
+        .toDate();
+    default:
+      throw new Error('Unknown timeSeries');
+  }
+}
+
 export function processData(
   data,
   currentServerTime,
   token1Name,
-  currentBlockchainRate
+  currentBlockchainRate,
+  timeSeries
 ) {
   const graphDateArray = [];
   let graphData = [];
   let prevValue = 0;
   let valueAtDate;
 
-  const startTime = currentServerTime.addDays(-1);
+  const startTime = getStartTime(currentServerTime, timeSeries);
 
-  for (let i = 0; i < 24; i++) {
-    graphDateArray.push(startTime.addHours(i));
+  if (timeSeries === 'daily') {
+    for (let i = 0; i < 24; i++) {
+      graphDateArray.push(startTime.addHours(i));
+    }
+  } else if (timeSeries === 'weekly') {
+    for (let i = 0; i < daysPerWeek; i++) {
+      graphDateArray.push(startTime.addDays(i));
+    }
+  } else {
+    for (let i = 0; i < daysPerMonth; i++) {
+      graphDateArray.push(startTime.addDays(i));
+    }
   }
 
   if (data.length === 0) {
@@ -109,7 +184,12 @@ export function processData(
 
     // Special case
     if (idx === 0 && !valueAtDate) {
-      valueAtDate = extrapolateStartValueFromPreviousValues(data, token1Name);
+      valueAtDate = extrapolateStartValueFromPreviousValues(
+        data,
+        token1Name,
+        currentServerTime,
+        timeSeries
+      );
     }
 
     prevValue = valueAtDate;
