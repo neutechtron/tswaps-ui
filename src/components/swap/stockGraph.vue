@@ -1,43 +1,41 @@
 <template>
-  <div>
-    <!-- Daily-Weekly-Monthly Options radio buttons cntainer starts here -->
-    <div class="options q-my-md justify-center row">
-      <input
-        v-model="timeSeries"
-        type="radio"
-        name="option"
-        id="day"
-        value="daily"
-        checked="true"
-      />
-      <label class="option-label" for="day" checked>Daily</label>
-      <span>|</span>
-      <input
-        v-model="timeSeries"
-        type="radio"
-        name="option"
-        id="week"
-        value="weekly"
-      />
-      <label class="option-label" for="week">Weekly</label>
-      <span>|</span>
-      <input
-        v-model="timeSeries"
-        type="radio"
-        name="option"
-        id="month"
-        value="monthly"
-      />
-      <label class="option-label" for="month">Monthly</label>
+  <div v-if="graphData.length > 0">
+    <div class="text-h5 row q-my-md">Price of swap</div>
+    <div class="row justify-center swapCard q-my-md inputCard">
+      <!-- Daily-Weekly-Monthly Options radio buttons cntainer starts here -->
+      <div class="options q-my-md justify-center row">
+        <input
+          v-model="timeSeries"
+          type="radio"
+          name="option"
+          id="day"
+          value="daily"
+          checked="true"
+        />
+        <label class="option-label" for="day" checked>Daily</label>
+        <span>|</span>
+        <input
+          v-model="timeSeries"
+          type="radio"
+          name="option"
+          id="week"
+          value="weekly"
+        />
+        <label class="option-label" for="week">Weekly</label>
+        <span>|</span>
+        <input
+          v-model="timeSeries"
+          type="radio"
+          name="option"
+          id="month"
+          value="monthly"
+        />
+        <label class="option-label" for="month">Monthly</label>
+      </div>
+      <!-- Daily-Weekly-Monthly Options radio buttons cntainer ends here -->
+      <GChart type="AreaChart" :options="options" :data="graphData" />
+      <!-- <div v-if="!loaded" class="lds-dual-ring"></div>   -->
     </div>
-    <!-- Daily-Weekly-Monthly Options radio buttons cntainer ends here -->
-    <GChart
-      v-if="graphData.length > 0"
-      type="AreaChart"
-      :options="options"
-      :data="graphData"
-    />
-    <!-- <div v-if="!loaded" class="lds-dual-ring"></div>   -->
   </div>
 </template>
 
@@ -146,42 +144,49 @@ export default {
       }
     },
     async getServerTime() {
-      const response = await axios.get(
-        `${process.env.BACKEND_ENDPOINT}/?action=getCurrentTime`
-      );
-      const serverTime = response.data && response.data[0];
-      if (serverTime) {
-        debugModeOn && console.log('getServerTime', serverTime.CURRENTTIME);
-        this.currentServerTime = new Date(serverTime.CURRENTTIME);
+      try {
+        const response = await axios.get(
+          `${process.env.BACKEND_ENDPOINT}/?action=getCurrentTime`
+        );
+        const serverTime = response.data && response.data[0];
+        if (serverTime) {
+          debugModeOn && console.log('getServerTime', serverTime.CURRENTTIME);
+          this.currentServerTime = new Date(serverTime.CURRENTTIME);
+        }
+      } catch {
+        this.$errorNotification('Error connecting to Database');
       }
     },
     async fetchAndProcessGraphData() {
       if (!this.currentServerTime) {
         return;
       }
-
-      const currentDate = this.currentServerTime.toISOString().split('T')[0];
-      const response = await axios.get(
-        `${process.env.BACKEND_ENDPOINT}/?action=getData&token1=${this.fromTokenSymbol}&token2=${this.toTokenSymbol}&timespan=${this.timeSeries}&currentDate=${currentDate}`
-      );
-      debugModeOn && console.log('response', response.data);
-      const processedData = processData(
-        response.data,
-        this.currentServerTime,
-        this.fromTokenSymbol,
-        parseFloat(
-          this.getPool.reserve0.quantity / this.getPool.reserve1.quantity
-        ),
-        this.timeSeries
-      );
-      debugModeOn && console.log('processedData', processedData);
-      this.graphData = [this.graphHeaders];
-      this.graphData.push(
-        ...processedData.map((data) => [
-          this.getDateFormatGraph(data[0]),
-          parseFloat(data[1].toPrecision(this.getPool.reserve0.precision)),
-        ])
-      );
+      try {
+        const currentDate = this.currentServerTime.toISOString().split('T')[0];
+        const response = await axios.get(
+          `${process.env.BACKEND_ENDPOINT}/?action=getData&token1=${this.fromTokenSymbol}&token2=${this.toTokenSymbol}&timespan=${this.timeSeries}&currentDate=${currentDate}`
+        );
+        debugModeOn && console.log('response', response.data);
+        const processedData = processData(
+          response.data,
+          this.currentServerTime,
+          this.fromTokenSymbol,
+          parseFloat(
+            this.getPool.reserve0.quantity / this.getPool.reserve1.quantity
+          ),
+          this.timeSeries
+        );
+        debugModeOn && console.log('processedData', processedData);
+        this.graphData = [this.graphHeaders];
+        this.graphData.push(
+          ...processedData.map((data) => [
+            this.getDateFormatGraph(data[0]),
+            parseFloat(data[1].toPrecision(this.getPool.reserve0.precision)),
+          ])
+        );
+      } catch {
+        this.$errorNotification('Error processing graph data');
+      }
     },
   },
   watch: {

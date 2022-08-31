@@ -148,12 +148,7 @@
           </div>
         </q-card>
       </div>
-      <div v-if="showGraph">
-        <div class="text-h5 row q-my-md">Price of swap</div>
-        <stockGraph
-          class="row justify-center swapCard q-my-md inputCard"
-        ></stockGraph>
-      </div>
+      <stockGraph v-if="showGraph"></stockGraph>
     </div>
     <vote-dialog />
   </q-page>
