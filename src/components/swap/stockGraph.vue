@@ -138,7 +138,7 @@ export default {
     getDateFormatGraph(date) {
       switch (this.timeSeries) {
         case 'daily':
-          return moment.utc(date).format('MM-DD HH:mm A');
+          return moment.utc(date).format('MMM DD, hh:mm A');
         default:
           return moment.utc(date).format('MMM DD, YYYY');
       }
@@ -219,7 +219,7 @@ export default {
       } else if (timeSeries == 'weekly') {
         this.options.hAxis.showTextEvery = 2;
       } else if (timeSeries == 'monthly') {
-        this.options.hAxis.showTextEvery = 3;
+        this.options.hAxis.showTextEvery = 5;
       }
       this.fetchAndProcessGraphData();
     },
