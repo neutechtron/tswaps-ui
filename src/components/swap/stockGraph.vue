@@ -143,6 +143,20 @@ export default {
           return moment.utc(date).format('MM-DD, YYYY');
       }
     },
+    pricePerToken() {
+      const token0 = this.getPool.reserve0;
+      const token1 = this.getPool.reserve1;
+      if (token0.symbol === this.fromTokenSymbol) {
+        return Number(
+          parseFloat(token0.quantity / token1.quantity).toFixed(
+            token0.precision
+          )
+        );
+      }
+      return Number(
+        parseFloat(token1.quantity / token0.quantity).toFixed(token1.precision)
+      );
+    },
     async getServerTime() {
       try {
         const response = await axios.get(
@@ -162,6 +176,8 @@ export default {
         return;
       }
       try {
+        const token0 = this.getPool.reserve0;
+        const token1 = this.getPool.reserve1;
         const currentDate = this.currentServerTime.toISOString().split('T')[0];
         const response = await axios.get(
           `${process.env.BACKEND_ENDPOINT}/?action=getData&token1=${this.fromTokenSymbol}&token2=${this.toTokenSymbol}&timespan=${this.timeSeries}&currentDate=${currentDate}`
@@ -171,9 +187,7 @@ export default {
           response.data,
           this.currentServerTime,
           this.fromTokenSymbol,
-          parseFloat(
-            this.getPool.reserve0.quantity / this.getPool.reserve1.quantity
-          ),
+          this.pricePerToken(),
           this.timeSeries
         );
         debugModeOn && console.log('processedData', processedData);
@@ -181,7 +195,13 @@ export default {
         this.graphData.push(
           ...processedData.map((data) => [
             this.getDateFormatGraph(data[0]),
-            parseFloat(data[1].toPrecision(this.getPool.reserve0.precision)),
+            parseFloat(
+              data[1].toPrecision(
+                token0.symbol === this.fromTokenSymbol
+                  ? token0.precision
+                  : token1.precision
+              )
+            ),
           ])
         );
       } catch {
