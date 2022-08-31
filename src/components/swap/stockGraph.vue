@@ -138,7 +138,7 @@ export default {
     getDateFormatGraph(date) {
       switch (this.timeSeries) {
         case 'daily':
-          return moment.utc(date).format('MMM DD, hh:mm A');
+          return moment.utc(date).format('MMM DD, HH:mm');
         default:
           return moment.utc(date).format('MMM DD, YYYY');
       }
@@ -195,6 +195,7 @@ export default {
         this.graphData.push(
           ...processedData.map((data) => [
             this.getDateFormatGraph(data[0]),
+            // need to trim the float values to a level the graph can handle
             parseFloat(
               data[1].toPrecision(
                 token0.symbol === this.fromTokenSymbol
