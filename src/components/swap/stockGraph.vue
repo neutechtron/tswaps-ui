@@ -140,7 +140,7 @@ export default {
         case 'daily':
           return moment.utc(date).format('MM-DD HH:mm A');
         default:
-          return moment.utc(date).format('MM-DD, YYYY');
+          return moment.utc(date).format('MMM DD, YYYY');
       }
     },
     pricePerToken() {
