@@ -28,7 +28,7 @@ const goBackNumberOfDaysExtrapolation = 2;
 const daysPerWeek = 7;
 const daysPerMonth = 31;
 
-const debugModeOn = true;
+const debugModeOn = false;
 
 Date.prototype.addDays = function (days) {
   var date = new Date(this.valueOf());

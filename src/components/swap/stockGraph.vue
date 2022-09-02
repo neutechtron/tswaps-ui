@@ -46,7 +46,7 @@ import axios from 'axios';
 import { GChart } from 'vue-google-charts/legacy';
 import { processData } from 'src/utils/swap';
 
-const debugModeOn = true;
+const debugModeOn = false;
 
 export default {
   name: 'stockChart',
