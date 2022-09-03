@@ -167,8 +167,8 @@ export default {
           debugModeOn && console.log('getServerTime', serverTime.CURRENTTIME);
           this.currentServerTime = new Date(serverTime.CURRENTTIME);
         }
-      } catch {
-        console.error('Error connecting to Database');
+      } catch (error) {
+        console.error('Error connecting to Database', error);
       }
     },
     async fetchAndProcessGraphData() {
@@ -208,8 +208,8 @@ export default {
             ),
           ])
         );
-      } catch {
-        console.error('Error processing graph data');
+      } catch (error) {
+        console.error('Error processing graph data', error);
       }
     },
   },
