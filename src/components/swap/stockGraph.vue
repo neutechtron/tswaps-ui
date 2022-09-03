@@ -168,7 +168,7 @@ export default {
           this.currentServerTime = new Date(serverTime.CURRENTTIME);
         }
       } catch {
-        this.$errorNotification('Error connecting to Database');
+        console.error('Error connecting to Database');
       }
     },
     async fetchAndProcessGraphData() {
@@ -180,7 +180,10 @@ export default {
         const token1 = this.getPool.reserve1;
         const currentDate = this.currentServerTime.toISOString().split('T')[0];
         const response = await axios.get(
-          `${process.env.BACKEND_ENDPOINT}/?action=getData&token1=${this.fromTokenSymbol}&token2=${this.toTokenSymbol}&timespan=${this.timeSeries}&currentDate=${currentDate}`
+          `${process.env.BACKEND_ENDPOINT}/?action=getData&token1=${this.fromTokenSymbol}` +
+            `&token2=${this.toTokenSymbol}` +
+            `&timespan=${this.timeSeries}` +
+            `&currentDate=${currentDate}`
         );
         debugModeOn && console.log('response', response.data);
         const processedData = processData(
@@ -206,7 +209,7 @@ export default {
           ])
         );
       } catch {
-        this.$errorNotification('Error processing graph data');
+        console.error('Error processing graph data');
       }
     },
   },

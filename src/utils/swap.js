@@ -1,26 +1,36 @@
 /* Logic of processData()
 /* ==============================================
-/* Note: all times are relative to DB's current timestamp. The data fetched from the DB contains a column 'representative_time'.
-/*      This column contains the timestamp that represents the price values of that particular record.
-/*      It is the start of the hour in the case of 'daily', and start of the day in case of 'weekly' or 'monthly' time series.
-/*      In order words, the record fetched will contain the closing values for that particular hour or day.
+/* Note: all times are relative to DB's current timestamp. The data fetched from
+/* the DB contains a column 'representative_time'. This column contains the
+/* timestamp that represents the price values of that particular record.
+/* It is the start of the hour in the case of 'daily', and start of the day in
+/* case of 'weekly' or 'monthly' time series. In order words, the record fetched
+/* will contain the closing values for that particular hour or day.
 /*
 /* 1. We have to calculate the start and end date of the data for the graph.
-/*  End date - for daily, is the (start of the current hour - 1 hour). For weekly/monthly, it is the (start of the current day - 1 day)
-/*  Start date - for daily, it is (End date - 1 day). For weekly, it is (End date - 7 days). For monthly, it is (End date - 31 days).
+/*    End date - for daily, is the (start of the current hour - 1 hour).
+/*               For weekly/monthly, it is the (start of the current day - 1 day)
+/*    Start date - for daily, it is (End date - 1 day). For weekly, it is
+/*                 (End date - 7 days). For monthly, it is (End date - 31 days).
 /*
-/* 2. We check to see if there are any records returned from the DB. If yes, proceed to the next step. If not, use the current value
-/*  coming from the blockchain as a constant value for all the values in the graph.
+/* 2. We check to see if there are any records returned from the DB. If yes,
+/*    proceed to the next step. If not, use the current value coming from the
+/*    blockchain as a constant value for all the values in the graph.
 /*
-/* 3. We check to see if there is a record from DB for the start date. If yes, use that value and proceed to check for the next hour
-/*  or day until we reach End date. If an intermediate value is missing, then simply use the previous value instead.
+/* 3. We check to see if there is a record from DB for the start date. If yes,
+/*    use that value and proceed to check for the next hour or day until we reach
+/*    End date. If an intermediate value is missing, then simply use the previous
+/*    value instead.
 /*
-/* 4. If there was no record for the start date, then we need to look at the previous values (for the duration of the constant
-/*  'goBackNumberOfDaysExtrapolation'), to see if there are any values to be found. If not, then use zero as the starting value for step 3.
+/* 4. If there was no record for the start date, then we need to look at the
+/*    previous values (for the duration of the constant
+/*   'goBackNumberOfDaysExtrapolation'), to see if there are any values to be found.
+/*    If not, then use zero as the starting value for step 3.
 /*
 /* Underlying assumption:
 /* ======================
-/* The DB will only have records for either (token1 = EOS and token2 = TLOS) or (token1 = TLOS and token2 = EOS), but not a mixture of both types.
+/* The DB will only have records for either (token1 = EOS and token2 = TLOS) or
+/* (token1 = TLOS and token2 = EOS), but not a mixture of both types.
 */
 
 import moment from 'moment';
