@@ -148,10 +148,7 @@
           </div>
         </q-card>
       </div>
-      <div class="text-h5 row q-my-md">Price of swap</div>
-      <stockGraph
-        class="row justify-center swapCard q-my-md inputCard"
-      ></stockGraph>
+      <stockGraph v-if="showGraph"></stockGraph>
     </div>
     <vote-dialog />
   </q-page>
@@ -165,6 +162,7 @@ import swapButton from 'src/components/swap/swapButton.vue';
 import voteDialog from 'src/components/VoteDialog.vue';
 import stockGraph from 'src/components/swap/stockGraph.vue';
 import { mapGetters, mapActions } from 'vuex';
+import { DEFAULT_MSG } from 'src/constants/constants';
 
 export default {
   name: 'swap',
@@ -197,11 +195,18 @@ export default {
     ...mapGetters('pools', ['getConfig']),
 
     showPoolExistsWarning() {
-      const defaultMsg = 'Select a token';
       return (
         this.getIsValidPair ||
-        this.getToToken.symbol == defaultMsg ||
-        this.getFromToken.symbol == defaultMsg
+        this.getToToken.symbol == DEFAULT_MSG ||
+        this.getFromToken.symbol == DEFAULT_MSG
+      );
+    },
+
+    showGraph() {
+      return (
+        (this.getToToken.symbol !== DEFAULT_MSG ||
+          this.getFromToken.symbol !== DEFAULT_MSG) &&
+        this.getIsValidPair
       );
     },
 

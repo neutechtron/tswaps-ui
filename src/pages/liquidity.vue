@@ -126,6 +126,7 @@ import input2 from 'src/components/liquidity/Input2.vue';
 import liquidityButton from 'src/components/liquidity/liquidityButton.vue';
 import createButton from 'src/components/liquidity/createButton.vue';
 import yourLiquidity from 'src/components/liquidity/yourLiquidity.vue';
+import { DEFAULT_MSG } from 'src/constants/constants';
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
@@ -157,11 +158,10 @@ export default {
       }
     },
     showPoolExistsWarning() {
-      const defaultMsg = 'Select a token';
       return (
         this.getHasPool ||
-        this.getToken1.symbol == defaultMsg ||
-        this.getToken2.symbol == defaultMsg
+        this.getToken1.symbol == DEFAULT_MSG ||
+        this.getToken2.symbol == DEFAULT_MSG
       );
     },
 

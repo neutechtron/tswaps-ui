@@ -1,47 +1,53 @@
 <template>
-  <div>
-    <!-- Daily-Weekly-Monthly Options radio buttons cntainer starts here -->
-    <div class="options q-my-md justify-center row">
-      <input
-        v-model="timeSeries"
-        type="radio"
-        name="option"
-        id="day"
-        value="day"
-        checked="true"
-      />
-      <label class="option-label" for="day" checked>Daily</label>
-      <span>|</span>
-      <input
-        v-model="timeSeries"
-        type="radio"
-        name="option"
-        id="week"
-        value="week"
-      />
-      <label class="option-label" for="week">Weekly</label>
-      <span>|</span>
-      <input
-        v-model="timeSeries"
-        type="radio"
-        name="option"
-        id="month"
-        value="month"
-      />
-      <label class="option-label" for="month">Monthly</label>
+  <div v-if="graphData.length > 0">
+    <div class="text-h5 row q-my-md">Price of swap</div>
+    <div class="row justify-center swapCard q-my-md inputCard">
+      <!-- Daily-Weekly-Monthly Options radio buttons cntainer starts here -->
+      <div class="options q-my-md justify-center row">
+        <input
+          v-model="timeSeries"
+          type="radio"
+          name="option"
+          id="day"
+          value="daily"
+          checked="true"
+        />
+        <label class="option-label" for="day" checked>Daily</label>
+        <span>|</span>
+        <input
+          v-model="timeSeries"
+          type="radio"
+          name="option"
+          id="week"
+          value="weekly"
+        />
+        <label class="option-label" for="week">Weekly</label>
+        <span>|</span>
+        <input
+          v-model="timeSeries"
+          type="radio"
+          name="option"
+          id="month"
+          value="monthly"
+        />
+        <label class="option-label" for="month">Monthly</label>
+      </div>
+      <!-- Daily-Weekly-Monthly Options radio buttons cntainer ends here -->
+      <GChart type="AreaChart" :options="options" :data="graphData" />
+      <!-- <div v-if="!loaded" class="lds-dual-ring"></div>   -->
     </div>
-    <!-- Daily-Weekly-Monthly Options radio buttons cntainer ends here -->
-    <GChart type="AreaChart" :options="options" :data="graphData(timeSeries)" />
-    <!-- <div v-if="!loaded" class="lds-dual-ring"></div>   -->
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import moment from 'moment';
+import axios from 'axios';
 import { GChart } from 'vue-google-charts/legacy';
-import { day } from './stock-data';
-import { week } from './stock-data';
-import { month } from './stock-data';
-import { Dark } from 'quasar';
+import { processData } from 'src/utils/swap';
+
+const debugModeOn = false;
+
 export default {
   name: 'stockChart',
   components: {
@@ -49,15 +55,10 @@ export default {
   },
   data() {
     return {
-      timeSeries: 'day',
-      dayData: day.map((val) => [val.x, val.close]),
-      weekData: week.map((val) => [val.x, val.close]),
-      monthData: month.map((val) => [val.x, val.close]),
+      timeSeries: 'daily',
+      graphData: [],
+      currentServerTime: null,
       options: {
-        chart: {
-          title: 'Price chart',
-          subtitle: '',
-        },
         width: 600,
         height: 500,
         backgroundColor: '#23195e',
@@ -65,7 +66,7 @@ export default {
           backgroundColor: '#23195e',
           left: 60,
           right: 20,
-          top: 50,
+          top: 65,
           bottom: 55,
         },
         animation: {
@@ -84,7 +85,6 @@ export default {
           textStyle: {
             color: '#e3def7',
           },
-          format: 'currency',
         },
         hAxis: {
           gridlines: {
@@ -94,8 +94,13 @@ export default {
             color: '#e3def7',
           },
           viewWindowMode: 'maximized',
+          showTextEvery: 4,
         },
-        legend: 'none',
+        legend: {
+          maxLines: 2,
+          position: 'top',
+          textStyle: { color: 'white', fontSize: 16 },
+        },
         explorer: {
           axis: 'horizontal',
           keepInBounds: 'true',
@@ -109,25 +114,123 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters('swap', [
+      'getFromToken',
+      'getToToken',
+      'getIsValidPair',
+      'getPool',
+    ]),
+    fromTokenSymbol() {
+      return this.getFromToken?.symbol;
+    },
+    toTokenSymbol() {
+      return this.getToToken?.symbol;
+    },
+    fromAndToToken() {
+      return `${this.getFromToken?.symbol}|${this.getToToken?.symbol}`;
+    },
+    graphHeaders() {
+      return ['Time', `${this.fromTokenSymbol}\\${this.toTokenSymbol}`];
+    },
+  },
   methods: {
-    graphData(timeSeries) {
-      if (timeSeries == 'day') {
-        console.log('day data'), (this.options.hAxis.showTextEvery = 4);
-        return this.dayData;
-      }
-      if (timeSeries == 'week') {
-        console.log('week data');
-        this.options.hAxis.format = 'MMM d, y';
-        this.options.hAxis.showTextEvery = 2;
-        return this.weekData;
-      }
-      if (timeSeries == 'month') {
-        console.log('month data');
-        this.options.hAxis.format = 'MMM d, y';
-        this.options.hAxis.showTextEvery = 3;
-        return this.monthData;
+    getDateFormatGraph(date) {
+      switch (this.timeSeries) {
+        case 'daily':
+          return moment.utc(date).format('MMM DD, HH:mm');
+        default:
+          return moment.utc(date).format('MMM DD, YYYY');
       }
     },
+    pricePerToken() {
+      const token0 = this.getPool.reserve0;
+      const token1 = this.getPool.reserve1;
+      if (token0.symbol === this.fromTokenSymbol) {
+        return Number(
+          parseFloat(token0.quantity / token1.quantity).toFixed(
+            token0.precision
+          )
+        );
+      }
+      return Number(
+        parseFloat(token1.quantity / token0.quantity).toFixed(token1.precision)
+      );
+    },
+    async getServerTime() {
+      try {
+        const response = await axios.get(
+          `${process.env.BACKEND_ENDPOINT}/?action=getCurrentTime`
+        );
+        const serverTime = response.data && response.data[0];
+        if (serverTime) {
+          debugModeOn && console.log('getServerTime', serverTime.CURRENTTIME);
+          this.currentServerTime = new Date(serverTime.CURRENTTIME);
+        }
+      } catch (error) {
+        console.error('Error connecting to Database', error);
+      }
+    },
+    async fetchAndProcessGraphData() {
+      if (!this.currentServerTime) {
+        return;
+      }
+      try {
+        const token0 = this.getPool.reserve0;
+        const token1 = this.getPool.reserve1;
+        const currentDate = this.currentServerTime.toISOString().split('T')[0];
+        const response = await axios.get(
+          `${process.env.BACKEND_ENDPOINT}/?action=getData&token1=${this.fromTokenSymbol}` +
+            `&token2=${this.toTokenSymbol}` +
+            `&timespan=${this.timeSeries}` +
+            `&currentDate=${currentDate}`
+        );
+        debugModeOn && console.log('response', response.data);
+        const processedData = processData(
+          response.data,
+          this.currentServerTime,
+          this.fromTokenSymbol,
+          this.pricePerToken(),
+          this.timeSeries
+        );
+        debugModeOn && console.log('processedData', processedData);
+        this.graphData = [this.graphHeaders];
+        this.graphData.push(
+          ...processedData.map((data) => [
+            this.getDateFormatGraph(data[0]),
+            // need to trim the float values to a level the graph can handle
+            parseFloat(
+              data[1].toPrecision(
+                token0.symbol === this.fromTokenSymbol
+                  ? token0.precision
+                  : token1.precision
+              )
+            ),
+          ])
+        );
+      } catch (error) {
+        console.error('Error processing graph data', error);
+      }
+    },
+  },
+  watch: {
+    fromAndToToken() {
+      this.fetchAndProcessGraphData();
+    },
+    timeSeries(timeSeries) {
+      if (timeSeries == 'daily') {
+        this.options.hAxis.showTextEvery = 4;
+      } else if (timeSeries == 'weekly') {
+        this.options.hAxis.showTextEvery = 2;
+      } else if (timeSeries == 'monthly') {
+        this.options.hAxis.showTextEvery = 5;
+      }
+      this.fetchAndProcessGraphData();
+    },
+  },
+  async mounted() {
+    await this.getServerTime();
+    await this.fetchAndProcessGraphData();
   },
 };
 </script>
